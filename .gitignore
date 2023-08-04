@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+.DS_STORE
+
+# Turbo
+.turbo
+
+# Misc
+.DS_Store
+
+# UI
+dist/

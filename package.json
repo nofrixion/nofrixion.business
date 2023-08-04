@@ -1,0 +1,10 @@
+{
+  "name": "@nofrixion/business",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "You won't actually become a bank: you'll just forget you needed one.",
+  "author": "NoFrixion",
+  "scripts": {
+    "dev": "turbo run dev"
+  }
+}

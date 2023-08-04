@@ -1,0 +1,28 @@
+{
+  "name": "@nofrixion/storybook",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": ""
+  },
+  "dependencies": {
+    "@nofrixion/ui": "workspace:^",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@nofrixion/eslint-config": "workspace:^",
+    "@nofrixion/tsconfig": "workspace:^",
+    "@storybook/addon-actions": "^7.2.1",
+    "@storybook/addon-essentials": "^7.2.1",
+    "@storybook/builder-vite": "^7.2.1",
+    "@storybook/react": "^7.2.1",
+    "@storybook/react-vite": "^7.2.1",
+    "@types/react": "^18.2.18",
+    "@vitejs/plugin-react": "^4.0.4",
+    "storybook": "^7.2.1",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.8"
+  }
+}

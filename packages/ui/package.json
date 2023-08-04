@@ -1,0 +1,26 @@
+{
+  "name": "@nofrixion/ui",
+  "version": "0.0.0",
+  "license": "MIT",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist",
+    "./styles.css": "./dist/index.css"
+  },
+  "scripts": {
+    "dev": "tsup src/index.tsx --watch --format esm,cjs --dts --external react",
+    "build": "tsup src/index.tsx --format esm,cjs --dts --external react"
+  },
+  "devDependencies": {
+    "@nofrixion/eslint-config": "workspace:^",
+    "@nofrixion/tailwind-config": "workspace:^",
+    "@nofrixion/tsconfig": "workspace:^",
+    "@types/react": "^18.2.18",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.46.0",
+    "postcss": "^8.4.27",
+    "react": "^18.2.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.1.6"
+  }
+}
