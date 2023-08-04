@@ -1,4 +1,6 @@
-const sharedConfig = require("@nofrixion/tailwind-config/tailwind.config");
+/*eslint-env node*/
+
+import sharedConfig from "@nofrixion/tailwind-config/tailwind.config";
 
 module.exports = {
   presets: [sharedConfig],
