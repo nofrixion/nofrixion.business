@@ -5,6 +5,19 @@ import { Button } from "@nofrixion/ui";
 export default {
   title: "Button",
   component: Button,
+  argTypes: {
+    size: {
+      control: { type: "radio" },
+      options: ["big", "medium", "small", "x-small"],
+    },
+    variant: {
+      control: { type: "radio" },
+      options: ["primary", "primaryDark", "secondary", "tertiary", "text"],
+    },
+    onClick: {
+      action: "Clicked",
+    },
+  },
 } as Meta<typeof Button>;
 
 const Template: StoryFn<typeof Button> = (args) => {
@@ -12,3 +25,6 @@ const Template: StoryFn<typeof Button> = (args) => {
 };
 
 export const Showcase = Template.bind({});
+Showcase.args = {
+  variant: "primary",
+};

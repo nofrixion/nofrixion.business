@@ -1,0 +1,22 @@
+{
+  "name": "@nofrixion/utils",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "tsup index.ts --watch --format esm,cjs --dts",
+    "build": "tsup index.ts --format esm,cjs --dts",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@nofrixion/eslint-config": "workspace:^",
+    "@nofrixion/tailwind-config": "workspace:^",
+    "@nofrixion/tsconfig": "workspace:^",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^1.14.0",
+    "tsup": "^7.2.0"
+  }
+}
