@@ -1,28 +1,30 @@
 {
   "name": "@nofrixion/moneymoov",
+  "private": false,
+  "version": "0.0.18",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
+    "format": "prettier --write src//**/*.{ts,tsx} --config ./.prettierrc",
+    "preview": "vite preview"
+  },
   "peerDependencies": {
     "@tanstack/react-query": "^4.32.0",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "private": false,
-  "version": "0.0.18",
-  "type": "module",
-  "scripts": {
-    "dev": "tsup src/index.ts --watch --onSuccess \"tsc && vite build --mode dev\"",
-    "build": "tsc && vite build",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
-    "format": "prettier --write src//**/*.{ts,tsx} --config ./.prettierrc",
-    "preview": "vite preview"
-  },
-  "main": "./dist/nofrixion-clients.es.js",
-  "module": "./dist/nofrixion-clients.es.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "/dist"
-  ],
   "dependencies": {
     "@tanstack/react-query": "^4.32.0",
     "axios": "^1.4.0",
@@ -31,6 +33,7 @@
     "tsup": "^6.7.0"
   },
   "devDependencies": {
+    "@nofrixion/tsconfig": "workspace:*",
     "@swc/core": "^1.3.74",
     "@types/node": "^20.4.2",
     "@types/react": "^18.2.15",
@@ -61,6 +64,5 @@
   "bugs": {
     "url": "https://github.com/nofrixion/nofrixion.clients/issues"
   },
-  "homepage": "https://github.com/nofrixion/nofrixion.clients#readme",
-  "license": "MIT"
+  "homepage": "https://github.com/nofrixion/nofrixion.clients#readme"
 }
