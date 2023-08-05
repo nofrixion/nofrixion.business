@@ -263,6 +263,9 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      <path d="M9 11C7.06667 11 6 9.93333 6 8C6 6.06667 7.06667 5 9 5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 7H9" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 9H9" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
   "delete/16": (className: string) => (
