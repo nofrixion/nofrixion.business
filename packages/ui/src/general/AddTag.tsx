@@ -3,7 +3,7 @@ const { useEffect, useState, useRef } = React;
 import Downshift from "downshift";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import useMeasure from "react-use-measure";
-import { LocalTag } from "../utils/localTypes";
+import { LocalTag } from "@nofrixion/utils/types";
 import { useOnClickOutside } from "usehooks-ts";
 import { v4 as uuidv4 } from "uuid";
 import { cn } from "@nofrixion/utils";

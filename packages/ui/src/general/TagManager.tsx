@@ -1,6 +1,6 @@
 import * as React from "react";
 const { useState } = React;
-import { LocalTag } from "../utils/localTypes";
+import { LocalTag } from "@nofrixion/utils/types";
 import AddTag from "./AddTag";
 import Tag from "./Tag";
 import { AnimatePresence } from "framer-motion";

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { VariantProps, cva } from "class-variance-authority";
-import { LocalContact } from "../utils/localTypes";
+import { LocalContact } from "@nofrixion/utils/types";
 import { defaultAnonymousUserName } from "../utils/constants";
 
 const nameVariants = cva("", {

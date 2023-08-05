@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 import DateRangePicker, { DateRange } from "./DateRange/DateRangePicker";
-import SearchBar from "./TODO-SearchBar";
-import AmountFilter from "./TODO-AmountFilter";
-import TagFilter, { FilterableTag } from "./TODO-TagFilter";
+import SearchBar from "./SearchBar";
+import AmountFilter from "./AmountFilter";
+import TagFilter, { FilterableTag } from "./TagFilter";
 import { SelectSorter, TSorterOptions } from "../molecules";
 import { SortDirection } from "./ColumnHeader";
 

@@ -3,6 +3,7 @@ const { Children, useState } = React;
 import { cn } from "@nofrixion/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AnimatePresence, motion } from "framer-motion";
+import { Icon, IconNames } from "../atoms";
 
 export type FilterButtonFC = React.FC<FilterButtonProps> & {
   FilteredLayout: React.FC<FilterButtonFilteredLayoutProps>;
@@ -10,8 +11,7 @@ export type FilterButtonFC = React.FC<FilterButtonProps> & {
 };
 
 export interface FilterButtonProps {
-  defaultIconSource?: string;
-  highlightedIconSource?: string;
+  iconName?: IconNames;
   label: string;
   isFiltered: boolean;
   children?: React.ReactNode;
@@ -29,8 +29,7 @@ export interface FilterButtonBody {
 }
 
 const FilterButton: FilterButtonFC = ({
-  defaultIconSource,
-  highlightedIconSource,
+  iconName,
   label,
   isFiltered = false,
   children,
@@ -40,11 +39,10 @@ const FilterButton: FilterButtonFC = ({
 }) => {
   let filteredLayout: React.ReactNode | undefined;
   let body: React.ReactNode | undefined;
-  const [iconSource, setIconSource] = useState<string | undefined>(defaultIconSource);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const filterButtonClassNames =
-    "outline-none inline-flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-greyBg hover:text-default-text transition-all";
+    "group outline-none inline-flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-greyBg hover:text-default-text transition-all";
   const actionButtonClassNames =
     "outline-none px-3 py-1 cursor-pointer leading-6 text-13px rounded-full transition-all";
 
@@ -60,14 +58,6 @@ const FilterButton: FilterButtonFC = ({
       }
     }
   });
-
-  const onMouseOver = () => {
-    setIconSource(highlightedIconSource);
-  };
-
-  const onMouseOut = () => {
-    setIconSource(defaultIconSource);
-  };
 
   const onCancelClick = () => {
     if (onCancel) {
@@ -103,21 +93,18 @@ const FilterButton: FilterButtonFC = ({
               "text-default-text": isDialogOpen,
               "bg-greyBg": isFiltered && filteredLayout,
             })}
-            onMouseOver={onMouseOver}
-            onMouseOut={onMouseOut}
-            onBlur={() => {}}
-            onFocus={() => {}}
           >
             {isFiltered && filteredLayout ? (
               filteredLayout
             ) : (
               <>
-                {iconSource && (
-                  <img
-                    src={isDialogOpen ? highlightedIconSource : iconSource}
-                    alt={label}
-                    className="w-4 h-4"
-                    title={label}
+                {iconName && (
+                  <Icon
+                    name={iconName}
+                    className={cn("w-4 h-4 group-hover:text-controlGreyHover", {
+                      "text-disabledIcon": !isFiltered,
+                      "text-controlGreyHover": isFiltered,
+                    })}
                   />
                 )}
                 <span className="text-sm">{label}</span>

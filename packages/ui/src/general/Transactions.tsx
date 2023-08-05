@@ -1,13 +1,8 @@
-import { LocalPaymentMethodTypes } from "../../../types/LocalEnums";
-import CardIcon from "../../../assets/icons/card-icon.svg";
-import BankIcon from "../../../assets/icons/bank-icon.svg";
-import WalletIcon from "../../../assets/icons/wallet-icon.svg";
-import TickBadgeIcon from "../../../assets/icons/tick-badge-icon.svg";
+import * as React from "react";
+import { Icon } from "../atoms";
 import { format } from "date-fns";
-import { cn } from "@nofrixion/utils";
-import { LocalPaymentAttempt } from "../../../types/LocalTypes";
-import { Currency } from "@nofrixion/moneymoov";
-import React from "react";
+import { cn, formatAmount } from "@nofrixion/utils";
+import { LocalPaymentMethodTypes, LocalPaymentAttempt, Currency } from "@nofrixion/utils/types";
 
 export interface TransactionsProps {
   transactions: LocalPaymentAttempt[];
@@ -18,18 +13,18 @@ export interface TransactionsProps {
 const PaymentMethodIcon = ({ paymentMethod }: { paymentMethod: LocalPaymentMethodTypes }) => {
   switch (paymentMethod) {
     case LocalPaymentMethodTypes.Card:
-      return <img src={CardIcon} alt="card" />;
+      return <Icon name="card/24" />;
     case LocalPaymentMethodTypes.Pisp:
-      return <img src={BankIcon} alt="bank" />;
+      return <Icon name="bank/24" />;
     case LocalPaymentMethodTypes.ApplePay:
     case LocalPaymentMethodTypes.GooglePay:
-      return <img src={WalletIcon} alt="wallet" />;
+      return <Icon name="wallets/24" />;
     default:
       return null;
   }
 };
 
-const Transactions = ({ transactions, onRefund, onCapture }: TransactionsProps) => {
+const Transactions: React.FC<TransactionsProps> = ({ transactions, onCapture }) => {
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -64,10 +59,7 @@ const Transactions = ({ transactions, onRefund, onCapture }: TransactionsProps) 
                   <td className={cn("pl-2 lg:pl-6 pb-2 text-right", { "pt-2": index !== 0 })}>
                     <span className="mr-2 text-sm font-medium leading-6 tabular-nums">
                       <span className="lg:hidden">{transaction.currency === Currency.EUR ? "€" : "£"}</span>
-                      {new Intl.NumberFormat(navigator.language, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(Number(transaction.amount))}
+                      {formatAmount(transaction.amount)}
                     </span>
                   </td>
                   <td className={cn("hidden lg:table-cell pb-2", { "pt-2": index !== 0 })}>
@@ -155,7 +147,7 @@ const Transactions = ({ transactions, onRefund, onCapture }: TransactionsProps) 
                     <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                       <div className="flex flex-row items-center">
                         <span className="mr-2 p-1.5">
-                          <img src={TickBadgeIcon} className="h-3 w-3" alt="Captured" title="Captured" />
+                          <Icon name="capture/16" className="h-3 w-3" />
                         </span>
                         <span>Captured</span>
                       </div>
