@@ -6,7 +6,7 @@ interface AnimateHeightWrapperProps {
   layoutId: string;
 }
 
-const AnimateHeightWrapper: React.FC<AnimateHeightWrapperProps> = ({ children, layoutId }) => {
+export const AnimateHeightWrapper: React.FC<AnimateHeightWrapperProps> = ({ children, layoutId }) => {
   return (
     <motion.div
       layoutId={layoutId}
@@ -24,5 +24,3 @@ const AnimateHeightWrapper: React.FC<AnimateHeightWrapperProps> = ({ children, l
     </motion.div>
   );
 };
-
-export default AnimateHeightWrapper;

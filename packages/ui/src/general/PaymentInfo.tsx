@@ -1,5 +1,5 @@
 import * as React from "react";
-import PaymentMethodIcon from "../utils/PaymentMethodIcon";
+import { PaymentMethodIcon } from "../utils/PaymentMethodIcon";
 import { format } from "date-fns";
 import { LocalPaymentRequest, LocalAddressType, LocalPaymentMethodTypes } from "@nofrixion/utils/types";
 

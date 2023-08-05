@@ -10,7 +10,7 @@ export interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputEleme
   setValue: (value: string) => void;
 }
 
-const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
+export const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
   ({ maxLength = 100, value, setValue, ...props }, ref) => {
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setValue(event.target.value);
@@ -64,5 +64,3 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
 );
 
 SearchBar.displayName = "SearchBar";
-
-export default SearchBar;

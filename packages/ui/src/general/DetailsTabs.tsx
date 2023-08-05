@@ -4,7 +4,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { cn } from "@nofrixion/utils";
 import { PaymentInfo } from "./PaymentInfo";
-import Transactions from "./Transactions";
+import { Transactions } from "./Transactions";
 import { LocalPaymentAttempt, LocalPaymentRequest } from "@nofrixion/utils/types";
 import { ScrollArea } from "./ScrollArea";
 

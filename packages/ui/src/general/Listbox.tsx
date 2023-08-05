@@ -13,7 +13,7 @@ export interface ListboxOption {
   label: string;
 }
 
-const Listbox: React.FC<ListboxProps> = ({ options, selected: selectedOption, onChange }) => {
+export const Listbox: React.FC<ListboxProps> = ({ options, selected: selectedOption, onChange }) => {
   const onChangeValue = (value: ListboxOption) => {
     onChange(value);
   };
@@ -64,5 +64,3 @@ const Listbox: React.FC<ListboxProps> = ({ options, selected: selectedOption, on
     </HeadlessListbox>
   );
 };
-
-export default Listbox;

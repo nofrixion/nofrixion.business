@@ -11,7 +11,7 @@ export interface SelectablePillProps {
   groupName?: string;
 }
 
-const SelectablePill: React.FC<SelectablePillProps> = ({
+export const SelectablePill: React.FC<SelectablePillProps> = ({
   label,
   value,
   selected,
@@ -56,5 +56,3 @@ const SelectablePill: React.FC<SelectablePillProps> = ({
     </div>
   );
 };
-
-export default SelectablePill;

@@ -1,9 +1,9 @@
 import * as React from "react";
 const { Fragment } = React;
 import { Dialog, Transition } from "@headlessui/react";
-import PaymentRequestDetails from "./PaymentRequestDetails";
+import { PaymentRequestDetails } from "./PaymentRequestDetails";
 import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag, Currency } from "@nofrixion/utils/types";
-import CaptureModal from "./CaptureModal";
+import { CaptureModal } from "./CaptureModal";
 import { Sheet, SheetContent } from "../atoms";
 
 export interface PaymentRequestDetailsModalProps {
@@ -19,7 +19,7 @@ export interface PaymentRequestDetailsModalProps {
   onDismiss: () => void;
 }
 
-const PaymentRequestDetailsModal: React.FC<PaymentRequestDetailsModalProps> = ({
+export const PaymentRequestDetailsModal: React.FC<PaymentRequestDetailsModalProps> = ({
   paymentRequest,
   merchantTags,
   hostedPaymentLink,
@@ -119,5 +119,3 @@ const PaymentRequestDetailsModal: React.FC<PaymentRequestDetailsModalProps> = ({
     </>
   );
 };
-
-export default PaymentRequestDetailsModal;

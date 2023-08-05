@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import InputAmountField from "./InputAmountField";
+import { InputAmountField } from "./InputAmountField";
 import { Currency } from "@nofrixion/utils/types";
 import { Icon } from "../atoms";
 import { format } from "date-fns";
@@ -20,7 +20,7 @@ export interface CaptureModalProps {
   contactName?: string;
 }
 
-const CaptureModal: React.FC<CaptureModalProps> = ({
+export const CaptureModal: React.FC<CaptureModalProps> = ({
   initialAmount,
   currency,
   onCapture,
@@ -127,5 +127,3 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
     </div>
   );
 };
-
-export default CaptureModal;

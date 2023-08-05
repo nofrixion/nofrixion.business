@@ -24,7 +24,7 @@ interface CustomModalState {
   isDefaultChecked: boolean;
 }
 
-const CustomModal: React.FC<CustomModalProps> = ({
+export const CustomModal: React.FC<CustomModalProps> = ({
   title,
   children,
   open,
@@ -142,5 +142,3 @@ const CustomModal: React.FC<CustomModalProps> = ({
     </Transition>
   );
 };
-
-export default CustomModal;

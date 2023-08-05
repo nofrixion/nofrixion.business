@@ -1,12 +1,12 @@
 import * as React from "react";
 const { Fragment, useEffect, useState } = React;
 import { Dialog, Transition } from "@headlessui/react";
-import InputAmountField from "./InputAmountField";
-import InputTextField from "./InputTextField";
+import { InputAmountField } from "./InputAmountField";
+import { InputTextField } from "./InputTextField";
 import { EditOptionCard } from "./EditOptionCard";
-import InputTextAreaField from "./InputTextAreaField";
+import { InputTextAreaField } from "./InputTextAreaField";
 import { AnimatePresence, motion } from "framer-motion";
-import LayoutWrapper from "../utils/LayoutWrapper";
+import { LayoutWrapper } from "../utils/LayoutWrapper";
 import { PaymentMethodsModal } from "./modals/PaymentMethodsModal";
 import {
   Currency,
@@ -20,14 +20,13 @@ import {
   LocalPaymentNotificationsFormValue,
   LocalPaymentRequestCreate,
 } from "@nofrixion/utils/types";
-import { cn, validateEmail } from "@nofrixion/utils";
+import { cn, validateEmail, formatAmountAndDecimals } from "@nofrixion/utils";
 import { PaymentConditionsModal } from "./modals/PaymentConditionsModal";
 import { PaymentNotificationsModal } from "./modals/PaymentNotificationsModal";
 import { formatEmailAddressesForSummary, parseBoldText } from "../utils/uiFormaters";
-import PaymentMethodIcon from "../utils/PaymentMethodIcon";
+import { PaymentMethodIcon } from "../utils/PaymentMethodIcon";
 import _ from "lodash";
-import { formatAmountAndDecimals } from "@nofrixion/utils";
-import BackArrow from "../utils/BackArrow";
+import { BackArrow } from "../utils/BackArrow";
 import { Icon, Button } from "../atoms";
 
 interface CreatePaymentRequestPageProps {

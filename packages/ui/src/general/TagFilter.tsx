@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 const { useEffect } = React;
-import FilterButton from "./FilterButton";
+import { FilterButton } from "./FilterButton";
 import { Icon } from "../atoms";
-import SelectablePill from "./SelectablePill";
+import { SelectablePill } from "./SelectablePill";
 
 export interface FilterableTag {
   id: string;
@@ -15,7 +15,7 @@ export interface TagFilterProps {
   setTags: (tags: FilterableTag[]) => void;
 }
 
-const TagFilter: React.FC<TagFilterProps> = ({ tags, setTags }) => {
+export const TagFilter: React.FC<TagFilterProps> = ({ tags, setTags }) => {
   const [localTags, setLocalTags] = React.useState<FilterableTag[]>([...tags]);
   const [isFiltered, setIsFiltered] = React.useState<boolean>(false);
 
@@ -107,5 +107,3 @@ const TagFilter: React.FC<TagFilterProps> = ({ tags, setTags }) => {
     </FilterButton>
   );
 };
-
-export default TagFilter;

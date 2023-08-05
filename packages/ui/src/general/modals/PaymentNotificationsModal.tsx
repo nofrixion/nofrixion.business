@@ -1,10 +1,10 @@
 import * as React from "react";
 const { useEffect, useState } = React;
-import CustomModal, { BaseModalProps } from "../CustomModal";
+import { CustomModal, BaseModalProps } from "../CustomModal";
 import { LocalPaymentNotificationsFormValue, NotificationEmailsDefaults } from "@nofrixion/utils/types";
-import InputTextField from "../InputTextField";
+import { InputTextField } from "../InputTextField";
 import { AnimatePresence } from "framer-motion";
-import AnimateHeightWrapper from "../../utils/AnimateHeight";
+import { AnimateHeightWrapper } from "../../utils/AnimateHeight";
 import { validateEmail } from "@nofrixion/utils";
 
 interface NotificationEmailsModalProps extends BaseModalProps {

@@ -25,7 +25,7 @@ export interface PaymentRequestDetailsProps {
   onTagCreated: (tag: LocalTag) => void;
 }
 
-const PaymentRequestDetails: React.FC<PaymentRequestDetailsProps> = ({
+export const PaymentRequestDetails: React.FC<PaymentRequestDetailsProps> = ({
   paymentRequest,
   merchantTags,
   hostedPaymentLink,
@@ -96,5 +96,3 @@ const PaymentRequestDetails: React.FC<PaymentRequestDetailsProps> = ({
     </>
   );
 };
-
-export default PaymentRequestDetails;

@@ -1,8 +1,7 @@
 import * as React from "react";
 const { useState } = React;
-import { cn } from "@nofrixion/utils";
+import { cn, formatAmount, formatDate } from "@nofrixion/utils";
 import { LocalPaymentRequest } from "@nofrixion/utils/types";
-import { formatAmount, formatDate } from "@nofrixion/utils";
 import { Chip } from "./Chip";
 import { Contact } from "./Contact";
 import { PaymentRequestStatusBadge as StatusBadge } from "./PaymentRequestStatusBadge";

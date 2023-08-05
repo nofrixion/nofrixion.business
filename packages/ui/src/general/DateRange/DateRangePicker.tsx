@@ -23,7 +23,7 @@ interface DateRangeFilterProps {
 
 const dateFormat = "MMM do";
 
-const DateRangePicker: React.FC<DateRangeFilterProps> = ({ onDateChange }) => {
+export const DateRangePicker: React.FC<DateRangeFilterProps> = ({ onDateChange }) => {
   const [dates, setDates] = useState<DateObject[]>([]);
   const [selectRangeText, setSelectRangeText] = useState<TDateRangeOptions | undefined>("last90Days");
   const [isClosed, setIsClosed] = useState(true);
@@ -126,5 +126,3 @@ const DateRangePicker: React.FC<DateRangeFilterProps> = ({ onDateChange }) => {
     </div>
   );
 };
-
-export default DateRangePicker;

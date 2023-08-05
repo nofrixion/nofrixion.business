@@ -24,7 +24,7 @@ const PaymentMethodIcon = ({ paymentMethod }: { paymentMethod: LocalPaymentMetho
   }
 };
 
-const Transactions: React.FC<TransactionsProps> = ({ transactions, onCapture }) => {
+export const Transactions: React.FC<TransactionsProps> = ({ transactions, onCapture }) => {
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -162,5 +162,3 @@ const Transactions: React.FC<TransactionsProps> = ({ transactions, onCapture }) 
     </>
   );
 };
-
-export default Transactions;

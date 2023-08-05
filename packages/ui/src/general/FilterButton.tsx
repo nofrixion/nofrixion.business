@@ -28,7 +28,7 @@ export interface FilterButtonBody {
   children?: React.ReactNode;
 }
 
-const FilterButton: FilterButtonFC = ({
+export const FilterButton: FilterButtonFC = ({
   iconName,
   label,
   isFiltered = false,
@@ -173,4 +173,3 @@ const FilterButtonBody: React.FC<FilterButtonBody> = ({ children }) => {
 
 FilterButton.FilteredLayout = FilterButtonFilteredLayout;
 FilterButton.Body = FilterButtonBody;
-export default FilterButton;

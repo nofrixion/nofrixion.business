@@ -1,6 +1,6 @@
 import * as React from "react";
 const { useEffect, useState } = React;
-import CustomModal, { BaseModalProps } from "../CustomModal";
+import { CustomModal, BaseModalProps } from "../CustomModal";
 import { Checkbox } from "../Checkbox";
 import { LocalPaymentConditionsFormValue, PaymentConditionsDefaults } from "@nofrixion/utils/types";
 

@@ -1,11 +1,11 @@
 import * as React from "react";
 const { useEffect, useState } = React;
-import CustomModal, { BaseModalProps } from "../CustomModal";
+import { CustomModal, BaseModalProps } from "../CustomModal";
 import { Switch } from "../Switch";
 import { Checkbox } from "../Checkbox";
 import { AnimatePresence } from "framer-motion";
-import Listbox from "../Listbox";
-import AnimateHeightWrapper from "../../utils/AnimateHeight";
+import { Listbox } from "../Listbox";
+import { AnimateHeightWrapper } from "../../utils/AnimateHeight";
 import { LocalPaymentMethodsFormValue, BankSettings, PaymentMethodsDefaults } from "@nofrixion/utils/types";
 
 interface PaymentMethodsModalProps extends BaseModalProps {

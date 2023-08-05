@@ -48,7 +48,7 @@ const showIndicator = (status: PaymentRequestStatus) => {
   }
 };
 
-const Tab: React.FC<TabProps> = ({
+export const Tab: React.FC<TabProps> = ({
   status,
   totalRecords,
   isLoading = false,
@@ -116,5 +116,3 @@ const Tab: React.FC<TabProps> = ({
     </Tabs.Trigger>
   );
 };
-
-export default Tab;

@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 const { useEffect } = React;
-import FilterButton from "./FilterButton";
+import { FilterButton } from "./FilterButton";
 import { formatAmount } from "@nofrixion/utils";
-import SelectablePill from "./SelectablePill";
+import { SelectablePill } from "./SelectablePill";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import MaskedInput from "react-text-mask";
 import { Icon } from "../atoms";
@@ -39,7 +39,7 @@ const ActiveFilterControl: React.FC<ActiveFilterControlProps> = ({ label, onClic
   );
 };
 
-const AmountFilter: React.FC<AmountFilterProps> = ({
+export const AmountFilter: React.FC<AmountFilterProps> = ({
   currency,
   setCurrency,
   minAmount,
@@ -226,5 +226,3 @@ const AmountFilter: React.FC<AmountFilterProps> = ({
     </FilterButton>
   );
 };
-
-export default AmountFilter;

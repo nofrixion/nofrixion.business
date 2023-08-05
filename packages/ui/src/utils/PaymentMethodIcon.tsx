@@ -41,7 +41,7 @@ const getImage: React.FC<PaymentMethodIconProps> = ({ paymentMethod, enabled = f
   );
 };
 
-const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
+export const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
   paymentMethod,
   showInfoTooltip = true,
   enabled = false,
@@ -59,5 +59,3 @@ const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
     </InfoTooltip>
   );
 };
-
-export default PaymentMethodIcon;

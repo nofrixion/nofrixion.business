@@ -30,7 +30,8 @@ const actionItem = cva(actionItemClassNames, {
     intent: "neutral",
   },
 });
-const InputAmountField: React.FC<InputAmountFieldProps> = ({
+
+export const InputAmountField: React.FC<InputAmountFieldProps> = ({
   currency,
   onCurrencyChange,
   onChange,
@@ -128,5 +129,3 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
     </div>
   );
 };
-
-export default InputAmountField;

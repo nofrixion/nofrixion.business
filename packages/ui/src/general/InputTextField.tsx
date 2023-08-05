@@ -1,7 +1,7 @@
 import * as React from "react";
 const { useId, useState } = React;
 import { AnimatePresence } from "framer-motion";
-import AnimateHeightWrapper from "../utils/AnimateHeight";
+import { AnimateHeightWrapper } from "../utils/AnimateHeight";
 
 export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -10,7 +10,7 @@ export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInput
   error?: string;
 }
 
-const InputTextField = React.forwardRef<HTMLInputElement, InputTextFieldProps>(
+export const InputTextField = React.forwardRef<HTMLInputElement, InputTextFieldProps>(
   ({ label, required, maxLength, value, onChange, onBlur, validation, ...props }, ref) => {
     const textId = useId();
 
@@ -76,5 +76,3 @@ const InputTextField = React.forwardRef<HTMLInputElement, InputTextFieldProps>(
 );
 
 InputTextField.displayName = "InputTextField";
-
-export default InputTextField;

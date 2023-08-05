@@ -5,7 +5,7 @@ interface BackArrowProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   intent?: "back" | "close";
 }
 
-const BackArrow: React.FC<BackArrowProps> = ({ intent = "close", ...props }) => {
+export const BackArrow: React.FC<BackArrowProps> = ({ intent = "close", ...props }) => {
   return (
     <button className="inline-block lg:ml-[3.25rem] w-6 h-6" {...props}>
       {intent === "back" ? (
@@ -37,5 +37,3 @@ const BackArrow: React.FC<BackArrowProps> = ({ intent = "close", ...props }) => 
     </button>
   );
 };
-
-export default BackArrow;
