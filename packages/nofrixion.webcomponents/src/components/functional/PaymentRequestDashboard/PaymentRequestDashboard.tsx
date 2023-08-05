@@ -201,7 +201,7 @@ const PaymentRequestDashboardMain = ({
   }, [paymentRequests])
 
   useEffect(() => {
-    let tempTagArray = getSelectedTagFilters()
+    const tempTagArray = getSelectedTagFilters()
     setTagsFilter([...tempTagArray])
   }, [tags])
 
@@ -259,7 +259,7 @@ const PaymentRequestDashboardMain = ({
   }
 
   const onCopyPaymentRequestLink = async (paymentRequest: LocalPaymentRequest) => {
-    let link = `${paymentRequest.hostedPayCheckoutUrl}`
+    const link = `${paymentRequest.hostedPayCheckoutUrl}`
     await navigator.clipboard.writeText(link)
 
     makeToast('success', 'Link copied into clipboard.')
@@ -319,7 +319,7 @@ const PaymentRequestDashboardMain = ({
 
   const updateMetricTotals = (currency: Currency, amount: number) => {
     if (metrics) {
-      let currencyField: 'eur' | 'gbp' | undefined =
+      const currencyField: 'eur' | 'gbp' | undefined =
         currency === Currency.EUR ? 'eur' : currency === Currency.GBP ? 'gbp' : undefined
 
       if (currencyField) {
@@ -357,7 +357,7 @@ const PaymentRequestDashboardMain = ({
 
   const onCaptureClick = async (authorizationID: string, amount: number) => {
     if (selectedPaymentRequestID) {
-      let response = await client.captureCardPayment(
+      const response = await client.captureCardPayment(
         selectedPaymentRequestID,
         authorizationID,
         amount,
@@ -374,9 +374,9 @@ const PaymentRequestDashboardMain = ({
 
       makeToast('success', 'Payment successfully captured.')
 
-      let localPrsCopy = [...localPaymentRequests]
-      let prIndex = localPrsCopy.findIndex((pr) => pr.id === selectedPaymentRequestID)
-      let attemptIndex = localPrsCopy[prIndex].paymentAttempts.findIndex(
+      const localPrsCopy = [...localPaymentRequests]
+      const prIndex = localPrsCopy.findIndex((pr) => pr.id === selectedPaymentRequestID)
+      const attemptIndex = localPrsCopy[prIndex].paymentAttempts.findIndex(
         (attempt) => attempt.attemptKey === authorizationID,
       )
       localPrsCopy[prIndex].paymentAttempts[attemptIndex].capturedAmount += amount
