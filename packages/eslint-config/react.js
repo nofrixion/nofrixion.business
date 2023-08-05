@@ -11,6 +11,7 @@ module.exports = {
   parserOptions: {},
   rules: {
     "react/prop-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
   },
   settings: {
     react: {
