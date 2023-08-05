@@ -14,10 +14,10 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index-react.ts'),
+      entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'NoFrixionComponents',
-      formats: ['es', 'umd'],
-      fileName: (format) => `nofrixion-components.${format}.js`,
+      formats: ['es'],
+      fileName: (format) => `index.js`,
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
