@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '../../../../utils';
+import { cn } from '../../../../utils'
 
 const textVariants = cva('text-default-text', {
   variants: {
@@ -13,14 +13,16 @@ const textVariants = cva('text-default-text', {
   defaultVariants: {
     variant: 'h1',
   },
-});
+})
 
-export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement>, VariantProps<typeof textVariants> {}
+export interface TextProps
+  extends React.HTMLAttributes<HTMLParagraphElement>,
+    VariantProps<typeof textVariants> {}
 
 const Text: React.FC<TextProps> = ({ className, variant, ...props }) => (
   <p className={cn(textVariants({ variant }), className)} {...props} />
-);
+)
 
-Text.displayName = 'Text';
+Text.displayName = 'Text'
 
-export { Text };
+export { Text }

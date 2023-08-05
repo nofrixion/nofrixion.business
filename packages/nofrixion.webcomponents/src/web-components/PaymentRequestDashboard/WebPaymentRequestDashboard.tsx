@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import PaymentRequestDashboard from '../../components/functional/PaymentRequestDashboard/PaymentRequestDashboard';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import PaymentRequestDashboard from '../../components/functional/PaymentRequestDashboard/PaymentRequestDashboard'
 
-import r2wc from 'react-to-webcomponent';
+import r2wc from 'react-to-webcomponent'
 
 const WebPaymentRequestDashboard = r2wc(PaymentRequestDashboard, React, ReactDOM, {
   props: {
@@ -10,6 +10,6 @@ const WebPaymentRequestDashboard = r2wc(PaymentRequestDashboard, React, ReactDOM
     apiUrl: 'string',
     merchantId: 'string',
   },
-});
+})
 
-customElements.define('payment-request-dashboard', WebPaymentRequestDashboard);
+customElements.define('payment-request-dashboard', WebPaymentRequestDashboard)

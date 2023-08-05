@@ -1,6 +1,12 @@
-import { type SelectProps } from '@radix-ui/react-select';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/atoms/Select/Select';
-import { cn } from '@/utils';
+import { type SelectProps } from '@radix-ui/react-select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/atoms/Select/Select'
+import { cn } from '@/utils'
 
 const options = {
   today: 'Today',
@@ -8,16 +14,16 @@ const options = {
   last7Days: 'Last 7 days',
   last30Days: 'Last 30 days',
   last90Days: 'Last 90 days',
-};
+}
 
-type TDateRangeOptions = keyof typeof options;
+type TDateRangeOptions = keyof typeof options
 
 interface SelectDateRangePros extends SelectProps {
-  onValueChange?: (value: TDateRangeOptions) => void;
-  defaultValue?: TDateRangeOptions;
-  value?: TDateRangeOptions;
-  subText?: string;
-  className?: string;
+  onValueChange?: (value: TDateRangeOptions) => void
+  defaultValue?: TDateRangeOptions
+  value?: TDateRangeOptions
+  subText?: string
+  className?: string
 }
 
 const SelectDateRange: React.FC<SelectDateRangePros> = ({
@@ -41,7 +47,7 @@ const SelectDateRange: React.FC<SelectDateRangePros> = ({
         ))}
       </SelectContent>
     </Select>
-  );
-};
+  )
+}
 
-export { SelectDateRange, type TDateRangeOptions };
+export { SelectDateRange, type TDateRangeOptions }

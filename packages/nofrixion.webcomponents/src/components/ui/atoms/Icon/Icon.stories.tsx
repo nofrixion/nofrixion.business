@@ -1,16 +1,16 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import { Icon } from '@/components/ui/atoms';
-import { Icons } from '@/components/ui/atoms/Icon/Icon';
+import { Icon } from '@/components/ui/atoms'
+import { Icons } from '@/components/ui/atoms/Icon/Icon'
 
 export default {
   title: 'Atoms/Icon',
   component: Icon,
-} as Meta<typeof Icon>;
+} as Meta<typeof Icon>
 
-const Template: StoryFn<typeof Icon> = (args) => <Icon {...args} />;
+const Template: StoryFn<typeof Icon> = (args) => <Icon {...args} />
 
-export const ShowcaseAll = Template.bind({});
+export const ShowcaseAll = Template.bind({})
 ShowcaseAll.argTypes = {
   name: {
     table: {
@@ -22,11 +22,11 @@ ShowcaseAll.argTypes = {
       disable: true,
     },
   },
-};
+}
 ShowcaseAll.decorators = [
   (_, props) => {
     // Map object to get keys
-    const icons = Object.keys(Icons) as Array<keyof typeof Icons>;
+    const icons = Object.keys(Icons) as Array<keyof typeof Icons>
 
     return (
       <div className="-m-2 flex flex-wrap">
@@ -37,11 +37,11 @@ ShowcaseAll.decorators = [
           </div>
         ))}
       </div>
-    );
+    )
   },
-];
+]
 
-export const Regular = Template.bind({});
+export const Regular = Template.bind({})
 Regular.args = {
   name: 'next/24',
-};
+}

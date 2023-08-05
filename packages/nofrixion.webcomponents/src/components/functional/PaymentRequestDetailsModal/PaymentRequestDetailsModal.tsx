@@ -1,22 +1,27 @@
-import { useEffect, useState } from 'react';
-import UIPaymentRequestDetailsModal from '../../ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal';
-import { parseApiTagToLocalTag } from '../../../utils/parsers';
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes';
-import { PaymentRequestClient, PaymentRequest, PaymentRequestUpdate, MerchantClient } from '@nofrixion/moneymoov';
+import { useEffect, useState } from 'react'
+import UIPaymentRequestDetailsModal from '../../ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal'
+import { parseApiTagToLocalTag } from '../../../utils/parsers'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import {
+  PaymentRequestClient,
+  PaymentRequest,
+  PaymentRequestUpdate,
+  MerchantClient,
+} from '@nofrixion/moneymoov'
 
 interface PaymentRequestDetailsModalProps {
-  token?: string; // Example: "eyJhbGciOiJIUz..."
-  apiUrl: string; // Example: "https://api.nofrixion.com/api/v1"
-  merchantId: string;
-  selectedPaymentRequestID: string;
-  merchantTags: LocalTag[];
-  paymentRequests: LocalPaymentRequest[];
-  open: boolean;
-  onDismiss: () => void;
-  setMerchantTags: (merchantTags: LocalTag[]) => void;
-  setPaymentRequests: (paymentRequests: LocalPaymentRequest[]) => void;
-  onRefund: (paymentAttemptID: string) => void;
-  onCapture: (authorizationID: string, amount: number) => Promise<void>;
+  token?: string // Example: "eyJhbGciOiJIUz..."
+  apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
+  merchantId: string
+  selectedPaymentRequestID: string
+  merchantTags: LocalTag[]
+  paymentRequests: LocalPaymentRequest[]
+  open: boolean
+  onDismiss: () => void
+  setMerchantTags: (merchantTags: LocalTag[]) => void
+  setPaymentRequests: (paymentRequests: LocalPaymentRequest[]) => void
+  onRefund: (paymentAttemptID: string) => void
+  onCapture: (authorizationID: string, amount: number) => Promise<void>
 }
 const PaymentRequestDetailsModal = ({
   token,
@@ -35,83 +40,98 @@ const PaymentRequestDetailsModal = ({
   const paymentRequestClient = new PaymentRequestClient({
     apiUrl: apiUrl,
     authToken: token,
-  });
-  const merchantClient = new MerchantClient({ apiUrl: apiUrl, authToken: token });
+  })
+  const merchantClient = new MerchantClient({ apiUrl: apiUrl, authToken: token })
 
-  const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined);
+  const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined)
 
   useEffect(() => {
     if (selectedPaymentRequestID) {
-      const paymentRequest = paymentRequests.find((paymentRequest) => paymentRequest.id === selectedPaymentRequestID);
+      const paymentRequest = paymentRequests.find(
+        (paymentRequest) => paymentRequest.id === selectedPaymentRequestID,
+      )
       if (paymentRequest) {
-        setPaymentRequest(paymentRequest);
+        setPaymentRequest(paymentRequest)
       }
     }
-  }, [selectedPaymentRequestID, paymentRequests]);
+  }, [selectedPaymentRequestID, paymentRequests])
 
   const updatePaymentRequests = (updatedPaymentRequest: PaymentRequest) => {
-    const index = paymentRequests.findIndex((paymentRequest) => paymentRequest.id === selectedPaymentRequestID);
+    const index = paymentRequests.findIndex(
+      (paymentRequest) => paymentRequest.id === selectedPaymentRequestID,
+    )
 
     if (index !== -1) {
-      paymentRequests[index].tags = updatedPaymentRequest.tags.map((tag) => parseApiTagToLocalTag(tag));
+      paymentRequests[index].tags = updatedPaymentRequest.tags.map((tag) =>
+        parseApiTagToLocalTag(tag),
+      )
     }
-    setPaymentRequests(paymentRequests);
-  };
+    setPaymentRequests(paymentRequests)
+  }
 
   const onTagAdded = async (tag: LocalTag) => {
     if (paymentRequest) {
-      const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? [];
+      const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
       const paymentRequestUpdate: PaymentRequestUpdate = {
         tagIds: existingTagIds.concat(tag.id),
-      };
-      const paymentRequestTagAdd = await paymentRequestClient.update(paymentRequest.id, paymentRequestUpdate);
+      }
+      const paymentRequestTagAdd = await paymentRequestClient.update(
+        paymentRequest.id,
+        paymentRequestUpdate,
+      )
       if (paymentRequestTagAdd.status === 'error') {
-        console.log(paymentRequestTagAdd.error);
+        console.log(paymentRequestTagAdd.error)
       } else if (paymentRequestTagAdd.data) {
-        updatePaymentRequests(paymentRequestTagAdd.data);
+        updatePaymentRequests(paymentRequestTagAdd.data)
       }
     }
-  };
+  }
 
   const onTagCreated = async (tag: LocalTag) => {
     if (paymentRequest) {
-      const response = await merchantClient.addTag({ merchantId }, parseApiTagToLocalTag(tag));
+      const response = await merchantClient.addTag({ merchantId }, parseApiTagToLocalTag(tag))
       if (response.status === 'error') {
-        console.log(response.error);
+        console.log(response.error)
       } else {
-        const createdTag = response.data;
+        const createdTag = response.data
         if (createdTag) {
-          merchantTags.push(createdTag);
-          setMerchantTags(merchantTags);
-          const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? [];
+          merchantTags.push(createdTag)
+          setMerchantTags(merchantTags)
+          const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
           const paymentRequestUpdate: PaymentRequestUpdate = {
             tagIds: existingTagIds.concat(createdTag.id),
-          };
-          const paymentRequestTagAdd = await paymentRequestClient.update(paymentRequest.id, paymentRequestUpdate);
+          }
+          const paymentRequestTagAdd = await paymentRequestClient.update(
+            paymentRequest.id,
+            paymentRequestUpdate,
+          )
           if (paymentRequestTagAdd.status === 'error') {
-            console.log(paymentRequestTagAdd.error);
+            console.log(paymentRequestTagAdd.error)
           } else if (paymentRequestTagAdd.data) {
-            updatePaymentRequests(paymentRequestTagAdd.data);
+            updatePaymentRequests(paymentRequestTagAdd.data)
           }
         }
       }
     }
-  };
+  }
 
   const onTagDeleted = async (tagIdToDelete: string) => {
     if (paymentRequest) {
-      const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? [];
+      const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
       const paymentRequestUpdate: PaymentRequestUpdate = {
         tagIds: existingTagIds.filter((id) => id !== tagIdToDelete),
-      };
-      const paymentRequestTagDelete = await paymentRequestClient.update(paymentRequest.id, paymentRequestUpdate);
+      }
+      const paymentRequestTagDelete = await paymentRequestClient.update(
+        paymentRequest.id,
+        paymentRequestUpdate,
+      )
       if (paymentRequestTagDelete.status === 'error') {
-        console.log(paymentRequestTagDelete.error);
+        console.log(paymentRequestTagDelete.error)
       } else if (paymentRequestTagDelete.data) {
-        updatePaymentRequests(paymentRequestTagDelete.data);
+        updatePaymentRequests(paymentRequestTagDelete.data)
       }
     }
-  };
+  }
 
   return (
     <div>
@@ -130,7 +150,7 @@ const PaymentRequestDetailsModal = ({
         ></UIPaymentRequestDetailsModal>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default PaymentRequestDetailsModal;
+export default PaymentRequestDetailsModal

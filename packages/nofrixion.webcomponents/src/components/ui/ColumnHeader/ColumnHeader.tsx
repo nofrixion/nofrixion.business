@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react'
+import classNames from 'classnames'
 
 export enum SortDirection {
   NONE = 'NONE',
@@ -8,26 +8,26 @@ export enum SortDirection {
 }
 
 interface ColumnHeaderProps {
-  label: string;
-  onSort: (event: SortDirection) => void;
+  label: string
+  onSort: (event: SortDirection) => void
 }
 
 const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
-  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.NONE);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   useEffect(() => {
-    onSort(sortDirection);
-  }, [sortDirection]);
+    onSort(sortDirection)
+  }, [sortDirection])
 
   const doSort = () => {
     if (sortDirection === SortDirection.NONE) {
-      setSortDirection(SortDirection.DESC);
+      setSortDirection(SortDirection.DESC)
     } else if (sortDirection === SortDirection.DESC) {
-      setSortDirection(SortDirection.ASC);
+      setSortDirection(SortDirection.ASC)
     } else {
-      setSortDirection(SortDirection.NONE);
+      setSortDirection(SortDirection.NONE)
     }
-  };
+  }
 
   return (
     <div className="columnSort group" onClick={doSort}>
@@ -40,7 +40,8 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
         <svg
           className={classNames({
             'stroke-controlGreyHover': sortDirection === SortDirection.ASC,
-            'stroke-controlGrey': sortDirection === SortDirection.NONE || sortDirection === SortDirection.DESC,
+            'stroke-controlGrey':
+              sortDirection === SortDirection.NONE || sortDirection === SortDirection.DESC,
           })}
           width="10"
           height="6"
@@ -53,7 +54,8 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
         <svg
           className={classNames({
             'stroke-controlGreyHover': sortDirection === SortDirection.DESC,
-            'stroke-controlGrey': sortDirection === SortDirection.NONE || sortDirection === SortDirection.ASC,
+            'stroke-controlGrey':
+              sortDirection === SortDirection.NONE || sortDirection === SortDirection.ASC,
           })}
           width="10"
           height="6"
@@ -65,7 +67,7 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
         </svg>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ColumnHeader;
+export default ColumnHeader

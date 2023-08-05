@@ -1,6 +1,12 @@
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'
 
-const AnimateHeightWrapper = ({ children, layoutId }: { children: React.ReactNode; layoutId: string }) => {
+const AnimateHeightWrapper = ({
+  children,
+  layoutId,
+}: {
+  children: React.ReactNode
+  layoutId: string
+}) => {
   return (
     <motion.div
       layoutId={layoutId}
@@ -16,7 +22,7 @@ const AnimateHeightWrapper = ({ children, layoutId }: { children: React.ReactNod
     >
       {children}
     </motion.div>
-  );
-};
+  )
+}
 
-export default AnimateHeightWrapper;
+export default AnimateHeightWrapper

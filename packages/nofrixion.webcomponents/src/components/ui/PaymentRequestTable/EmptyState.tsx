@@ -1,23 +1,27 @@
-import emptyStateIllustration from '../../../assets/images/empty-state.svg';
-import { Button } from'../../ui/atoms';
-import { Text } from '../../ui/atoms';
+import emptyStateIllustration from '../../../assets/images/empty-state.svg'
+import { Button } from '../../ui/atoms'
+import { Text } from '../../ui/atoms'
 
 interface EmptyStateProps {
-  state: 'nothingFound' | 'empty';
-  onCreatePaymentRequest?: () => void;
+  state: 'nothingFound' | 'empty'
+  onCreatePaymentRequest?: () => void
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }) => {
-  const title = state === 'nothingFound' ? 'Nothing found here' : 'This list is empty';
+  const title = state === 'nothingFound' ? 'Nothing found here' : 'This list is empty'
   const description =
     state === 'nothingFound'
       ? 'No payment requests match this criteria.'
-      : 'Start requesting payments from your customers.';
+      : 'Start requesting payments from your customers.'
 
   return (
     <div className="flex flex-col items-center justify-center text-center my-16">
       <div className="w-auto h-[9.375rem] mx-auto mb-6">
-        <img className="object-cover" src={emptyStateIllustration} alt="Emtpy static illustration" />
+        <img
+          className="object-cover"
+          src={emptyStateIllustration}
+          alt="Emtpy static illustration"
+        />
       </div>
       <Text>{title}</Text>
       <p className="text-sm/4 text-greyText">{description}</p>
@@ -28,7 +32,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }
         </Button>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default EmptyState;
+export default EmptyState

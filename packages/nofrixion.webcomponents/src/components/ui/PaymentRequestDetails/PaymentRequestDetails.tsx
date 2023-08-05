@@ -1,23 +1,23 @@
-import Contact from '../Contact/Contact';
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes';
-import QRCode from '../QRCode/QRCode';
-import { CopyLink } from '../CopyLink/CopyLink';
-import AmountPaid from '../AmountPaid/AmountPaid';
-import { Currency } from '@nofrixion/moneymoov';
-import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge';
-import DetailsTabs from '../DetailsTabs/DetailsTabs';
-import TagManager from '../Tags/TagManager/TagManager';
-import { LocalPaymentMethodTypes } from '../../../types/LocalEnums';
+import Contact from '../Contact/Contact'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import QRCode from '../QRCode/QRCode'
+import { CopyLink } from '../CopyLink/CopyLink'
+import AmountPaid from '../AmountPaid/AmountPaid'
+import { Currency } from '@nofrixion/moneymoov'
+import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
+import DetailsTabs from '../DetailsTabs/DetailsTabs'
+import TagManager from '../Tags/TagManager/TagManager'
+import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 
 export interface PaymentRequestDetailsProps {
-  paymentRequest: LocalPaymentRequest;
-  merchantTags: LocalTag[];
-  hostedPaymentLink: string;
-  onRefund: (paymentAttemptID: string) => void;
-  onCapture: (paymentAttempt: LocalPaymentAttempt) => void;
-  onTagAdded: (tag: LocalTag) => void;
-  onTagDeleted: (id: string) => void;
-  onTagCreated: (tag: LocalTag) => void;
+  paymentRequest: LocalPaymentRequest
+  merchantTags: LocalTag[]
+  hostedPaymentLink: string
+  onRefund: (paymentAttemptID: string) => void
+  onCapture: (paymentAttempt: LocalPaymentAttempt) => void
+  onTagAdded: (tag: LocalTag) => void
+  onTagDeleted: (id: string) => void
+  onTagCreated: (tag: LocalTag) => void
 }
 
 const PaymentRequestDetails = ({
@@ -34,7 +34,11 @@ const PaymentRequestDetails = ({
     <>
       <div className="bg-[#F6F9F9] px-6 lg:pl-8 lg:pr-7 relative mb-[4.875rem]">
         <div className="flex justify-between pb-[2.625rem] pt-6 items-center">
-          <Contact name={paymentRequest.contact.name} email={paymentRequest.contact.email} size="large"></Contact>
+          <Contact
+            name={paymentRequest.contact.name}
+            email={paymentRequest.contact.email}
+            size="large"
+          ></Contact>
           <QRCode url={hostedPaymentLink}></QRCode>
         </div>
         <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-opacity-100 w-[92%]">
@@ -65,7 +69,9 @@ const PaymentRequestDetails = ({
           {(paymentRequest.productOrService || paymentRequest.description) && (
             <div className="flex flex-col gap-2 lg:gap-4 mb-6 lg:mb-8">
               {paymentRequest.productOrService && (
-                <span className="text-base leading-[1.188rem] font-medium">{paymentRequest.productOrService}</span>
+                <span className="text-base leading-[1.188rem] font-medium">
+                  {paymentRequest.productOrService}
+                </span>
               )}
               {paymentRequest.description && (
                 <span className="text-sm leading-[1.313rem] font-normal text-greyText">
@@ -85,11 +91,15 @@ const PaymentRequestDetails = ({
           </div>
         </div>
         <div className="pb-6">
-          <DetailsTabs paymentRequest={paymentRequest} onRefund={onRefund} onCapture={onCapture}></DetailsTabs>
+          <DetailsTabs
+            paymentRequest={paymentRequest}
+            onRefund={onRefund}
+            onCapture={onCapture}
+          ></DetailsTabs>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PaymentRequestDetails;
+export default PaymentRequestDetails

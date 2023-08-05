@@ -1,26 +1,26 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import Checkbox from '../Checkbox/Checkbox';
-import { Button } from '../../ui/atoms';
-import { AnimatePresence, motion } from 'framer-motion';
-import classNames from 'classnames';
+import { Fragment, useEffect, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import Checkbox from '../Checkbox/Checkbox'
+import { Button } from '../../ui/atoms'
+import { AnimatePresence, motion } from 'framer-motion'
+import classNames from 'classnames'
 
 interface CustomModalProps extends BaseModalProps {
-  title: string;
-  enableUseAsDefault?: boolean;
-  children: React.ReactNode;
-  onApplyEnabled?: boolean;
-  buttonRowClassName?: string;
+  title: string
+  enableUseAsDefault?: boolean
+  children: React.ReactNode
+  onApplyEnabled?: boolean
+  buttonRowClassName?: string
 }
 
 export interface BaseModalProps {
-  open: boolean;
-  onApply?: (data: any) => void;
-  onDismiss: () => void;
+  open: boolean
+  onApply?: (data: any) => void
+  onDismiss: () => void
 }
 
 interface CustomModalState {
-  isDefaultChecked: boolean;
+  isDefaultChecked: boolean
 }
 
 const CustomModal = ({
@@ -33,34 +33,34 @@ const CustomModal = ({
   onApplyEnabled = true,
   buttonRowClassName,
 }: CustomModalProps) => {
-  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false);
-  const [currentState, setCurrentState] = useState<CustomModalState>();
+  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
+  const [currentState, setCurrentState] = useState<CustomModalState>()
 
   const onApplyClicked = () => {
-    if (!onApply) return;
+    if (!onApply) return
 
     if (!enableUseAsDefault) {
-      onApply({});
-      return;
+      onApply({})
+      return
     }
 
     // Add the isDefaultChecked value to the formData
     const formData = {
       isDefaultChecked: isDefaultChecked,
-    };
+    }
 
-    setCurrentState({ isDefaultChecked: formData.isDefaultChecked });
-    onApply(formData);
-  };
+    setCurrentState({ isDefaultChecked: formData.isDefaultChecked })
+    onApply(formData)
+  }
 
   const handleOnDismiss = () => {
-    onDismiss();
+    onDismiss()
 
     // Reset to initial state
     if (currentState) {
-      setIsDefaultChecked(currentState.isDefaultChecked);
+      setIsDefaultChecked(currentState.isDefaultChecked)
     }
-  };
+  }
 
   return (
     <Transition appear show={open} as={Fragment}>
@@ -98,11 +98,22 @@ const CustomModal = ({
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M14.6667 14.3333L8 7.66665L14.6667 1" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M1.33335 0.999944L8 7.6666L1.33335 14.3333" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M14.6667 14.3333L8 7.66665L14.6667 1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M1.33335 0.999944L8 7.6666L1.33335 14.3333"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </button>
-                <Dialog.Title as="h3" className="text-2xl font-medium leading-8 md:leading-6 p-6 md:p-12 md:pt-2">
+                <Dialog.Title
+                  as="h3"
+                  className="text-2xl font-medium leading-8 md:leading-6 p-6 md:p-12 md:pt-2"
+                >
                   {title}
                 </Dialog.Title>
                 <div className="px-6 md:px-12">{children}</div>
@@ -116,8 +127,16 @@ const CustomModal = ({
                   <div>
                     <AnimatePresence>
                       {enableUseAsDefault && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                          <Checkbox label="Use as my default" value={isDefaultChecked} onChange={setIsDefaultChecked} />
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <Checkbox
+                            label="Use as my default"
+                            value={isDefaultChecked}
+                            onChange={setIsDefaultChecked}
+                          />
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -139,7 +158,7 @@ const CustomModal = ({
         </div>
       </Dialog>
     </Transition>
-  );
-};
+  )
+}
 
-export default CustomModal;
+export default CustomModal

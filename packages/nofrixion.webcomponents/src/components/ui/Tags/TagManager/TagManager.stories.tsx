@@ -1,6 +1,6 @@
-import { StoryFn, Meta } from '@storybook/react';
-import TagManager from './TagManager';
-import { mockMerchantTags, mockTags } from '../../../../utils/mockedData';
+import { StoryFn, Meta } from '@storybook/react'
+import TagManager from './TagManager'
+import { mockMerchantTags, mockTags } from '../../../../utils/mockedData'
 
 export default {
   title: 'UI/Tags/TagManager',
@@ -12,12 +12,12 @@ export default {
       },
     },
   },
-} as Meta<typeof TagManager>;
+} as Meta<typeof TagManager>
 
-const Template: StoryFn<typeof TagManager> = (args) => <TagManager {...args} />;
+const Template: StoryFn<typeof TagManager> = (args) => <TagManager {...args} />
 
-export const Regular = Template.bind({});
+export const Regular = Template.bind({})
 Regular.args = {
   tags: mockTags,
   availableTags: mockMerchantTags,
-};
+}

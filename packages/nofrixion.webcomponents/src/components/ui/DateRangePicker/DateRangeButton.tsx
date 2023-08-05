@@ -1,17 +1,17 @@
-import classNames from 'classnames';
-import { MouseEventHandler } from 'react';
+import classNames from 'classnames'
+import { MouseEventHandler } from 'react'
 
 const svgClassNames = (disabled: boolean) => {
   return classNames('h-3 w-3 stroke-controlGrey', {
     'cursor-default': disabled,
     'cursor-pointer group-hover:stroke-controlGreyHover': !disabled,
-  });
-};
+  })
+}
 
 interface DateRangeButtonProps {
-  direction: string;
-  handleClick: MouseEventHandler<HTMLButtonElement> | undefined;
-  disabled: boolean;
+  direction: string
+  handleClick: MouseEventHandler<HTMLButtonElement> | undefined
+  disabled: boolean
 }
 
 const DateRangeButton = (props: DateRangeButtonProps) => {
@@ -27,7 +27,11 @@ const DateRangeButton = (props: DateRangeButtonProps) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M1 12.5L7 6.5L0.999999 0.500001" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M1 12.5L7 6.5L0.999999 0.500001"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
       )}
@@ -47,7 +51,7 @@ const DateRangeButton = (props: DateRangeButtonProps) => {
         </button>
       )}
     </>
-  );
-};
+  )
+}
 
-export default DateRangeButton;
+export default DateRangeButton

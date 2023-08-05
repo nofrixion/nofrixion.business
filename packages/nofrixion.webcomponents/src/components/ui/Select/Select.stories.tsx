@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import { useState } from 'react'
+import { StoryFn, Meta } from '@storybook/react'
 
-import Select, { SelectOption } from './Select';
+import Select, { SelectOption } from './Select'
 
 export default {
   title: 'UI/Select',
@@ -22,23 +22,23 @@ export default {
       action: 'Changed',
     },
   },
-} as Meta<typeof Select>;
+} as Meta<typeof Select>
 
 const Template: StoryFn<typeof Select> = (args) => {
-  const [selected, setSelected] = useState<SelectOption>(args.options[0]);
+  const [selected, setSelected] = useState<SelectOption>(args.options[0])
 
   const onChangeValue = (value: SelectOption) => {
-    setSelected(value);
-  };
+    setSelected(value)
+  }
 
   return (
     <>
       <Select {...args} selected={selected} onChange={onChangeValue} />
     </>
-  );
-};
+  )
+}
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 
 const banksOptions = [
   {
@@ -62,8 +62,8 @@ const banksOptions = [
 
     label: 'AIB',
   },
-];
+]
 
 Showcase.args = {
   options: banksOptions,
-};
+}

@@ -1,8 +1,8 @@
-import unpaidIcon from '../../../assets/images/paymentrequest_status_unpaid.svg';
-import paidIcon from '../../../assets/images/paymentrequest_status_paid.svg';
-import partiallyPaidIcon from '../../../assets/images/paymentrequest_status_partial.svg';
-import { VariantProps, cva } from 'class-variance-authority';
-import { LocalPaymentStatus } from '../../../types/LocalTypes';
+import unpaidIcon from '../../../assets/images/paymentrequest_status_unpaid.svg'
+import paidIcon from '../../../assets/images/paymentrequest_status_paid.svg'
+import partiallyPaidIcon from '../../../assets/images/paymentrequest_status_partial.svg'
+import { VariantProps, cva } from 'class-variance-authority'
+import { LocalPaymentStatus } from '../../../types/LocalTypes'
 
 const badge = cva('rounded-full  space-x-2 inline-flex items-center', {
   variants: {
@@ -22,7 +22,7 @@ const badge = cva('rounded-full  space-x-2 inline-flex items-center', {
     intent: 'unpaid',
     size: 'small',
   },
-});
+})
 
 const icon = cva('w-auto', {
   variants: {
@@ -34,34 +34,36 @@ const icon = cva('w-auto', {
   defaultVariants: {
     size: 'small',
   },
-});
+})
 
 interface PaymentRequestStatusBadgeProps {
-  status: LocalPaymentStatus;
-  size?: VariantProps<typeof badge>['size'];
+  status: LocalPaymentStatus
+  size?: VariantProps<typeof badge>['size']
 }
 
 const getIconForStatus = (status: LocalPaymentStatus) => {
   switch (status) {
     case 'partial':
-      return partiallyPaidIcon;
+      return partiallyPaidIcon
     case 'paid':
     case 'overpaid':
-      return paidIcon;
+      return paidIcon
     case 'authorized':
     case 'unpaid':
     default:
-      return unpaidIcon;
+      return unpaidIcon
   }
-};
+}
 
 const PaymentRequestStatusBadge = ({ status, size = 'small' }: PaymentRequestStatusBadgeProps) => {
   return (
     <div className={badge({ intent: status, size: size })}>
       <img className={icon({ size: size })} src={getIconForStatus(status)} alt={status} />
-      <span className="uppercase">{size === 'large' && status === 'partial' ? 'partially paid' : status}</span>
+      <span className="uppercase">
+        {size === 'large' && status === 'partial' ? 'partially paid' : status}
+      </span>
     </div>
-  );
-};
+  )
+}
 
-export default PaymentRequestStatusBadge;
+export default PaymentRequestStatusBadge

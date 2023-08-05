@@ -1,6 +1,6 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import { Button } from '@/components/ui/atoms';
+import { Button } from '@/components/ui/atoms'
 
 export default {
   title: 'Atoms/Button',
@@ -29,42 +29,50 @@ export default {
       action: 'Clicked',
     },
   },
-} as Meta<typeof Button>;
+} as Meta<typeof Button>
 
 const Template: StoryFn<typeof Button> = (args) => {
-  return <Button className="w-fit" {...args} />;
-};
+  return <Button className="w-fit" {...args} />
+}
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   children: 'Create payment request',
   variant: 'primary',
   size: 'big',
-};
+}
 
-export const Primary = Template.bind({});
+export const Primary = Template.bind({})
 Primary.args = {
   children: 'Create payment request',
   variant: 'primary',
   size: 'big',
-};
+}
 
 Primary.decorators = [
   () => (
     <div className="space-y-2 flex flex-col w-fit">
-      <Button {...(Primary.args, { size: 'big', variant: 'primary' })}>Create payment request</Button>
-      <Button {...(Primary.args, { size: 'medium', variant: 'primary' })}>Create payment request</Button>
-      <Button {...(Primary.args, { size: 'small', variant: 'primary' })}>Create payment request</Button>
-      <Button {...(Primary.args, { size: 'x-small', variant: 'primary' })}>Create payment request</Button>
+      <Button {...(Primary.args, { size: 'big', variant: 'primary' })}>
+        Create payment request
+      </Button>
+      <Button {...(Primary.args, { size: 'medium', variant: 'primary' })}>
+        Create payment request
+      </Button>
+      <Button {...(Primary.args, { size: 'small', variant: 'primary' })}>
+        Create payment request
+      </Button>
+      <Button {...(Primary.args, { size: 'x-small', variant: 'primary' })}>
+        Create payment request
+      </Button>
     </div>
   ),
-];
+]
 
-export const Secondary = Template.bind({});
+export const Secondary = Template.bind({})
 Secondary.args = {
   children: 'Settings',
   variant: 'secondary',
-};
+}
 
 Secondary.decorators = [
   () => (
@@ -75,14 +83,14 @@ Secondary.decorators = [
       <Button {...(Secondary.args, { size: 'x-small', variant: 'secondary' })}>Settings</Button>
     </div>
   ),
-];
+]
 
-export const Tertiary = Template.bind({});
+export const Tertiary = Template.bind({})
 Tertiary.args = {
   children: 'Show more',
   variant: 'tertiary',
   size: 'medium',
-};
+}
 
 Tertiary.decorators = [
   () => (
@@ -93,14 +101,14 @@ Tertiary.decorators = [
       <Button {...(Secondary.args, { size: 'x-small', variant: 'tertiary' })}>Show more</Button>
     </div>
   ),
-];
+]
 
-export const Text = Template.bind({});
+export const Text = Template.bind({})
 Text.args = {
   children: 'Show more',
   variant: 'tertiary',
   size: 'medium',
-};
+}
 
 Text.decorators = [
   () => (
@@ -111,4 +119,4 @@ Text.decorators = [
       <Button {...(Secondary.args, { size: 'x-small', variant: 'text' })}>Settings</Button>
     </div>
   ),
-];
+]

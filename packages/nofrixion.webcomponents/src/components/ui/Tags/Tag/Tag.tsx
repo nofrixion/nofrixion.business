@@ -1,36 +1,36 @@
-import { useEffect, useState } from 'react';
-import classNames from 'classnames';
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import { useRef } from 'react';
-import { useOnClickOutside } from 'usehooks-ts';
+import { useEffect, useState } from 'react'
+import classNames from 'classnames'
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
+import { useRef } from 'react'
+import { useOnClickOutside } from 'usehooks-ts'
 
 interface TagProps {
-  id: string;
-  label: string;
-  onDelete?: (id: string) => void;
+  id: string
+  label: string
+  onDelete?: (id: string) => void
 }
 
 const Tag = ({ id, label, onDelete }: TagProps) => {
-  const [deleteMode, setDeleteMode] = useState(false);
-  const text = !deleteMode ? label : 'Delete?';
-  const ref = useRef(null);
+  const [deleteMode, setDeleteMode] = useState(false)
+  const text = !deleteMode ? label : 'Delete?'
+  const ref = useRef(null)
 
   useEffect(() => {
     function handleEscapeKey(event: KeyboardEvent) {
       if (event.code === 'Escape') {
-        setDeleteMode(false);
+        setDeleteMode(false)
       }
     }
 
-    document.addEventListener('keydown', handleEscapeKey);
-    return () => document.removeEventListener('keydown', handleEscapeKey);
-  }, []);
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => document.removeEventListener('keydown', handleEscapeKey)
+  }, [])
 
   const handleClickOutside = () => {
-    setDeleteMode(false);
-  };
+    setDeleteMode(false)
+  }
 
-  useOnClickOutside(ref, handleClickOutside);
+  useOnClickOutside(ref, handleClickOutside)
 
   return (
     <MotionConfig transition={{ duration: 0.2 }}>
@@ -104,7 +104,7 @@ const Tag = ({ id, label, onDelete }: TagProps) => {
         </AnimatePresence>
       </motion.div>
     </MotionConfig>
-  );
-};
+  )
+}
 
-export default Tag;
+export default Tag

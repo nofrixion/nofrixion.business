@@ -1,7 +1,7 @@
-import Tab from '../../ui/Tab/Tab';
-import * as Tabs from '@radix-ui/react-tabs';
-import React, { useEffect, useState } from 'react';
-import { DateRange } from '../../ui/DateRangePicker/DateRangePicker';
+import Tab from '../../ui/Tab/Tab'
+import * as Tabs from '@radix-ui/react-tabs'
+import React, { useEffect, useState } from 'react'
+import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import {
   Currency,
   PaymentRequestClient,
@@ -13,32 +13,35 @@ import {
   usePaymentRequests,
   PaymentRequest,
   ApiError,
-} from '@nofrixion/moneymoov';
-import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable';
-import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader';
-import { LocalPaymentRequest, LocalPaymentRequestCreate, LocalTag } from '../../../types/LocalTypes';
-import { makeToast } from '../../ui/Toast/Toast';
-import { parseApiTagToLocalTag, remotePaymentRequestToLocalPaymentRequest } from '../../../utils/parsers';
-import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage';
-import { add, endOfDay, startOfDay } from 'date-fns';
-import { AnimatePresence, LayoutGroup } from 'framer-motion';
-import LayoutWrapper from '../../ui/utils/LayoutWrapper';
-import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal';
-import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow';
-import { FilterableTag } from '../../ui/TagFilter/TagFilter';
-import ScrollArea from '../../ui/ScrollArea/ScrollArea';
-import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '../../../types/LocalEnums';
-import { Button, Icon } from '../../ui/atoms';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+} from '@nofrixion/moneymoov'
+import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable'
+import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+import { LocalPaymentRequest, LocalPaymentRequestCreate, LocalTag } from '../../../types/LocalTypes'
+import { makeToast } from '../../ui/Toast/Toast'
+import {
+  parseApiTagToLocalTag,
+  remotePaymentRequestToLocalPaymentRequest,
+} from '../../../utils/parsers'
+import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage'
+import { add, endOfDay, startOfDay } from 'date-fns'
+import { AnimatePresence, LayoutGroup } from 'framer-motion'
+import LayoutWrapper from '../../ui/utils/LayoutWrapper'
+import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal'
+import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow'
+import { FilterableTag } from '../../ui/TagFilter/TagFilter'
+import ScrollArea from '../../ui/ScrollArea/ScrollArea'
+import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
+import { Button, Icon } from '../../ui/atoms'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 interface PaymentRequestDashboardProps {
-  token?: string; // Example: "eyJhbGciOiJIUz..."
-  apiUrl?: string; // Example: "https://api.nofrixion.com/api/v1"
-  merchantId: string;
-  onUnauthorized: () => void;
+  token?: string // Example: "eyJhbGciOiJIUz..."
+  apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
+  merchantId: string
+  onUnauthorized: () => void
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 const PaymentRequestDashboard = ({
   token,
@@ -55,8 +58,8 @@ const PaymentRequestDashboard = ({
         onUnauthorized={onUnauthorized}
       />
     </QueryClientProvider>
-  );
-};
+  )
+}
 
 const PaymentRequestDashboardMain = ({
   token,
@@ -64,60 +67,66 @@ const PaymentRequestDashboardMain = ({
   merchantId,
   onUnauthorized,
 }: PaymentRequestDashboardProps) => {
-  const [page, setPage] = useState(1);
-  const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE);
-  const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(SortDirection.NONE);
-  const [contactSortDirection, setContactSortDirection] = useState<SortDirection>(SortDirection.NONE);
-  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE);
-  const [status, setStatus] = useState<PaymentRequestStatus>(PaymentRequestStatus.All);
+  const [page, setPage] = useState(1)
+  const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
+  const [contactSortDirection, setContactSortDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
+  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [status, setStatus] = useState<PaymentRequestStatus>(PaymentRequestStatus.All)
   const [dateRange, setDateRange] = useState<DateRange>({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
     toDate: endOfDay(new Date()),
-  });
-  const [searchFilter, setSearchFilter] = useState<string>('');
-  const [currencyFilter, setCurrencyFilter] = React.useState<string | undefined>();
-  const [minAmountFilter, setMinAmountFilter] = React.useState<number | undefined>();
-  const [maxAmountFilter, setMaxAmountFilter] = React.useState<number | undefined>();
-  const [tags, setTags] = React.useState<FilterableTag[]>([]);
-  const [tagsFilter, setTagsFilter] = React.useState<string[]>([]);
-  const [showMorePage, setShowMorePage] = useState(1);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [metrics, setMetrics] = useState<PaymentRequestMetrics | undefined>(undefined);
-  const [totalRecords, setTotalRecords] = useState<number>(0);
-  const [paymentRequests, setPaymentRequests] = useState<PaymentRequest[] | undefined>(undefined);
+  })
+  const [searchFilter, setSearchFilter] = useState<string>('')
+  const [currencyFilter, setCurrencyFilter] = React.useState<string | undefined>()
+  const [minAmountFilter, setMinAmountFilter] = React.useState<number | undefined>()
+  const [maxAmountFilter, setMaxAmountFilter] = React.useState<number | undefined>()
+  const [tags, setTags] = React.useState<FilterableTag[]>([])
+  const [tagsFilter, setTagsFilter] = React.useState<string[]>([])
+  const [showMorePage, setShowMorePage] = useState(1)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [metrics, setMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
+  const [totalRecords, setTotalRecords] = useState<number>(0)
+  const [paymentRequests, setPaymentRequests] = useState<PaymentRequest[] | undefined>(undefined)
 
-  let [isCreatePaymentRequestOpen, setIsCreatePaymentRequestOpen] = useState(false);
+  const [isCreatePaymentRequestOpen, setIsCreatePaymentRequestOpen] = useState(false)
 
-  const [selectedPaymentRequestID, setSelectedPaymentRequestID] = useState<string | undefined>(undefined);
-  const [prefilledPaymentRequest, setPrefilledPaymentRequest] = useState<LocalPaymentRequestCreate | undefined>(
+  const [selectedPaymentRequestID, setSelectedPaymentRequestID] = useState<string | undefined>(
     undefined,
-  );
+  )
+  const [prefilledPaymentRequest, setPrefilledPaymentRequest] = useState<
+    LocalPaymentRequestCreate | undefined
+  >(undefined)
 
-  const pageSize = 20;
+  const pageSize = 20
 
-  const client = new PaymentRequestClient({ apiUrl: apiUrl, authToken: token });
+  const client = new PaymentRequestClient({ apiUrl: apiUrl, authToken: token })
 
   const onPaymentRequestRowClicked = (paymentRequest: LocalPaymentRequest) => {
-    setSelectedPaymentRequestID(paymentRequest.id);
-  };
+    setSelectedPaymentRequestID(paymentRequest.id)
+  }
 
   const onPaymentRequestDetailsModalDismiss = () => {
-    setSelectedPaymentRequestID(undefined);
-  };
+    setSelectedPaymentRequestID(undefined)
+  }
 
   const getSelectedTagFilters = () => {
     if (!tags) {
-      return [];
+      return []
     }
 
-    return tags.filter((tag) => tag.isSelected).map((tag) => tag.id);
-  };
+    return tags.filter((tag) => tag.isSelected).map((tag) => tag.id)
+  }
 
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {
-      onUnauthorized();
+      onUnauthorized()
     }
-  };
+  }
 
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
@@ -138,11 +147,11 @@ const PaymentRequestDashboardMain = ({
       tags: tagsFilter,
     },
     { apiUrl: apiUrl, authToken: token },
-  );
+  )
 
-  const [localPaymentRequests, setLocalPaymentRequests] = useState<LocalPaymentRequest[]>([]);
+  const [localPaymentRequests, setLocalPaymentRequests] = useState<LocalPaymentRequest[]>([])
 
-  const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>();
+  const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>()
 
   const {
     data: metricsResponse,
@@ -160,103 +169,105 @@ const PaymentRequestDashboardMain = ({
       tags: tagsFilter,
     },
     { apiUrl: apiUrl, authToken: token },
-  );
+  )
 
   const {
     data: merchantTagsResponse,
     isLoading: isMerchantTagsLoading,
     error: merchantTagsError,
-  } = useMerchantTags({ merchantId: merchantId }, { apiUrl: apiUrl, authToken: token });
+  } = useMerchantTags({ merchantId: merchantId }, { apiUrl: apiUrl, authToken: token })
 
-  const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[]);
+  const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
 
   useEffect(() => {
     if (paymentRequestsResponse?.status === 'success') {
-      setPaymentRequests(paymentRequestsResponse.data.content);
-      setTotalRecords(paymentRequestsResponse.data.totalSize);
+      setPaymentRequests(paymentRequestsResponse.data.content)
+      setTotalRecords(paymentRequestsResponse.data.totalSize)
     } else if (paymentRequestsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching payment requests.');
-      console.error(paymentRequestsResponse.error);
+      makeToast('error', 'Error fetching payment requests.')
+      console.error(paymentRequestsResponse.error)
 
-      handleApiError(paymentRequestsResponse.error);
+      handleApiError(paymentRequestsResponse.error)
     }
-  }, [paymentRequestsResponse]);
+  }, [paymentRequestsResponse])
 
   useEffect(() => {
-    setShowMorePage(1);
+    setShowMorePage(1)
     setLocalPaymentRequests(
-      paymentRequests?.map((paymentRequest) => remotePaymentRequestToLocalPaymentRequest(paymentRequest)) ?? [],
-    );
-  }, [paymentRequests]);
+      paymentRequests?.map((paymentRequest) =>
+        remotePaymentRequestToLocalPaymentRequest(paymentRequest),
+      ) ?? [],
+    )
+  }, [paymentRequests])
 
   useEffect(() => {
-    let tempTagArray = getSelectedTagFilters();
-    setTagsFilter([...tempTagArray]);
-  }, [tags]);
+    let tempTagArray = getSelectedTagFilters()
+    setTagsFilter([...tempTagArray])
+  }, [tags])
 
   useEffect(() => {
     if (merchantTagsResponse?.status === 'success') {
-      setLocalMerchantTags(merchantTagsResponse.data.map((tag) => parseApiTagToLocalTag(tag)));
+      setLocalMerchantTags(merchantTagsResponse.data.map((tag) => parseApiTagToLocalTag(tag)))
       setTags(
         merchantTagsResponse.data.map((tag) => {
           return {
             id: tag.id,
             label: tag.name,
             isSelected: false,
-          };
+          }
         }),
-      );
+      )
     } else if (merchantTagsResponse?.status === 'error') {
-      console.warn(merchantTagsResponse.error);
-      handleApiError(merchantTagsResponse.error);
+      console.warn(merchantTagsResponse.error)
+      handleApiError(merchantTagsResponse.error)
     }
-  }, [merchantTagsResponse]);
+  }, [merchantTagsResponse])
 
   useEffect(() => {
     if (metricsResponse?.status === 'success') {
-      setMetrics(metricsResponse.data);
+      setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching metrics.');
-      console.error(metricsResponse.error);
-      handleApiError(metricsResponse.error);
+      makeToast('error', 'Error fetching metrics.')
+      console.error(metricsResponse.error)
+      handleApiError(metricsResponse.error)
     }
-  }, [metricsResponse]);
+  }, [metricsResponse])
 
   const onDeletePaymentRequest = async (paymentRequest: LocalPaymentRequest) => {
-    const response = await client.delete(paymentRequest.id);
+    const response = await client.delete(paymentRequest.id)
 
     if (response.error) {
-      makeToast('error', response.error.title);
+      makeToast('error', response.error.title)
 
-      handleApiError(response.error);
+      handleApiError(response.error)
 
-      return;
+      return
     }
 
-    makeToast('success', 'Payment request successfully deleted.');
+    makeToast('success', 'Payment request successfully deleted.')
 
     // Remove the payment request from the local list.
-    setLocalPaymentRequests(localPaymentRequests.filter((pr) => pr.id !== paymentRequest.id));
+    setLocalPaymentRequests(localPaymentRequests.filter((pr) => pr.id !== paymentRequest.id))
 
     // Update the metrics
     if (metrics) {
-      metrics.all--;
-      metrics.unpaid--;
+      metrics.all--
+      metrics.unpaid--
 
-      updateMetricTotals(paymentRequest.currency, paymentRequest.amount * -1);
+      updateMetricTotals(paymentRequest.currency, paymentRequest.amount * -1)
     }
-  };
+  }
 
   const onCopyPaymentRequestLink = async (paymentRequest: LocalPaymentRequest) => {
-    let link = `${paymentRequest.hostedPayCheckoutUrl}`;
-    await navigator.clipboard.writeText(link);
+    let link = `${paymentRequest.hostedPayCheckoutUrl}`
+    await navigator.clipboard.writeText(link)
 
-    makeToast('success', 'Link copied into clipboard.');
-  };
+    makeToast('success', 'Link copied into clipboard.')
+  }
 
   const onOpenPaymentPage = async (paymentRequest: LocalPaymentRequest) => {
-    window.open(paymentRequest.hostedPayCheckoutUrl, '_blank');
-  };
+    window.open(paymentRequest.hostedPayCheckoutUrl, '_blank')
+  }
 
   const onDuplicatePaymentRequest = (paymentRequest: LocalPaymentRequest) => {
     setPrefilledPaymentRequest({
@@ -268,7 +279,8 @@ const PaymentRequestDashboardMain = ({
       lastName: paymentRequest.contact?.name?.split(' ').slice(1).join(' '),
       email: paymentRequest.contact.email,
       paymentConditions: {
-        allowPartialPayments: paymentRequest.partialPaymentMethod === LocalPartialPaymentMethods.Partial,
+        allowPartialPayments:
+          paymentRequest.partialPaymentMethod === LocalPartialPaymentMethods.Partial,
       },
       paymentMethods: {
         bank: {
@@ -290,105 +302,109 @@ const PaymentRequestDashboardMain = ({
         lightning: paymentRequest.paymentMethodTypes.includes(LocalPaymentMethodTypes.Lightning),
       },
       notificationEmailAddresses: paymentRequest.notificationEmailAddresses,
-    });
+    })
 
-    setIsCreatePaymentRequestOpen(true);
-  };
+    setIsCreatePaymentRequestOpen(true)
+  }
 
   const onCreatePaymentRequest = () => {
-    setPrefilledPaymentRequest(undefined);
-    setIsCreatePaymentRequestOpen(true);
-  };
+    setPrefilledPaymentRequest(undefined)
+    setIsCreatePaymentRequestOpen(true)
+  }
 
   const onCloseCreatePaymentRequest = async () => {
-    setPrefilledPaymentRequest(undefined);
-    setIsCreatePaymentRequestOpen(false);
-  };
+    setPrefilledPaymentRequest(undefined)
+    setIsCreatePaymentRequestOpen(false)
+  }
 
   const updateMetricTotals = (currency: Currency, amount: number) => {
     if (metrics) {
       let currencyField: 'eur' | 'gbp' | undefined =
-        currency === Currency.EUR ? 'eur' : currency === Currency.GBP ? 'gbp' : undefined;
+        currency === Currency.EUR ? 'eur' : currency === Currency.GBP ? 'gbp' : undefined
 
       if (currencyField) {
         if (metrics.totalAmountsByCurrency?.all?.[currencyField]) {
-          metrics.totalAmountsByCurrency.all[currencyField]! += amount;
+          metrics.totalAmountsByCurrency.all[currencyField]! += amount
         }
         if (metrics.totalAmountsByCurrency?.unpaid?.[currencyField]) {
-          metrics.totalAmountsByCurrency.unpaid[currencyField]! += amount;
+          metrics.totalAmountsByCurrency.unpaid[currencyField]! += amount
         }
       }
     }
-  };
+  }
 
   // Adds the newly created payment request to the top of the list
   // Increments the metrics all and unpaid counts
   // Sets the newly created payment request as the selected one
   const onPaymentRequestCreated = async (paymentRequest: LocalPaymentRequest) => {
-    localPaymentRequests.splice(0, 0, paymentRequest);
+    localPaymentRequests.splice(0, 0, paymentRequest)
     if (metrics) {
-      metrics.all++;
-      metrics.unpaid++;
+      metrics.all++
+      metrics.unpaid++
 
-      updateMetricTotals(paymentRequest.currency, paymentRequest.amount);
+      updateMetricTotals(paymentRequest.currency, paymentRequest.amount)
     }
 
-    setIsCreatePaymentRequestOpen(false);
+    setIsCreatePaymentRequestOpen(false)
 
-    setSelectedPaymentRequestID(paymentRequest.id);
-  };
+    setSelectedPaymentRequestID(paymentRequest.id)
+  }
 
   const onRefundClick = async (paymentAttemptID: string) => {
     //TODO: Will implement refund for atleast card payment attempts. For PISP, it will need to be worked on later.
-    console.log(paymentAttemptID);
-  };
+    console.log(paymentAttemptID)
+  }
 
   const onCaptureClick = async (authorizationID: string, amount: number) => {
     if (selectedPaymentRequestID) {
-      let response = await client.captureCardPayment(selectedPaymentRequestID, authorizationID, amount);
+      let response = await client.captureCardPayment(
+        selectedPaymentRequestID,
+        authorizationID,
+        amount,
+      )
 
       if (response.error) {
-        makeToast('error', 'Error capturing Payment.');
-        console.error(response.error);
+        makeToast('error', 'Error capturing Payment.')
+        console.error(response.error)
 
-        handleApiError(response.error);
+        handleApiError(response.error)
 
-        return;
+        return
       }
 
-      makeToast('success', 'Payment successfully captured.');
+      makeToast('success', 'Payment successfully captured.')
 
-      let localPrsCopy = [...localPaymentRequests];
-      let prIndex = localPrsCopy.findIndex((pr) => pr.id === selectedPaymentRequestID);
+      let localPrsCopy = [...localPaymentRequests]
+      let prIndex = localPrsCopy.findIndex((pr) => pr.id === selectedPaymentRequestID)
       let attemptIndex = localPrsCopy[prIndex].paymentAttempts.findIndex(
         (attempt) => attempt.attemptKey === authorizationID,
-      );
-      localPrsCopy[prIndex].paymentAttempts[attemptIndex].capturedAmount += amount;
+      )
+      localPrsCopy[prIndex].paymentAttempts[attemptIndex].capturedAmount += amount
       localPrsCopy[prIndex].paymentAttempts[attemptIndex].isAuthorizeOnly =
         localPrsCopy[prIndex].paymentAttempts[attemptIndex].capturedAmount <
-        localPrsCopy[prIndex].paymentAttempts[attemptIndex].amount;
+        localPrsCopy[prIndex].paymentAttempts[attemptIndex].amount
 
       localPrsCopy[prIndex].paymentAttempts[attemptIndex].captureAttempts.splice(0, 0, {
         capturedAmount: amount,
         capturedAt: new Date(),
-      });
+      })
 
-      setLocalPaymentRequests([...localPrsCopy]);
+      setLocalPaymentRequests([...localPrsCopy])
     }
-  };
+  }
 
   /**
    * Fetches the next page of payment requests and adds them to the local list.
    */
   const fetchNextPage = async () => {
-    setIsLoadingMore(true);
+    setIsLoadingMore(true)
 
     const sort = formatPaymentRequestSortExpression(
       statusSortDirection,
       createdSortDirection,
       contactSortDirection,
       amountSortDirection,
-    );
+    )
 
     const paymentRequests = await client.getAll({
       pageNumber: showMorePage + 1,
@@ -403,17 +419,17 @@ const PaymentRequestDashboardMain = ({
       minAmount: minAmountFilter,
       maxAmount: maxAmountFilter,
       merchantId: merchantId,
-    });
+    })
 
     if (paymentRequests.status === 'success') {
       setLocalPaymentRequests((prev) => [
         ...prev,
         ...paymentRequests.data.content?.map((pr) => remotePaymentRequestToLocalPaymentRequest(pr)),
-      ]);
-      setShowMorePage(showMorePage + 1);
+      ])
+      setShowMorePage(showMorePage + 1)
     }
-    setIsLoadingMore(false);
-  };
+    setIsLoadingMore(false)
+  }
 
   /// Only show the total amount if there are payment requests
   /// with the specified timeframe and currency, no matter the status,
@@ -429,9 +445,9 @@ const PaymentRequestDashboardMain = ({
       metrics[status] &&
       metrics[status] > 0
     ) {
-      return metrics.totalAmountsByCurrency?.[status]?.[currency] ?? 0;
+      return metrics.totalAmountsByCurrency?.[status]?.[currency] ?? 0
     }
-  };
+  }
 
   // tore the results of the first execution of the metrics
   // and use them as the initial state of the metrics.
@@ -439,21 +455,27 @@ const PaymentRequestDashboardMain = ({
   // we don't see the metrics disappear
   useEffect(() => {
     if (metrics && (!firstMetrics || firstMetrics?.all === 0)) {
-      setFirstMetrics(metrics);
+      setFirstMetrics(metrics)
     }
-  }, [metrics]);
+  }, [metrics])
 
-  const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0);
+  const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
   return (
     <div className="font-inter bg-mainGrey text-default-text h-full">
       <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px]">
-        <span className="md:pl-4 leading-8 font-medium text-2xl md:text-[1.75rem]">Accounts Receivable</span>
+        <span className="md:pl-4 leading-8 font-medium text-2xl md:text-[1.75rem]">
+          Accounts Receivable
+        </span>
         <LayoutGroup>
           <AnimatePresence initial={false}>
             {!isInitialState && (
               <LayoutWrapper>
-                <Button size="big" onClick={onCreatePaymentRequest} className="w-10 h-10 md:w-full md:h-full">
+                <Button
+                  size="big"
+                  onClick={onCreatePaymentRequest}
+                  className="w-10 h-10 md:w-full md:h-full"
+                >
                   <span className="hidden md:inline-block">Create payment request</span>
                   <Icon name="add/16" className="md:hidden" />
                 </Button>
@@ -523,8 +545,14 @@ const PaymentRequestDashboardMain = ({
                       status={PaymentRequestStatus.PartiallyPaid}
                       isLoading={isLoadingMetrics}
                       totalRecords={metrics?.partiallyPaid ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'partiallyPaid')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'partiallyPaid')}
+                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus(
+                        'eur',
+                        'partiallyPaid',
+                      )}
+                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus(
+                        'gbp',
+                        'partiallyPaid',
+                      )}
                     />
                     <Tab
                       status={PaymentRequestStatus.FullyPaid}
@@ -602,7 +630,7 @@ const PaymentRequestDashboardMain = ({
         onCapture={onCaptureClick}
       ></PaymentRequestDetailsModal>
     </div>
-  );
-};
+  )
+}
 
-export default PaymentRequestDashboard;
+export default PaymentRequestDashboard

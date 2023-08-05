@@ -7,21 +7,21 @@ import {
   Wallets,
   type Tag,
   type PaymentRequestPaymentAttempt,
-} from '@nofrixion/moneymoov';
+} from '@nofrixion/moneymoov'
 
 import {
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
   LocalWallets,
-} from '../types/LocalEnums';
+} from '../types/LocalEnums'
 import {
   LocalAddress,
   LocalPaymentAttempt,
   LocalPaymentRequest,
   LocalPaymentStatus,
   LocalTag,
-} from '../types/LocalTypes';
+} from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
   return {
@@ -30,88 +30,91 @@ const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
     colourHex: tag.colourHex,
     description: tag.description,
     merchantID: tag.merchantID,
-  };
-};
+  }
+}
 
-const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: PaymentRequest): LocalPaymentRequest => {
-  const { addresses, inserted, customerEmailAddress, amount, currency, status, tags } = remotePaymentRequest;
+const remotePaymentRequestToLocalPaymentRequest = (
+  remotePaymentRequest: PaymentRequest,
+): LocalPaymentRequest => {
+  const { addresses, inserted, customerEmailAddress, amount, currency, status, tags } =
+    remotePaymentRequest
 
   const parseApiStatusToLocalStatus = (status: PaymentResult): LocalPaymentStatus => {
     switch (status) {
       case PaymentResult.FullyPaid:
-        return 'paid';
+        return 'paid'
       case PaymentResult.PartiallyPaid:
-        return 'partial';
+        return 'partial'
       case PaymentResult.OverPaid:
-        return 'overpaid';
+        return 'overpaid'
       case PaymentResult.Authorized:
-        return 'authorized';
+        return 'authorized'
       default:
-        return 'unpaid';
+        return 'unpaid'
     }
-  };
+  }
 
   const parseApiPaymentMethodTypeToLocalMethodType = (
     paymentMethodType: PaymentMethodTypes,
   ): LocalPaymentMethodTypes => {
     switch (paymentMethodType) {
       case PaymentMethodTypes.Card:
-        return LocalPaymentMethodTypes.Card;
+        return LocalPaymentMethodTypes.Card
       case PaymentMethodTypes.Pisp:
-        return LocalPaymentMethodTypes.Pisp;
+        return LocalPaymentMethodTypes.Pisp
       case PaymentMethodTypes.ApplePay:
-        return LocalPaymentMethodTypes.ApplePay;
+        return LocalPaymentMethodTypes.ApplePay
       case PaymentMethodTypes.GooglePay:
-        return LocalPaymentMethodTypes.GooglePay;
+        return LocalPaymentMethodTypes.GooglePay
       case PaymentMethodTypes.Lightning:
-        return LocalPaymentMethodTypes.Lightning;
+        return LocalPaymentMethodTypes.Lightning
       default:
-        return LocalPaymentMethodTypes.None;
+        return LocalPaymentMethodTypes.None
     }
-  };
+  }
 
   const parseApiPaymentMethodTypesToLocalPaymentMethodTypes = (
     paymentMethodTypes: string,
   ): LocalPaymentMethodTypes[] => {
-    const paymentMethodTypesArray = paymentMethodTypes.split(',');
-    const localPaymentMethodTypesArray: LocalPaymentMethodTypes[] = [];
+    const paymentMethodTypesArray = paymentMethodTypes.split(',')
+    const localPaymentMethodTypesArray: LocalPaymentMethodTypes[] = []
 
     paymentMethodTypesArray.forEach((paymentMethodType) => {
-      paymentMethodType = paymentMethodType.trim();
+      paymentMethodType = paymentMethodType.trim()
       switch (paymentMethodType) {
         case 'card':
-          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.Card);
-          break;
+          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.Card)
+          break
         case 'pisp':
-          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.Pisp);
-          break;
+          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.Pisp)
+          break
         case 'applePay':
-          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.ApplePay);
-          break;
+          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.ApplePay)
+          break
         case 'googlePay':
-          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.GooglePay);
-          break;
+          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.GooglePay)
+          break
         case 'lightning':
-          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.Lightning);
-          break;
+          localPaymentMethodTypesArray.push(LocalPaymentMethodTypes.Lightning)
+          break
         default:
-          break;
+          break
       }
-    });
+    })
 
-    return localPaymentMethodTypesArray;
-  };
+    return localPaymentMethodTypesArray
+  }
 
   const parseApiAddressTypeToLocalAddressType = (addressType: string): LocalAddressType => {
     switch (addressType) {
       case 'Shipping':
-        return LocalAddressType.Shipping;
+        return LocalAddressType.Shipping
       case 'Billing':
-        return LocalAddressType.Billing;
+        return LocalAddressType.Billing
       default:
-        return LocalAddressType.Unknown;
+        return LocalAddressType.Unknown
     }
-  };
+  }
 
   const parseApiAddressToLocalAddress = (remoteAddress: PaymentRequestAddress): LocalAddress => {
     const {
@@ -124,7 +127,7 @@ const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: Payment
       phone,
       email,
       addressType,
-    } = remoteAddress;
+    } = remoteAddress
     return {
       addressLine1: addressLine1 ?? '',
       addressLine2: addressLine2 ?? '',
@@ -135,51 +138,51 @@ const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: Payment
       phone: phone ?? '',
       email: email ?? '',
       addressType: parseApiAddressTypeToLocalAddressType(addressType),
-    };
-  };
+    }
+  }
 
   const parseApiWalletTypeToLocalWalletType = (walletType: Wallets): LocalWallets | undefined => {
     switch (walletType) {
       case Wallets.ApplePay:
-        return LocalWallets.ApplePay;
+        return LocalWallets.ApplePay
       case Wallets.GooglePay:
-        return LocalWallets.GooglePay;
+        return LocalWallets.GooglePay
       default:
-        return undefined;
+        return undefined
     }
-  };
+  }
 
   const parseWalletNameToPaymentMethodType = (walletName: Wallets): LocalPaymentMethodTypes => {
     switch (walletName) {
       case Wallets.ApplePay:
-        return LocalPaymentMethodTypes.ApplePay;
+        return LocalPaymentMethodTypes.ApplePay
       case Wallets.GooglePay:
-        return LocalPaymentMethodTypes.GooglePay;
+        return LocalPaymentMethodTypes.GooglePay
       default:
-        return LocalPaymentMethodTypes.None;
+        return LocalPaymentMethodTypes.None
     }
-  };
+  }
 
   const parseApiPartialPaymentMethodToLocalPartialPaymentMethod = (
     partialPaymentMethod: PartialPaymentMethods,
   ): LocalPartialPaymentMethods => {
     switch (partialPaymentMethod) {
       case PartialPaymentMethods.None:
-        return LocalPartialPaymentMethods.None;
+        return LocalPartialPaymentMethods.None
       case PartialPaymentMethods.Partial:
-        return LocalPartialPaymentMethods.Partial;
+        return LocalPartialPaymentMethods.Partial
       default:
-        return LocalPartialPaymentMethods.None;
+        return LocalPartialPaymentMethods.None
     }
-  };
+  }
 
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
     remotePaymentAttempts: PaymentRequestPaymentAttempt[],
   ): LocalPaymentAttempt[] => {
     if (remotePaymentAttempts.length === 0) {
-      return [];
+      return []
     } else {
-      const localPaymentAttempts: LocalPaymentAttempt[] = [];
+      const localPaymentAttempts: LocalPaymentAttempt[] = []
       remotePaymentAttempts.map((remotePaymentAttempt) => {
         if (remotePaymentAttempt.settledAt || remotePaymentAttempt.authorisedAt) {
           const {
@@ -194,7 +197,7 @@ const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: Payment
             currency,
             walletName,
             status,
-          } = remotePaymentAttempt;
+          } = remotePaymentAttempt
 
           localPaymentAttempts.push({
             attemptKey: attemptKey,
@@ -213,19 +216,22 @@ const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: Payment
               captureAttempts && captureAttempts.length > 0
                 ? captureAttempts
                     .sort((a, b) => {
-                      return new Date(b.capturedAt ?? 0).getTime() - new Date(a.capturedAt ?? 0).getTime();
+                      return (
+                        new Date(b.capturedAt ?? 0).getTime() -
+                        new Date(a.capturedAt ?? 0).getTime()
+                      )
                     })
                     .map((x) => ({
                       capturedAt: new Date(x.capturedAt ?? 0),
                       capturedAmount: x.capturedAmount,
                     }))
                 : [],
-          });
+          })
         }
-      });
-      return localPaymentAttempts;
+      })
+      return localPaymentAttempts
     }
-  };
+  }
 
   return {
     id: remotePaymentRequest.id,
@@ -238,7 +244,9 @@ const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: Payment
     amount: amount,
     currency: currency,
     tags: tags.map((tag) => parseApiTagToLocalTag(tag)),
-    paymentMethodTypes: parseApiPaymentMethodTypesToLocalPaymentMethodTypes(remotePaymentRequest.paymentMethodTypes),
+    paymentMethodTypes: parseApiPaymentMethodTypesToLocalPaymentMethodTypes(
+      remotePaymentRequest.paymentMethodTypes,
+    ),
     addresses: addresses.map((address) => parseApiAddressToLocalAddress(address)),
     description: remotePaymentRequest.description ?? '',
     productOrService: remotePaymentRequest.title ?? '',
@@ -246,11 +254,13 @@ const remotePaymentRequestToLocalPaymentRequest = (remotePaymentRequest: Payment
     partialPaymentMethod: parseApiPartialPaymentMethodToLocalPartialPaymentMethod(
       remotePaymentRequest.partialPaymentMethod,
     ),
-    paymentAttempts: parseApiPaymentAttemptsToLocalPaymentAttempts(remotePaymentRequest.paymentAttempts),
+    paymentAttempts: parseApiPaymentAttemptsToLocalPaymentAttempts(
+      remotePaymentRequest.paymentAttempts,
+    ),
     priorityBankID: remotePaymentRequest.priorityBankID,
     notificationEmailAddresses: remotePaymentRequest.notificationEmailAddresses,
     captureFunds: !remotePaymentRequest.cardAuthorizeOnly,
-  };
-};
+  }
+}
 
-export { remotePaymentRequestToLocalPaymentRequest, parseApiTagToLocalTag };
+export { remotePaymentRequestToLocalPaymentRequest, parseApiTagToLocalTag }

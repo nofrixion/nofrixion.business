@@ -1,7 +1,7 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import PaymentRequestMobileCard from './PaymentRequestMobileCard';
-import { Currency } from '@nofrixion/moneymoov';
+import PaymentRequestMobileCard from './PaymentRequestMobileCard'
+import { Currency } from '@nofrixion/moneymoov'
 
 const tags = [
   {
@@ -25,7 +25,7 @@ const tags = [
     colourHex: '#0000FF',
     description: 'This is a third tag',
   },
-];
+]
 
 export default {
   title: 'UI/Payment Request Mobile Card',
@@ -76,11 +76,13 @@ export default {
       action: 'Delete selected',
     },
   },
-} as Meta<typeof PaymentRequestMobileCard>;
+} as Meta<typeof PaymentRequestMobileCard>
 
-const Template: StoryFn<typeof PaymentRequestMobileCard> = (args) => <PaymentRequestMobileCard {...args} />;
+const Template: StoryFn<typeof PaymentRequestMobileCard> = (args) => (
+  <PaymentRequestMobileCard {...args} />
+)
 
-export const Playground = Template.bind({});
+export const Playground = Template.bind({})
 Playground.args = {
   status: 'paid',
   createdAt: new Date(),
@@ -91,9 +93,9 @@ Playground.args = {
   amount: 29,
   currency: Currency.EUR,
   tags: tags,
-};
+}
 
-export const ExampleToday = Template.bind({});
+export const ExampleToday = Template.bind({})
 ExampleToday.args = {
   status: 'paid',
   createdAt: new Date(),
@@ -104,9 +106,9 @@ ExampleToday.args = {
   amount: 29,
   currency: Currency.EUR,
   tags: tags,
-};
+}
 
-export const ExampleYesterday = Template.bind({});
+export const ExampleYesterday = Template.bind({})
 ExampleYesterday.args = {
   status: 'partial',
   createdAt: new Date(new Date().setDate(new Date().getDate() - 1)), // Yesterday
@@ -117,9 +119,9 @@ ExampleYesterday.args = {
   amount: 115949,
   currency: Currency.EUR,
   tags: tags,
-};
+}
 
-export const ExampleTwoDaysAgo = Template.bind({});
+export const ExampleTwoDaysAgo = Template.bind({})
 ExampleTwoDaysAgo.args = {
   status: 'paid',
   createdAt: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
@@ -130,9 +132,9 @@ ExampleTwoDaysAgo.args = {
   amount: 115.5,
   currency: Currency.EUR,
   tags: tags,
-};
+}
 
-export const ExampleTwoYearsAgo = Template.bind({});
+export const ExampleTwoYearsAgo = Template.bind({})
 ExampleTwoYearsAgo.args = {
   status: 'paid',
   createdAt: new Date(new Date().setFullYear(new Date().getFullYear() - 2)), // 2 years ago
@@ -143,9 +145,9 @@ ExampleTwoYearsAgo.args = {
   amount: 89.99,
   currency: Currency.GBP,
   tags: tags,
-};
+}
 
-export const ExampleGBP = Template.bind({});
+export const ExampleGBP = Template.bind({})
 ExampleGBP.args = {
   status: 'unpaid',
   createdAt: new Date(new Date().setMonth(new Date().getMonth() - 2)), // 2 months ago
@@ -156,4 +158,4 @@ ExampleGBP.args = {
   amount: 89.99,
   currency: Currency.GBP,
   tags: tags,
-};
+}

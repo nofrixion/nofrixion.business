@@ -1,13 +1,13 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React from 'react'
+import { StoryFn, Meta } from '@storybook/react'
 
-import PaymentRequestStatusBadge from './PaymentRequestStatusBadge';
+import PaymentRequestStatusBadge from './PaymentRequestStatusBadge'
 
 const statuses = {
   unpaid: 'unpaid',
   partial: 'partial',
   paid: 'paid',
-};
+}
 
 export default {
   title: 'UI/Payment Request Status Badge',
@@ -15,54 +15,56 @@ export default {
   argTypes: {
     status: { control: 'inline-radio', options: Object.values(statuses) },
   },
-} as Meta<typeof PaymentRequestStatusBadge>;
+} as Meta<typeof PaymentRequestStatusBadge>
 
-const Template: StoryFn<typeof PaymentRequestStatusBadge> = (args) => <PaymentRequestStatusBadge {...args} />;
+const Template: StoryFn<typeof PaymentRequestStatusBadge> = (args) => (
+  <PaymentRequestStatusBadge {...args} />
+)
 
-export const UnpaidBadge = Template.bind({});
+export const UnpaidBadge = Template.bind({})
 UnpaidBadge.args = {
   status: 'unpaid',
   size: 'small',
-};
+}
 
-export const PartiallyPaidBadge = Template.bind({});
+export const PartiallyPaidBadge = Template.bind({})
 PartiallyPaidBadge.args = {
   status: 'partial',
   size: 'small',
-};
+}
 
-export const PaidBadge = Template.bind({});
+export const PaidBadge = Template.bind({})
 PaidBadge.args = {
   status: 'paid',
   size: 'small',
-};
+}
 
-export const OverPaidBadge = Template.bind({});
+export const OverPaidBadge = Template.bind({})
 OverPaidBadge.args = {
   status: 'overpaid',
   size: 'small',
-};
+}
 
-export const LargeUnpaidBadge = Template.bind({});
+export const LargeUnpaidBadge = Template.bind({})
 LargeUnpaidBadge.args = {
   status: 'unpaid',
   size: 'large',
-};
+}
 
-export const LargePartiallyPaidBadge = Template.bind({});
+export const LargePartiallyPaidBadge = Template.bind({})
 LargePartiallyPaidBadge.args = {
   status: 'partial',
   size: 'large',
-};
+}
 
-export const LargePaidBadge = Template.bind({});
+export const LargePaidBadge = Template.bind({})
 LargePaidBadge.args = {
   status: 'paid',
   size: 'large',
-};
+}
 
-export const LargeOverPaidBadge = Template.bind({});
+export const LargeOverPaidBadge = Template.bind({})
 LargeOverPaidBadge.args = {
   status: 'overpaid',
   size: 'large',
-};
+}

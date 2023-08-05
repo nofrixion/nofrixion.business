@@ -1,6 +1,12 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/atoms/Select/Select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/atoms/Select/Select'
 
 export default {
   title: 'Atoms/Select',
@@ -11,12 +17,12 @@ export default {
   },
 } as Meta<
   typeof Select & {
-    subText?: string;
+    subText?: string
   }
->;
+>
 
 const Template: StoryFn<{
-  subText?: string;
+  subText?: string
 }> = ({ subText, ...args }) => {
   return (
     <Select defaultValue="light" {...args}>
@@ -29,10 +35,10 @@ const Template: StoryFn<{
         <SelectItem value="system">System</SelectItem>
       </SelectContent>
     </Select>
-  );
-};
+  )
+}
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   subText: 'Select theme',
-};
+}

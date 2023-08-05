@@ -1,15 +1,15 @@
-import { LocalPaymentRequest } from '../../../types/LocalTypes';
-import { formatAmount, formatDate } from '../../../utils/formatters';
-import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu';
-import { defaultAnonymousUserName } from '../../../utils/constants';
-import PaymentRequestStatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge';
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { formatAmount, formatDate } from '../../../utils/formatters'
+import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
+import { defaultAnonymousUserName } from '../../../utils/constants'
+import PaymentRequestStatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
 interface PaymentRequestMobileCardProps extends LocalPaymentRequest {
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  onDuplicate?: () => void;
-  onCopyLink?: () => void;
-  onDelete?: () => void;
-  onOpenPaymentPage?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onDuplicate?: () => void
+  onCopyLink?: () => void
+  onDelete?: () => void
+  onOpenPaymentPage?: () => void
 }
 
 const PaymentRequestMobileCard = ({
@@ -27,17 +27,20 @@ const PaymentRequestMobileCard = ({
   const onDeletePaymentRequestClicked = async () => {
     const hasConfirmedToDelete = confirm(
       "Are you sure you want to delete this payment request? This action can't be undone.",
-    );
+    )
 
     if (!hasConfirmedToDelete) {
-      return;
+      return
     }
 
-    onDelete && onDelete();
-  };
+    onDelete && onDelete()
+  }
 
   return (
-    <div className="bg-white p-4 pr-2 rounded-lg tabular-nums w-full cursor-pointer" onClick={onClick}>
+    <div
+      className="bg-white p-4 pr-2 rounded-lg tabular-nums w-full cursor-pointer"
+      onClick={onClick}
+    >
       {/* Date, ammount & context menu */}
       <div className="flex mb-4 text-left">
         <span className="text-xs/6 w-20 mr-2">{formatDate(createdAt)}</span>
@@ -61,7 +64,7 @@ const PaymentRequestMobileCard = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PaymentRequestMobileCard;
+export default PaymentRequestMobileCard

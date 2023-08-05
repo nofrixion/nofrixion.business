@@ -1,5 +1,5 @@
 interface ChipProps {
-  label: string;
+  label: string
 }
 
 const Chip = ({ label }: ChipProps) => {
@@ -7,7 +7,7 @@ const Chip = ({ label }: ChipProps) => {
     <span className="text-[#1B2232] bg-greyBg px-3 py-1 rounded-full text-xs whitespace-nowrap inline-block align-middle">
       {label}
     </span>
-  );
-};
+  )
+}
 
-export default Chip;
+export default Chip

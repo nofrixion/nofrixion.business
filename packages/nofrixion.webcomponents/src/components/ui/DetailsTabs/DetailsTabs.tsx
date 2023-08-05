@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import * as Tabs from '@radix-ui/react-tabs';
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import classNames from 'classnames';
-import PaymentInfo from '../PaymentInfo/PaymentInfo';
-import Transactions from '../Transactions/Transactions';
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes';
-import ScrollArea from '../ScrollArea/ScrollArea';
+import React, { useState } from 'react'
+import * as Tabs from '@radix-ui/react-tabs'
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
+import classNames from 'classnames'
+import PaymentInfo from '../PaymentInfo/PaymentInfo'
+import Transactions from '../Transactions/Transactions'
+import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
+import ScrollArea from '../ScrollArea/ScrollArea'
 
-const tabs = ['Transactions', 'Payment info'];
+const tabs = ['Transactions', 'Payment info']
 
 interface TabProps {
-  value: string;
-  selectedTab: string;
-  children: React.ReactNode;
+  value: string
+  selectedTab: string
+  children: React.ReactNode
 }
 
 const TabContent: React.FC<TabProps> = ({ value, selectedTab, children }) => {
@@ -29,20 +29,20 @@ const TabContent: React.FC<TabProps> = ({ value, selectedTab, children }) => {
         </motion.div>
       </Tabs.Content>
     </AnimatePresence>
-  );
-};
+  )
+}
 
 // Get type of classnames
-const underlineClasses = 'w-full h-px absolute bottom-0';
+const underlineClasses = 'w-full h-px absolute bottom-0'
 
 interface DetailsTabsProps {
-  paymentRequest: LocalPaymentRequest;
-  onRefund: (paymentAttemptID: string) => void;
-  onCapture: (paymentAttempt: LocalPaymentAttempt) => void;
+  paymentRequest: LocalPaymentRequest
+  onRefund: (paymentAttemptID: string) => void
+  onCapture: (paymentAttempt: LocalPaymentAttempt) => void
 }
 
 const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onCapture }) => {
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [selectedTab, setSelectedTab] = useState(tabs[0])
 
   return (
     <MotionConfig transition={{ ease: 'easeInOut' }}>
@@ -58,7 +58,10 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
                 {tab}
 
                 {selectedTab == tab ? (
-                  <motion.div layoutId="underline" className={classNames(underlineClasses, 'bg-primaryGreen z-10')} />
+                  <motion.div
+                    layoutId="underline"
+                    className={classNames(underlineClasses, 'bg-primaryGreen z-10')}
+                  />
                 ) : (
                   <div className={classNames(underlineClasses, 'bg-borderGrey')} />
                 )}
@@ -69,7 +72,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
                 */}
                 <div className={classNames(underlineClasses, 'bg-borderGrey')} />
               </Tabs.Trigger>
-            );
+            )
           })}
         </Tabs.List>
         <TabContent value={tabs[0]} selectedTab={selectedTab}>
@@ -86,7 +89,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
         </TabContent>
       </Tabs.Root>
     </MotionConfig>
-  );
-};
+  )
+}
 
-export default DetailsTabs;
+export default DetailsTabs

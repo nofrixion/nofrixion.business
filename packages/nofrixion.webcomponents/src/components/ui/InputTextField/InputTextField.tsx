@@ -1,39 +1,39 @@
-import React, { useId, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import AnimateHeightWrapper from '../../ui/utils/AnimateHeight';
+import React, { useId, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
 export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  required?: boolean;
-  validation?: (value: string) => string | undefined;
-  error?: string;
+  label: string
+  required?: boolean
+  validation?: (value: string) => string | undefined
+  error?: string
 }
 
 const InputTextField = React.forwardRef<HTMLInputElement, InputTextFieldProps>(
   ({ label, required, maxLength, value, onChange, onBlur, validation, ...props }, ref) => {
-    const textId = useId();
+    const textId = useId()
 
-    const [error, setError] = useState<string>();
+    const [error, setError] = useState<string>()
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange && onChange(e);
+      onChange && onChange(e)
 
       if (!validation || !error) {
-        return;
+        return
       }
 
-      setError(validation(e.target.value));
-    };
+      setError(validation(e.target.value))
+    }
 
     const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      onBlur && onBlur(e);
+      onBlur && onBlur(e)
 
       if (!validation) {
-        return;
+        return
       }
 
-      setError(validation(e.target.value));
-    };
+      setError(validation(e.target.value))
+    }
 
     return (
       <div>
@@ -43,7 +43,9 @@ const InputTextField = React.forwardRef<HTMLInputElement, InputTextFieldProps>(
               {label}
             </label>
 
-            {required && <div className="text-greyText font-normal text-xs leading-4">REQUIRED</div>}
+            {required && (
+              <div className="text-greyText font-normal text-xs leading-4">REQUIRED</div>
+            )}
           </div>
           <input
             ref={ref}
@@ -70,8 +72,8 @@ const InputTextField = React.forwardRef<HTMLInputElement, InputTextFieldProps>(
           )}
         </AnimatePresence>
       </div>
-    );
+    )
   },
-);
+)
 
-export default InputTextField;
+export default InputTextField

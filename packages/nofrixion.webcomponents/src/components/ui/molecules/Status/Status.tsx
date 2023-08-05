@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '@/utils';
-import { Icon } from '../../atoms';
-import { IconNames } from '../../atoms/Icon/Icon';
+import { cn } from '@/utils'
+import { Icon } from '../../atoms'
+import { IconNames } from '../../atoms/Icon/Icon'
 
 const statusVariants = cva('rounded-full space-x-1 inline-flex items-center text-default-text', {
   variants: {
@@ -21,7 +21,7 @@ const statusVariants = cva('rounded-full space-x-1 inline-flex items-center text
     variant: 'unpaid',
     size: 'small',
   },
-});
+})
 
 const iconVariants = cva('w-auto', {
   variants: {
@@ -38,11 +38,16 @@ const iconVariants = cva('w-auto', {
   defaultVariants: {
     size: 'small',
   },
-});
+})
 
-export interface StatusProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof statusVariants> {}
+export interface StatusProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof statusVariants> {}
 
-type TVariant = Exclude<Required<Pick<VariantProps<typeof statusVariants>, 'variant'>>['variant'], null | undefined>;
+type TVariant = Exclude<
+  Required<Pick<VariantProps<typeof statusVariants>, 'variant'>>['variant'],
+  null | undefined
+>
 
 const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
   paid: {
@@ -57,15 +62,27 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     small: 'not-started/12',
     large: 'not-started/12',
   },
-};
+}
 
-const Status: React.FC<StatusProps> = ({ className, size = 'small', variant = 'unpaid', ...props }) => (
+const Status: React.FC<StatusProps> = ({
+  className,
+  size = 'small',
+  variant = 'unpaid',
+  ...props
+}) => (
   <div className={cn(statusVariants({ variant, size }), className)} {...props}>
-    {variant && <Icon name={iconName[variant][size ?? 'small']} className={cn(iconVariants({ size, variant }))} />}
-    <span className="uppercase">{size === 'large' && variant === 'partial' ? 'partially paid' : variant}</span>
+    {variant && (
+      <Icon
+        name={iconName[variant][size ?? 'small']}
+        className={cn(iconVariants({ size, variant }))}
+      />
+    )}
+    <span className="uppercase">
+      {size === 'large' && variant === 'partial' ? 'partially paid' : variant}
+    </span>
   </div>
-);
+)
 
-Status.displayName = 'Status';
+Status.displayName = 'Status'
 
-export { Status };
+export { Status }

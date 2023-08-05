@@ -1,6 +1,6 @@
-import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfDay } from 'date-fns';
-import { SortDirection } from '../components/ui/ColumnHeader/ColumnHeader';
-import type { TDateRangeOptions } from '@/components/ui/molecules';
+import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfDay } from 'date-fns'
+import { SortDirection } from '../components/ui/ColumnHeader/ColumnHeader'
+import type { TDateRangeOptions } from '@/components/ui/molecules'
 
 // This function formats a date as a string, returning a human-readable
 // representation of either "Today" or "Yesterday" if the date is within the
@@ -13,13 +13,13 @@ import type { TDateRangeOptions } from '@/components/ui/molecules';
 // date, such as "2 days ago"
 const formatDate = (date: Date): string => {
   if (isToday(date)) {
-    return 'Today';
+    return 'Today'
   } else if (isYesterday(date)) {
-    return 'Yesterday';
+    return 'Yesterday'
   }
 
-  return formatDistanceToNowStrict(date, { addSuffix: true });
-};
+  return formatDistanceToNowStrict(date, { addSuffix: true })
+}
 
 // Formats the given amount into a currency string.
 // For example:
@@ -36,29 +36,29 @@ const formatAmount = (amount: number, fractionDigits = 2): string => {
   const formattedAmount = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
-  }).format(amount);
+  }).format(amount)
 
-  return formattedAmount;
-};
+  return formattedAmount
+}
 
 const formatAmountAndDecimals = (amount: number) => {
   // Get the amount and split it into the value and the decimals
-  const parsedAmount = amount.toString().split('.');
+  const parsedAmount = amount.toString().split('.')
 
   // Divide amount into thousands with ","
-  const amountValueWithCommas = parsedAmount[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const amountValueWithCommas = parsedAmount[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-  let amountDecimals = parsedAmount[1];
+  let amountDecimals = parsedAmount[1]
 
   if (amountDecimals && amountDecimals.length == 1) {
-    amountDecimals += '0';
+    amountDecimals += '0'
   }
 
   return {
     amountValueWithCommas,
     amountDecimals: amountDecimals ?? '00',
-  };
-};
+  }
+}
 
 /**
  * Formats the given sort direction into a string that can be used in the API
@@ -74,55 +74,55 @@ const formatPaymentRequestSortExpression = (
   contactSortDirection: SortDirection,
   amountSortDirection: SortDirection,
 ): string => {
-  let sortExpression = '';
+  let sortExpression = ''
 
   if (statusSortDirection !== SortDirection.NONE) {
-    sortExpression += `Status ${statusSortDirection}`;
+    sortExpression += `Status ${statusSortDirection}`
   }
 
   if (createdSortDirection !== SortDirection.NONE) {
-    sortExpression += sortExpression.length > 0 ? ',' : '';
-    sortExpression += `Inserted ${createdSortDirection}`;
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `Inserted ${createdSortDirection}`
   }
 
   if (contactSortDirection !== SortDirection.NONE) {
-    sortExpression += sortExpression.length > 0 ? ',' : '';
-    sortExpression += `CustomerEmailAddress ${contactSortDirection}`;
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `CustomerEmailAddress ${contactSortDirection}`
   }
 
   if (amountSortDirection !== SortDirection.NONE) {
-    sortExpression += sortExpression.length > 0 ? ',' : '';
-    sortExpression += `Amount ${amountSortDirection}`;
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `Amount ${amountSortDirection}`
   }
 
-  return sortExpression;
-};
+  return sortExpression
+}
 
 const getDateFormat = (date: Date): string => {
-  const today = new Date();
+  const today = new Date()
 
   if (date.getFullYear() < today.getFullYear()) {
-    return 'MMM do, y';
+    return 'MMM do, y'
   }
 
-  return 'MMM do';
-};
+  return 'MMM do'
+}
 
 const getSelectRangeText = (fromDate: Date, toDate: Date): TDateRangeOptions | undefined => {
   if (isToday(fromDate) && isToday(toDate)) {
-    return 'today';
+    return 'today'
   } else if (isYesterday(fromDate) && isYesterday(toDate)) {
-    return 'yesterday';
+    return 'yesterday'
   } else if (isToday(toDate) && isEqual(fromDate, startOfDay(add(new Date(), { days: -7 })))) {
-    return 'last7Days';
+    return 'last7Days'
   } else if (isToday(toDate) && isEqual(fromDate, startOfDay(add(new Date(), { days: -30 })))) {
-    return 'last30Days';
+    return 'last30Days'
   } else if (isToday(toDate) && isEqual(fromDate, startOfDay(add(new Date(), { days: -90 })))) {
-    return 'last90Days';
+    return 'last90Days'
   } else {
-    return undefined;
+    return undefined
   }
-};
+}
 
 export {
   formatDate,
@@ -131,4 +131,4 @@ export {
   formatPaymentRequestSortExpression,
   getDateFormat,
   getSelectRangeText,
-};
+}

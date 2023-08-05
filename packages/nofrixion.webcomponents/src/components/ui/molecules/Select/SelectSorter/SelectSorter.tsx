@@ -1,34 +1,49 @@
-import { type SelectProps } from '@radix-ui/react-select';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/atoms/Select/Select';
-import { cn } from '@/utils';
+import { type SelectProps } from '@radix-ui/react-select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/atoms/Select/Select'
+import { cn } from '@/utils'
 
 const options = {
   moreRecentFirst: 'Most recent first',
   olderFirst: 'Oldest first',
   amountHighToLow: 'Most expensive first',
   amountLowToHigh: 'Cheapest first',
-};
+}
 
 const displayValue = {
   moreRecentFirst: 'Creation date',
   olderFirst: 'Creation date',
   amountHighToLow: 'Amount',
   amountLowToHigh: 'Amount',
-};
-
-type TSorterOptions = keyof typeof options;
-
-interface SelectSorterProps extends SelectProps {
-  onValueChange?: (value: TSorterOptions) => void;
-  defaultValue?: TSorterOptions;
-  value?: TSorterOptions;
-  className?: string;
 }
 
-const SelectSorter: React.FC<SelectSorterProps> = ({ defaultValue, value, onValueChange, className, ...props }) => {
+type TSorterOptions = keyof typeof options
+
+interface SelectSorterProps extends SelectProps {
+  onValueChange?: (value: TSorterOptions) => void
+  defaultValue?: TSorterOptions
+  value?: TSorterOptions
+  className?: string
+}
+
+const SelectSorter: React.FC<SelectSorterProps> = ({
+  defaultValue,
+  value,
+  onValueChange,
+  className,
+  ...props
+}) => {
   return (
     <Select defaultValue={defaultValue} value={value} onValueChange={onValueChange} {...props}>
-      <SelectTrigger subText={value ? options[value] : undefined} className={cn('w-full', className)}>
+      <SelectTrigger
+        subText={value ? options[value] : undefined}
+        className={cn('w-full', className)}
+      >
         <SelectValue>{value != undefined ? displayValue[value] : '-'}</SelectValue>
       </SelectTrigger>
       <SelectContent>
@@ -39,7 +54,7 @@ const SelectSorter: React.FC<SelectSorterProps> = ({ defaultValue, value, onValu
         ))}
       </SelectContent>
     </Select>
-  );
-};
+  )
+}
 
-export { SelectSorter, type TSorterOptions };
+export { SelectSorter, type TSorterOptions }

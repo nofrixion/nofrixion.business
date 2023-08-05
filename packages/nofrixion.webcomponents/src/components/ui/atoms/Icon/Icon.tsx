@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '../../../../utils';
+import { cn } from '../../../../utils'
 
-const iconVariants = cva('stroke-current fill-none');
+const iconVariants = cva('stroke-current fill-none')
 
 interface SVGProps extends React.SVGProps<SVGSVGElement> {
-  size: '8' | '12' | '16' | '24';
+  size: '8' | '12' | '16' | '24'
 }
 
 const SVG: React.FC<SVGProps> = ({ className, size, children, ...props }) => (
@@ -20,7 +20,7 @@ const SVG: React.FC<SVGProps> = ({ className, size, children, ...props }) => (
   >
     {children}
   </svg>
-);
+)
 
 export const Icons = {
   'back/24': (className: string) => (
@@ -94,17 +94,18 @@ export const Icons = {
       <path d="M0.5 2L4 5.5L7.5 2" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
-} as const;
+} as const
 
-export type IconNames = keyof typeof Icons;
+export type IconNames = keyof typeof Icons
 
 export interface IconProps extends VariantProps<typeof iconVariants> {
-  className?: string;
-  name: IconNames;
+  className?: string
+  name: IconNames
 }
 
-const Icon: React.FC<IconProps> = ({ className, name }) => Icons[name](cn(iconVariants(), className));
+const Icon: React.FC<IconProps> = ({ className, name }) =>
+  Icons[name](cn(iconVariants(), className))
 
-Icon.displayName = 'Icon';
+Icon.displayName = 'Icon'
 
-export { Icon };
+export { Icon }

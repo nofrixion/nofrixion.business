@@ -1,4 +1,4 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
 import {
   Sheet,
@@ -7,8 +7,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/atoms/Sheet/Sheet';
-import { useState } from 'react';
+} from '@/components/ui/atoms/Sheet/Sheet'
+import { useState } from 'react'
 
 export default {
   title: 'Atoms/Sheet',
@@ -17,9 +17,9 @@ export default {
     subText: { control: 'text' },
     onValueChange: { action: 'onValueChange' },
   },
-} as Meta<typeof Sheet>;
+} as Meta<typeof Sheet>
 
-type Story = StoryFn<typeof Sheet>;
+type Story = StoryFn<typeof Sheet>
 
 export const Showcase: Story = (args) => {
   return (
@@ -29,23 +29,23 @@ export const Showcase: Story = (args) => {
         <SheetHeader>
           <SheetTitle>Are you sure absolutely sure?</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your account and remove your data from our
-            servers.
+            This action cannot be undone. This will permanently delete your account and remove your
+            data from our servers.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
-  );
-};
+  )
+}
 
 export const NoTrigger: Story = (args) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <>
       <button
         onClick={() => {
-          setOpen((prev) => !prev);
+          setOpen((prev) => !prev)
         }}
       >
         Toggle
@@ -56,12 +56,12 @@ export const NoTrigger: Story = (args) => {
           <SheetHeader>
             <SheetTitle>Are you sure absolutely sure?</SheetTitle>
             <SheetDescription>
-              This action cannot be undone. This will permanently delete your account and remove your data from our
-              servers.
+              This action cannot be undone. This will permanently delete your account and remove
+              your data from our servers.
             </SheetDescription>
           </SheetHeader>
         </SheetContent>
       </Sheet>
     </>
-  );
-};
+  )
+}

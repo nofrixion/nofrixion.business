@@ -1,22 +1,22 @@
-﻿import React from 'react';
-import InputAmountField from '../InputAmountField/InputAmountField';
-import { Currency } from '@nofrixion/moneymoov';
-import backButtonIcon from '../../../assets/icons/back-button-icon.svg';
-import { format } from 'date-fns';
-import { localCurrency } from '../../../utils/constants';
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import React from 'react'
+import InputAmountField from '../InputAmountField/InputAmountField'
+import { Currency } from '@nofrixion/moneymoov'
+import backButtonIcon from '../../../assets/icons/back-button-icon.svg'
+import { format } from 'date-fns'
+import { localCurrency } from '../../../utils/constants'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export interface CaptureModalProps {
-  initialAmount: string;
-  currency: Currency.EUR | Currency.GBP;
-  onCapture: () => Promise<void>;
-  onDismiss: () => void;
-  setAmountToCapture: (amount: string) => void;
-  maxCapturableAmount: number;
-  lastFourDigitsOnCard?: string;
-  processor?: string;
-  transactionDate: Date;
-  contactName?: string;
+  initialAmount: string
+  currency: Currency.EUR | Currency.GBP
+  onCapture: () => Promise<void>
+  onDismiss: () => void
+  setAmountToCapture: (amount: string) => void
+  maxCapturableAmount: number
+  lastFourDigitsOnCard?: string
+  processor?: string
+  transactionDate: Date
+  contactName?: string
 }
 
 const CaptureModal: React.FC<CaptureModalProps> = ({
@@ -31,39 +31,41 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
   transactionDate,
   contactName,
 }) => {
-  const [isCaptureButtonDisabled, setIsCaptureButtonDisabled] = React.useState(false);
-  const [validationErrorMessage, setValidationErrorMessage] = React.useState('');
+  const [isCaptureButtonDisabled, setIsCaptureButtonDisabled] = React.useState(false)
+  const [validationErrorMessage, setValidationErrorMessage] = React.useState('')
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  });
+  })
 
   const getCurrencySymbol = (transactionCurrency: string) => {
-    return transactionCurrency === Currency.EUR ? localCurrency.eur.symbol : localCurrency.gbp.symbol;
-  };
+    return transactionCurrency === Currency.EUR
+      ? localCurrency.eur.symbol
+      : localCurrency.gbp.symbol
+  }
 
   const onCaptureClick = async () => {
-    setIsCaptureButtonDisabled(true);
+    setIsCaptureButtonDisabled(true)
 
-    setValidationErrorMessage('');
-    let parsedAmount = Number(initialAmount);
+    setValidationErrorMessage('')
+    let parsedAmount = Number(initialAmount)
     if (parsedAmount < 0) {
-      setValidationErrorMessage('The amount must be greater than 0.');
+      setValidationErrorMessage('The amount must be greater than 0.')
     } else if (parsedAmount === 0) {
-      setValidationErrorMessage("The amount can't be 0.");
+      setValidationErrorMessage("The amount can't be 0.")
     } else if (maxCapturableAmount && parsedAmount > maxCapturableAmount) {
-      setValidationErrorMessage("You can't capture more than the remaining amount.");
+      setValidationErrorMessage("You can't capture more than the remaining amount.")
     } else {
-      await onCapture();
+      await onCapture()
     }
 
-    setIsCaptureButtonDisabled(false);
-  };
+    setIsCaptureButtonDisabled(false)
+  }
 
   const onAmountInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValidationErrorMessage('');
-    setAmountToCapture(event.target.value);
-  };
+    setValidationErrorMessage('')
+    setAmountToCapture(event.target.value)
+  }
 
   return (
     <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8 z-50">
@@ -72,7 +74,9 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
             <img src={backButtonIcon} alt="Back" title="Back" className="w-6 h-auto" />
           </button>
-          <span className="block text-2xl font-semibold text-defaultText mt-8">Confirm card payment capture</span>
+          <span className="block text-2xl font-semibold text-defaultText mt-8">
+            Confirm card payment capture
+          </span>
           <p className="mt-12 text-defaultText text-sm font-normal">
             You are about to capture the card payment made
             {contactName && <span className="font-semibold">{` by ${contactName}`}</span>}
@@ -90,7 +94,9 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           </p>
           <div className="mt-12 md:flex">
             <div className="md:w-[152px]">
-              <span className="text-sm leading-8 font-normal text-greyText md:leading-[48px]">Capture</span>
+              <span className="text-sm leading-8 font-normal text-greyText md:leading-[48px]">
+                Capture
+              </span>
             </div>
             <div className="text-left">
               <div className="md:w-40">
@@ -133,7 +139,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CaptureModal;
+export default CaptureModal

@@ -1,25 +1,25 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import CopyLinkIcon from '../../../assets/icons/copy-link-icon.svg';
-import TickMarkIcon from '../../../assets/icons/tick-mark-icon.svg';
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import CopyLinkIcon from '../../../assets/icons/copy-link-icon.svg'
+import TickMarkIcon from '../../../assets/icons/tick-mark-icon.svg'
 
 export const CopyLink = ({ link }: { link: string }) => {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false)
 
   // Reset copied state after 1.5 seconds to allow user to copy again
   useEffect(() => {
     if (copied) {
       const timer = setTimeout(() => {
-        setCopied(false);
-      }, 1500);
-      return () => clearTimeout(timer);
+        setCopied(false)
+      }, 1500)
+      return () => clearTimeout(timer)
     }
-  }, [copied]);
+  }, [copied])
 
   const copyLink = () => {
-    navigator.clipboard.writeText(link);
-    setCopied(true);
-  };
+    navigator.clipboard.writeText(link)
+    setCopied(true)
+  }
 
   return (
     <div className="flex items-center h-10 rounded-full justify-between px-4 pr-4 shadow-[0_0_0.5rem_rgba(4,41,49,0.15)] text-[0.813rem] relative bg-white">
@@ -52,5 +52,5 @@ export const CopyLink = ({ link }: { link: string }) => {
         )}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}

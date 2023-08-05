@@ -1,6 +1,6 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import PaymentNotificationsModal from './PaymentNotificationsModal';
+import PaymentNotificationsModal from './PaymentNotificationsModal'
 
 export default {
   title: 'UI/Payment Notifications Modal',
@@ -10,11 +10,13 @@ export default {
       action: 'Apply',
     },
   },
-} as Meta<typeof PaymentNotificationsModal>;
+} as Meta<typeof PaymentNotificationsModal>
 
-const Template: StoryFn<typeof PaymentNotificationsModal> = (args) => <PaymentNotificationsModal {...args} />;
+const Template: StoryFn<typeof PaymentNotificationsModal> = (args) => (
+  <PaymentNotificationsModal {...args} />
+)
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   open: true,
-};
+}

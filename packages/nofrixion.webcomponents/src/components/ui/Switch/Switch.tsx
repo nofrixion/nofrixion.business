@@ -1,12 +1,12 @@
-import { Switch as SwitchHeadless } from '@headlessui/react';
-import classNames from 'classnames';
+import { Switch as SwitchHeadless } from '@headlessui/react'
+import classNames from 'classnames'
 
 interface SwitchProps {
-  label: string;
-  value: boolean;
-  onChange: (value: boolean) => void;
-  icon: string;
-  className?: string;
+  label: string
+  value: boolean
+  onChange: (value: boolean) => void
+  icon: string
+  className?: string
 }
 
 const Switch = ({ label, value, icon, className, onChange }: SwitchProps) => {
@@ -32,7 +32,7 @@ const Switch = ({ label, value, icon, className, onChange }: SwitchProps) => {
         </SwitchHeadless>
       </SwitchHeadless.Group>
     </div>
-  );
-};
+  )
+}
 
-export default Switch;
+export default Switch

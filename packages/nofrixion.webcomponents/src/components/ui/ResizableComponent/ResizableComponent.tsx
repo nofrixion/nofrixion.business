@@ -1,9 +1,9 @@
-import { motion, MotionConfig } from 'framer-motion';
-import { PropsWithChildren } from 'react';
-import useMeasure from 'react-use-measure';
+import { motion, MotionConfig } from 'framer-motion'
+import { PropsWithChildren } from 'react'
+import useMeasure from 'react-use-measure'
 
 const ResizableComponent: React.FC<PropsWithChildren> = ({ children }) => {
-  let [ref, { width }] = useMeasure();
+  let [ref, { width }] = useMeasure()
 
   return (
     <MotionConfig transition={{ duration: 0.25 }}>
@@ -18,8 +18,8 @@ const ResizableComponent: React.FC<PropsWithChildren> = ({ children }) => {
         </motion.div>
       </motion.div>
     </MotionConfig>
-  );
-};
+  )
+}
 
 /*
   Replacer function to JSON.stringify that ignores
@@ -27,15 +27,15 @@ const ResizableComponent: React.FC<PropsWithChildren> = ({ children }) => {
   https://github.com/facebook/react/issues/8669#issuecomment-531515508
 */
 const ignoreCircularReferences = () => {
-  const seen = new WeakSet();
+  const seen = new WeakSet()
   return (key: string, value: object | null) => {
-    if (key.startsWith('_')) return; // Don't compare React's internal props.
+    if (key.startsWith('_')) return // Don't compare React's internal props.
     if (typeof value === 'object' && value !== null) {
-      if (seen.has(value)) return;
-      seen.add(value);
+      if (seen.has(value)) return
+      seen.add(value)
     }
-    return value;
-  };
-};
+    return value
+  }
+}
 
-export default ResizableComponent;
+export default ResizableComponent

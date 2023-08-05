@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import ResizableComponent from '../ResizableComponent/ResizableComponent';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { motion } from 'framer-motion';
-import { cva } from 'class-variance-authority';
-import { Currency } from '@nofrixion/moneymoov';
-import { localCurrency } from '../../../utils/constants';
-import MaskedInput from 'react-text-mask';
-import createNumberMask from 'text-mask-addons/dist/createNumberMask';
-import { cn } from '../../../utils';
+import React, { useEffect, useState } from 'react'
+import ResizableComponent from '../ResizableComponent/ResizableComponent'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { motion } from 'framer-motion'
+import { cva } from 'class-variance-authority'
+import { Currency } from '@nofrixion/moneymoov'
+import { localCurrency } from '../../../utils/constants'
+import MaskedInput from 'react-text-mask'
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+import { cn } from '../../../utils'
 
 export interface InputAmountFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  currency: string;
-  onCurrencyChange: (currency: string) => void;
-  allowCurrencyChange?: boolean;
+  currency: string
+  onCurrencyChange: (currency: string) => void
+  allowCurrencyChange?: boolean
 }
 
 const actionItemClassNames =
-  'group text-sm leading-6 rounded-1 flex items-center relative select-none outline-none cursor-pointer';
+  'group text-sm leading-6 rounded-1 flex items-center relative select-none outline-none cursor-pointer'
 
 const actionItem = cva(actionItemClassNames, {
   variants: {
@@ -28,7 +28,7 @@ const actionItem = cva(actionItemClassNames, {
   defaultVariants: {
     intent: 'neutral',
   },
-});
+})
 const InputAmountField: React.FC<InputAmountFieldProps> = ({
   currency,
   onCurrencyChange,
@@ -36,7 +36,7 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
   allowCurrencyChange = true,
   ...props
 }) => {
-  const [selectedCurrency, setSelectedCurrency] = useState(localCurrency.eur);
+  const [selectedCurrency, setSelectedCurrency] = useState(localCurrency.eur)
 
   const maskOptions = {
     prefix: '',
@@ -49,19 +49,19 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
     integerLimit: 7,
     allowNegative: false,
     allowLeadingZeroes: false,
-  };
+  }
 
   const currencyMask = createNumberMask({
     ...maskOptions,
-  });
+  })
 
   useEffect(() => {
-    setSelectedCurrency(currency === Currency.EUR ? localCurrency.eur : localCurrency.gbp);
-  }, []);
+    setSelectedCurrency(currency === Currency.EUR ? localCurrency.eur : localCurrency.gbp)
+  }, [])
 
   useEffect(() => {
-    onCurrencyChange(selectedCurrency.code);
-  }, [selectedCurrency]);
+    onCurrencyChange(selectedCurrency.code)
+  }, [selectedCurrency])
 
   return (
     <div className="flex w-full h-12 border border-borderGrey rounded justify-between">
@@ -70,17 +70,20 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
           {selectedCurrency.symbol}
         </span>
         <MaskedInput
-          className={cn('block w-full pl-7 rounded font-normal text-sm text-defaultText appearance-none', {
-            'mr-1': allowCurrencyChange,
-            'pr-2 text-right text-xl leading-5 font-semibold': !allowCurrencyChange,
-          })}
+          className={cn(
+            'block w-full pl-7 rounded font-normal text-sm text-defaultText appearance-none',
+            {
+              'mr-1': allowCurrencyChange,
+              'pr-2 text-right text-xl leading-5 font-semibold': !allowCurrencyChange,
+            },
+          )}
           mask={currencyMask}
           inputMode="decimal"
           onChange={(e) => {
-            const masked = e.target.value;
-            e.target.value = e.target.value.replace(/[^\d\.\-]/g, '');
-            onChange && onChange(e);
-            e.target.value = masked;
+            const masked = e.target.value
+            e.target.value = e.target.value.replace(/[^\d\.\-]/g, '')
+            onChange && onChange(e)
+            e.target.value = masked
           }}
           {...props}
         />
@@ -93,7 +96,13 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
                 <span className="mr-2">{selectedCurrency.code}</span>
               </ResizableComponent>
 
-              <svg width="10" height="8" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                width="10"
+                height="8"
+                viewBox="0 0 10 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path d="M1 1.25L5 5.25L9 1.25" strokeLinecap="square" />
               </svg>
             </div>
@@ -107,13 +116,17 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
                 animate={{ opacity: 1, y: 0, scaleX: 1, scaleY: 1 }}
               >
                 <DropdownMenu.Item
-                  className={actionItem({ intent: selectedCurrency === localCurrency.eur ? 'selected' : 'neutral' })}
+                  className={actionItem({
+                    intent: selectedCurrency === localCurrency.eur ? 'selected' : 'neutral',
+                  })}
                   onClick={() => setSelectedCurrency(localCurrency.eur)}
                 >
                   <span>{Currency.EUR}</span>
                 </DropdownMenu.Item>
                 <DropdownMenu.Item
-                  className={actionItem({ intent: selectedCurrency === localCurrency.gbp ? 'selected' : 'neutral' })}
+                  className={actionItem({
+                    intent: selectedCurrency === localCurrency.gbp ? 'selected' : 'neutral',
+                  })}
                   onClick={() => setSelectedCurrency(localCurrency.gbp)}
                 >
                   <span>{Currency.GBP}</span>
@@ -124,7 +137,7 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
         </DropdownMenu.Root>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default InputAmountField;
+export default InputAmountField

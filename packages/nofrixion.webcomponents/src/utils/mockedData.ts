@@ -1,6 +1,10 @@
-import { Currency } from '@nofrixion/moneymoov';
-import { LocalAddressType, LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '../types/LocalEnums';
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../types/LocalTypes';
+import { Currency } from '@nofrixion/moneymoov'
+import {
+  LocalAddressType,
+  LocalPartialPaymentMethods,
+  LocalPaymentMethodTypes,
+} from '../types/LocalEnums'
+import { LocalPaymentAttempt, LocalPaymentRequest } from '../types/LocalTypes'
 
 export const mockTags = [
   {
@@ -23,7 +27,7 @@ export const mockTags = [
     merchantID: '3780263C-5926-4B79-AC84-224D64290DBF',
     name: 'You get the idea',
   },
-];
+]
 
 export const mockMerchantTags = [
   {
@@ -66,7 +70,7 @@ export const mockMerchantTags = [
     merchantID: '3780263C-5926-4B79-AC84-224D64290DBF',
     name: 'A merchant tag 4',
   },
-];
+]
 
 export const mockPaymentAttempts: LocalPaymentAttempt[] = [
   {
@@ -140,7 +144,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     captureAttempts: [],
   },
   // Add more transactions as needed
-];
+]
 
 export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
   {
@@ -168,7 +172,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     captureAttempts: [],
   },
   // Add more transactions as needed
-];
+]
 export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
   {
     attemptKey: 'a3b752d2-c0a6-4846-90e5-d783bb4ec005',
@@ -195,7 +199,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     captureAttempts: [],
   },
   // Add more transactions as needed
-];
+]
 
 const regular: LocalPaymentRequest = {
   id: 'fa14171f-5fe6-4326-8c09-a9b59bbf6e7b',
@@ -234,25 +238,25 @@ const regular: LocalPaymentRequest = {
   productOrService: 'Flight lessons',
   paymentAttempts: mockPaymentAttempts,
   captureFunds: true,
-};
+}
 
 const partiallyPaidPaymentRequest: LocalPaymentRequest = {
   ...regular,
   paymentAttempts: partiallyPaidMockPaymentAttempts,
   status: 'partial',
-};
+}
 
 const unpaidPaymentRequest: LocalPaymentRequest = {
   ...regular,
   paymentAttempts: [],
   status: 'unpaid',
-};
+}
 
 const overpaidPaymentRequest: LocalPaymentRequest = {
   ...regular,
   paymentAttempts: overpaidMockPaymentAttempts,
   status: 'overpaid',
-};
+}
 
 const noShippingAddress: LocalPaymentRequest = {
   id: '5cb6f5c8-ce16-411f-9f55-29fb022bb444',
@@ -278,7 +282,7 @@ const noShippingAddress: LocalPaymentRequest = {
   productOrService: 'Flight lessons',
   paymentAttempts: mockPaymentAttempts,
   captureFunds: true,
-};
+}
 
 const fewPaymentRequests: LocalPaymentRequest[] = [
   {
@@ -369,9 +373,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 2700,
     currency: Currency.GBP,
     tags: [
-      { id: '6', description: 'ecommerce', colourHex: '#FF0000', name: 'ecommerce', merchantID: '1' },
-      { id: '7', description: 'web-development', colourHex: '#00FF00', name: 'web-development', merchantID: '1' },
-      { id: '8', description: 'London-client', colourHex: '#0000FF', name: 'London-client', merchantID: '1' },
+      {
+        id: '6',
+        description: 'ecommerce',
+        colourHex: '#FF0000',
+        name: 'ecommerce',
+        merchantID: '1',
+      },
+      {
+        id: '7',
+        description: 'web-development',
+        colourHex: '#00FF00',
+        name: 'web-development',
+        merchantID: '1',
+      },
+      {
+        id: '8',
+        description: 'London-client',
+        colourHex: '#0000FF',
+        name: 'London-client',
+        merchantID: '1',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -393,9 +415,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 2500,
     currency: Currency.GBP,
     tags: [
-      { id: '9', description: 'web-design', colourHex: '#FF0000', name: 'web-design', merchantID: '1' },
-      { id: '10', description: 'branding', colourHex: '#00FF00', name: 'branding', merchantID: '1' },
-      { id: '11', description: 'London-client', colourHex: '#0000FF', name: 'London-client', merchantID: '1' },
+      {
+        id: '9',
+        description: 'web-design',
+        colourHex: '#FF0000',
+        name: 'web-design',
+        merchantID: '1',
+      },
+      {
+        id: '10',
+        description: 'branding',
+        colourHex: '#00FF00',
+        name: 'branding',
+        merchantID: '1',
+      },
+      {
+        id: '11',
+        description: 'London-client',
+        colourHex: '#0000FF',
+        name: 'London-client',
+        merchantID: '1',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -417,9 +457,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 3000,
     currency: Currency.GBP,
     tags: [
-      { id: '7', description: 'web-development', colourHex: '#FF0000', name: 'web-development', merchantID: '1' },
-      { id: '6', description: 'ecommerce', colourHex: '#00FF00', name: 'ecommerce', merchantID: '1' },
-      { id: '11', description: 'London-client', colourHex: '#0000FF', name: 'London-client', merchantID: '1' },
+      {
+        id: '7',
+        description: 'web-development',
+        colourHex: '#FF0000',
+        name: 'web-development',
+        merchantID: '1',
+      },
+      {
+        id: '6',
+        description: 'ecommerce',
+        colourHex: '#00FF00',
+        name: 'ecommerce',
+        merchantID: '1',
+      },
+      {
+        id: '11',
+        description: 'London-client',
+        colourHex: '#0000FF',
+        name: 'London-client',
+        merchantID: '1',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -441,8 +499,20 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 1500,
     currency: Currency.GBP,
     tags: [
-      { id: '7', description: 'web-development', colourHex: '#FF0000', name: 'web-development', merchantID: '1' },
-      { id: '6', description: 'ecommerce', colourHex: '#00FF00', name: 'ecommerce', merchantID: '1' },
+      {
+        id: '7',
+        description: 'web-development',
+        colourHex: '#FF0000',
+        name: 'web-development',
+        merchantID: '1',
+      },
+      {
+        id: '6',
+        description: 'ecommerce',
+        colourHex: '#00FF00',
+        name: 'ecommerce',
+        merchantID: '1',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -464,9 +534,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 1200,
     currency: Currency.GBP,
     tags: [
-      { id: '12', name: 'SEO', merchantID: '1', colourHex: '#000000', description: 'Search Engine Optimization' },
-      { id: '13', name: 'content-creation', merchantID: '1', colourHex: '#000000', description: 'Content Creation' },
-      { id: '14', name: 'London-client', merchantID: '1', colourHex: '#000000', description: 'London Client' },
+      {
+        id: '12',
+        name: 'SEO',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Search Engine Optimization',
+      },
+      {
+        id: '13',
+        name: 'content-creation',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Content Creation',
+      },
+      {
+        id: '14',
+        name: 'London-client',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'London Client',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -488,9 +576,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 2300,
     currency: Currency.EUR,
     tags: [
-      { id: '15', name: 'web-design', merchantID: '1', colourHex: '#000000', description: 'Web Design' },
-      { id: '16', name: 'responsive-design', merchantID: '1', colourHex: '#000000', description: 'Responsive Design' },
-      { id: '17', name: 'EU-client', merchantID: '1', colourHex: '#000000', description: 'EU Client' },
+      {
+        id: '15',
+        name: 'web-design',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Web Design',
+      },
+      {
+        id: '16',
+        name: 'responsive-design',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Responsive Design',
+      },
+      {
+        id: '17',
+        name: 'EU-client',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'EU Client',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -512,9 +618,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 1000,
     currency: Currency.EUR,
     tags: [
-      { id: '18', name: 'logo-design', merchantID: '1', colourHex: '#000000', description: 'Logo Design' },
-      { id: '19', name: 'branding', merchantID: '1', colourHex: '#000000', description: 'Branding' },
-      { id: '20', name: 'EU-client', merchantID: '1', colourHex: '#000000', description: 'EU Client' },
+      {
+        id: '18',
+        name: 'logo-design',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Logo Design',
+      },
+      {
+        id: '19',
+        name: 'branding',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Branding',
+      },
+      {
+        id: '20',
+        name: 'EU-client',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'EU Client',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -536,9 +660,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 3500,
     currency: Currency.GBP,
     tags: [
-      { id: '21', name: 'UX-design', merchantID: '1', colourHex: '#000000', description: 'UX Design' },
-      { id: '22', name: 'app-development', merchantID: '1', colourHex: '#000000', description: 'App Development' },
-      { id: '23', name: 'London-client', merchantID: '1', colourHex: '#000000', description: 'London Client' },
+      {
+        id: '21',
+        name: 'UX-design',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'UX Design',
+      },
+      {
+        id: '22',
+        name: 'app-development',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'App Development',
+      },
+      {
+        id: '23',
+        name: 'London-client',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'London Client',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -560,9 +702,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 4200,
     currency: Currency.GBP,
     tags: [
-      { id: '24', name: 'web-design', merchantID: '1', colourHex: '#000000', description: 'Web Design' },
-      { id: '25', name: 'branding', merchantID: '1', colourHex: '#000000', description: 'Branding' },
-      { id: '26', name: 'London-client', merchantID: '1', colourHex: '#000000', description: 'London Client' },
+      {
+        id: '24',
+        name: 'web-design',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Web Design',
+      },
+      {
+        id: '25',
+        name: 'branding',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'Branding',
+      },
+      {
+        id: '26',
+        name: 'London-client',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'London Client',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -584,9 +744,27 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     amount: 2200,
     currency: Currency.EUR,
     tags: [
-      { id: '27', name: 'UI-design', merchantID: '1', colourHex: '#000000', description: 'UI Design' },
-      { id: '28', name: 'app-development', merchantID: '1', colourHex: '#000000', description: 'App Development' },
-      { id: '29', name: 'EU-client', merchantID: '1', colourHex: '#000000', description: 'EU Client' },
+      {
+        id: '27',
+        name: 'UI-design',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'UI Design',
+      },
+      {
+        id: '28',
+        name: 'app-development',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'App Development',
+      },
+      {
+        id: '29',
+        name: 'EU-client',
+        merchantID: '1',
+        colourHex: '#000000',
+        description: 'EU Client',
+      },
     ],
     addresses: [],
     partialPaymentMethod: LocalPartialPaymentMethods.None,
@@ -597,7 +775,7 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     productOrService: '',
     captureFunds: true,
   },
-];
+]
 
 export default {
   fewPaymentRequests,
@@ -609,4 +787,4 @@ export default {
     overpaidPaymentRequest,
   },
   merchantTags: mockMerchantTags,
-};
+}

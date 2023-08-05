@@ -1,6 +1,6 @@
-import { cva, VariantProps } from 'class-variance-authority';
-import { cn } from '../../../../utils';
-import { Icon } from '../../../ui/atoms/Icon/Icon';
+import { cva, VariantProps } from 'class-variance-authority'
+import { cn } from '../../../../utils'
+import { Icon } from '../../../ui/atoms/Icon/Icon'
 
 const buttonVariants = cva(
   'rounded-full inline-flex items-center justify-center whitespace-nowrap align-middle cursor-pointer transition w-full disabled:opacity-20 disabled:cursor-not-allowed',
@@ -10,7 +10,12 @@ const buttonVariants = cva(
         primary: ['bg-primaryGreen', 'text-white', 'hover:bg-primaryGreenHover', 'stroke:white'],
         primaryDark: ['bg-[#006A80]', 'text-white', 'hover:bg-[#144752]', 'stroke:white'],
         secondary: ['bg-secondaryButton', 'text-default-text', 'hover:bg-secondaryButtonHover'],
-        tertiary: ['border', 'border-borderGrey', 'hover:border-borderGreyHighlighted', 'text-default-text'],
+        tertiary: [
+          'border',
+          'border-borderGrey',
+          'hover:border-borderGreyHighlighted',
+          'text-default-text',
+        ],
         text: ['text-greyText', 'hover:text-greyTextHover'],
       },
       size: {
@@ -25,7 +30,7 @@ const buttonVariants = cva(
       size: 'big',
     },
   },
-);
+)
 
 const arrow = cva('w-full h-full', {
   variants: {
@@ -40,7 +45,7 @@ const arrow = cva('w-full h-full', {
   defaultVariants: {
     variant: 'primary',
   },
-});
+})
 
 const arrowContainer = cva('', {
   variants: {
@@ -54,16 +59,24 @@ const arrowContainer = cva('', {
   defaultVariants: {
     size: 'big',
   },
-});
+})
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  previousArrow?: boolean;
-  nextArrow?: boolean;
+  previousArrow?: boolean
+  nextArrow?: boolean
 }
 
-const Button: React.FC<ButtonProps> = ({ variant, size, previousArrow, nextArrow, className, children, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  variant,
+  size,
+  previousArrow,
+  nextArrow,
+  className,
+  children,
+  ...props
+}) => {
   return (
     <button className={cn(buttonVariants({ variant, size }), className)} {...props}>
       {previousArrow && (
@@ -80,9 +93,9 @@ const Button: React.FC<ButtonProps> = ({ variant, size, previousArrow, nextArrow
         </div>
       )}
     </button>
-  );
-};
+  )
+}
 
-Button.displayName = 'Button';
+Button.displayName = 'Button'
 
-export { Button };
+export { Button }

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 const parseHighlightedText = (text: string) => {
-  const boldRegex = /\*(.*?)\*/g;
-  const parts = text.split(boldRegex); // split description into an array of strings and bold text
+  const boldRegex = /\*(.*?)\*/g
+  const parts = text.split(boldRegex) // split description into an array of strings and bold text
 
   return parts.map((part, index) => {
     if (index % 2) {
@@ -11,13 +11,13 @@ const parseHighlightedText = (text: string) => {
         <span key={index} className="text-default-text">
           {part}
         </span>
-      );
+      )
     } else {
       // otherwise, return the regular text
-      return <React.Fragment key={index}>{part}</React.Fragment>;
+      return <React.Fragment key={index}>{part}</React.Fragment>
     }
-  });
-};
+  })
+}
 
 const formatEmailAddressesForSummary = (emailAddresses: string) => {
   return parseHighlightedText(
@@ -25,26 +25,30 @@ const formatEmailAddressesForSummary = (emailAddresses: string) => {
       emailAddresses
         ?.split(',')
         .map((email) => {
-          return `*${email.trim()}*`;
+          return `*${email.trim()}*`
         })
         .join(', ')
         .split(','),
     ),
-  );
-};
+  )
+}
 
 const formatSentenceFromList = (list: string[]) => {
   if (list.length === 1) {
-    return list[0];
+    return list[0]
   }
 
   if (list.length === 2) {
-    return `${list[0]} and ${list[1]}`;
+    return `${list[0]} and ${list[1]}`
   }
 
-  const lastItem = list.pop();
+  const lastItem = list.pop()
 
-  return `${list.join(', ')}, and ${lastItem}`;
-};
+  return `${list.join(', ')}, and ${lastItem}`
+}
 
-export { parseHighlightedText as parseBoldText, formatEmailAddressesForSummary, formatSentenceFromList };
+export {
+  parseHighlightedText as parseBoldText,
+  formatEmailAddressesForSummary,
+  formatSentenceFromList,
+}

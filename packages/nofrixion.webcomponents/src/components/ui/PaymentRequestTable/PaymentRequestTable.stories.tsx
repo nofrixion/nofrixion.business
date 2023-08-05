@@ -1,10 +1,10 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React from 'react'
+import { StoryFn, Meta } from '@storybook/react'
 
-import PaymentRequestTable from './PaymentRequestTable';
-import { LocalPaymentRequest } from '../../../types/LocalTypes';
-import { Currency } from '@nofrixion/moneymoov';
-import mockedData from '../../../utils/mockedData';
+import PaymentRequestTable from './PaymentRequestTable'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { Currency } from '@nofrixion/moneymoov'
+import mockedData from '../../../utils/mockedData'
 
 const tags = [
   {
@@ -28,7 +28,7 @@ const tags = [
     colourHex: '#0000FF',
     description: 'This is a third tag',
   },
-];
+]
 
 export default {
   title: 'UI/Payment Request Table',
@@ -69,38 +69,38 @@ export default {
       action: 'Create Payment Request Clicked',
     },
   },
-} as Meta<typeof PaymentRequestTable>;
+} as Meta<typeof PaymentRequestTable>
 
-const Template: StoryFn<typeof PaymentRequestTable> = (args) => <PaymentRequestTable {...args} />;
+const Template: StoryFn<typeof PaymentRequestTable> = (args) => <PaymentRequestTable {...args} />
 
-const paymentRequests: LocalPaymentRequest[] = mockedData.fewPaymentRequests;
+const paymentRequests: LocalPaymentRequest[] = mockedData.fewPaymentRequests
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   paymentRequests: paymentRequests,
   pageSize: 5,
   totalRecords: 12,
-};
+}
 
-export const Loading = Template.bind({});
+export const Loading = Template.bind({})
 Loading.args = {
   paymentRequests: [],
   pageSize: 5,
   totalRecords: 12,
   isLoading: true,
-};
+}
 
-export const Empty = Template.bind({});
+export const Empty = Template.bind({})
 Empty.args = {
   paymentRequests: [],
   pageSize: 5,
   totalRecords: 12,
-};
+}
 
-export const InitialState = Template.bind({});
+export const InitialState = Template.bind({})
 InitialState.args = {
   paymentRequests: [],
   pageSize: 5,
   totalRecords: 0,
   isEmpty: true,
-};
+}

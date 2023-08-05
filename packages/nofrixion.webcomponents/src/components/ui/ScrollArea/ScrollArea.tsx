@@ -1,9 +1,9 @@
-import * as RadixScrollArea from '@radix-ui/react-scroll-area';
-import classNames from 'classnames';
+import * as RadixScrollArea from '@radix-ui/react-scroll-area'
+import classNames from 'classnames'
 
 interface ScrollAreaProps {
-  children: React.ReactNode;
-  hideScrollbar?: boolean;
+  children: React.ReactNode
+  hideScrollbar?: boolean
 }
 
 const ScrollArea: React.FC<ScrollAreaProps> = ({ children, hideScrollbar = false }) => {
@@ -20,7 +20,7 @@ const ScrollArea: React.FC<ScrollAreaProps> = ({ children, hideScrollbar = false
         <RadixScrollArea.Thumb className="flex-1 bg-gray-300" />
       </RadixScrollArea.Scrollbar>
     </RadixScrollArea.Root>
-  );
-};
+  )
+}
 
-export default ScrollArea;
+export default ScrollArea

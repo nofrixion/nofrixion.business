@@ -1,7 +1,7 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React from 'react'
+import { StoryFn, Meta } from '@storybook/react'
 
-import PaymentRequestActionMenu from './PaymentRequestActionMenu';
+import PaymentRequestActionMenu from './PaymentRequestActionMenu'
 
 export default {
   title: 'UI/Payment Request Row Action Menu',
@@ -17,9 +17,11 @@ export default {
       action: 'Delete selected',
     },
   },
-} as Meta<typeof PaymentRequestActionMenu>;
+} as Meta<typeof PaymentRequestActionMenu>
 
-const Template: StoryFn<typeof PaymentRequestActionMenu> = (args) => <PaymentRequestActionMenu {...args} />;
+const Template: StoryFn<typeof PaymentRequestActionMenu> = (args) => (
+  <PaymentRequestActionMenu {...args} />
+)
 
-export const ActionMenuTemplate = Template.bind({});
-ActionMenuTemplate.args = {};
+export const ActionMenuTemplate = Template.bind({})
+ActionMenuTemplate.args = {}

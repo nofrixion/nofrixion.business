@@ -1,8 +1,8 @@
-﻿import React from 'react';
-import { Meta, StoryFn } from '@storybook/react';
-import CaptureModal, { CaptureModalProps } from './CaptureModal';
-import { action } from '@storybook/addon-actions';
-import { Currency } from '@nofrixion/moneymoov';
+﻿import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
+import CaptureModal, { CaptureModalProps } from './CaptureModal'
+import { action } from '@storybook/addon-actions'
+import { Currency } from '@nofrixion/moneymoov'
 
 const meta: Meta<typeof CaptureModal> = {
   title: 'UI/Capture Modal',
@@ -18,13 +18,13 @@ const meta: Meta<typeof CaptureModal> = {
     transactionDate: { control: { type: 'date' } },
     contactName: { control: { type: 'text' } },
   },
-};
+}
 
 const Template: StoryFn<CaptureModalProps> = (args) => {
-  return <CaptureModal {...args} />;
-};
+  return <CaptureModal {...args} />
+}
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 
 Showcase.args = {
   initialAmount: '1222.99',
@@ -32,9 +32,9 @@ Showcase.args = {
   onDismiss: action('Dismissed'),
   transactionDate: new Date(),
   maxCapturableAmount: 1222.99,
-};
+}
 
-export const GBPInput = Template.bind({});
+export const GBPInput = Template.bind({})
 
 GBPInput.args = {
   initialAmount: '27.5',
@@ -42,6 +42,6 @@ GBPInput.args = {
   onDismiss: action('Dismissed'),
   transactionDate: new Date(),
   maxCapturableAmount: 27.5,
-};
+}
 
-export default meta;
+export default meta

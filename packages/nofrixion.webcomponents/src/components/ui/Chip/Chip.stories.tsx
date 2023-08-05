@@ -1,7 +1,7 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React from 'react'
+import { StoryFn, Meta } from '@storybook/react'
 
-import Chip from './Chip';
+import Chip from './Chip'
 
 export default {
   title: 'UI/Chip',
@@ -9,19 +9,19 @@ export default {
   argTypes: {
     label: { control: 'text' },
   },
-} as Meta<typeof Chip>;
+} as Meta<typeof Chip>
 
-const Template: StoryFn<typeof Chip> = (args) => <Chip {...args} />;
+const Template: StoryFn<typeof Chip> = (args) => <Chip {...args} />
 
-export const Regular = Template.bind({});
+export const Regular = Template.bind({})
 Regular.args = {
   label: 'Tag 1',
-};
+}
 
-export const RowOfTags = Template.bind({});
+export const RowOfTags = Template.bind({})
 RowOfTags.argTypes = {
   label: { control: { disable: true } },
-};
+}
 
 RowOfTags.decorators = [
   () => (
@@ -31,4 +31,4 @@ RowOfTags.decorators = [
       <Chip {...(RowOfTags.args, { label: 'Third tag' })} />
     </div>
   ),
-];
+]

@@ -1,12 +1,12 @@
-import { resolve } from 'path';
-import path from 'node:path';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import banner from 'vite-plugin-banner';
-import { vitePlugin as utwm } from 'unplugin-tailwindcss-mangle';
+import { resolve } from 'path'
+import path from 'node:path'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import banner from 'vite-plugin-banner'
+import { vitePlugin as utwm } from 'unplugin-tailwindcss-mangle'
 
-const builtClassesPrefix = 'nf-wc-';
+const builtClassesPrefix = 'nf-wc-'
 
 export default defineConfig({
   plugins: [
@@ -15,7 +15,7 @@ export default defineConfig({
       classGenerator: {
         classPrefix: builtClassesPrefix,
         customGenerate: (original, options) => {
-          return options.classPrefix + original;
+          return options.classPrefix + original
         },
       },
     }),
@@ -38,4 +38,4 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
-});
+})

@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from 'react'
 
 interface BackArrowProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  intent?: 'back' | 'close';
+  intent?: 'back' | 'close'
 }
 
 const BackArrow: React.FC<BackArrowProps> = ({ intent = 'close', ...props }) => {
@@ -20,9 +20,21 @@ const BackArrow: React.FC<BackArrowProps> = ({ intent = 'close', ...props }) => 
           <path d="M1 11.082H25" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ) : (
-        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="24"
+          height="22"
+          viewBox="0 0 24 22"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <g id="Close Button">
-            <path id="Vector 11" d="M22 21L12 11L22 1" stroke="#ABB3BA" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              id="Vector 11"
+              d="M22 21L12 11L22 1"
+              stroke="#ABB3BA"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
             <path
               id="Vector 15"
               d="M2 0.999999L12 11L2 21"
@@ -34,7 +46,7 @@ const BackArrow: React.FC<BackArrowProps> = ({ intent = 'close', ...props }) => 
         </svg>
       )}
     </button>
-  );
-};
+  )
+}
 
-export default BackArrow;
+export default BackArrow

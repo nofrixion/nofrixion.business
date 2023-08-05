@@ -1,18 +1,20 @@
-import PaymentMethodIcon from '../utils/PaymentMethodIcon';
-import { format } from 'date-fns';
-import { LocalPaymentRequest } from '../../../types/LocalTypes';
-import { LocalAddressType, LocalPaymentMethodTypes } from '../../../types/LocalEnums';
+import PaymentMethodIcon from '../utils/PaymentMethodIcon'
+import { format } from 'date-fns'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { LocalAddressType, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 
 interface PaymentInfoRowProps {
-  label: string;
-  content?: (string | undefined)[];
-  children?: React.ReactNode;
+  label: string
+  content?: (string | undefined)[]
+  children?: React.ReactNode
 }
 
 const PaymentInfoRow: React.FC<PaymentInfoRowProps> = ({ label, content, children }) => {
   return (
     <div className="text-sm/6 lg:flex">
-      <span className="text-greyText font-medium lg:font-normal mb-1 lg:w-36 mr-4 block">{label}</span>
+      <span className="text-greyText font-medium lg:font-normal mb-1 lg:w-36 mr-4 block">
+        {label}
+      </span>
 
       {!children && content && content.length > 0 && (
         <div className="flex flex-col">
@@ -26,27 +28,29 @@ const PaymentInfoRow: React.FC<PaymentInfoRowProps> = ({ label, content, childre
 
       {children}
     </div>
-  );
-};
+  )
+}
 
 interface PaymentInfoProps extends LocalPaymentRequest {}
 
 const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentInfoProps) => {
   // Parsed date should follow the following format: Dec 22nd, 2022
-  const formattedDate = format(createdAt, 'MMM do, yyyy');
+  const formattedDate = format(createdAt, 'MMM do, yyyy')
 
-  const paymentMethods = paymentMethodTypes;
+  const paymentMethods = paymentMethodTypes
 
-  const isBankEnabled = paymentMethods.includes(LocalPaymentMethodTypes.Pisp);
-  const isCardEnabled = paymentMethods.includes(LocalPaymentMethodTypes.Card);
+  const isBankEnabled = paymentMethods.includes(LocalPaymentMethodTypes.Pisp)
+  const isCardEnabled = paymentMethods.includes(LocalPaymentMethodTypes.Card)
   const isWalletEnabled =
     paymentMethods.includes(LocalPaymentMethodTypes.ApplePay) ||
-    paymentMethods.includes(LocalPaymentMethodTypes.GooglePay);
-  const isLightningEnabled = paymentMethods.includes(LocalPaymentMethodTypes.Lightning);
+    paymentMethods.includes(LocalPaymentMethodTypes.GooglePay)
+  const isLightningEnabled = paymentMethods.includes(LocalPaymentMethodTypes.Lightning)
 
-  const shippingAddresses = addresses?.filter((address) => address.addressType === LocalAddressType.Shipping);
+  const shippingAddresses = addresses?.filter(
+    (address) => address.addressType === LocalAddressType.Shipping,
+  )
 
-  const shippingAddress = shippingAddresses?.length > 0 ? shippingAddresses[0] : undefined;
+  const shippingAddress = shippingAddresses?.length > 0 ? shippingAddresses[0] : undefined
 
   return (
     <div className="space-y-5 lg:space-y-6">
@@ -99,7 +103,7 @@ const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentIn
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default PaymentInfo;
+export default PaymentInfo

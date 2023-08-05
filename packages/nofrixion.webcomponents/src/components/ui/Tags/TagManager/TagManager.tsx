@@ -1,41 +1,41 @@
-import { useState } from 'react';
-import { LocalTag } from '../../../../types/LocalTypes';
-import AddTag from '../AddTag/AddTag';
-import Tag from '../Tag/Tag';
-import { AnimatePresence } from 'framer-motion';
+import { useState } from 'react'
+import { LocalTag } from '../../../../types/LocalTypes'
+import AddTag from '../AddTag/AddTag'
+import Tag from '../Tag/Tag'
+import { AnimatePresence } from 'framer-motion'
 
 interface TagManagerProps {
-  tags: LocalTag[];
-  availableTags: LocalTag[];
-  onDeleted: (id: string) => void;
-  onAdded: (tag: LocalTag) => void;
-  onCreated: (tag: LocalTag) => void;
+  tags: LocalTag[]
+  availableTags: LocalTag[]
+  onDeleted: (id: string) => void
+  onAdded: (tag: LocalTag) => void
+  onCreated: (tag: LocalTag) => void
 }
 
 const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagManagerProps) => {
-  const [tagsArray, setTagsArray] = useState(tags);
+  const [tagsArray, setTagsArray] = useState(tags)
 
   const handleDelete = (id: string) => {
-    setTagsArray(tagsArray.filter((item) => item.id !== id));
+    setTagsArray(tagsArray.filter((item) => item.id !== id))
 
-    onDeleted(id);
-  };
+    onDeleted(id)
+  }
 
   const handleTagAdded = (tag: LocalTag) => {
-    var index = tagsArray.findIndex((item) => item.name === tag.name);
+    var index = tagsArray.findIndex((item) => item.name === tag.name)
 
-    setTagsArray([...tagsArray, tag]);
+    setTagsArray([...tagsArray, tag])
 
     if (index === -1) {
-      onAdded(tag);
+      onAdded(tag)
     }
-  };
+  }
 
   const handleTagCreated = (tag: LocalTag) => {
-    setTagsArray([...tagsArray, tag]);
+    setTagsArray([...tagsArray, tag])
 
-    onCreated(tag);
-  };
+    onCreated(tag)
+  }
 
   return (
     <div className="flex flex-wrap w-auto gap-x-2 gap-y-2">
@@ -52,7 +52,7 @@ const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagM
         />
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
 
-export default TagManager;
+export default TagManager

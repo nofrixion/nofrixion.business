@@ -1,6 +1,6 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import AddTag from './AddTag';
+import AddTag from './AddTag'
 
 export default {
   title: 'UI/Tags/AddTag',
@@ -10,11 +10,11 @@ export default {
     label: { control: { disable: true } },
     onTagAdded: { action: 'Tag added' },
   },
-} as Meta<typeof AddTag>;
+} as Meta<typeof AddTag>
 
-const Template: StoryFn<typeof AddTag> = (args) => <AddTag {...args} />;
+const Template: StoryFn<typeof AddTag> = (args) => <AddTag {...args} />
 
-export const Regular = Template.bind({});
+export const Regular = Template.bind({})
 Regular.args = {
   availableTags: [
     {
@@ -63,4 +63,4 @@ Regular.args = {
       name: 'C tag 3',
     },
   ],
-};
+}

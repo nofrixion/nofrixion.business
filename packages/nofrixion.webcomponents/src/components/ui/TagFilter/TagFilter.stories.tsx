@@ -1,11 +1,11 @@
-﻿import TagFilter, { FilterableTag } from './TagFilter';
-import { Meta, StoryFn } from '@storybook/react';
-import React, { useState } from 'react';
+﻿import TagFilter, { FilterableTag } from './TagFilter'
+import { Meta, StoryFn } from '@storybook/react'
+import React, { useState } from 'react'
 
 export default {
   title: 'UI/Tag Filter',
   component: TagFilter,
-} as Meta<typeof TagFilter>;
+} as Meta<typeof TagFilter>
 
 const Template: StoryFn<typeof TagFilter> = (args) => {
   const [localTags, setLocalTags] = React.useState<FilterableTag[]>([
@@ -59,9 +59,9 @@ const Template: StoryFn<typeof TagFilter> = (args) => {
       label: 'Another tag',
       isSelected: false,
     },
-  ]);
-  return <TagFilter tags={localTags} setTags={setLocalTags} />;
-};
+  ])
+  return <TagFilter tags={localTags} setTags={setLocalTags} />
+}
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = Template.bind({})
+Default.args = {}

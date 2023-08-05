@@ -3,12 +3,12 @@ export const apiUrls = {
   dev: 'https://api-dev.nofrixion.com/api/v1',
   sandbox: 'https://api-sandbox.nofrixion.com/api/v1',
   production: 'https://api.nofrixion.com/api/v1',
-};
+}
 
 export const localCurrency = {
   gbp: { code: 'GBP', symbol: '£' },
   eur: { code: 'EUR', symbol: '€' },
-};
+}
 
 export const defaultUserPaymentDefaults = {
   paymentMethodsDefaults: {
@@ -26,6 +26,6 @@ export const defaultUserPaymentDefaults = {
   notificationEmailsDefaults: {
     emailAddresses: '',
   },
-};
+}
 
-export const defaultAnonymousUserName = 'Anonymous';
+export const defaultAnonymousUserName = 'Anonymous'

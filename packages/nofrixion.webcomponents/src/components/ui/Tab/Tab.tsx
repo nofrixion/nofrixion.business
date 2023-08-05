@@ -1,13 +1,13 @@
-import * as Tabs from '@radix-ui/react-tabs';
-import { PaymentRequestStatus } from '@nofrixion/moneymoov';
-import classNames from 'classnames';
+import * as Tabs from '@radix-ui/react-tabs'
+import { PaymentRequestStatus } from '@nofrixion/moneymoov'
+import classNames from 'classnames'
 
 export interface TabProps {
-  status: PaymentRequestStatus;
-  totalRecords: number;
-  isLoading?: boolean;
-  totalAmountInEuros?: number;
-  totalAmountInPounds?: number;
+  status: PaymentRequestStatus
+  totalRecords: number
+  isLoading?: boolean
+  totalAmountInEuros?: number
+  totalAmountInPounds?: number
 }
 
 const getSpecificStatusClasses = (status: PaymentRequestStatus) => {
@@ -15,25 +15,27 @@ const getSpecificStatusClasses = (status: PaymentRequestStatus) => {
     "fill-[#ABB2BA] data-[state='active']:border-[#73808C]":
       status === PaymentRequestStatus.None || status === PaymentRequestStatus.Authorized,
     "fill-[#ABB2BA] data-[state='active']:border-[#40BFBF]": status === PaymentRequestStatus.All,
-    "fill-[#E88C30] data-[state='active']:border-[#E88C30]": status === PaymentRequestStatus.PartiallyPaid,
-    "fill-[#00CC88] data-[state='active']:border-[#29A37A]": status === PaymentRequestStatus.FullyPaid,
-  });
-};
+    "fill-[#E88C30] data-[state='active']:border-[#E88C30]":
+      status === PaymentRequestStatus.PartiallyPaid,
+    "fill-[#00CC88] data-[state='active']:border-[#29A37A]":
+      status === PaymentRequestStatus.FullyPaid,
+  })
+}
 
 const getDisplayTextForStatus = (status: PaymentRequestStatus) => {
   switch (status) {
     case PaymentRequestStatus.PartiallyPaid:
-      return 'Partially paid';
+      return 'Partially paid'
     case PaymentRequestStatus.FullyPaid:
-      return 'Paid';
+      return 'Paid'
     case PaymentRequestStatus.None:
-      return 'Unpaid';
+      return 'Unpaid'
     case PaymentRequestStatus.Authorized:
-      return 'Authorized';
+      return 'Authorized'
     default:
-      return 'All';
+      return 'All'
   }
-};
+}
 
 const showIndicator = (status: PaymentRequestStatus) => {
   switch (status) {
@@ -41,17 +43,23 @@ const showIndicator = (status: PaymentRequestStatus) => {
     case PaymentRequestStatus.PartiallyPaid:
     case PaymentRequestStatus.FullyPaid:
     case PaymentRequestStatus.Authorized:
-      return true;
+      return true
     default:
-      return false;
+      return false
   }
-};
+}
 
-const Tab = ({ status, totalRecords, isLoading = false, totalAmountInEuros, totalAmountInPounds }: TabProps) => {
+const Tab = ({
+  status,
+  totalRecords,
+  isLoading = false,
+  totalAmountInEuros,
+  totalAmountInPounds,
+}: TabProps) => {
   let formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  });
+  })
 
   return (
     <Tabs.Trigger
@@ -64,7 +72,13 @@ const Tab = ({ status, totalRecords, isLoading = false, totalAmountInEuros, tota
       <span className="text-sm/6 font-normal flex items-center mb-2 leading-6">
         {showIndicator(status) && (
           <div className="items-center whitespace-nowrap inline-block mr-1.5">
-            <svg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg" className="fill-inherit">
+            <svg
+              width="6"
+              height="6"
+              viewBox="0 0 6 6"
+              xmlns="http://www.w3.org/2000/svg"
+              className="fill-inherit"
+            >
               <circle cx="3" cy="3" r="3" />
             </svg>
           </div>
@@ -86,9 +100,12 @@ const Tab = ({ status, totalRecords, isLoading = false, totalAmountInEuros, tota
         </div>
         <div>
           <span
-            className={classNames('block text-[1.75rem]/6 font-medium truncate leading-6 lg:leading-[48px]', {
-              invisible: isLoading,
-            })}
+            className={classNames(
+              'block text-[1.75rem]/6 font-medium truncate leading-6 lg:leading-[48px]',
+              {
+                invisible: isLoading,
+              },
+            )}
           >
             {totalRecords}
           </span>
@@ -115,7 +132,7 @@ const Tab = ({ status, totalRecords, isLoading = false, totalAmountInEuros, tota
         </div>
       </div>
     </Tabs.Trigger>
-  );
-};
+  )
+}
 
-export default Tab;
+export default Tab

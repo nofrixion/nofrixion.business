@@ -1,18 +1,18 @@
-import * as RadixCheckbox from '@radix-ui/react-checkbox';
-import CheckedIcon from '../../../assets/icons/checked-icon.svg';
-import { useId } from 'react';
-import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import * as RadixCheckbox from '@radix-ui/react-checkbox'
+import CheckedIcon from '../../../assets/icons/checked-icon.svg'
+import { useId } from 'react'
+import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 interface CheckboxProps {
-  label: string;
-  description?: string;
-  infoText?: string;
-  value: boolean;
-  onChange: (value: boolean) => void;
+  label: string
+  description?: string
+  infoText?: string
+  value: boolean
+  onChange: (value: boolean) => void
 }
 
 const Checkbox = ({ label, description, value, infoText, onChange }: CheckboxProps) => {
-  const id = useId();
+  const id = useId()
 
   return (
     <div className="flex md:items-center select-none cursor-pointer text-sm w-fit">
@@ -35,7 +35,7 @@ const Checkbox = ({ label, description, value, infoText, onChange }: CheckboxPro
 
       {infoText && <InfoTooltip content={infoText} />}
     </div>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox

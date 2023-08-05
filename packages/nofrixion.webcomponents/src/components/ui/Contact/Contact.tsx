@@ -1,6 +1,6 @@
-import { VariantProps, cva } from 'class-variance-authority';
-import { LocalContact } from '../../../types/LocalTypes';
-import { defaultAnonymousUserName } from '../../../utils/constants';
+import { VariantProps, cva } from 'class-variance-authority'
+import { LocalContact } from '../../../types/LocalTypes'
+import { defaultAnonymousUserName } from '../../../utils/constants'
 
 const nameVariants = cva('', {
   variants: {
@@ -12,7 +12,7 @@ const nameVariants = cva('', {
   defaultVariants: {
     size: 'small',
   },
-});
+})
 
 const emailVariants = cva('text-greyText', {
   variants: {
@@ -24,10 +24,10 @@ const emailVariants = cva('text-greyText', {
   defaultVariants: {
     size: 'small',
   },
-});
+})
 
 interface ContactProps extends LocalContact {
-  size?: VariantProps<typeof nameVariants>['size'];
+  size?: VariantProps<typeof nameVariants>['size']
 }
 
 const Contact = ({ name, email, size = 'small' }: ContactProps) => {
@@ -36,7 +36,7 @@ const Contact = ({ name, email, size = 'small' }: ContactProps) => {
       <span className={nameVariants({ size: size })}>{name ?? defaultAnonymousUserName}</span>
       {email && <span className={emailVariants({ size: size })}>{email}</span>}
     </div>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

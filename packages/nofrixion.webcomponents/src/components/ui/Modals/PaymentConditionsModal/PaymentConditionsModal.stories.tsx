@@ -1,6 +1,6 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import PaymentConditionsModal from './PaymentConditionsModal';
+import PaymentConditionsModal from './PaymentConditionsModal'
 
 export default {
   title: 'UI/Payment Conditions Modal',
@@ -10,11 +10,13 @@ export default {
       action: 'Apply',
     },
   },
-} as Meta<typeof PaymentConditionsModal>;
+} as Meta<typeof PaymentConditionsModal>
 
-const Template: StoryFn<typeof PaymentConditionsModal> = (args) => <PaymentConditionsModal {...args} />;
+const Template: StoryFn<typeof PaymentConditionsModal> = (args) => (
+  <PaymentConditionsModal {...args} />
+)
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   open: true,
-};
+}

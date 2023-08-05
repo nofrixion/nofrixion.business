@@ -1,40 +1,53 @@
-import React, { useId, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import React, { useId, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
 export interface InputTextAreaFieldProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
-  label: string;
-  required?: boolean;
-  maxLength?: number;
-  validation?: (value: string) => string | undefined;
-  enableQuickValidation?: boolean; // If enabled, the validation will be done on every change, not only after blur
-  error?: string;
+  label: string
+  required?: boolean
+  maxLength?: number
+  validation?: (value: string) => string | undefined
+  enableQuickValidation?: boolean // If enabled, the validation will be done on every change, not only after blur
+  error?: string
 }
 const InputTextAreaField = React.forwardRef<HTMLTextAreaElement, InputTextAreaFieldProps>(
-  ({ label, onChange, onBlur, validation, enableQuickValidation, value, required, maxLength, ...props }, ref) => {
-    const textId = useId();
+  (
+    {
+      label,
+      onChange,
+      onBlur,
+      validation,
+      enableQuickValidation,
+      value,
+      required,
+      maxLength,
+      ...props
+    },
+    ref,
+  ) => {
+    const textId = useId()
 
-    const [error, setError] = useState<string>();
+    const [error, setError] = useState<string>()
 
     const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange && onChange(e);
+      onChange && onChange(e)
 
       if (!validation || (!enableQuickValidation && !error)) {
-        return;
+        return
       }
 
-      setError(validation(e.target.value));
-    };
+      setError(validation(e.target.value))
+    }
 
     const handleOnBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      onBlur && onBlur(e);
+      onBlur && onBlur(e)
 
       if (!validation) {
-        return;
+        return
       }
 
-      setError(validation(e.target.value));
-    };
+      setError(validation(e.target.value))
+    }
 
     return (
       <div>
@@ -44,7 +57,9 @@ const InputTextAreaField = React.forwardRef<HTMLTextAreaElement, InputTextAreaFi
               {label}
             </label>
 
-            {required && <div className="text-greyText font-normal text-xs leading-4">REQUIRED</div>}
+            {required && (
+              <div className="text-greyText font-normal text-xs leading-4">REQUIRED</div>
+            )}
           </div>
           <textarea
             id={textId}
@@ -70,8 +85,8 @@ const InputTextAreaField = React.forwardRef<HTMLTextAreaElement, InputTextAreaFi
           )}
         </AnimatePresence>
       </div>
-    );
+    )
   },
-);
+)
 
-export default InputTextAreaField;
+export default InputTextAreaField

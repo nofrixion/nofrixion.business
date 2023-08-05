@@ -1,6 +1,6 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import { Status } from '@/components/ui/molecules';
+import { Status } from '@/components/ui/molecules'
 
 export default {
   title: 'Molecules/Status',
@@ -16,11 +16,11 @@ export default {
       },
     },
   },
-} as Meta<typeof Status>;
+} as Meta<typeof Status>
 
-const Template: StoryFn<typeof Status> = (args) => <Status {...args} />;
+const Template: StoryFn<typeof Status> = (args) => <Status {...args} />
 
-export const Paid = Template.bind({});
+export const Paid = Template.bind({})
 Paid.args = {
   variant: 'paid',
-};
+}

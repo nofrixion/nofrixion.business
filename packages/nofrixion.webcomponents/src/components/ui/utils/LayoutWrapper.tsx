@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion';
-import React from 'react';
+import { motion } from 'framer-motion'
+import React from 'react'
 
 interface LayoutWrapperProps {
-  children: React.ReactNode;
-  className?: string;
-  animateOnExit?: boolean;
-  layout?: boolean | 'position' | 'size' | 'preserve-aspect';
-  duration?: number;
-  delay?: number;
+  children: React.ReactNode
+  className?: string
+  animateOnExit?: boolean
+  layout?: boolean | 'position' | 'size' | 'preserve-aspect'
+  duration?: number
+  delay?: number
 }
 
 const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
@@ -33,6 +33,6 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
   >
     {children}
   </motion.div>
-);
+)
 
-export default LayoutWrapper;
+export default LayoutWrapper

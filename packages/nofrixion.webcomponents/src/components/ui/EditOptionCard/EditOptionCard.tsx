@@ -1,23 +1,30 @@
-import { parseBoldText } from '../../../utils/uiFormaters';
+import { parseBoldText } from '../../../utils/uiFormaters'
 
-import EditIcon from '../../../assets/icons/edit-icon.svg';
-import classNames from 'classnames';
+import EditIcon from '../../../assets/icons/edit-icon.svg'
+import classNames from 'classnames'
 
 interface EditOptionCardProps {
-  label: string;
-  values?: string[];
-  details?: string[];
-  onClick?: () => void;
-  children?: React.ReactNode;
-  isLoading: boolean;
+  label: string
+  values?: string[]
+  details?: string[]
+  onClick?: () => void
+  children?: React.ReactNode
+  isLoading: boolean
 }
 
-const EditOptionCard = ({ label, values, details, onClick, children, isLoading }: EditOptionCardProps) => {
+const EditOptionCard = ({
+  label,
+  values,
+  details,
+  onClick,
+  children,
+  isLoading,
+}: EditOptionCardProps) => {
   const handleOnClick = () => {
     if (!isLoading) {
-      onClick && onClick();
+      onClick && onClick()
     }
-  };
+  }
   return (
     <button
       className={classNames(
@@ -55,7 +62,7 @@ const EditOptionCard = ({ label, values, details, onClick, children, isLoading }
                   <span className="truncate" key={`value-${index}`}>
                     {value}
                   </span>
-                );
+                )
               })}
             {children}
           </div>
@@ -64,12 +71,12 @@ const EditOptionCard = ({ label, values, details, onClick, children, isLoading }
       {!isLoading && details && details.length > 0 && (
         <div className="flex flex-col mt-2 text-greyText text-xs md:ml-auto">
           {details?.map((detail, index) => {
-            return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>;
+            return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>
           })}
         </div>
       )}
     </button>
-  );
-};
+  )
+}
 
-export default EditOptionCard;
+export default EditOptionCard

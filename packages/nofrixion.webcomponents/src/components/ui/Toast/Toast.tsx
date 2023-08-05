@@ -1,25 +1,25 @@
-﻿import { toast, ToastContainer, Slide, CloseButtonProps } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
-import closeIcon from '../../../assets/images/nf_close.svg';
+﻿import { toast, ToastContainer, Slide, CloseButtonProps } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
+import closeIcon from '../../../assets/images/nf_close.svg'
 
 interface ToastProps {
-  positionY: 'top' | 'bottom';
-  positionX: 'left' | 'center' | 'right';
-  duration: number;
+  positionY: 'top' | 'bottom'
+  positionX: 'left' | 'center' | 'right'
+  duration: number
 }
 
 const makeToast = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
   switch (type) {
     case 'success':
-      return toast.success(message);
+      return toast.success(message)
     case 'error':
-      return toast.error(message);
+      return toast.error(message)
     case 'info':
-      return toast.info(message);
+      return toast.info(message)
     case 'warning':
-      return toast.warning(message);
+      return toast.warning(message)
   }
-};
+}
 
 const CloseButton = ({ closeToast }: CloseButtonProps) => (
   <button onClick={closeToast} className="top-0 bottom-0 my-auto">
@@ -31,7 +31,12 @@ const CloseButton = ({ closeToast }: CloseButtonProps) => (
       className="group [&>path]:stroke-[#454d54] w-3 h-3"
       version="1.1"
     >
-      <path d="m 12.354,0.354 -12.00000001,12" stroke="none" className="group-hover:stroke-[#8F99A3]" id="path2" />
+      <path
+        d="m 12.354,0.354 -12.00000001,12"
+        stroke="none"
+        className="group-hover:stroke-[#8F99A3]"
+        id="path2"
+      />
       <path
         d="M 0.35355339,0.35355339 12.353553,12.353553"
         stroke="none"
@@ -40,7 +45,7 @@ const CloseButton = ({ closeToast }: CloseButtonProps) => (
       />
     </svg>
   </button>
-);
+)
 
 const Toaster = ({ positionY, positionX, duration = 5000 }: ToastProps) => {
   return (
@@ -55,7 +60,7 @@ const Toaster = ({ positionY, positionX, duration = 5000 }: ToastProps) => {
       theme="colored"
       closeButton={CloseButton}
     />
-  );
-};
+  )
+}
 
-export { makeToast, Toaster };
+export { makeToast, Toaster }

@@ -1,10 +1,10 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react'
 
-import CreatePaymentRequestPage from './CreatePaymentRequestPage';
-import { Currency, PaymentProcessor } from '@nofrixion/moneymoov';
-import { useState } from 'react';
-import { action } from '@storybook/addon-actions';
-import { LocalPaymentRequestCreate } from '../../../types/LocalTypes';
+import CreatePaymentRequestPage from './CreatePaymentRequestPage'
+import { Currency, PaymentProcessor } from '@nofrixion/moneymoov'
+import { useState } from 'react'
+import { action } from '@storybook/addon-actions'
+import { LocalPaymentRequestCreate } from '../../../types/LocalTypes'
 
 export default {
   title: 'UI/CreatePaymentRequestPage',
@@ -18,21 +18,21 @@ export default {
       },
     },
   },
-} as Meta<typeof CreatePaymentRequestPage>;
+} as Meta<typeof CreatePaymentRequestPage>
 
 const Template: StoryFn<typeof CreatePaymentRequestPage> = (args) => {
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(true)
 
   const openScreen = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
   const onClose = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
   const onCreatePaymentRequest = async (_: LocalPaymentRequestCreate) => {
-    onClose();
-  };
+    onClose()
+  }
 
   return (
     <>
@@ -45,12 +45,17 @@ const Template: StoryFn<typeof CreatePaymentRequestPage> = (args) => {
           Open create payment request page
         </button>
       </div>
-      <CreatePaymentRequestPage {...args} isOpen={isOpen} onConfirm={onCreatePaymentRequest} onClose={onClose} />
+      <CreatePaymentRequestPage
+        {...args}
+        isOpen={isOpen}
+        onConfirm={onCreatePaymentRequest}
+        onClose={onClose}
+      />
     </>
-  );
-};
+  )
+}
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   isUserPaymentDefaultsLoading: false,
   banks: [
@@ -62,7 +67,8 @@ Showcase.args = {
       currency: Currency.EUR,
       processor: PaymentProcessor.Plaid,
       personalInstitutionID: 'ins_116580',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: 'ef8dc304-c9cd-47f1-86a7-204740f73b22',
@@ -72,7 +78,8 @@ Showcase.args = {
       currency: Currency.GBP,
       processor: PaymentProcessor.Yapily,
       personalInstitutionID: 'aibgb-sandbox',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: '4017acda-fb2c-4d79-8db9-370c2e57eb9a',
@@ -82,7 +89,8 @@ Showcase.args = {
       currency: Currency.EUR,
       processor: PaymentProcessor.Plaid,
       personalInstitutionID: 'ins_117710',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: 'becba420-af85-4f50-8693-4b1aee713d5d',
@@ -92,7 +100,8 @@ Showcase.args = {
       currency: Currency.GBP,
       processor: PaymentProcessor.Yapily,
       personalInstitutionID: 'barclays-sandbox',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: '6e1d197d-cf35-40a1-8976-9a2f83a09586',
@@ -102,7 +111,8 @@ Showcase.args = {
       currency: Currency.GBP,
       processor: PaymentProcessor.Modulr,
       personalInstitutionID: 'H120000001',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: '72f05436-ac95-4d23-a51c-13a8867eaefd',
@@ -112,7 +122,8 @@ Showcase.args = {
       currency: Currency.GBP,
       processor: PaymentProcessor.Yapily,
       personalInstitutionID: 'modelo-sandbox',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: 'b08cb2e5-754c-41c4-a96b-c1c172192f47',
@@ -122,7 +133,8 @@ Showcase.args = {
       currency: Currency.GBP,
       processor: PaymentProcessor.Yapily,
       personalInstitutionID: 'natwest-sandbox',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: 'faef567d-0772-4ac6-ad4b-b8b0ec09be55',
@@ -132,7 +144,8 @@ Showcase.args = {
       currency: Currency.EUR,
       processor: PaymentProcessor.Plaid,
       personalInstitutionID: 'ins_120274',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
     {
       bankID: '81e5a310-f0f7-4e3c-9aac-4ef43e25248c',
@@ -142,7 +155,8 @@ Showcase.args = {
       currency: Currency.GBP,
       processor: PaymentProcessor.Modulr,
       personalInstitutionID: 'H120000002',
-      message: 'After pressing continue you will be redirected to your bank to complete your payment.',
+      message:
+        'After pressing continue you will be redirected to your bank to complete your payment.',
     },
   ],
   userPaymentDefaults: {
@@ -162,4 +176,4 @@ Showcase.args = {
       emailAddresses: 'rusty@nofrixion.com,jimbo@nofrixion.com,raul@nofrixion.com',
     },
   },
-};
+}

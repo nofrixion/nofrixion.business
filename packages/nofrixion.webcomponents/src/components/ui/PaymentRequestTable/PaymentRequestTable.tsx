@@ -1,34 +1,34 @@
-import classNames from 'classnames';
-import Pager from '../Pager/Pager';
-import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow';
-import ColumnHeader, { SortDirection } from '../ColumnHeader/ColumnHeader';
-import { LocalPaymentRequest } from '../../../types/LocalTypes';
-import { Toaster } from '../Toast/Toast';
+import classNames from 'classnames'
+import Pager from '../Pager/Pager'
+import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow'
+import ColumnHeader, { SortDirection } from '../ColumnHeader/ColumnHeader'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { Toaster } from '../Toast/Toast'
 
-import EmptyState from './EmptyState';
-import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard';
+import EmptyState from './EmptyState'
+import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard'
 
 interface PaymentRequestTableProps {
-  paymentRequests: LocalPaymentRequest[];
-  pageSize: number;
-  totalRecords: number;
-  onPaymentRequestClicked?: (paymentRequest: LocalPaymentRequest) => void;
-  onPaymentRequestDuplicateClicked: (paymentRequest: LocalPaymentRequest) => void;
-  onPaymentRequestDeleteClicked: (paymentRequest: LocalPaymentRequest) => void;
-  onPaymentRequestCopyLinkClicked: (paymentRequest: LocalPaymentRequest) => void;
-  onPageChanged?: (newPage: number) => void;
-  setStatusSortDirection?: (sortDirection: SortDirection) => void;
-  setCreatedSortDirection?: (sortDirection: SortDirection) => void;
-  setContactSortDirection?: (sortDirection: SortDirection) => void;
-  setAmountSortDirection?: (sortDirection: SortDirection) => void;
-  onCreatePaymentRequest?: () => void;
-  onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void;
-  isLoading?: boolean;
-  isEmpty?: boolean; // True when there are no payment requests at all, even when filters are not applied
-  selectedPaymentRequestID?: string;
+  paymentRequests: LocalPaymentRequest[]
+  pageSize: number
+  totalRecords: number
+  onPaymentRequestClicked?: (paymentRequest: LocalPaymentRequest) => void
+  onPaymentRequestDuplicateClicked: (paymentRequest: LocalPaymentRequest) => void
+  onPaymentRequestDeleteClicked: (paymentRequest: LocalPaymentRequest) => void
+  onPaymentRequestCopyLinkClicked: (paymentRequest: LocalPaymentRequest) => void
+  onPageChanged?: (newPage: number) => void
+  setStatusSortDirection?: (sortDirection: SortDirection) => void
+  setCreatedSortDirection?: (sortDirection: SortDirection) => void
+  setContactSortDirection?: (sortDirection: SortDirection) => void
+  setAmountSortDirection?: (sortDirection: SortDirection) => void
+  onCreatePaymentRequest?: () => void
+  onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
+  isLoading?: boolean
+  isEmpty?: boolean // True when there are no payment requests at all, even when filters are not applied
+  selectedPaymentRequestID?: string
 }
 
-const commonThClasses = 'px-4 pb-4 font-normal';
+const commonThClasses = 'px-4 pb-4 font-normal'
 
 const PaymentRequestTable = ({
   paymentRequests,
@@ -54,11 +54,11 @@ const PaymentRequestTable = ({
     paymentRequest: LocalPaymentRequest,
   ) => {
     if (event.metaKey) {
-      onOpenPaymentPage && onOpenPaymentPage(paymentRequest);
+      onOpenPaymentPage && onOpenPaymentPage(paymentRequest)
     } else {
-      onPaymentRequestClicked && onPaymentRequestClicked(paymentRequest);
+      onPaymentRequestClicked && onPaymentRequestClicked(paymentRequest)
     }
-  };
+  }
 
   return (
     <>
@@ -80,25 +80,33 @@ const PaymentRequestTable = ({
               <th className={classNames(commonThClasses, 'w-44 text-left')}>
                 <ColumnHeader
                   label="Status"
-                  onSort={(sortDirection) => setStatusSortDirection && setStatusSortDirection(sortDirection)}
+                  onSort={(sortDirection) =>
+                    setStatusSortDirection && setStatusSortDirection(sortDirection)
+                  }
                 />
               </th>
               <th className={classNames(commonThClasses, 'w-44 text-left')}>
                 <ColumnHeader
                   label="Created"
-                  onSort={(sortDirection) => setCreatedSortDirection && setCreatedSortDirection(sortDirection)}
+                  onSort={(sortDirection) =>
+                    setCreatedSortDirection && setCreatedSortDirection(sortDirection)
+                  }
                 />
               </th>
               <th className={classNames(commonThClasses, 'w-44 text-left')}>
                 <ColumnHeader
                   label="Contact"
-                  onSort={(sortDirection) => setContactSortDirection && setContactSortDirection(sortDirection)}
+                  onSort={(sortDirection) =>
+                    setContactSortDirection && setContactSortDirection(sortDirection)
+                  }
                 />
               </th>
               <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
                 <ColumnHeader
                   label="Amount"
-                  onSort={(sortDirection) => setAmountSortDirection && setAmountSortDirection(sortDirection)}
+                  onSort={(sortDirection) =>
+                    setAmountSortDirection && setAmountSortDirection(sortDirection)
+                  }
                 />
               </th>
 
@@ -126,7 +134,10 @@ const PaymentRequestTable = ({
               // while the data is being fetched
               // from the server
               Array.from(Array(12)).map((_, index) => (
-                <tr key={`pr-placeholder-${index}`} className="animate-pulse border-b border-[#F1F2F3]">
+                <tr
+                  key={`pr-placeholder-${index}`}
+                  className="animate-pulse border-b border-[#F1F2F3]"
+                >
                   {/* Status */}
                   <td className="py-6">
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
@@ -165,14 +176,20 @@ const PaymentRequestTable = ({
                   {...paymentRequest}
                   onClick={(event) => onPaymentRequestClickedHandler(event, paymentRequest)}
                   onDuplicate={() =>
-                    onPaymentRequestDuplicateClicked && onPaymentRequestDuplicateClicked(paymentRequest)
+                    onPaymentRequestDuplicateClicked &&
+                    onPaymentRequestDuplicateClicked(paymentRequest)
                   }
                   onDelete={
                     paymentRequest.paymentAttempts && paymentRequest.paymentAttempts.length > 0
                       ? undefined
-                      : () => onPaymentRequestDeleteClicked && onPaymentRequestDeleteClicked(paymentRequest)
+                      : () =>
+                          onPaymentRequestDeleteClicked &&
+                          onPaymentRequestDeleteClicked(paymentRequest)
                   }
-                  onCopyLink={() => onPaymentRequestCopyLinkClicked && onPaymentRequestCopyLinkClicked(paymentRequest)}
+                  onCopyLink={() =>
+                    onPaymentRequestCopyLinkClicked &&
+                    onPaymentRequestCopyLinkClicked(paymentRequest)
+                  }
                   onOpenPaymentPage={() => onOpenPaymentPage && onOpenPaymentPage(paymentRequest)}
                   selected={selectedPaymentRequestID === paymentRequest.id}
                 />
@@ -189,13 +206,18 @@ const PaymentRequestTable = ({
               {...paymentRequest}
               key={`pr-mobile-${index}`}
               onClick={(event) => onPaymentRequestClickedHandler(event, paymentRequest)}
-              onDuplicate={() => onPaymentRequestDuplicateClicked && onPaymentRequestDuplicateClicked(paymentRequest)}
+              onDuplicate={() =>
+                onPaymentRequestDuplicateClicked && onPaymentRequestDuplicateClicked(paymentRequest)
+              }
               onDelete={
                 paymentRequest.paymentAttempts && paymentRequest.paymentAttempts.length > 0
                   ? undefined
-                  : () => onPaymentRequestDeleteClicked && onPaymentRequestDeleteClicked(paymentRequest)
+                  : () =>
+                      onPaymentRequestDeleteClicked && onPaymentRequestDeleteClicked(paymentRequest)
               }
-              onCopyLink={() => onPaymentRequestCopyLinkClicked && onPaymentRequestCopyLinkClicked(paymentRequest)}
+              onCopyLink={() =>
+                onPaymentRequestCopyLinkClicked && onPaymentRequestCopyLinkClicked(paymentRequest)
+              }
               onOpenPaymentPage={() => onOpenPaymentPage && onOpenPaymentPage(paymentRequest)}
             />
           ))}
@@ -206,11 +228,14 @@ const PaymentRequestTable = ({
       {((!isLoading && paymentRequests && paymentRequests.length === 0) || isEmpty) && (
         // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
         // Else,  there are no payment requests matching the filters
-        <EmptyState state={isEmpty ? 'empty' : 'nothingFound'} onCreatePaymentRequest={onCreatePaymentRequest} />
+        <EmptyState
+          state={isEmpty ? 'empty' : 'nothingFound'}
+          onCreatePaymentRequest={onCreatePaymentRequest}
+        />
       )}
       <Toaster positionY="top" positionX="right" duration={5000} />
     </>
-  );
-};
+  )
+}
 
-export default PaymentRequestTable;
+export default PaymentRequestTable

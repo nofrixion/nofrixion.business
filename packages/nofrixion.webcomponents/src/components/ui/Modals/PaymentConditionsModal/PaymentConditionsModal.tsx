@@ -1,13 +1,13 @@
-import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal';
-import { useEffect, useState } from 'react';
-import Checkbox from '../../Checkbox/Checkbox';
-import { LocalPaymentConditionsFormValue } from '../../../../types/LocalTypes';
-import { PaymentConditionsDefaults, UserPaymentDefaults } from '@nofrixion/moneymoov';
+import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
+import { useEffect, useState } from 'react'
+import Checkbox from '../../Checkbox/Checkbox'
+import { LocalPaymentConditionsFormValue } from '../../../../types/LocalTypes'
+import { PaymentConditionsDefaults, UserPaymentDefaults } from '@nofrixion/moneymoov'
 
 interface PaymentConditionsModalProps extends BaseModalProps {
-  userDefaults?: PaymentConditionsDefaults;
-  onApply: (data: LocalPaymentConditionsFormValue) => void;
-  isPrefilledData: boolean;
+  userDefaults?: PaymentConditionsDefaults
+  onApply: (data: LocalPaymentConditionsFormValue) => void
+  isPrefilledData: boolean
 }
 
 const PaymentConditionsModal = ({
@@ -19,38 +19,40 @@ const PaymentConditionsModal = ({
 }: PaymentConditionsModalProps) => {
   const [isAllowPartialEnabled, setIsAllowPartialEnabled] = useState<boolean>(
     userDefaults ? userDefaults.allowPartialPayments : false,
-  );
-  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults);
-  const [currentState, setCurrentState] = useState<LocalPaymentConditionsFormValue>();
-  const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false);
+  )
+  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
+  const [currentState, setCurrentState] = useState<LocalPaymentConditionsFormValue>()
+  const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false)
 
   useEffect(() => {
-    setEnableUseAsDefault(!userDefaults || userDefaults?.allowPartialPayments !== isAllowPartialEnabled);
-  }, [isAllowPartialEnabled]);
+    setEnableUseAsDefault(
+      !userDefaults || userDefaults?.allowPartialPayments !== isAllowPartialEnabled,
+    )
+  }, [isAllowPartialEnabled])
 
   // When the user clicks on the Apply button, we need to send the data to the parent component
   const onApplyClicked = (data: any) => {
     const formData: LocalPaymentConditionsFormValue = {
       allowPartialPayments: isAllowPartialEnabled,
       isDefault: data.isDefaultChecked,
-    };
+    }
 
-    onApply(formData);
-    setCurrentState(formData);
+    onApply(formData)
+    setCurrentState(formData)
 
-    return formData;
-  };
+    return formData
+  }
 
   const handleOnDismiss = () => {
-    onDismiss();
+    onDismiss()
 
     // Reset to initial state
     if (currentState) {
-      setIsAllowPartialEnabled(currentState.allowPartialPayments);
+      setIsAllowPartialEnabled(currentState.allowPartialPayments)
     } else {
-      setIsAllowPartialEnabled(userDefaults ? userDefaults.allowPartialPayments : false);
+      setIsAllowPartialEnabled(userDefaults ? userDefaults.allowPartialPayments : false)
     }
-  };
+  }
 
   return (
     <CustomModal
@@ -69,7 +71,7 @@ const PaymentConditionsModal = ({
         />
       </div>
     </CustomModal>
-  );
-};
+  )
+}
 
-export default PaymentConditionsModal;
+export default PaymentConditionsModal

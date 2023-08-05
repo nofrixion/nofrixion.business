@@ -1,7 +1,7 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import ColumnHeader from './ColumnHeader';
+import React from 'react'
+import { StoryFn, Meta } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+import ColumnHeader from './ColumnHeader'
 
 export default {
   title: 'UI/ColumnHeader',
@@ -9,23 +9,23 @@ export default {
   argTypes: {
     name: { control: 'text' },
   },
-} as Meta<typeof ColumnHeader>;
+} as Meta<typeof ColumnHeader>
 
-const Template: StoryFn<typeof ColumnHeader> = (args) => <ColumnHeader {...args} />;
+const Template: StoryFn<typeof ColumnHeader> = (args) => <ColumnHeader {...args} />
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 
 Showcase.args = {
   label: 'Status',
   onSort: action('Sort Changed'),
-};
+}
 
-export const RowOfColumnHeaders = Template.bind({});
+export const RowOfColumnHeaders = Template.bind({})
 
 RowOfColumnHeaders.args = {
   label: 'Status',
   onSort: action('Sort Changed'),
-};
+}
 
 RowOfColumnHeaders.decorators = [
   () => (
@@ -35,4 +35,4 @@ RowOfColumnHeaders.decorators = [
       <ColumnHeader label="Contact" onSort={action('Contact Sort Changed')} />
     </div>
   ),
-];
+]

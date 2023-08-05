@@ -1,15 +1,15 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import InputAmountField from '../InputAmountField/InputAmountField';
-import InputTextField from '../InputTextField/InputTextField';
-import EditOptionCard from '../EditOptionCard/EditOptionCard';
+import { Fragment, useEffect, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import InputAmountField from '../InputAmountField/InputAmountField'
+import InputTextField from '../InputTextField/InputTextField'
+import EditOptionCard from '../EditOptionCard/EditOptionCard'
 
-import AlertIcon from '../../../assets/icons/alert-icon.svg';
-import NextIcon from '../../../assets/icons/next-icon.svg';
-import InputTextAreaField from '../InputTextAreaField/InputTextAreaField';
-import { AnimatePresence, motion } from 'framer-motion';
-import LayoutWrapper from '../utils/LayoutWrapper';
-import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal';
+import AlertIcon from '../../../assets/icons/alert-icon.svg'
+import NextIcon from '../../../assets/icons/next-icon.svg'
+import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
+import { AnimatePresence, motion } from 'framer-motion'
+import LayoutWrapper from '../utils/LayoutWrapper'
+import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal'
 import {
   Currency,
   BankSettings,
@@ -17,38 +17,38 @@ import {
   PaymentConditionsDefaults,
   PaymentMethodsDefaults,
   UserPaymentDefaults,
-} from '@nofrixion/moneymoov';
+} from '@nofrixion/moneymoov'
 import {
   LocalPaymentConditionsFormValue,
   LocalPaymentMethodsFormValue,
   LocalPaymentNotificationsFormValue,
   LocalPaymentRequestCreate,
-} from '../../../types/LocalTypes';
-import classNames from 'classnames';
-import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal';
+} from '../../../types/LocalTypes'
+import classNames from 'classnames'
+import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
 
-import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters';
+import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters'
 
-import PaymentMethodIcon from '../utils/PaymentMethodIcon';
-import _ from 'lodash';
-import PaymentNotificationsModal from '../Modals/PaymentNotificationsModal/PaymentNotificationsModal';
-import { validateEmail } from '../../../utils/validation';
-import { formatAmountAndDecimals } from '../../../utils/formatters';
-import BackArrow from '../utils/BackArrow';
-import { Button } from '../../ui/atoms';
+import PaymentMethodIcon from '../utils/PaymentMethodIcon'
+import _ from 'lodash'
+import PaymentNotificationsModal from '../Modals/PaymentNotificationsModal/PaymentNotificationsModal'
+import { validateEmail } from '../../../utils/validation'
+import { formatAmountAndDecimals } from '../../../utils/formatters'
+import BackArrow from '../utils/BackArrow'
+import { Button } from '../../ui/atoms'
 
 interface CreatePaymentRequestPageProps {
-  banks: BankSettings[];
-  userPaymentDefaults?: UserPaymentDefaults;
-  onConfirm: (data: LocalPaymentRequestCreate) => Promise<void>;
-  isOpen: boolean;
-  onClose: () => void;
-  onDefaultsChanged: (data: UserPaymentDefaults) => void;
-  isUserPaymentDefaultsLoading: boolean;
-  prefilledData?: LocalPaymentRequestCreate;
+  banks: BankSettings[]
+  userPaymentDefaults?: UserPaymentDefaults
+  onConfirm: (data: LocalPaymentRequestCreate) => Promise<void>
+  isOpen: boolean
+  onClose: () => void
+  onDefaultsChanged: (data: UserPaymentDefaults) => void
+  isUserPaymentDefaultsLoading: boolean
+  prefilledData?: LocalPaymentRequestCreate
 }
 
-const durationAnimationWidth = 0.3;
+const durationAnimationWidth = 0.3
 
 const CreatePaymentRequestPage = ({
   banks,
@@ -60,49 +60,53 @@ const CreatePaymentRequestPage = ({
   isUserPaymentDefaultsLoading,
   prefilledData,
 }: CreatePaymentRequestPageProps) => {
-  const [amount, setAmount] = useState(prefilledData?.amount.toString() ?? '');
-  const [currency, setCurrency] = useState<'EUR' | 'GBP'>((prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP');
-  const [productOrService, setProductOrService] = useState(prefilledData?.productOrService ?? '');
-  const [description, setDescription] = useState(prefilledData?.description ?? '');
-  const [firstName, setFirstName] = useState(prefilledData?.firstName ?? '');
-  const [lastName, setLastName] = useState(prefilledData?.lastName ?? '');
-  const [email, setEmail] = useState(prefilledData?.email ?? '');
-  const [hasEmailError, setHasEmailError] = useState(false);
-  const [defaultsChanged, setDefaultsChanged] = useState(false);
+  const [amount, setAmount] = useState(prefilledData?.amount.toString() ?? '')
+  const [currency, setCurrency] = useState<'EUR' | 'GBP'>(
+    (prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP',
+  )
+  const [productOrService, setProductOrService] = useState(prefilledData?.productOrService ?? '')
+  const [description, setDescription] = useState(prefilledData?.description ?? '')
+  const [firstName, setFirstName] = useState(prefilledData?.firstName ?? '')
+  const [lastName, setLastName] = useState(prefilledData?.lastName ?? '')
+  const [email, setEmail] = useState(prefilledData?.email ?? '')
+  const [hasEmailError, setHasEmailError] = useState(false)
+  const [defaultsChanged, setDefaultsChanged] = useState(false)
 
   const findBank = (bankID: string | undefined) => {
     if (!bankID) {
-      return undefined;
+      return undefined
     }
-    const bank = banks.find((b) => b.bankID === bankID);
-    return bank ? { id: bank.bankID, name: bank.bankName } : undefined;
-  };
+    const bank = banks.find((b) => b.bankID === bankID)
+    return bank ? { id: bank.bankID, name: bank.bankName } : undefined
+  }
 
-  const [paymentMethodsFormValue, setPaymentMethodsFormValue] = useState<LocalPaymentMethodsFormValue>({
-    isBankEnabled: true,
-    isCardEnabled: true,
-    isWalletEnabled: true,
-    isLightningEnabled: false,
-    isCaptureFundsEnabled: true,
-    isDefault: false,
-  });
+  const [paymentMethodsFormValue, setPaymentMethodsFormValue] =
+    useState<LocalPaymentMethodsFormValue>({
+      isBankEnabled: true,
+      isCardEnabled: true,
+      isWalletEnabled: true,
+      isLightningEnabled: false,
+      isCaptureFundsEnabled: true,
+      isDefault: false,
+    })
 
-  const [paymentConditionsFormValue, setPaymentConditionsFormValue] = useState<LocalPaymentConditionsFormValue>({
-    allowPartialPayments: false,
-    isDefault: false,
-  });
+  const [paymentConditionsFormValue, setPaymentConditionsFormValue] =
+    useState<LocalPaymentConditionsFormValue>({
+      allowPartialPayments: false,
+      isDefault: false,
+    })
 
   const [paymentNotificationsFormValue, setPaymentNotificationsFormValue] =
     useState<LocalPaymentNotificationsFormValue>({
       emailAddresses: '',
       isDefault: false,
-    });
+    })
 
-  const [isPaymentMethodsModalOpen, setIsPaymentMethodsModalOpen] = useState(false);
-  const [isPaymentConditionsModalOpen, setIsPaymentConditionsModalOpen] = useState(false);
-  const [isPaymentNotificationsModalOpen, setIsPaymentNotificationsModalOpen] = useState(false);
-  const [isReviewing, setIsReviewing] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPaymentMethodsModalOpen, setIsPaymentMethodsModalOpen] = useState(false)
+  const [isPaymentConditionsModalOpen, setIsPaymentConditionsModalOpen] = useState(false)
+  const [isPaymentNotificationsModalOpen, setIsPaymentNotificationsModalOpen] = useState(false)
+  const [isReviewing, setIsReviewing] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const convertPrefilledDataToPaymentMethodDefaults = (): PaymentMethodsDefaults => {
     return {
@@ -113,18 +117,18 @@ const CreatePaymentRequestPage = ({
       cardAuthorizeOnly: !prefilledData?.paymentMethods?.card?.captureFunds,
       pispPriorityBankID: prefilledData?.paymentMethods?.bank?.priority?.id ?? '',
       pispPriorityBank: !!prefilledData?.paymentMethods?.bank?.priority?.id,
-    };
-  };
+    }
+  }
   const convertPrefilledDataToPaymentConditionsDefaults = (): PaymentConditionsDefaults => {
     return {
       allowPartialPayments: prefilledData?.paymentConditions?.allowPartialPayments ?? false,
-    };
-  };
+    }
+  }
   const convertPrefilledDataToNotificationEmailsDefaults = (): NotificationEmailsDefaults => {
     return {
       emailAddresses: prefilledData?.notificationEmailAddresses ?? '',
-    };
-  };
+    }
+  }
 
   const fillDefaultPaymentMethods = () => {
     setPaymentMethodsFormValue({
@@ -132,46 +136,48 @@ const CreatePaymentRequestPage = ({
       isCardEnabled: userPaymentDefaults?.paymentMethodsDefaults?.card ?? true,
       isWalletEnabled: userPaymentDefaults?.paymentMethodsDefaults?.wallet ?? true,
       isLightningEnabled: userPaymentDefaults?.paymentMethodsDefaults?.lightning ?? false,
-      isCaptureFundsEnabled: !userPaymentDefaults?.paymentMethodsDefaults?.cardAuthorizeOnly ?? true,
+      isCaptureFundsEnabled:
+        !userPaymentDefaults?.paymentMethodsDefaults?.cardAuthorizeOnly ?? true,
       priorityBank: findBank(userPaymentDefaults?.paymentMethodsDefaults?.pispPriorityBankID),
       isDefault: !!userPaymentDefaults?.paymentMethodsDefaults,
-    });
-  };
+    })
+  }
 
   const fillDefaultPaymentConditions = () => {
     setPaymentConditionsFormValue({
-      allowPartialPayments: userPaymentDefaults?.paymentConditionsDefaults?.allowPartialPayments ?? false,
+      allowPartialPayments:
+        userPaymentDefaults?.paymentConditionsDefaults?.allowPartialPayments ?? false,
       isDefault: !!userPaymentDefaults?.paymentConditionsDefaults,
-    });
-  };
+    })
+  }
 
   const fillDefaultNotificationEmailAddresses = () => {
     setPaymentNotificationsFormValue({
       emailAddresses: userPaymentDefaults?.notificationEmailsDefaults?.emailAddresses ?? '',
       isDefault: !!userPaymentDefaults?.notificationEmailsDefaults,
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     if (userPaymentDefaults?.paymentMethodsDefaults) {
-      fillDefaultPaymentMethods();
+      fillDefaultPaymentMethods()
     }
 
     if (userPaymentDefaults?.paymentConditionsDefaults) {
-      fillDefaultPaymentConditions();
+      fillDefaultPaymentConditions()
     }
 
-    fillDefaultNotificationEmailAddresses();
-  }, [userPaymentDefaults]);
+    fillDefaultNotificationEmailAddresses()
+  }, [userPaymentDefaults])
 
   useEffect(() => {
-    setAmount(prefilledData?.amount.toString() ?? '');
-    setCurrency((prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP');
-    setProductOrService(prefilledData?.productOrService ?? '');
-    setDescription(prefilledData?.description ?? '');
-    setFirstName(prefilledData?.firstName ?? '');
-    setLastName(prefilledData?.lastName ?? '');
-    setEmail(prefilledData?.email ?? '');
+    setAmount(prefilledData?.amount.toString() ?? '')
+    setCurrency((prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP')
+    setProductOrService(prefilledData?.productOrService ?? '')
+    setDescription(prefilledData?.description ?? '')
+    setFirstName(prefilledData?.firstName ?? '')
+    setLastName(prefilledData?.lastName ?? '')
+    setEmail(prefilledData?.email ?? '')
 
     if (prefilledData?.paymentMethods) {
       setPaymentMethodsFormValue({
@@ -184,81 +190,81 @@ const CreatePaymentRequestPage = ({
           ? findBank(prefilledData?.paymentMethods?.bank?.priority?.id)
           : undefined,
         isDefault: false,
-      });
+      })
     } else {
-      fillDefaultPaymentMethods();
+      fillDefaultPaymentMethods()
     }
 
     if (prefilledData?.paymentConditions) {
       setPaymentConditionsFormValue({
         allowPartialPayments: prefilledData?.paymentConditions?.allowPartialPayments ?? false,
         isDefault: false,
-      });
+      })
     } else {
-      fillDefaultPaymentConditions();
+      fillDefaultPaymentConditions()
     }
 
     if (prefilledData?.notificationEmailAddresses) {
       setPaymentNotificationsFormValue({
         emailAddresses: prefilledData?.notificationEmailAddresses ?? '',
         isDefault: false,
-      });
+      })
     } else {
-      fillDefaultNotificationEmailAddresses();
+      fillDefaultNotificationEmailAddresses()
     }
-  }, [prefilledData]);
+  }, [prefilledData])
 
   const onCurrencyChange = (currency: string) => {
-    setCurrency(currency as 'EUR' | 'GBP');
-  };
+    setCurrency(currency as 'EUR' | 'GBP')
+  }
 
   const onMethodsReceived = (data: LocalPaymentMethodsFormValue) => {
-    setIsPaymentMethodsModalOpen(false);
+    setIsPaymentMethodsModalOpen(false)
 
-    setPaymentMethodsFormValue(data);
+    setPaymentMethodsFormValue(data)
 
     // Since there's no way to cancel the modal, we need to check if the data has changed
     if (!_.isEqual(data, paymentMethodsFormValue)) {
-      setDefaultsChanged(true);
+      setDefaultsChanged(true)
     }
-  };
+  }
 
   const onConditionsReceived = (data: LocalPaymentConditionsFormValue) => {
-    setIsPaymentConditionsModalOpen(false);
+    setIsPaymentConditionsModalOpen(false)
 
-    setPaymentConditionsFormValue(data);
+    setPaymentConditionsFormValue(data)
 
     // Since there's no way to cancel the modal, we need to check if the data has changed
     if (!_.isEqual(data, paymentConditionsFormValue)) {
-      setDefaultsChanged(true);
+      setDefaultsChanged(true)
     }
-  };
+  }
 
   const onPaymentNotificationsReceived = (data: LocalPaymentNotificationsFormValue) => {
-    setIsPaymentNotificationsModalOpen(false);
+    setIsPaymentNotificationsModalOpen(false)
 
-    setPaymentNotificationsFormValue(data);
+    setPaymentNotificationsFormValue(data)
 
     // Since there's no way to cancel the modal, we need to check if the data has changed
     if (!_.isEqual(data, paymentNotificationsFormValue)) {
-      setDefaultsChanged(true);
+      setDefaultsChanged(true)
     }
-  };
+  }
 
   const onReviewClicked = () => {
     if (email && onValidateEmail(email)) {
-      return;
+      return
     }
 
     if (description && onValidateDescription(description)) {
-      return;
+      return
     }
 
-    setIsReviewing(true);
-  };
+    setIsReviewing(true)
+  }
 
   const onConfirmClicked = async () => {
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     const paymentRequestToCreate: LocalPaymentRequestCreate = {
       amount: Number(amount),
@@ -280,27 +286,29 @@ const CreatePaymentRequestPage = ({
           active: paymentMethodsFormValue.isCardEnabled,
           // Capture funds should always be true when card is disabled
           // as it's not possible to only authorize on cards if card are disabled
-          captureFunds: paymentMethodsFormValue.isCardEnabled ? paymentMethodsFormValue.isCaptureFundsEnabled : true,
+          captureFunds: paymentMethodsFormValue.isCardEnabled
+            ? paymentMethodsFormValue.isCaptureFundsEnabled
+            : true,
         },
         wallet: paymentMethodsFormValue.isWalletEnabled,
         lightning: paymentMethodsFormValue.isLightningEnabled,
       },
       notificationEmailAddresses: paymentNotificationsFormValue.emailAddresses,
-    };
-
-    await onConfirm(paymentRequestToCreate);
-
-    if (defaultsChanged) {
-      handleDefaultsChanged();
     }
 
-    resetStates();
+    await onConfirm(paymentRequestToCreate)
 
-    setIsSubmitting(false);
-  };
+    if (defaultsChanged) {
+      handleDefaultsChanged()
+    }
+
+    resetStates()
+
+    setIsSubmitting(false)
+  }
 
   const handleDefaultsChanged = () => {
-    const defaults: UserPaymentDefaults = {};
+    const defaults: UserPaymentDefaults = {}
 
     if (paymentMethodsFormValue.isDefault) {
       defaults.paymentMethodsDefaults = {
@@ -311,38 +319,38 @@ const CreatePaymentRequestPage = ({
         cardAuthorizeOnly: !paymentMethodsFormValue.isCaptureFundsEnabled,
         pispPriorityBank: paymentMethodsFormValue.priorityBank ? true : false,
         pispPriorityBankID: paymentMethodsFormValue.priorityBank?.id ?? '',
-      };
+      }
     } else {
-      defaults.paymentMethodsDefaults = undefined;
+      defaults.paymentMethodsDefaults = undefined
     }
 
     if (paymentConditionsFormValue.isDefault) {
       defaults.paymentConditionsDefaults = {
         allowPartialPayments: paymentConditionsFormValue.allowPartialPayments,
-      };
+      }
     } else {
-      defaults.paymentConditionsDefaults = undefined;
+      defaults.paymentConditionsDefaults = undefined
     }
 
     if (paymentNotificationsFormValue.isDefault) {
       defaults.notificationEmailsDefaults = {
         emailAddresses: paymentNotificationsFormValue.emailAddresses,
-      };
+      }
     } else {
-      defaults.notificationEmailsDefaults = undefined;
+      defaults.notificationEmailsDefaults = undefined
     }
 
-    onDefaultsChanged(defaults);
-  };
+    onDefaultsChanged(defaults)
+  }
 
   const resetStates = () => {
-    setAmount('');
-    setCurrency('EUR');
-    setProductOrService('');
-    setDescription('');
-    setFirstName('');
-    setLastName('');
-    setEmail('');
+    setAmount('')
+    setCurrency('EUR')
+    setProductOrService('')
+    setDescription('')
+    setFirstName('')
+    setLastName('')
+    setEmail('')
     setPaymentMethodsFormValue({
       isBankEnabled: true,
       isCardEnabled: true,
@@ -350,17 +358,17 @@ const CreatePaymentRequestPage = ({
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
       isDefault: false,
-    });
+    })
     setPaymentConditionsFormValue({
       allowPartialPayments: false,
       isDefault: false,
-    });
+    })
     setPaymentNotificationsFormValue({
       emailAddresses: '',
       isDefault: false,
-    });
-    setIsReviewing(false);
-  };
+    })
+    setIsReviewing(false)
+  }
 
   const availableMethodsDetails = [
     ...(paymentMethodsFormValue.isBankEnabled && paymentMethodsFormValue.priorityBank
@@ -369,33 +377,34 @@ const CreatePaymentRequestPage = ({
     ...(paymentMethodsFormValue.isCardEnabled && !paymentMethodsFormValue.isCaptureFundsEnabled
       ? ["Don't capture funds on cards is on."]
       : []),
-  ];
+  ]
 
   const onValidateEmail = (email: string) => {
     if (email && !validateEmail(email)) {
-      setHasEmailError(true);
-      return 'Make sure the email address is valid.';
+      setHasEmailError(true)
+      return 'Make sure the email address is valid.'
     }
 
-    setHasEmailError(false);
-  };
+    setHasEmailError(false)
+  }
 
   const onValidateDescription = (description: string): string | undefined => {
     // Get invalid characters if any (using the same regex from backend "[a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+")
-    const invalidCharacters = description.match(/[^a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+/g);
+    const invalidCharacters = description.match(/[^a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+/g)
 
     if (description.length > 0 && invalidCharacters) {
       // Singular
       if (invalidCharacters.length === 1) {
-        return `The character "${invalidCharacters[0]}" is not allowed in the description`;
+        return `The character "${invalidCharacters[0]}" is not allowed in the description`
       }
 
       // Plural
-      return `The characters "${invalidCharacters.join('')}" are not allowed in the description`;
+      return `The characters "${invalidCharacters.join('')}" are not allowed in the description`
     }
-  };
+  }
 
-  const reviewRowClassNames = 'flex overflow-hidden items-baseline flex-col gap-2 md:gap-0 md:flex-row';
+  const reviewRowClassNames =
+    'flex overflow-hidden items-baseline flex-col gap-2 md:gap-0 md:flex-row'
 
   const renderSettingsReview = () => {
     return (
@@ -405,20 +414,34 @@ const CreatePaymentRequestPage = ({
           <span className="leading-6 text-greyText w-40 shrink-0">Settings</span>
           <div className="flex flex-col w-full space-y-4 md:space-y-6">
             <span className="text-sm/6">
-              {!paymentConditionsFormValue.allowPartialPayments ? 'Single full payment' : 'Partial payments'}
+              {!paymentConditionsFormValue.allowPartialPayments
+                ? 'Single full payment'
+                : 'Partial payments'}
             </span>
 
             <div className="flex items-center space-x-3">
-              <PaymentMethodIcon paymentMethod="bank" enabled={paymentMethodsFormValue.isBankEnabled} />
-              <PaymentMethodIcon paymentMethod="card" enabled={paymentMethodsFormValue.isCardEnabled} />
-              <PaymentMethodIcon paymentMethod="wallet" enabled={paymentMethodsFormValue.isWalletEnabled} />
-              <PaymentMethodIcon paymentMethod="lightning" enabled={paymentMethodsFormValue.isLightningEnabled} />
+              <PaymentMethodIcon
+                paymentMethod="bank"
+                enabled={paymentMethodsFormValue.isBankEnabled}
+              />
+              <PaymentMethodIcon
+                paymentMethod="card"
+                enabled={paymentMethodsFormValue.isCardEnabled}
+              />
+              <PaymentMethodIcon
+                paymentMethod="wallet"
+                enabled={paymentMethodsFormValue.isWalletEnabled}
+              />
+              <PaymentMethodIcon
+                paymentMethod="lightning"
+                enabled={paymentMethodsFormValue.isLightningEnabled}
+              />
             </div>
 
             {availableMethodsDetails.length > 0 && (
               <div className="flex flex-col text-greyText text-xs">
                 {availableMethodsDetails?.map((detail, index) => {
-                  return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>;
+                  return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>
                 })}
               </div>
             )}
@@ -426,18 +449,19 @@ const CreatePaymentRequestPage = ({
             {paymentNotificationsFormValue.emailAddresses && (
               <div className="flex text-greyText text-xs">
                 <span>
-                  Payment notification to {formatEmailAddressesForSummary(paymentNotificationsFormValue.emailAddresses)}
+                  Payment notification to{' '}
+                  {formatEmailAddressesForSummary(paymentNotificationsFormValue.emailAddresses)}
                 </span>
               </div>
             )}
           </div>
         </div>
       </>
-    );
-  };
+    )
+  }
 
   const renderReviewSummary = () => {
-    const { amountValueWithCommas, amountDecimals } = formatAmountAndDecimals(Number(amount));
+    const { amountValueWithCommas, amountDecimals } = formatAmountAndDecimals(Number(amount))
 
     return (
       <div className="w-full lg:max-w-sm xl:max-w-lg mx-auto mt-6 md:mt-44">
@@ -462,7 +486,9 @@ const CreatePaymentRequestPage = ({
                 <div className="flex flex-col w-full">
                   {productOrService && (
                     <LayoutWrapper key="product-or-service">
-                      <p className="font-semibold w-full break-words text-lg/5 mb-0.5 md:mb-2">{productOrService}</p>
+                      <p className="font-semibold w-full break-words text-lg/5 mb-0.5 md:mb-2">
+                        {productOrService}
+                      </p>
                     </LayoutWrapper>
                   )}
 
@@ -482,7 +508,10 @@ const CreatePaymentRequestPage = ({
 
                 <div className="flex flex-col w-full">
                   {(firstName || lastName) && (
-                    <motion.p layout="position" className="font-semibold text-lg/5 mb-0.5 md:mb-2 break-words">
+                    <motion.p
+                      layout="position"
+                      className="font-semibold text-lg/5 mb-0.5 md:mb-2 break-words"
+                    >
                       {firstName} {lastName}
                     </motion.p>
                   )}
@@ -495,7 +524,9 @@ const CreatePaymentRequestPage = ({
                       })}
                     >
                       <p className="text-sm/5 break-words">{email}</p>
-                      {hasEmailError && <img src={AlertIcon} alt="Alert icon" className="w-4 h-4 ml-2" />}
+                      {hasEmailError && (
+                        <img src={AlertIcon} alt="Alert icon" className="w-4 h-4 ml-2" />
+                      )}
                     </motion.div>
                   )}
                 </div>
@@ -506,7 +537,12 @@ const CreatePaymentRequestPage = ({
             {/* Show only on desktop so we get the animation only on desktop */}
             {isReviewing && (
               <div className="hidden md:block">
-                <LayoutWrapper key="settings" animateOnExit={false} duration={0.6} delay={durationAnimationWidth / 1.5}>
+                <LayoutWrapper
+                  key="settings"
+                  animateOnExit={false}
+                  duration={0.6}
+                  delay={durationAnimationWidth / 1.5}
+                >
                   {renderSettingsReview()}
                 </LayoutWrapper>
               </div>
@@ -548,7 +584,12 @@ const CreatePaymentRequestPage = ({
                       animateOnExit={false}
                       duration={0.6}
                     >
-                      <Button variant="primaryDark" size="big" onClick={onConfirmClicked} disabled={isSubmitting}>
+                      <Button
+                        variant="primaryDark"
+                        size="big"
+                        onClick={onConfirmClicked}
+                        disabled={isSubmitting}
+                      >
                         Confirm payment request
                       </Button>
 
@@ -564,8 +605,8 @@ const CreatePaymentRequestPage = ({
           </AnimatePresence>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const renderBackArrow = () => {
     return (
@@ -573,15 +614,15 @@ const CreatePaymentRequestPage = ({
         intent={isReviewing ? 'back' : 'close'}
         onClick={() => {
           if (isReviewing) {
-            setIsReviewing(false);
-            return;
+            setIsReviewing(false)
+            return
           }
 
-          onClose();
+          onClose()
         }}
       />
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -605,8 +646,17 @@ const CreatePaymentRequestPage = ({
                       <motion.div
                         className="relative"
                         initial={{ opacity: 0, flex: 0 }}
-                        animate={{ opacity: 1, flex: 1, transition: { duration: durationAnimationWidth } }}
-                        exit={{ opacity: 0, width: 0, flex: 0, transition: { duration: durationAnimationWidth } }}
+                        animate={{
+                          opacity: 1,
+                          flex: 1,
+                          transition: { duration: durationAnimationWidth },
+                        }}
+                        exit={{
+                          opacity: 0,
+                          width: 0,
+                          flex: 0,
+                          transition: { duration: durationAnimationWidth },
+                        }}
                       >
                         <>
                           <div className="w-full pt-10 lg:pt-20 pb-28">
@@ -693,7 +743,7 @@ const CreatePaymentRequestPage = ({
                                         : 'Partial payments',
                                     ]}
                                     onClick={() => {
-                                      setIsPaymentConditionsModalOpen(true);
+                                      setIsPaymentConditionsModalOpen(true)
                                     }}
                                     isLoading={isUserPaymentDefaultsLoading}
                                   />
@@ -701,7 +751,7 @@ const CreatePaymentRequestPage = ({
                                     label="Payment methods"
                                     details={availableMethodsDetails}
                                     onClick={() => {
-                                      setIsPaymentMethodsModalOpen(true);
+                                      setIsPaymentMethodsModalOpen(true)
                                     }}
                                     isLoading={isUserPaymentDefaultsLoading}
                                   >
@@ -738,7 +788,7 @@ const CreatePaymentRequestPage = ({
                                         : []
                                     }
                                     onClick={() => {
-                                      setIsPaymentNotificationsModalOpen(true);
+                                      setIsPaymentNotificationsModalOpen(true)
                                     }}
                                     isLoading={isUserPaymentDefaultsLoading}
                                   />
@@ -757,7 +807,12 @@ const CreatePaymentRequestPage = ({
                                 exit={{ opacity: 0, y: 20 }}
                                 className="block lg:hidden sticky bottom-0 w-full mx-auto pb-4"
                               >
-                                <Button variant="secondary" size="big" onClick={onReviewClicked} nextArrow>
+                                <Button
+                                  variant="secondary"
+                                  size="big"
+                                  onClick={onReviewClicked}
+                                  nextArrow
+                                >
                                   Review payment request
                                 </Button>
                               </motion.div>
@@ -777,7 +832,9 @@ const CreatePaymentRequestPage = ({
                   </AnimatePresence>
 
                   {/* Right side */}
-                  <div className="hidden lg:block lg:flex-1 bg-mainGrey">{renderReviewSummary()}</div>
+                  <div className="hidden lg:block lg:flex-1 bg-mainGrey">
+                    {renderReviewSummary()}
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -828,7 +885,7 @@ const CreatePaymentRequestPage = ({
         </Dialog>
       </Transition>
     </>
-  );
-};
+  )
+}
 
-export default CreatePaymentRequestPage;
+export default CreatePaymentRequestPage

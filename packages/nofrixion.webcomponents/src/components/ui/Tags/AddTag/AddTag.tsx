@@ -1,70 +1,70 @@
-import { useEffect, useState } from 'react';
-import Downshift from 'downshift';
-import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
-import useMeasure from 'react-use-measure';
-import { LocalTag } from '../../../../types/LocalTypes';
-import { useRef } from 'react';
-import { useOnClickOutside } from 'usehooks-ts';
-import { v4 as uuidv4 } from 'uuid';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react'
+import Downshift from 'downshift'
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
+import useMeasure from 'react-use-measure'
+import { LocalTag } from '../../../../types/LocalTypes'
+import { useRef } from 'react'
+import { useOnClickOutside } from 'usehooks-ts'
+import { v4 as uuidv4 } from 'uuid'
+import classNames from 'classnames'
 
 interface TagProps {
-  tags: LocalTag[];
-  availableTags: LocalTag[];
-  onTagAdded?: (tag: LocalTag) => void;
-  onTagCreated?: (tag: LocalTag) => void;
+  tags: LocalTag[]
+  availableTags: LocalTag[]
+  onTagAdded?: (tag: LocalTag) => void
+  onTagCreated?: (tag: LocalTag) => void
 }
 
 const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => {
-  const [editMode, setEditMode] = useState(false);
-  const [tagName, setTagName] = useState('');
-  const [ref, { width }] = useMeasure();
-  const componentRef = useRef(null);
+  const [editMode, setEditMode] = useState(false)
+  const [tagName, setTagName] = useState('')
+  const [ref, { width }] = useMeasure()
+  const componentRef = useRef(null)
 
   const reset = () => {
-    setTagName('');
-    setEditMode(false);
-  };
+    setTagName('')
+    setEditMode(false)
+  }
 
   useEffect(() => {
     function handleEscapeKey(event: KeyboardEvent) {
       if (event.code === 'Escape') {
-        reset();
+        reset()
       }
     }
 
-    document.addEventListener('keydown', handleEscapeKey);
-    return () => document.removeEventListener('keydown', handleEscapeKey);
-  }, []);
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => document.removeEventListener('keydown', handleEscapeKey)
+  }, [])
 
   const handleClickOutside = () => {
-    reset();
-  };
+    reset()
+  }
 
-  useOnClickOutside(componentRef, handleClickOutside);
+  useOnClickOutside(componentRef, handleClickOutside)
 
-  const animationDuration = 0.2;
+  const animationDuration = 0.2
 
   const Layout = ({ children }: { children: React.ReactNode }) => {
-    return <motion.div layout="position">{children}</motion.div>;
-  };
+    return <motion.div layout="position">{children}</motion.div>
+  }
 
   const saveTag = () => {
-    var existingTag = availableTags.find((tag) => tag.name?.toLowerCase() === tagName.toLowerCase());
+    var existingTag = availableTags.find((tag) => tag.name?.toLowerCase() === tagName.toLowerCase())
 
     if (existingTag) {
-      onTagAdded && onTagAdded(existingTag);
+      onTagAdded && onTagAdded(existingTag)
     } else {
       onTagCreated &&
         onTagCreated({
           name: tagName,
           id: uuidv4(), // This is here to make sure the tag key is unique in the list
-        });
+        })
     }
-    reset();
-  };
+    reset()
+  }
 
-  const items = availableTags.map((tag) => ({ value: tag.name }));
+  const items = availableTags.map((tag) => ({ value: tag.name }))
 
   const stateReducer = (state: any, changes: any) => {
     switch (changes.type) {
@@ -74,15 +74,15 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
           ...changes,
           isOpen: true,
           inputValue: state.inputValue,
-        };
+        }
       default:
-        return changes;
+        return changes
     }
-  };
+  }
 
   const itemEnabled = (item: string): boolean => {
-    return tags.findIndex((tag) => tag.name === item) === -1;
-  };
+    return tags.findIndex((tag) => tag.name === item) === -1
+  }
 
   const variants = {
     open: { opacity: 1, scale: 1, transition: { ease: 'easeOut', duration: 0.1 } },
@@ -91,7 +91,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
       scale: 0.95,
       transition: { ease: 'easeIn', duration: 0.075 },
     },
-  };
+  }
 
   return (
     <>
@@ -122,7 +122,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
             <div ref={ref} className="inline-flex items-center space-x-1 pl-3">
               <Downshift
                 onInputValueChange={(inputValue) => {
-                  setTagName(inputValue);
+                  setTagName(inputValue)
                 }}
                 onChange={(selectedItem) => selectedItem && setTagName(selectedItem.value)}
                 itemToString={(item) => (item ? item.value : '')}
@@ -161,14 +161,17 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
                               .filter(
                                 (item) =>
                                   !inputValue ||
-                                  (item.value && item.value.toLowerCase().includes(inputValue.toLowerCase())),
+                                  (item.value &&
+                                    item.value.toLowerCase().includes(inputValue.toLowerCase())),
                               )
                               .map((item, index) => (
                                 <li
                                   className={classNames(
                                     'cursor-default select-none py-2 px-4 whitespace-nowrap w-full',
                                     {
-                                      'pointer-events-none text-disabledText': !itemEnabled(item.value),
+                                      'pointer-events-none text-disabledText': !itemEnabled(
+                                        item.value,
+                                      ),
                                     },
                                   )}
                                   {...getItemProps({
@@ -176,7 +179,8 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
                                     index,
                                     item,
                                     style: {
-                                      backgroundColor: highlightedIndex === index ? '#EDF2F7' : 'white',
+                                      backgroundColor:
+                                        highlightedIndex === index ? '#EDF2F7' : 'white',
                                     },
                                   })}
                                 >
@@ -237,7 +241,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
         </MotionConfig>
       )}
     </>
-  );
-};
+  )
+}
 
-export default AddTag;
+export default AddTag

@@ -1,22 +1,22 @@
-import React, { Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails';
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes';
-import CaptureModal from '../CaptureModal/CaptureModal';
-import { Currency } from '@nofrixion/moneymoov';
-import { Sheet, SheetContent } from '../../ui/atoms';
+import React, { Fragment } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import CaptureModal from '../CaptureModal/CaptureModal'
+import { Currency } from '@nofrixion/moneymoov'
+import { Sheet, SheetContent } from '../../ui/atoms'
 
 export interface PaymentRequestDetailsModalProps {
-  paymentRequest: LocalPaymentRequest;
-  merchantTags: LocalTag[];
-  hostedPaymentLink: string;
-  onRefund: (paymentAttemptID: string) => void;
-  onCapture: (authorizationID: string, amount: number) => Promise<void>;
-  onTagAdded: (tag: LocalTag) => void;
-  onTagDeleted: (id: string) => void;
-  onTagCreated: (tag: LocalTag) => void;
-  open: boolean;
-  onDismiss: () => void;
+  paymentRequest: LocalPaymentRequest
+  merchantTags: LocalTag[]
+  hostedPaymentLink: string
+  onRefund: (paymentAttemptID: string) => void
+  onCapture: (authorizationID: string, amount: number) => Promise<void>
+  onTagAdded: (tag: LocalTag) => void
+  onTagDeleted: (id: string) => void
+  onTagCreated: (tag: LocalTag) => void
+  open: boolean
+  onDismiss: () => void
 }
 
 const PaymentRequestDetailsModal = ({
@@ -31,37 +31,40 @@ const PaymentRequestDetailsModal = ({
   open,
   onDismiss,
 }: PaymentRequestDetailsModalProps) => {
-  const [selectedTransaction, setSelectedTransaction] = React.useState<LocalPaymentAttempt | undefined>();
+  const [selectedTransaction, setSelectedTransaction] = React.useState<
+    LocalPaymentAttempt | undefined
+  >()
   const [amountToCapture, setAmountToCapture] = React.useState<string | undefined>(
     ((selectedTransaction?.amount ?? 0) - (selectedTransaction?.capturedAmount ?? 0)).toString(),
-  );
-  const maxCapturableAmount = (selectedTransaction?.amount ?? 0) - (selectedTransaction?.capturedAmount ?? 0);
+  )
+  const maxCapturableAmount =
+    (selectedTransaction?.amount ?? 0) - (selectedTransaction?.capturedAmount ?? 0)
 
   const onTransactionSelectForCapture = (paymentAttempt: LocalPaymentAttempt) => {
-    setSelectedTransaction(paymentAttempt);
-    setAmountToCapture((paymentAttempt.amount - paymentAttempt.capturedAmount).toString());
-  };
+    setSelectedTransaction(paymentAttempt)
+    setAmountToCapture((paymentAttempt.amount - paymentAttempt.capturedAmount).toString())
+  }
 
   const onCaptureClick = async () => {
     if (selectedTransaction) {
-      let parsedAmount = Number(amountToCapture);
-      let remainingAmount = selectedTransaction.amount - (selectedTransaction.capturedAmount ?? 0);
-      parsedAmount = (parsedAmount ?? 0) > remainingAmount ? remainingAmount : parsedAmount!;
-      await onCapture(selectedTransaction.attemptKey, parsedAmount);
-      onCaptureDismiss();
+      let parsedAmount = Number(amountToCapture)
+      let remainingAmount = selectedTransaction.amount - (selectedTransaction.capturedAmount ?? 0)
+      parsedAmount = (parsedAmount ?? 0) > remainingAmount ? remainingAmount : parsedAmount!
+      await onCapture(selectedTransaction.attemptKey, parsedAmount)
+      onCaptureDismiss()
     }
-  };
+  }
 
   const onCaptureDismiss = () => {
-    setSelectedTransaction(undefined);
-    setAmountToCapture(undefined);
-  };
+    setSelectedTransaction(undefined)
+    setAmountToCapture(undefined)
+  }
 
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
-      onDismiss();
+      onDismiss()
     }
-  };
+  }
 
   return (
     <>
@@ -117,7 +120,7 @@ const PaymentRequestDetailsModal = ({
         </Dialog>
       </Transition>
     </>
-  );
-};
+  )
+}
 
-export default PaymentRequestDetailsModal;
+export default PaymentRequestDetailsModal

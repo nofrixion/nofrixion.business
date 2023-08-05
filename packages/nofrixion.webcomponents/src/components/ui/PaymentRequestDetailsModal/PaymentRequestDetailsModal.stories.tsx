@@ -1,7 +1,7 @@
-import { StoryFn, Meta } from '@storybook/react';
-import PaymentRequestDetailsModal from './PaymentRequestDetailsModal';
-import mockedData from '../../../utils/mockedData';
-import { useState } from 'react';
+import { StoryFn, Meta } from '@storybook/react'
+import PaymentRequestDetailsModal from './PaymentRequestDetailsModal'
+import mockedData from '../../../utils/mockedData'
+import { useState } from 'react'
 
 export default {
   title: 'UI/PaymentRequestDetailsModal',
@@ -15,17 +15,17 @@ export default {
     onTagCreated: { action: 'tag created' },
     onTagDeleted: { action: 'tag deleted' },
   },
-} as Meta<typeof PaymentRequestDetailsModal>;
+} as Meta<typeof PaymentRequestDetailsModal>
 
 const Template: StoryFn<typeof PaymentRequestDetailsModal> = (args) => {
-  let [isOpen, setIsOpen] = useState(false);
+  let [isOpen, setIsOpen] = useState(false)
 
   const openModal = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
   const onClose = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
   return (
     <>
       <div className="flex items-center justify-center">
@@ -37,15 +37,20 @@ const Template: StoryFn<typeof PaymentRequestDetailsModal> = (args) => {
           I am a payment request row. Click me.
         </button>
       </div>
-      <PaymentRequestDetailsModal {...args} open={isOpen} onDismiss={onClose}></PaymentRequestDetailsModal>
+      <PaymentRequestDetailsModal
+        {...args}
+        open={isOpen}
+        onDismiss={onClose}
+      ></PaymentRequestDetailsModal>
     </>
-  );
-};
+  )
+}
 
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 Showcase.args = {
   open: false,
   paymentRequest: mockedData.paymentRequest.regular,
   merchantTags: mockedData.merchantTags,
-  hostedPaymentLink: 'https://api-dev.nofrixion.com/nextgen/pay/c4db21c3-17a4-4e3a-8b19-87b4e9c07766',
-};
+  hostedPaymentLink:
+    'https://api-dev.nofrixion.com/nextgen/pay/c4db21c3-17a4-4e3a-8b19-87b4e9c07766',
+}

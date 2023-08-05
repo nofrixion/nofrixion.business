@@ -1,16 +1,16 @@
-import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal';
-import { useEffect, useState } from 'react';
-import { LocalPaymentNotificationsFormValue } from '../../../../types/LocalTypes';
-import { NotificationEmailsDefaults } from '@nofrixion/moneymoov';
-import InputTextField from '../../InputTextField/InputTextField';
-import { AnimatePresence } from 'framer-motion';
-import AnimateHeightWrapper from '../../utils/AnimateHeight';
-import { validateEmail } from '../../../../utils/validation';
+import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
+import { useEffect, useState } from 'react'
+import { LocalPaymentNotificationsFormValue } from '../../../../types/LocalTypes'
+import { NotificationEmailsDefaults } from '@nofrixion/moneymoov'
+import InputTextField from '../../InputTextField/InputTextField'
+import { AnimatePresence } from 'framer-motion'
+import AnimateHeightWrapper from '../../utils/AnimateHeight'
+import { validateEmail } from '../../../../utils/validation'
 
 interface NotificationEmailsModalProps extends BaseModalProps {
-  userDefaults?: NotificationEmailsDefaults;
-  onApply: (data: LocalPaymentNotificationsFormValue) => void;
-  isPrefilledData: boolean;
+  userDefaults?: NotificationEmailsDefaults
+  onApply: (data: LocalPaymentNotificationsFormValue) => void
+  isPrefilledData: boolean
 }
 
 const PaymentNotificationsModal = ({
@@ -20,35 +20,35 @@ const PaymentNotificationsModal = ({
   onApply,
   isPrefilledData = false,
 }: NotificationEmailsModalProps) => {
-  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults);
-  const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : '');
-  const [hasEmailError, setHasEmailError] = useState(false);
-  const [currentState, setCurrentState] = useState<LocalPaymentNotificationsFormValue>();
-  const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false);
+  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
+  const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : '')
+  const [hasEmailError, setHasEmailError] = useState(false)
+  const [currentState, setCurrentState] = useState<LocalPaymentNotificationsFormValue>()
+  const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false)
 
   useEffect(() => {
-    setEnableUseAsDefault(!userDefaults || (userDefaults?.emailAddresses ?? '') !== (email ?? ''));
-  }, [email]);
+    setEnableUseAsDefault(!userDefaults || (userDefaults?.emailAddresses ?? '') !== (email ?? ''))
+  }, [email])
 
   // When the user clicks on the Apply button, we need to send the data to the parent component
   const onApplyClicked = (data: any) => {
     const formData: LocalPaymentNotificationsFormValue = {
       emailAddresses: email,
       isDefault: data.isDefaultChecked,
-    };
+    }
 
-    onApply(formData);
-    setCurrentState(formData);
+    onApply(formData)
+    setCurrentState(formData)
 
-    return formData;
-  };
+    return formData
+  }
 
   const onValidateEmails = (emails: string) => {
     if (!emails) {
-      setHasEmailError(false);
+      setHasEmailError(false)
     }
 
-    let hasError = false;
+    let hasError = false
 
     if (emails) {
       emails
@@ -56,26 +56,26 @@ const PaymentNotificationsModal = ({
         .map((email) => email.trim())
         .map((email) => {
           if (!validateEmail(email)) {
-            hasError = true;
+            hasError = true
           }
-        });
+        })
     }
 
-    setHasEmailError(hasError);
-  };
+    setHasEmailError(hasError)
+  }
 
   const handleOnDismiss = () => {
-    onDismiss();
+    onDismiss()
 
     // Reset to initial state
     if (currentState) {
-      setEmail(currentState.emailAddresses);
-      setHasEmailError(false);
+      setEmail(currentState.emailAddresses)
+      setHasEmailError(false)
     } else {
-      setEmail(userDefaults ? userDefaults.emailAddresses : '');
-      setHasEmailError(false);
+      setEmail(userDefaults ? userDefaults.emailAddresses : '')
+      setHasEmailError(false)
     }
-  };
+  }
 
   return (
     <CustomModal
@@ -96,9 +96,9 @@ const PaymentNotificationsModal = ({
           value={email}
           type="email"
           onChange={(e) => {
-            setEmail(e.target.value);
+            setEmail(e.target.value)
             if (hasEmailError) {
-              onValidateEmails(e.target.value);
+              onValidateEmails(e.target.value)
             }
           }}
           onBlur={(e) => onValidateEmails(e.target.value)}
@@ -107,14 +107,18 @@ const PaymentNotificationsModal = ({
         <AnimatePresence>
           {hasEmailError && (
             <AnimateHeightWrapper layoutId="email-error">
-              <div className="mt-2 bg-[#FCF5CF] text-sm p-3 w-fill rounded">Make sure the email address is valid.</div>
+              <div className="mt-2 bg-[#FCF5CF] text-sm p-3 w-fill rounded">
+                Make sure the email address is valid.
+              </div>
             </AnimateHeightWrapper>
           )}
         </AnimatePresence>
       </div>
-      <div className="mt-2 text-greyText font-normal text-xs">Use commas to include more than one email address.</div>
+      <div className="mt-2 text-greyText font-normal text-xs">
+        Use commas to include more than one email address.
+      </div>
     </CustomModal>
-  );
-};
+  )
+}
 
-export default PaymentNotificationsModal;
+export default PaymentNotificationsModal

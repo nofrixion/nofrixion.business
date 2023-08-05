@@ -1,7 +1,7 @@
-import { html } from 'lit-html';
-import { apiUrls } from '../../utils/constants';
+import { html } from 'lit-html'
+import { apiUrls } from '../../utils/constants'
 
-import './WebPaymentRequestDashboard';
+import './WebPaymentRequestDashboard'
 
 export default {
   title: 'Payment Request Dashboard',
@@ -21,7 +21,7 @@ export default {
       options: Object.values(apiUrls),
     },
   },
-};
+}
 
 //👇 We create a “template” of how args map to rendering
 const Template = ({ token, merchantId, apiUrl }) =>
@@ -29,13 +29,13 @@ const Template = ({ token, merchantId, apiUrl }) =>
     .token=${token}
     .merchantId=${merchantId}
     .apiUrl=${apiUrl}
-  ></payment-request-dashboard>`;
+  ></payment-request-dashboard>`
 
 //👇 Each story then reuses that template
-export const Showcase = Template.bind({});
+export const Showcase = Template.bind({})
 
 Showcase.args = {
   token: 'eyJhbGciOiJIUz...',
   merchantId: 'Enter merchant id...',
   apiUrl: apiUrls.dev,
-};
+}

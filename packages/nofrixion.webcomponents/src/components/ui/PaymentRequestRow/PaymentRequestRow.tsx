@@ -1,23 +1,23 @@
-import classNames from 'classnames';
-import { LocalPaymentRequest } from '../../../types/LocalTypes';
-import { formatAmount, formatDate } from '../../../utils/formatters';
-import Chip from '../Chip/Chip';
-import Contact from '../Contact/Contact';
-import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge';
-import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu';
-import { animate, AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import classNames from 'classnames'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { formatAmount, formatDate } from '../../../utils/formatters'
+import Chip from '../Chip/Chip'
+import Contact from '../Contact/Contact'
+import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
+import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
+import { animate, AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
 
 interface PaymentRequestRowProps extends LocalPaymentRequest {
-  onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void;
-  onDuplicate?: () => void;
-  onCopyLink?: () => void;
-  onDelete?: () => void;
-  onOpenPaymentPage?: () => void;
-  selected: boolean;
+  onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
+  onDuplicate?: () => void
+  onCopyLink?: () => void
+  onDelete?: () => void
+  onOpenPaymentPage?: () => void
+  selected: boolean
 }
 
-const commonTdClasses = 'px-4 py-3';
+const commonTdClasses = 'px-4 py-3'
 
 const Row = ({
   id,
@@ -34,22 +34,22 @@ const Row = ({
   onOpenPaymentPage,
   selected,
 }: PaymentRequestRowProps) => {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const onDeletePaymentRequestClicked = async () => {
-    setIsDeleting(true);
-    animate(`.custom-backdrop-blur-${id}`, { opacity: 0.2 }, { duration: 0.2 });
-  };
+    setIsDeleting(true)
+    animate(`.custom-backdrop-blur-${id}`, { opacity: 0.2 }, { duration: 0.2 })
+  }
 
   const onCancelDeletingPaymentRequestClicked = async () => {
-    setIsDeleting(false);
-    animate(`.custom-backdrop-blur-${id}`, { opacity: 1 }, { duration: 0.2 });
-  };
+    setIsDeleting(false)
+    animate(`.custom-backdrop-blur-${id}`, { opacity: 1 }, { duration: 0.2 })
+  }
 
   const onConfirmDeletePaymentRequestClicked = async () => {
-    onDelete && onDelete();
-    await onCancelDeletingPaymentRequestClicked();
-  };
+    onDelete && onDelete()
+    await onCancelDeletingPaymentRequestClicked()
+  }
 
   return (
     <tr
@@ -94,13 +94,20 @@ const Row = ({
         </div>
       </td>
 
-      <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>{formatDate(createdAt)}</td>
+      <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
+        {formatDate(createdAt)}
+      </td>
 
       <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>
         <Contact {...contact} />
       </td>
 
-      <td className={classNames(commonTdClasses, `text-right truncate tabular-nums custom-backdrop-blur-${id}`)}>
+      <td
+        className={classNames(
+          commonTdClasses,
+          `text-right truncate tabular-nums custom-backdrop-blur-${id}`,
+        )}
+      >
         <span className="font-medium">{formatAmount(amount)}</span>
       </td>
 
@@ -126,7 +133,7 @@ const Row = ({
         />
       </td>
     </tr>
-  );
-};
+  )
+}
 
-export default Row;
+export default Row

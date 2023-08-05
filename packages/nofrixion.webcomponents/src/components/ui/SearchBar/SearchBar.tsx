@@ -1,33 +1,33 @@
-﻿import searchIconDisabled from '../../../assets/icons/search-icon-disabled.svg';
-import searchIconEnabled from '../../../assets/icons/search-icon-enabled.svg';
-import closeIcon from '../../../assets/images/nf_close.svg';
-import classNames from 'classnames';
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+﻿import searchIconDisabled from '../../../assets/icons/search-icon-disabled.svg'
+import searchIconEnabled from '../../../assets/icons/search-icon-enabled.svg'
+import closeIcon from '../../../assets/images/nf_close.svg'
+import classNames from 'classnames'
+import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  setValue: (value: string) => void;
+  setValue: (value: string) => void
 }
 
 const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
   ({ maxLength = 100, value, setValue, ...props }, ref) => {
-    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(false)
 
     const onFocus = () => {
-      setIsFocused(true);
-    };
+      setIsFocused(true)
+    }
 
     const onBlur = () => {
-      setIsFocused(false);
-    };
+      setIsFocused(false)
+    }
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(event.target.value);
-    };
+      setValue(event.target.value)
+    }
 
     const onClear = () => {
-      setValue('');
-    };
+      setValue('')
+    }
 
     return (
       <div className="relative inline-flex">
@@ -45,7 +45,8 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
             },
           )}
           style={{
-            backgroundImage: value || isFocused ? `url(${searchIconEnabled})` : `url(${searchIconDisabled})`,
+            backgroundImage:
+              value || isFocused ? `url(${searchIconEnabled})` : `url(${searchIconDisabled})`,
             outlineColor: 'transparent',
           }}
           placeholder="Search"
@@ -69,8 +70,8 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
           )}
         </AnimatePresence>
       </div>
-    );
+    )
   },
-);
+)
 
-export default SearchBar;
+export default SearchBar

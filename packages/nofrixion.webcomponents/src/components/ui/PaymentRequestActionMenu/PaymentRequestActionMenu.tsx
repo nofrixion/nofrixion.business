@@ -1,15 +1,15 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import copyIcon from '../../../assets/images/nf_copy.svg';
-import linkIcon from '../../../assets/images/nf_link.svg';
-import trashIcon from '../../../assets/images/nf_trash.svg';
-import openIcon from '../../../assets/images/nf_open.svg';
-import trashDisabledIcon from '../../../assets/images/nf_trash_disabled.svg';
-import { cva } from 'class-variance-authority';
-import { motion } from 'framer-motion';
-import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import copyIcon from '../../../assets/images/nf_copy.svg'
+import linkIcon from '../../../assets/images/nf_link.svg'
+import trashIcon from '../../../assets/images/nf_trash.svg'
+import openIcon from '../../../assets/images/nf_open.svg'
+import trashDisabledIcon from '../../../assets/images/nf_trash_disabled.svg'
+import { cva } from 'class-variance-authority'
+import { motion } from 'framer-motion'
+import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 const actionItemClassNames =
-  'group text-xs leading-none rounded-1 flex items-center relative select-none outline-none cursor-pointer';
+  'group text-xs leading-none rounded-1 flex items-center relative select-none outline-none cursor-pointer'
 const actionItem = cva(actionItemClassNames, {
   variants: {
     intent: {
@@ -21,30 +21,33 @@ const actionItem = cva(actionItemClassNames, {
   defaultVariants: {
     intent: 'neutral',
   },
-});
+})
 
 const handleClick = (e: React.MouseEvent<HTMLDivElement>, handler?: () => void) => {
   if (handler) {
-    handler();
+    handler()
   }
 
-  e.stopPropagation();
-};
+  e.stopPropagation()
+}
 
 interface PaymentRequestActionMenuProps {
-  onDuplicate?: () => void;
-  onCopyLink?: () => void;
-  onDelete?: () => void;
-  onBlur?: () => void;
-  onOpenPaymentPage?: () => void;
+  onDuplicate?: () => void
+  onCopyLink?: () => void
+  onDelete?: () => void
+  onBlur?: () => void
+  onOpenPaymentPage?: () => void
 }
 
 interface PaymentRequestActionMenuItemContentProps {
-  label: string;
-  iconSource: string;
+  label: string
+  iconSource: string
 }
 
-const PaymentRequestActionMenuItemContent = ({ label, iconSource }: PaymentRequestActionMenuItemContentProps) => {
+const PaymentRequestActionMenuItemContent = ({
+  label,
+  iconSource,
+}: PaymentRequestActionMenuItemContentProps) => {
   return (
     <div className="h-6 flex items-center">
       <div className="pr-2">
@@ -52,8 +55,8 @@ const PaymentRequestActionMenuItemContent = ({ label, iconSource }: PaymentReque
       </div>
       {label}
     </div>
-  );
-};
+  )
+}
 
 const PaymentRequestActionMenu = ({
   onDuplicate,
@@ -62,11 +65,12 @@ const PaymentRequestActionMenu = ({
   onBlur,
   onOpenPaymentPage,
 }: PaymentRequestActionMenuProps) => {
-  const onDuplicateClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onDuplicate);
-  const onCopyLinkClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onCopyLink);
-  const onDeleteClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onDelete);
-  const emptyClick = (e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation();
-  const onOpenPaymentPageClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onOpenPaymentPage);
+  const onDuplicateClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onDuplicate)
+  const onCopyLinkClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onCopyLink)
+  const onDeleteClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onDelete)
+  const emptyClick = (e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()
+  const onOpenPaymentPageClick = (e: React.MouseEvent<HTMLDivElement>) =>
+    handleClick(e, onOpenPaymentPage)
 
   return (
     <DropdownMenu.Root>
@@ -97,16 +101,25 @@ const PaymentRequestActionMenu = ({
             )}
             {onOpenPaymentPage && (
               <DropdownMenu.Item className={actionItem()} onClick={onOpenPaymentPageClick}>
-                <PaymentRequestActionMenuItemContent label="Open payment page" iconSource={openIcon} />
+                <PaymentRequestActionMenuItemContent
+                  label="Open payment page"
+                  iconSource={openIcon}
+                />
               </DropdownMenu.Item>
             )}
             {onCopyLink && (
               <DropdownMenu.Item className={actionItem()} onClick={onCopyLinkClick}>
-                <PaymentRequestActionMenuItemContent label="Copy payment link" iconSource={linkIcon} />
+                <PaymentRequestActionMenuItemContent
+                  label="Copy payment link"
+                  iconSource={linkIcon}
+                />
               </DropdownMenu.Item>
             )}
             {onDelete ? (
-              <DropdownMenu.Item className={actionItem({ intent: 'negative' })} onClick={onDeleteClick}>
+              <DropdownMenu.Item
+                className={actionItem({ intent: 'negative' })}
+                onClick={onDeleteClick}
+              >
                 <PaymentRequestActionMenuItemContent label="Delete" iconSource={trashIcon} />
               </DropdownMenu.Item>
             ) : (
@@ -115,7 +128,10 @@ const PaymentRequestActionMenu = ({
                   side="bottom"
                   content="Payment requests that have already received payments cannot be deleted."
                 >
-                  <PaymentRequestActionMenuItemContent label="Delete not available" iconSource={trashDisabledIcon} />
+                  <PaymentRequestActionMenuItemContent
+                    label="Delete not available"
+                    iconSource={trashDisabledIcon}
+                  />
                 </InfoTooltip>
               </DropdownMenu.Item>
             )}
@@ -123,7 +139,7 @@ const PaymentRequestActionMenu = ({
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
-  );
-};
+  )
+}
 
-export default PaymentRequestActionMenu;
+export default PaymentRequestActionMenu

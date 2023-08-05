@@ -1,6 +1,6 @@
-import { Currency } from '@nofrixion/moneymoov';
-import { LocalPartialPaymentMethods } from '../../../types/LocalEnums';
-import { formatAmountAndDecimals } from '../../../utils/formatters';
+import { Currency } from '@nofrixion/moneymoov'
+import { LocalPartialPaymentMethods } from '../../../types/LocalEnums'
+import { formatAmountAndDecimals } from '../../../utils/formatters'
 
 const AmountPaid = ({
   amountPaid,
@@ -8,15 +8,15 @@ const AmountPaid = ({
   currency,
   partialPaymentMethod,
 }: {
-  amountPaid: number;
-  totalAmount: number;
-  currency: Currency.EUR | Currency.GBP;
-  partialPaymentMethod: LocalPartialPaymentMethods;
+  amountPaid: number
+  totalAmount: number
+  currency: Currency.EUR | Currency.GBP
+  partialPaymentMethod: LocalPartialPaymentMethods
 }) => {
-  const percentagePaid = amountPaid > totalAmount ? 100 : (amountPaid / totalAmount) * 100;
-  const outstandingAmount = amountPaid > totalAmount ? 0 : totalAmount - amountPaid;
+  const percentagePaid = amountPaid > totalAmount ? 100 : (amountPaid / totalAmount) * 100
+  const outstandingAmount = amountPaid > totalAmount ? 0 : totalAmount - amountPaid
 
-  const { amountValueWithCommas, amountDecimals } = formatAmountAndDecimals(totalAmount);
+  const { amountValueWithCommas, amountDecimals } = formatAmountAndDecimals(totalAmount)
 
   return (
     <div className="flex flex-col">
@@ -28,9 +28,15 @@ const AmountPaid = ({
       {partialPaymentMethod === LocalPartialPaymentMethods.Partial && (
         <div className="flex flex-row h-[0.125rem]">
           {percentagePaid !== 0 && (
-            <div className="bg-positiveActionBackground rounded-l-sm" style={{ flexGrow: `${percentagePaid}` }}></div>
+            <div
+              className="bg-positiveActionBackground rounded-l-sm"
+              style={{ flexGrow: `${percentagePaid}` }}
+            ></div>
           )}
-          <div className="bg-greyBg rounded-r-sm" style={{ flexGrow: `${100 - percentagePaid}` }}></div>
+          <div
+            className="bg-greyBg rounded-r-sm"
+            style={{ flexGrow: `${100 - percentagePaid}` }}
+          ></div>
         </div>
       )}
 
@@ -47,7 +53,7 @@ const AmountPaid = ({
         </span>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default AmountPaid;
+export default AmountPaid

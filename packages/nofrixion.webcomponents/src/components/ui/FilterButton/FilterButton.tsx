@@ -1,30 +1,30 @@
-﻿import classNames from 'classnames';
-import React, { Children, useState } from 'react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { AnimatePresence, motion } from 'framer-motion';
+﻿import classNames from 'classnames'
+import React, { Children, useState } from 'react'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export type FilterButtonFC = React.FC<FilterButtonProps> & {
-  FilteredLayout: React.FC<FilterButtonFilteredLayoutProps>;
-  Body: React.FC<FilterButtonBody>;
-};
+  FilteredLayout: React.FC<FilterButtonFilteredLayoutProps>
+  Body: React.FC<FilterButtonBody>
+}
 
 export interface FilterButtonProps {
-  defaultIconSource?: string;
-  highlightedIconSource?: string;
-  label: string;
-  isFiltered: boolean;
-  children?: React.ReactNode;
-  onReset?: () => void;
-  onCancel?: () => void;
-  onApply?: () => void;
+  defaultIconSource?: string
+  highlightedIconSource?: string
+  label: string
+  isFiltered: boolean
+  children?: React.ReactNode
+  onReset?: () => void
+  onCancel?: () => void
+  onApply?: () => void
 }
 
 export interface FilterButtonFilteredLayoutProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 export interface FilterButtonBody {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 const FilterButton: FilterButtonFC = ({
@@ -37,60 +37,60 @@ const FilterButton: FilterButtonFC = ({
   onApply,
   onCancel,
 }) => {
-  let filteredLayout: React.ReactNode | undefined;
-  let body: React.ReactNode | undefined;
-  const [iconSource, setIconSource] = useState<string | undefined>(defaultIconSource);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  let filteredLayout: React.ReactNode | undefined
+  let body: React.ReactNode | undefined
+  const [iconSource, setIconSource] = useState<string | undefined>(defaultIconSource)
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
   const filterButtonClassNames =
-    'outline-none inline-flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-greyBg hover:text-default-text transition-all';
+    'outline-none inline-flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-greyBg hover:text-default-text transition-all'
   const actionButtonClassNames =
-    'outline-none px-3 py-1 cursor-pointer leading-6 text-13px rounded-full transition-all';
+    'outline-none px-3 py-1 cursor-pointer leading-6 text-13px rounded-full transition-all'
 
   Children.forEach(children, (child) => {
     if (React.isValidElement(child) && typeof child.type !== 'string') {
       switch (child.type.name) {
         case FilterButtonFilteredLayout.name:
-          filteredLayout = child;
-          break;
+          filteredLayout = child
+          break
         case FilterButtonBody.name:
-          body = child;
-          break;
+          body = child
+          break
       }
     }
-  });
+  })
 
   const onMouseOver = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setIconSource(highlightedIconSource);
-  };
+    setIconSource(highlightedIconSource)
+  }
 
   const onMouseOut = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setIconSource(defaultIconSource);
-  };
+    setIconSource(defaultIconSource)
+  }
 
   const onCancelClick = () => {
     if (onCancel) {
-      onCancel();
+      onCancel()
     }
 
-    setIsDialogOpen(false);
-  };
+    setIsDialogOpen(false)
+  }
 
   const onApplyClick = () => {
     if (onApply) {
-      onApply();
+      onApply()
     }
 
-    setIsDialogOpen(false);
-  };
+    setIsDialogOpen(false)
+  }
 
   const onDropdownOpenChange = (open: boolean) => {
     if (onCancel && !open) {
-      onCancel();
+      onCancel()
     }
 
-    setIsDialogOpen(open);
-  };
+    setIsDialogOpen(open)
+  }
 
   return (
     <>
@@ -173,17 +173,17 @@ const FilterButton: FilterButtonFC = ({
         </AnimatePresence>
       </DropdownMenu.Root>
     </>
-  );
-};
+  )
+}
 
 const FilterButtonFilteredLayout: React.FC<FilterButtonFilteredLayoutProps> = ({ children }) => {
-  return <>{children}</>;
-};
+  return <>{children}</>
+}
 
 const FilterButtonBody: React.FC<FilterButtonBody> = ({ children }) => {
-  return <>{children}</>;
-};
+  return <>{children}</>
+}
 
-FilterButton.FilteredLayout = FilterButtonFilteredLayout;
-FilterButton.Body = FilterButtonBody;
-export default FilterButton;
+FilterButton.FilteredLayout = FilterButtonFilteredLayout
+FilterButton.Body = FilterButtonBody
+export default FilterButton
