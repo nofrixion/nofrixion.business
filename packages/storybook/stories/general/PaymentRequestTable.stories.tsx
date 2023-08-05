@@ -1,34 +1,9 @@
-import React from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentRequestTable from "./PaymentRequestTable";
-import { LocalPaymentRequest } from "../../../types/LocalTypes";
-import { Currency } from "@nofrixion/moneymoov";
-import mockedData from "../../../utils/mockedData";
-
-const tags = [
-  {
-    ID: "1",
-    merchantID: "1",
-    name: "Tag 1",
-    colourHex: "#FF0000",
-    description: "This is a tag",
-  },
-  {
-    ID: "2",
-    merchantID: "1",
-    name: "Another tag",
-    colourHex: "#00FF00",
-    description: "This is another tag",
-  },
-  {
-    ID: "3",
-    merchantID: "1",
-    name: "Third tag",
-    colourHex: "#0000FF",
-    description: "This is a third tag",
-  },
-];
+import { PaymentRequestTable } from "@nofrixion/ui";
+import { LocalPaymentRequest } from "@nofrixion/utils/types";
+import mockedData from "../utils/mockedData";
 
 export default {
   title: "UI/Payment Request Table",

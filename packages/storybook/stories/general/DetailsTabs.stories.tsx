@@ -1,6 +1,7 @@
+import * as React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import DetailsTabs from "./DetailsTabs";
-import mockedData from "../../../utils/mockedData";
+import { DetailsTabs } from "@nofrixion/ui";
+import mockedData from "../utils/mockedData";
 
 export default {
   title: "UI/Details Tabs",

@@ -1,7 +1,6 @@
-import React from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import Tag from "./Tag";
+import { Tag } from "@nofrixion/ui";
 
 export default {
   title: "UI/Tags/Tag",

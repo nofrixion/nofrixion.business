@@ -1,7 +1,7 @@
-import React from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import Contact from "./Contact";
+import { Contact } from "@nofrixion/ui";
 
 export default {
   title: "UI/Contact",

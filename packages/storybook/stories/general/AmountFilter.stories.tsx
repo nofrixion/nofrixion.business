@@ -1,13 +1,13 @@
-﻿import AmountFilter from "./AmountFilter";
+﻿import * as React from "react";
+import { AmountFilter } from "@nofrixion/ui";
 import { Meta, StoryFn } from "@storybook/react";
-import React, { useState } from "react";
 
 export default {
   title: "UI/Amount Filter",
   component: AmountFilter,
 } as Meta<typeof AmountFilter>;
 
-const Template: StoryFn<typeof AmountFilter> = (args) => {
+const Template: StoryFn<typeof AmountFilter> = () => {
   const [localCurrency, setLocalCurrency] = React.useState<string | undefined>();
   const [localMinAmount, setLocalMinAmount] = React.useState<number | undefined>();
   const [localMaxAmount, setLocalMaxAmount] = React.useState<number | undefined>();

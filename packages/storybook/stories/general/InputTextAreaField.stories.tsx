@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import InputTextAreaField, { InputTextAreaFieldProps } from "./InputTextAreaField";
+import { InputTextAreaField, InputTextAreaFieldProps } from "@nofrixion/ui";
 
 export default {
   title: "UI/InputTextAreaField",
@@ -12,7 +12,7 @@ export default {
 } as Meta<typeof InputTextAreaField>;
 
 const Template: StoryFn<InputTextAreaFieldProps> = (args) => {
-  const [localValue, setValue] = useState<string>(args.value?.toString() || "");
+  const [localValue, setValue] = React.useState<string>(args.value?.toString() || "");
 
   const onChangeInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value);

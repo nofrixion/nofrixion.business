@@ -1,6 +1,6 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import QRCode from "./QRCode";
+import { QRCode } from "@nofrixion/ui";
 
 export default {
   title: "UI/QRCode",

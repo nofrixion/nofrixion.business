@@ -1,6 +1,6 @@
-﻿import SelectablePill from "./SelectablePill";
+﻿import * as React from "react";
+import { SelectablePill } from "@nofrixion/ui";
 import { Meta, StoryFn } from "@storybook/react";
-import React, { FormEventHandler, useState } from "react";
 
 export default {
   title: "UI/Selectable Pill",
@@ -11,12 +11,12 @@ export default {
 } as Meta<typeof SelectablePill>;
 
 const CheckboxTemplate: StoryFn<typeof SelectablePill> = (args) => {
-  const [selected, setSelected] = useState<boolean>(false);
+  const [selected, setSelected] = React.useState<boolean>(false);
   return <SelectablePill {...args} selected={selected} onSelect={setSelected} />;
 };
 
 const RadioButtonTemplate: StoryFn<typeof SelectablePill> = (args) => {
-  const [selected, setSelected] = useState<string>("");
+  const [selected, setSelected] = React.useState<string>("");
 
   const onOptionChange = (value: string) => {
     setSelected(value);

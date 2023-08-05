@@ -1,11 +1,11 @@
-import { useState } from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import Select, { SelectOption } from "./Select";
+import { Listbox, ListboxOption } from "@nofrixion/ui";
 
 export default {
-  title: "UI/Select",
-  component: Select,
+  title: "UI/Listbox",
+  component: Listbox,
   argTypes: {
     options: {
       control: {
@@ -22,18 +22,18 @@ export default {
       action: "Changed",
     },
   },
-} as Meta<typeof Select>;
+} as Meta<typeof Listbox>;
 
-const Template: StoryFn<typeof Select> = (args) => {
-  const [selected, setSelected] = useState<SelectOption>(args.options[0]);
+const Template: StoryFn<typeof Listbox> = (args) => {
+  const [selected, setSelected] = React.useState<ListboxOption>(args.options[0]);
 
-  const onChangeValue = (value: SelectOption) => {
+  const onChangeValue = (value: ListboxOption) => {
     setSelected(value);
   };
 
   return (
     <>
-      <Select {...args} selected={selected} onChange={onChangeValue} />
+      <Listbox {...args} selected={selected} onChange={onChangeValue} />
     </>
   );
 };

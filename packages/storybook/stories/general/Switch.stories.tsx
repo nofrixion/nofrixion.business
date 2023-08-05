@@ -1,11 +1,6 @@
-import { useState } from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import BankIcon from "../../../assets/icons/bank-icon.svg";
-import CardIcon from "../../../assets/icons/card-icon.svg";
-import ApplePayIcon from "../../../assets/icons/apple-icon.svg";
-import BitcoinIcon from "../../../assets/icons/bitcoin-icon.svg";
-
-import Switch from "./Switch";
+import { Switch } from "@nofrixion/ui";
 
 export default {
   title: "UI/Switch",
@@ -13,7 +8,7 @@ export default {
 } as Meta<typeof Switch>;
 
 const Template: StoryFn<typeof Switch> = (args) => {
-  const [enabled, setEnabled] = useState<boolean>(false);
+  const [enabled, setEnabled] = React.useState<boolean>(false);
 
   const onChangeEnabled = (checked: boolean) => {
     setEnabled(checked);
@@ -24,23 +19,23 @@ const Template: StoryFn<typeof Switch> = (args) => {
 export const PayByBank = Template.bind({});
 PayByBank.args = {
   label: "Pay by Bank",
-  icon: BankIcon,
+  iconName: "bank/24",
 };
 
 export const Cards = Template.bind({});
 Cards.args = {
   label: "Credit and debit card",
-  icon: CardIcon,
+  iconName: "card/24",
 };
 
 export const ApplePay = Template.bind({});
 ApplePay.args = {
   label: "Apple Pay",
-  icon: ApplePayIcon,
+  iconName: "wallets/24",
 };
 
 export const BitcoinLightning = Template.bind({});
 BitcoinLightning.args = {
   label: "Bitcoin Lightning",
-  icon: BitcoinIcon,
+  iconName: "bitcoin/24",
 };

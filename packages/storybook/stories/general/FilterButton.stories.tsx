@@ -1,8 +1,5 @@
-﻿import disabledTagIcon from "../../../assets/icons/tag-icon-disabled.svg";
-import enabledTagIcon from "../../../assets/icons/tag-icon-enabled.svg";
-import disabledCurrencyIcon from "../../../assets/icons/currency-icon-disabled.svg";
-import enabledCurrencyIcon from "../../../assets/icons/currency-icon-enabled.svg";
-import FilterButton from "./FilterButton";
+﻿import * as React from "react";
+import { FilterButton } from "@nofrixion/ui";
 import { Meta, StoryFn } from "@storybook/react";
 
 export default {
@@ -16,14 +13,12 @@ const Template: StoryFn<typeof FilterButton> = (args) => {
 
 export const Tags = Template.bind({});
 Tags.args = {
-  defaultIconSource: disabledTagIcon,
-  highlightedIconSource: enabledTagIcon,
+  iconName: "tag/16",
   label: "Tags",
 };
 
 export const Currency = Template.bind({});
 Currency.args = {
-  defaultIconSource: disabledCurrencyIcon,
-  highlightedIconSource: enabledCurrencyIcon,
+  iconName: "euros/16",
   label: "Currency",
 };

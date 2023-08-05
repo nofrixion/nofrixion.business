@@ -1,6 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import mockedData from "../../../utils/mockedData";
-import PaymentRequestDetails from "./PaymentRequestDetails";
+import mockedData from "../utils/mockedData";
+import { PaymentRequestDetails } from "@nofrixion/ui";
 
 export default {
   title: "UI/PaymentRequestDetails",

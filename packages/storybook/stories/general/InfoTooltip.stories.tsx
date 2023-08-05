@@ -1,7 +1,7 @@
-import React from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import InfoTooltip from "./InfoTooltip";
+import { InfoTooltip } from "@nofrixion/ui";
 
 export default {
   title: "UI/Info Tooltip",

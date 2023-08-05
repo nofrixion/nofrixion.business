@@ -1,13 +1,13 @@
-﻿import TagFilter, { FilterableTag } from "./TagFilter";
+﻿import * as React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import React, { useState } from "react";
+import { TagFilter, FilterableTag } from "@nofrixion/ui";
 
 export default {
   title: "UI/Tag Filter",
   component: TagFilter,
 } as Meta<typeof TagFilter>;
 
-const Template: StoryFn<typeof TagFilter> = (args) => {
+const Template: StoryFn<typeof TagFilter> = () => {
   const [localTags, setLocalTags] = React.useState<FilterableTag[]>([
     {
       id: "1",

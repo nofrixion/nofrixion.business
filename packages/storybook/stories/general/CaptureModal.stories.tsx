@@ -1,8 +1,8 @@
-﻿import React from "react";
+﻿import * as React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import CaptureModal, { CaptureModalProps } from "./CaptureModal";
+import { CaptureModal, CaptureModalProps } from "@nofrixion/ui";
 import { action } from "@storybook/addon-actions";
-import { Currency } from "@nofrixion/moneymoov";
+import { Currency } from "@nofrixion/utils/types";
 
 const meta: Meta<typeof CaptureModal> = {
   title: "UI/Capture Modal",

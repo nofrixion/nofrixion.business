@@ -1,6 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import TagManager from "./TagManager";
-import { mockMerchantTags, mockTags } from "../../../../utils/mockedData";
+import { TagManager } from "@nofrixion/ui";
+import { mockMerchantTags, mockTags } from "../utils/mockedData";
 
 export default {
   title: "UI/Tags/TagManager",

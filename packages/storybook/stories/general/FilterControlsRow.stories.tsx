@@ -1,7 +1,6 @@
-﻿import React, { useState } from "react";
-import FilterControlsRow from "./FilterControlsRow";
+﻿import * as React from "react";
+import { FilterControlsRow, FilterableTag } from "@nofrixion/ui";
 import { Meta, StoryFn } from "@storybook/react";
-import { FilterableTag } from "../TagFilter/TagFilter";
 
 export default {
   title: "UI/Filter Controls Row",
@@ -9,7 +8,7 @@ export default {
 } as Meta<typeof FilterControlsRow>;
 
 const Template: StoryFn<typeof FilterControlsRow> = (args) => {
-  const [searchFilter, setSearchFilter] = useState<string>("");
+  const [searchFilter, setSearchFilter] = React.useState<string>("");
   const [currency, setCurrency] = React.useState<string | undefined>();
   const [minAmount, setMinAmount] = React.useState<number | undefined>();
   const [maxAmount, setMaxAmount] = React.useState<number | undefined>();

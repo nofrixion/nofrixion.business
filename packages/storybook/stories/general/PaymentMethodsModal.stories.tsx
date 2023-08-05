@@ -1,7 +1,8 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentMethodsModal from "./PaymentMethodsModal";
-import { Currency, PaymentProcessor } from "@nofrixion/moneymoov";
+import { PaymentMethodsModal } from "@nofrixion/ui";
+import { Currency, PaymentProcessor } from "@nofrixion/utils/types";
 
 export default {
   title: "UI/Payment Methods Modal",

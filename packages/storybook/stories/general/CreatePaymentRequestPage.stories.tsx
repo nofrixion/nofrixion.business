@@ -1,10 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import CreatePaymentRequestPage from "./CreatePaymentRequestPage";
-import { Currency, PaymentProcessor } from "@nofrixion/moneymoov";
-import { useState } from "react";
-import { action } from "@storybook/addon-actions";
-import { LocalPaymentRequestCreate } from "../../../types/LocalTypes";
+import { CreatePaymentRequestPage } from "@nofrixion/ui";
+import { Currency, PaymentProcessor } from "@nofrixion/utils/types";
 
 export default {
   title: "UI/CreatePaymentRequestPage",
@@ -21,7 +18,7 @@ export default {
 } as Meta<typeof CreatePaymentRequestPage>;
 
 const Template: StoryFn<typeof CreatePaymentRequestPage> = (args) => {
-  let [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = React.useState(true);
 
   const openScreen = () => {
     setIsOpen(true);
@@ -30,7 +27,7 @@ const Template: StoryFn<typeof CreatePaymentRequestPage> = (args) => {
     setIsOpen(false);
   };
 
-  const onCreatePaymentRequest = async (_: LocalPaymentRequestCreate) => {
+  const onCreatePaymentRequest = async () => {
     onClose();
   };
 

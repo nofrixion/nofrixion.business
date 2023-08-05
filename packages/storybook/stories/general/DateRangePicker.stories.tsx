@@ -1,6 +1,6 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import DateRangePicker from "./DateRangePicker";
+import { DateRangePicker } from "@nofrixion/ui";
 import { action } from "@storybook/addon-actions";
 
 export default {

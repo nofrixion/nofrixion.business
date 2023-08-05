@@ -1,6 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentConditionsModal from "./PaymentConditionsModal";
+import { PaymentConditionsModal } from "@nofrixion/ui";
 
 export default {
   title: "UI/Payment Conditions Modal",

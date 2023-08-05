@@ -1,6 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import CustomModal from "./CustomModal";
+import { CustomModal } from "@nofrixion/ui";
 
 export default {
   title: "UI/Custom Modal",

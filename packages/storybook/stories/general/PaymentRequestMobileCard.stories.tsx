@@ -1,7 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import PaymentRequestMobileCard from "./PaymentRequestMobileCard";
-import { Currency } from "@nofrixion/moneymoov";
+import { PaymentRequestMobileCard } from "@nofrixion/ui";
+import { Currency } from "@nofrixion/utils/types";
 
 const tags = [
   {

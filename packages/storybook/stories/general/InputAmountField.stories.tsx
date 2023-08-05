@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import InputAmountField, { InputAmountFieldProps } from "./InputAmountField";
+import { InputAmountField, InputAmountFieldProps } from "@nofrixion/ui";
 import { action } from "@storybook/addon-actions";
 
 const meta: Meta<typeof InputAmountField> = {
@@ -17,7 +17,7 @@ const meta: Meta<typeof InputAmountField> = {
 };
 
 const Template: StoryFn<InputAmountFieldProps> = (args) => {
-  const [localValue, setValue] = useState<string>(args.value?.toString() || "");
+  const [localValue, setValue] = React.useState<string>(args.value?.toString() || "");
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

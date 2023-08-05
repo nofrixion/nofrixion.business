@@ -1,7 +1,7 @@
-import React from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import EditOptionCard from "./EditOptionCard";
+import { EditOptionCard } from "@nofrixion/ui";
 
 export default {
   title: "UI/Edit Option Card",

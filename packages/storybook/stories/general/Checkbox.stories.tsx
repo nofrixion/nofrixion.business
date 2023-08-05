@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import Checkbox from "./Checkbox";
+import { Checkbox } from "@nofrixion/ui";
 
 export default {
   title: "UI/Checkbox",
@@ -9,7 +8,7 @@ export default {
 } as Meta<typeof Checkbox>;
 
 const Template: StoryFn<typeof Checkbox> = (args) => {
-  const [checked, setChecked] = useState<boolean>(false);
+  const [checked, setChecked] = React.useState<boolean>(false);
 
   const onChangeChecked = (value: boolean) => {
     setChecked(value);

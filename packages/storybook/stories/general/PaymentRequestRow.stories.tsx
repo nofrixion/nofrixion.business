@@ -1,7 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-
-import PaymentRequestRow from "./PaymentRequestRow";
-import { Currency } from "@nofrixion/moneymoov";
+import { PaymentRequestRow } from "@nofrixion/ui";
+import { Currency } from "@nofrixion/utils/types";
 
 const tags = [
   {

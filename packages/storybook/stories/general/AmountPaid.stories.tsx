@@ -1,6 +1,7 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import AmountPaid from "./AmountPaid";
-import { Currency } from "@nofrixion/moneymoov";
+import { AmountPaid } from "@nofrixion/ui";
+import { Currency } from "@nofrixion/utils/types";
 
 export default {
   title: "UI/AmountPaid",

@@ -1,5 +1,6 @@
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { CopyLink } from "./CopyLink";
+import { CopyLink } from "@nofrixion/ui";
 
 export default {
   title: "UI/CopyLink",

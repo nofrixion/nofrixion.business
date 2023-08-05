@@ -1,7 +1,7 @@
-import React from "react";
+import * as React from "react";
 import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentRequestActionMenu from "./PaymentRequestActionMenu";
+import { PaymentRequestActionMenu } from "@nofrixion/ui";
 
 export default {
   title: "UI/Payment Request Row Action Menu",
