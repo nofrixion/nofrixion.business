@@ -1,12 +1,7 @@
 import * as React from "react";
 const { useEffect, useState } = React;
 import { cn } from "@nofrixion/utils";
-
-export enum SortDirection {
-  NONE = "NONE",
-  ASC = "ASC",
-  DESC = "DESC",
-}
+import { SortDirection } from "@nofrixion/utils/types";
 
 interface ColumnHeaderProps {
   label: string;
