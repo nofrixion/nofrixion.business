@@ -1,11 +1,11 @@
-import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal';
-import { useEffect, useState } from 'react';
-import { LocalPaymentNotificationsFormValue } from '../../../../types/LocalTypes';
-import { NotificationEmailsDefaults } from '@nofrixion/moneymoov';
-import InputTextField from '../../InputTextField/InputTextField';
-import { AnimatePresence } from 'framer-motion';
-import AnimateHeightWrapper from '../../utils/AnimateHeight';
-import { validateEmail } from '../../../../utils/validation';
+import CustomModal, { BaseModalProps } from "../../CustomModal/CustomModal";
+import { useEffect, useState } from "react";
+import { LocalPaymentNotificationsFormValue } from "../../../../types/LocalTypes";
+import { NotificationEmailsDefaults } from "@nofrixion/moneymoov";
+import InputTextField from "../../InputTextField/InputTextField";
+import { AnimatePresence } from "framer-motion";
+import AnimateHeightWrapper from "../../utils/AnimateHeight";
+import { validateEmail } from "../../../../utils/validation";
 
 interface NotificationEmailsModalProps extends BaseModalProps {
   userDefaults?: NotificationEmailsDefaults;
@@ -21,13 +21,13 @@ const PaymentNotificationsModal = ({
   isPrefilledData = false,
 }: NotificationEmailsModalProps) => {
   const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults);
-  const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : '');
+  const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : "");
   const [hasEmailError, setHasEmailError] = useState(false);
   const [currentState, setCurrentState] = useState<LocalPaymentNotificationsFormValue>();
   const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false);
 
   useEffect(() => {
-    setEnableUseAsDefault(!userDefaults || (userDefaults?.emailAddresses ?? '') !== (email ?? ''));
+    setEnableUseAsDefault(!userDefaults || (userDefaults?.emailAddresses ?? "") !== (email ?? ""));
   }, [email]);
 
   // When the user clicks on the Apply button, we need to send the data to the parent component
@@ -52,7 +52,7 @@ const PaymentNotificationsModal = ({
 
     if (emails) {
       emails
-        .split(',')
+        .split(",")
         .map((email) => email.trim())
         .map((email) => {
           if (!validateEmail(email)) {
@@ -72,7 +72,7 @@ const PaymentNotificationsModal = ({
       setEmail(currentState.emailAddresses);
       setHasEmailError(false);
     } else {
-      setEmail(userDefaults ? userDefaults.emailAddresses : '');
+      setEmail(userDefaults ? userDefaults.emailAddresses : "");
       setHasEmailError(false);
     }
   };

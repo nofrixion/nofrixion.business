@@ -1,0 +1,24 @@
+{
+  "name": "@nofrixion/clients",
+  "version": "0.0.0",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup src/index.ts --watch --format esm,cjs --dts",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.32.6",
+    "axios": "^1.4.0"
+  },
+  "devDependencies": {
+    "@nofrixion/eslint-config": "workspace:^",
+    "@nofrixion/tsconfig": "workspace:^",
+    "@types/react": "^18.2.18",
+    "react": "^18.2.0",
+    "tsup": "^7.2.0"
+  }
+}

@@ -1,10 +1,10 @@
-﻿import React from 'react';
-import InputAmountField from '../InputAmountField/InputAmountField';
-import { Currency } from '@nofrixion/moneymoov';
-import backButtonIcon from '../../../assets/icons/back-button-icon.svg';
-import { format } from 'date-fns';
-import { localCurrency } from '../../../utils/constants';
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import React from "react";
+import InputAmountField from "../InputAmountField/InputAmountField";
+import { Currency } from "@nofrixion/moneymoov";
+import backButtonIcon from "../../../assets/icons/back-button-icon.svg";
+import { format } from "date-fns";
+import { localCurrency } from "../../../utils/constants";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface CaptureModalProps {
   initialAmount: string;
@@ -32,7 +32,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
   contactName,
 }) => {
   const [isCaptureButtonDisabled, setIsCaptureButtonDisabled] = React.useState(false);
-  const [validationErrorMessage, setValidationErrorMessage] = React.useState('');
+  const [validationErrorMessage, setValidationErrorMessage] = React.useState("");
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -45,10 +45,10 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
   const onCaptureClick = async () => {
     setIsCaptureButtonDisabled(true);
 
-    setValidationErrorMessage('');
+    setValidationErrorMessage("");
     let parsedAmount = Number(initialAmount);
     if (parsedAmount < 0) {
-      setValidationErrorMessage('The amount must be greater than 0.');
+      setValidationErrorMessage("The amount must be greater than 0.");
     } else if (parsedAmount === 0) {
       setValidationErrorMessage("The amount can't be 0.");
     } else if (maxCapturableAmount && parsedAmount > maxCapturableAmount) {
@@ -61,7 +61,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
   };
 
   const onAmountInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValidationErrorMessage('');
+    setValidationErrorMessage("");
     setAmountToCapture(event.target.value);
   };
 
@@ -77,15 +77,15 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
             You are about to capture the card payment made
             {contactName && <span className="font-semibold">{` by ${contactName}`}</span>}
             &nbsp;on&nbsp;
-            <span className="font-semibold">{format(transactionDate, 'MMM do, yyyy')}</span>
+            <span className="font-semibold">{format(transactionDate, "MMM do, yyyy")}</span>
             {lastFourDigitsOnCard ? (
               <>
-                {' with the'}
+                {" with the"}
                 {processor && <span className="font-semibold">{` ${processor}`}</span>}
                 {` card ending in ${lastFourDigitsOnCard}.`}
               </>
             ) : (
-              '.'
+              "."
             )}
           </p>
           <div className="mt-12 md:flex">

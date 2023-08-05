@@ -1,17 +1,17 @@
-import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal';
-import Switch from '../../Switch/Switch';
+import CustomModal, { BaseModalProps } from "../../CustomModal/CustomModal";
+import Switch from "../../Switch/Switch";
 
-import BankIcon from '../../../../assets/icons/bank-icon.svg';
-import CardIcon from '../../../../assets/icons/card-icon.svg';
-import ApplePayIcon from '../../../../assets/icons/wallet-icon.svg';
-import BitcoinIcon from '../../../../assets/icons/bitcoin-icon.svg';
-import { useEffect, useState } from 'react';
-import Checkbox from '../../Checkbox/Checkbox';
-import { AnimatePresence } from 'framer-motion';
-import Select from '../../Select/Select';
-import AnimateHeightWrapper from '../../utils/AnimateHeight';
-import { LocalPaymentMethodsFormValue } from '../../../../types/LocalTypes';
-import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov';
+import BankIcon from "../../../../assets/icons/bank-icon.svg";
+import CardIcon from "../../../../assets/icons/card-icon.svg";
+import ApplePayIcon from "../../../../assets/icons/wallet-icon.svg";
+import BitcoinIcon from "../../../../assets/icons/bitcoin-icon.svg";
+import { useEffect, useState } from "react";
+import Checkbox from "../../Checkbox/Checkbox";
+import { AnimatePresence } from "framer-motion";
+import Select from "../../Select/Select";
+import AnimateHeightWrapper from "../../utils/AnimateHeight";
+import { LocalPaymentMethodsFormValue } from "../../../../types/LocalTypes";
+import { BankSettings, PaymentMethodsDefaults } from "@nofrixion/moneymoov";
 
 interface PaymentMethodsModalProps extends BaseModalProps {
   banks: BankSettings[];
@@ -147,7 +147,7 @@ const PaymentMethodsModal = ({
       enableUseAsDefault={enableUseAsDefault}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
-      buttonRowClassName={isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''}
+      buttonRowClassName={isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? "md:mt-6" : ""}
     >
       <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-borderGrey">
         <Switch

@@ -1,22 +1,22 @@
-import BankIcon from '../../../assets/icons/bank-icon.svg';
-import CardIcon from '../../../assets/icons/card-icon.svg';
-import WalletIcon from '../../../assets/icons/wallet-icon.svg';
-import BitcoinLightningIcon from '../../../assets/icons/bitcoin-icon.svg';
+import BankIcon from "../../../assets/icons/bank-icon.svg";
+import CardIcon from "../../../assets/icons/card-icon.svg";
+import WalletIcon from "../../../assets/icons/wallet-icon.svg";
+import BitcoinLightningIcon from "../../../assets/icons/bitcoin-icon.svg";
 
-import BankDisabledIcon from '../../../assets/icons/bank-disabled.svg';
-import CardDisabledIcon from '../../../assets/icons/card-disabled.svg';
-import WalletDisabledIcon from '../../../assets/icons/wallet-disabled.svg';
-import BitcoinDisabledIcon from '../../../assets/icons/bitcoin-disabled.svg';
-import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import BankDisabledIcon from "../../../assets/icons/bank-disabled.svg";
+import CardDisabledIcon from "../../../assets/icons/card-disabled.svg";
+import WalletDisabledIcon from "../../../assets/icons/wallet-disabled.svg";
+import BitcoinDisabledIcon from "../../../assets/icons/bitcoin-disabled.svg";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 interface PaymentMethodIconProps {
-  paymentMethod: 'bank' | 'card' | 'wallet' | 'lightning';
+  paymentMethod: "bank" | "card" | "wallet" | "lightning";
   showInfoTooltip?: boolean;
   enabled?: boolean;
 }
 
 const getIconDescription = (paymentMethodName: string, enabled: boolean) =>
-  `${paymentMethodName} ${enabled ? 'enabled' : 'disabled'}`;
+  `${paymentMethodName} ${enabled ? "enabled" : "disabled"}`;
 
 const paymentMethodIcons = {
   bank: BankIcon,
@@ -33,10 +33,10 @@ const paymentMethodDisabledIcons = {
 };
 
 const paymentMethodsName = {
-  bank: 'Bank',
-  card: 'Card',
-  wallet: 'Apple Pay / Google Pay',
-  lightning: 'Bitcoin Lightning',
+  bank: "Bank",
+  card: "Card",
+  wallet: "Apple Pay / Google Pay",
+  lightning: "Bitcoin Lightning",
 };
 
 const getImage: React.FC<PaymentMethodIconProps> = ({ paymentMethod, enabled = false }) => {
@@ -61,7 +61,7 @@ const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
   return (
     <InfoTooltip
       className="w-6 h-6 lg:w-4 lg:h-4"
-      content={showInfoTooltip ? getIconDescription(paymentMethodsName[paymentMethod], enabled) : ''}
+      content={showInfoTooltip ? getIconDescription(paymentMethodsName[paymentMethod], enabled) : ""}
     >
       {getImage({ paymentMethod, enabled })}
     </InfoTooltip>

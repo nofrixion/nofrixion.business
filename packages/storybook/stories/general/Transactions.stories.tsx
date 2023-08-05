@@ -1,12 +1,12 @@
-import { StoryFn, Meta } from '@storybook/react';
-import Transactions from './Transactions';
-import { mockPaymentAttempts } from '../../../utils/mockedData';
+import { StoryFn, Meta } from "@storybook/react";
+import Transactions from "./Transactions";
+import { mockPaymentAttempts } from "../../../utils/mockedData";
 
 export default {
-  title: 'UI/Transactions',
+  title: "UI/Transactions",
   component: Transactions,
   argTypes: {
-    onRefundClicked: { action: 'refund clicked' },
+    onRefundClicked: { action: "refund clicked" },
   },
 } as Meta<typeof Transactions>;
 

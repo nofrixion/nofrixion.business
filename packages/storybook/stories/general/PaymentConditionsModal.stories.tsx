@@ -1,13 +1,13 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentConditionsModal from './PaymentConditionsModal';
+import PaymentConditionsModal from "./PaymentConditionsModal";
 
 export default {
-  title: 'UI/Payment Conditions Modal',
+  title: "UI/Payment Conditions Modal",
   component: PaymentConditionsModal,
   argTypes: {
     onApply: {
-      action: 'Apply',
+      action: "Apply",
     },
   },
 } as Meta<typeof PaymentConditionsModal>;

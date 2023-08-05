@@ -1,12 +1,12 @@
-﻿import disabledTagIcon from '../../../assets/icons/tag-icon-disabled.svg';
-import enabledTagIcon from '../../../assets/icons/tag-icon-enabled.svg';
-import disabledCurrencyIcon from '../../../assets/icons/currency-icon-disabled.svg';
-import enabledCurrencyIcon from '../../../assets/icons/currency-icon-enabled.svg';
-import FilterButton from './FilterButton';
-import { Meta, StoryFn } from '@storybook/react';
+﻿import disabledTagIcon from "../../../assets/icons/tag-icon-disabled.svg";
+import enabledTagIcon from "../../../assets/icons/tag-icon-enabled.svg";
+import disabledCurrencyIcon from "../../../assets/icons/currency-icon-disabled.svg";
+import enabledCurrencyIcon from "../../../assets/icons/currency-icon-enabled.svg";
+import FilterButton from "./FilterButton";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
-  title: 'UI/Filter Button',
+  title: "UI/Filter Button",
   component: FilterButton,
 } as Meta<typeof FilterButton>;
 
@@ -18,12 +18,12 @@ export const Tags = Template.bind({});
 Tags.args = {
   defaultIconSource: disabledTagIcon,
   highlightedIconSource: enabledTagIcon,
-  label: 'Tags',
+  label: "Tags",
 };
 
 export const Currency = Template.bind({});
 Currency.args = {
   defaultIconSource: disabledCurrencyIcon,
   highlightedIconSource: enabledCurrencyIcon,
-  label: 'Currency',
+  label: "Currency",
 };

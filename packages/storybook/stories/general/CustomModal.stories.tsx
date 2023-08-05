@@ -1,19 +1,19 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from "@storybook/react";
 
-import CustomModal from './CustomModal';
+import CustomModal from "./CustomModal";
 
 export default {
-  title: 'UI/Custom Modal',
+  title: "UI/Custom Modal",
   component: CustomModal,
   argTypes: {
     onApply: {
-      action: 'Apply',
+      action: "Apply",
     },
     onDismiss: {
-      action: 'Dismiss',
+      action: "Dismiss",
     },
     onDelete: {
-      action: 'Delete selected',
+      action: "Delete selected",
     },
   },
 } as Meta<typeof CustomModal>;
@@ -22,7 +22,7 @@ const Template: StoryFn<typeof CustomModal> = (args) => <CustomModal {...args}>{
 
 export const Showcase = Template.bind({});
 Showcase.args = {
-  title: 'I am a modal',
+  title: "I am a modal",
   open: true,
   enableUseAsDefault: true,
   children: <div>I am the content of the modal</div>,

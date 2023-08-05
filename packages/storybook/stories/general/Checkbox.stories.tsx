@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React, { useState } from "react";
+import { StoryFn, Meta } from "@storybook/react";
 
-import Checkbox from './Checkbox';
+import Checkbox from "./Checkbox";
 
 export default {
-  title: 'UI/Checkbox',
+  title: "UI/Checkbox",
   component: Checkbox,
 } as Meta<typeof Checkbox>;
 
@@ -23,12 +23,12 @@ const Template: StoryFn<typeof Checkbox> = (args) => {
 
 export const Primary = Template.bind({});
 Primary.args = {
-  label: 'Define a priority bank',
+  label: "Define a priority bank",
   infoText:
-    'Select a priority bank to set it as the default payment option for users. This streamlines the payment process by displaying the preferred bank first.',
+    "Select a priority bank to set it as the default payment option for users. This streamlines the payment process by displaying the preferred bank first.",
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  label: 'Secondary',
+  label: "Secondary",
 };

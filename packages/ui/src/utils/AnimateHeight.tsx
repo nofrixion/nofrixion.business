@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const AnimateHeightWrapper = ({ children, layoutId }: { children: React.ReactNode; layoutId: string }) => {
   return (
@@ -7,12 +7,12 @@ const AnimateHeightWrapper = ({ children, layoutId }: { children: React.ReactNod
       initial={{ opacity: 0, height: 0 }}
       animate={{
         opacity: 1,
-        height: 'auto',
+        height: "auto",
         transitionEnd: {
-          overflow: 'inherit',
+          overflow: "inherit",
         },
       }}
-      exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+      exit={{ opacity: 0, height: 0, overflow: "hidden" }}
     >
       {children}
     </motion.div>

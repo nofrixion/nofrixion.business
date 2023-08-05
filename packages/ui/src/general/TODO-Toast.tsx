@@ -1,22 +1,22 @@
-﻿import { toast, ToastContainer, Slide, CloseButtonProps } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
-import closeIcon from '../../../assets/images/nf_close.svg';
+﻿import { toast, ToastContainer, Slide, CloseButtonProps } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import closeIcon from "../../../assets/images/nf_close.svg";
 
 interface ToastProps {
-  positionY: 'top' | 'bottom';
-  positionX: 'left' | 'center' | 'right';
+  positionY: "top" | "bottom";
+  positionX: "left" | "center" | "right";
   duration: number;
 }
 
-const makeToast = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
+const makeToast = (type: "success" | "error" | "info" | "warning", message: string) => {
   switch (type) {
-    case 'success':
+    case "success":
       return toast.success(message);
-    case 'error':
+    case "error":
       return toast.error(message);
-    case 'info':
+    case "info":
       return toast.info(message);
-    case 'warning':
+    case "warning":
       return toast.warning(message);
   }
 };

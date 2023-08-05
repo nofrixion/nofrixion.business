@@ -1,9 +1,9 @@
-﻿import FilterButton from '../FilterButton/FilterButton';
-import React, { useEffect } from 'react';
-import disabledTagIcon from '../../../assets/icons/tag-icon-disabled.svg';
-import enabledTagIcon from '../../../assets/icons/tag-icon-enabled.svg';
-import filterIcon from '../../../assets/icons/filter-icon.svg';
-import SelectablePill from '../SelectablePill/SelectablePill';
+﻿import FilterButton from "../FilterButton/FilterButton";
+import React, { useEffect } from "react";
+import disabledTagIcon from "../../../assets/icons/tag-icon-disabled.svg";
+import enabledTagIcon from "../../../assets/icons/tag-icon-enabled.svg";
+import filterIcon from "../../../assets/icons/filter-icon.svg";
+import SelectablePill from "../SelectablePill/SelectablePill";
 
 export interface FilterableTag {
   id: string;

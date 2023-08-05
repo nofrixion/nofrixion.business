@@ -1,16 +1,16 @@
-import { Meta, StoryFn } from '@storybook/react';
-import { PaymentRequestStatus } from '@nofrixion/moneymoov';
-import Tab from './Tab';
-import * as Tabs from '@radix-ui/react-tabs';
+import { Meta, StoryFn } from "@storybook/react";
+import { PaymentRequestStatus } from "@nofrixion/moneymoov";
+import Tab from "./Tab";
+import * as Tabs from "@radix-ui/react-tabs";
 
 export default {
-  title: 'UI/Tab',
+  title: "UI/Tab",
   component: Tab,
   argTypes: {
-    totalRecords: { control: 'number' },
-    isLoading: { control: 'boolean' },
-    totalAmountInEuros: { control: 'number' },
-    totalAmountInPounds: { control: 'number' },
+    totalRecords: { control: "number" },
+    isLoading: { control: "boolean" },
+    totalAmountInEuros: { control: "number" },
+    totalAmountInPounds: { control: "number" },
   },
   args: {
     isLoading: false,

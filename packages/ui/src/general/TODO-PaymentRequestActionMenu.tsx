@@ -1,25 +1,25 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import copyIcon from '../../../assets/images/nf_copy.svg';
-import linkIcon from '../../../assets/images/nf_link.svg';
-import trashIcon from '../../../assets/images/nf_trash.svg';
-import openIcon from '../../../assets/images/nf_open.svg';
-import trashDisabledIcon from '../../../assets/images/nf_trash_disabled.svg';
-import { cva } from 'class-variance-authority';
-import { motion } from 'framer-motion';
-import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import copyIcon from "../../../assets/images/nf_copy.svg";
+import linkIcon from "../../../assets/images/nf_link.svg";
+import trashIcon from "../../../assets/images/nf_trash.svg";
+import openIcon from "../../../assets/images/nf_open.svg";
+import trashDisabledIcon from "../../../assets/images/nf_trash_disabled.svg";
+import { cva } from "class-variance-authority";
+import { motion } from "framer-motion";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 const actionItemClassNames =
-  'group text-xs leading-none rounded-1 flex items-center relative select-none outline-none cursor-pointer';
+  "group text-xs leading-none rounded-1 flex items-center relative select-none outline-none cursor-pointer";
 const actionItem = cva(actionItemClassNames, {
   variants: {
     intent: {
-      neutral: ['data-[highlighted]:text-greyText'],
-      negative: ['text-negativeRed data-[highlighted]:text-highlightedNegativeRed'],
-      disabled: ['text-disabledText data-[highlighted]:text-greyText'],
+      neutral: ["data-[highlighted]:text-greyText"],
+      negative: ["text-negativeRed data-[highlighted]:text-highlightedNegativeRed"],
+      disabled: ["text-disabledText data-[highlighted]:text-greyText"],
     },
   },
   defaultVariants: {
-    intent: 'neutral',
+    intent: "neutral",
   },
 });
 
@@ -106,11 +106,11 @@ const PaymentRequestActionMenu = ({
               </DropdownMenu.Item>
             )}
             {onDelete ? (
-              <DropdownMenu.Item className={actionItem({ intent: 'negative' })} onClick={onDeleteClick}>
+              <DropdownMenu.Item className={actionItem({ intent: "negative" })} onClick={onDeleteClick}>
                 <PaymentRequestActionMenuItemContent label="Delete" iconSource={trashIcon} />
               </DropdownMenu.Item>
             ) : (
-              <DropdownMenu.Item className={actionItem({ intent: 'disabled' })} disabled>
+              <DropdownMenu.Item className={actionItem({ intent: "disabled" })} disabled>
                 <InfoTooltip
                   side="bottom"
                   content="Payment requests that have already received payments cannot be deleted."

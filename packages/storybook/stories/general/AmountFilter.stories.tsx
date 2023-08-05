@@ -1,9 +1,9 @@
-﻿import AmountFilter from './AmountFilter';
-import { Meta, StoryFn } from '@storybook/react';
-import React, { useState } from 'react';
+﻿import AmountFilter from "./AmountFilter";
+import { Meta, StoryFn } from "@storybook/react";
+import React, { useState } from "react";
 
 export default {
-  title: 'UI/Amount Filter',
+  title: "UI/Amount Filter",
   component: AmountFilter,
 } as Meta<typeof AmountFilter>;
 

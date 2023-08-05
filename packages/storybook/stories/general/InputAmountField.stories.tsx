@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React, { useState } from "react";
+import { StoryFn, Meta } from "@storybook/react";
 
-import InputAmountField, { InputAmountFieldProps } from './InputAmountField';
-import { action } from '@storybook/addon-actions';
+import InputAmountField, { InputAmountFieldProps } from "./InputAmountField";
+import { action } from "@storybook/addon-actions";
 
 const meta: Meta<typeof InputAmountField> = {
-  title: 'UI/InputAmountField',
+  title: "UI/InputAmountField",
   component: InputAmountField,
   argTypes: {
-    value: { control: { type: 'text' } },
+    value: { control: { type: "text" } },
     currency: {
-      options: ['EUR', 'GBP'],
-      control: { type: 'select' },
+      options: ["EUR", "GBP"],
+      control: { type: "select" },
     },
   },
 };
 
 const Template: StoryFn<InputAmountFieldProps> = (args) => {
-  const [localValue, setValue] = useState<string>(args.value?.toString() || '');
+  const [localValue, setValue] = useState<string>(args.value?.toString() || "");
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -29,17 +29,17 @@ const Template: StoryFn<InputAmountFieldProps> = (args) => {
 export const Showcase = Template.bind({});
 
 Showcase.args = {
-  value: '1222.99',
-  currency: 'EUR',
-  onCurrencyChange: action('Currency changed'),
+  value: "1222.99",
+  currency: "EUR",
+  onCurrencyChange: action("Currency changed"),
 };
 
 export const GBPInput = Template.bind({});
 
 GBPInput.args = {
-  value: '27.50',
-  currency: 'GBP',
-  onCurrencyChange: action('Currency changed'),
+  value: "27.50",
+  currency: "GBP",
+  onCurrencyChange: action("Currency changed"),
 };
 
 export default meta;

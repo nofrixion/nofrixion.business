@@ -1,9 +1,9 @@
-import { StoryFn, Meta } from '@storybook/react';
-import AmountPaid from './AmountPaid';
-import { Currency } from '@nofrixion/moneymoov';
+import { StoryFn, Meta } from "@storybook/react";
+import AmountPaid from "./AmountPaid";
+import { Currency } from "@nofrixion/moneymoov";
 
 export default {
-  title: 'UI/AmountPaid',
+  title: "UI/AmountPaid",
   component: AmountPaid,
 } as Meta<typeof AmountPaid>;
 

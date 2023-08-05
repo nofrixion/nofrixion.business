@@ -1,7 +1,7 @@
-import * as RadixCheckbox from '@radix-ui/react-checkbox';
-import CheckedIcon from '../../../assets/icons/checked-icon.svg';
-import { useId } from 'react';
-import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import * as RadixCheckbox from "@radix-ui/react-checkbox";
+import CheckedIcon from "../../../assets/icons/checked-icon.svg";
+import { useId } from "react";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 interface CheckboxProps {
   label: string;

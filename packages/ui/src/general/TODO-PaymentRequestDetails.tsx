@@ -1,13 +1,13 @@
-import Contact from '../Contact/Contact';
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes';
-import QRCode from '../QRCode/QRCode';
-import { CopyLink } from '../CopyLink/CopyLink';
-import AmountPaid from '../AmountPaid/AmountPaid';
-import { Currency } from '@nofrixion/moneymoov';
-import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge';
-import DetailsTabs from '../DetailsTabs/DetailsTabs';
-import TagManager from '../Tags/TagManager/TagManager';
-import { LocalPaymentMethodTypes } from '../../../types/LocalEnums';
+import Contact from "../Contact/Contact";
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from "../../../types/LocalTypes";
+import QRCode from "../QRCode/QRCode";
+import { CopyLink } from "../CopyLink/CopyLink";
+import AmountPaid from "../AmountPaid/AmountPaid";
+import { Currency } from "@nofrixion/moneymoov";
+import StatusBadge from "../PaymentRequestStatusBadge/PaymentRequestStatusBadge";
+import DetailsTabs from "../DetailsTabs/DetailsTabs";
+import TagManager from "../Tags/TagManager/TagManager";
+import { LocalPaymentMethodTypes } from "../../../types/LocalEnums";
 
 export interface PaymentRequestDetailsProps {
   paymentRequest: LocalPaymentRequest;

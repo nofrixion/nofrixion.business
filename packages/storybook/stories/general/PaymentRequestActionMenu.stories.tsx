@@ -1,20 +1,20 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import React from "react";
+import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentRequestActionMenu from './PaymentRequestActionMenu';
+import PaymentRequestActionMenu from "./PaymentRequestActionMenu";
 
 export default {
-  title: 'UI/Payment Request Row Action Menu',
+  title: "UI/Payment Request Row Action Menu",
   component: PaymentRequestActionMenu,
   argTypes: {
     onDuplicate: {
-      action: 'Duplicate selected',
+      action: "Duplicate selected",
     },
     onCopyLink: {
-      action: 'Copy selected',
+      action: "Copy selected",
     },
     onDelete: {
-      action: 'Delete selected',
+      action: "Delete selected",
     },
   },
 } as Meta<typeof PaymentRequestActionMenu>;

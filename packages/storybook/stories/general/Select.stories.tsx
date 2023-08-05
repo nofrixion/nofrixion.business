@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import { useState } from "react";
+import { StoryFn, Meta } from "@storybook/react";
 
-import Select, { SelectOption } from './Select';
+import Select, { SelectOption } from "./Select";
 
 export default {
-  title: 'UI/Select',
+  title: "UI/Select",
   component: Select,
   argTypes: {
     options: {
       control: {
-        type: 'array',
+        type: "array",
       },
     },
     selected: {
       control: {
-        type: 'select',
-        options: ['Revolut', 'Fineco', 'Bank of Ireland', 'NoFrixion', 'AIB'],
+        type: "select",
+        options: ["Revolut", "Fineco", "Bank of Ireland", "NoFrixion", "AIB"],
       },
     },
     onChange: {
-      action: 'Changed',
+      action: "Changed",
     },
   },
 } as Meta<typeof Select>;
@@ -42,25 +42,25 @@ export const Showcase = Template.bind({});
 
 const banksOptions = [
   {
-    value: '1',
-    label: 'Revolut',
+    value: "1",
+    label: "Revolut",
   },
   {
-    value: '2',
-    label: 'Fineco',
+    value: "2",
+    label: "Fineco",
   },
   {
-    value: '3',
-    label: 'Bank of Ireland',
+    value: "3",
+    label: "Bank of Ireland",
   },
   {
-    value: '4',
-    label: 'NoFrixion',
+    value: "4",
+    label: "NoFrixion",
   },
   {
-    value: '5',
+    value: "5",
 
-    label: 'AIB',
+    label: "AIB",
   },
 ];
 

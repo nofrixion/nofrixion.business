@@ -1,10 +1,10 @@
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta } from "@storybook/react";
 
-import PaymentInfo from './PaymentInfo';
-import mockedData from '../../../utils/mockedData';
+import PaymentInfo from "./PaymentInfo";
+import mockedData from "../../../utils/mockedData";
 
 export default {
-  title: 'UI/PaymentInfo',
+  title: "UI/PaymentInfo",
   component: PaymentInfo,
 } as Meta<typeof PaymentInfo>;
 

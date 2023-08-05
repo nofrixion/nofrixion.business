@@ -1,14 +1,14 @@
-import { StoryFn, Meta } from '@storybook/react';
-import TagManager from './TagManager';
-import { mockMerchantTags, mockTags } from '../../../../utils/mockedData';
+import { StoryFn, Meta } from "@storybook/react";
+import TagManager from "./TagManager";
+import { mockMerchantTags, mockTags } from "../../../../utils/mockedData";
 
 export default {
-  title: 'UI/Tags/TagManager',
+  title: "UI/Tags/TagManager",
   component: TagManager,
   argTypes: {
     tags: {
       control: {
-        type: 'object',
+        type: "object",
       },
     },
   },

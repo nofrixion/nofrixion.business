@@ -1,7 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import CopyLinkIcon from '../../../assets/icons/copy-link-icon.svg';
-import TickMarkIcon from '../../../assets/icons/tick-mark-icon.svg';
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import CopyLinkIcon from "../../../assets/icons/copy-link-icon.svg";
+import TickMarkIcon from "../../../assets/icons/tick-mark-icon.svg";
 
 export const CopyLink = ({ link }: { link: string }) => {
   const [copied, setCopied] = useState(false);

@@ -1,7 +1,7 @@
-import PaymentMethodIcon from '../utils/PaymentMethodIcon';
-import { format } from 'date-fns';
-import { LocalPaymentRequest } from '../../../types/LocalTypes';
-import { LocalAddressType, LocalPaymentMethodTypes } from '../../../types/LocalEnums';
+import PaymentMethodIcon from "../utils/PaymentMethodIcon";
+import { format } from "date-fns";
+import { LocalPaymentRequest } from "../../../types/LocalTypes";
+import { LocalAddressType, LocalPaymentMethodTypes } from "../../../types/LocalEnums";
 
 interface PaymentInfoRowProps {
   label: string;
@@ -33,7 +33,7 @@ interface PaymentInfoProps extends LocalPaymentRequest {}
 
 const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentInfoProps) => {
   // Parsed date should follow the following format: Dec 22nd, 2022
-  const formattedDate = format(createdAt, 'MMM do, yyyy');
+  const formattedDate = format(createdAt, "MMM do, yyyy");
 
   const paymentMethods = paymentMethodTypes;
 
@@ -78,7 +78,7 @@ const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentIn
                 ? shippingAddress?.addressCity
                 : shippingAddress?.addressCounty
                 ? `County ${shippingAddress?.addressCounty}`
-                : ''
+                : ""
             }`,
 
             // If address has Post Code and Country Code, display them as "{Post Code}, {Country Code}"
@@ -91,7 +91,7 @@ const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentIn
                 ? shippingAddress?.addressPostCode
                 : shippingAddress?.addressCountryCode
                 ? shippingAddress?.addressCountryCode
-                : ''
+                : ""
             }`,
             shippingAddress?.phone,
             shippingAddress?.email,

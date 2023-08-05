@@ -1,13 +1,13 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from "react";
 
 interface BackArrowProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  intent?: 'back' | 'close';
+  intent?: "back" | "close";
 }
 
-const BackArrow: React.FC<BackArrowProps> = ({ intent = 'close', ...props }) => {
+const BackArrow: React.FC<BackArrowProps> = ({ intent = "close", ...props }) => {
   return (
     <button className="inline-block lg:ml-[3.25rem] w-6 h-6" {...props}>
-      {intent === 'back' ? (
+      {intent === "back" ? (
         <svg
           className="w-6 h-6 min-w-[1.5rem] min-h-[1.5rem] transition stroke-controlGrey hover:stroke-controlGreyHover"
           width="26"

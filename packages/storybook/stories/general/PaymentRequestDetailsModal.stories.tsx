@@ -1,19 +1,19 @@
-import { StoryFn, Meta } from '@storybook/react';
-import PaymentRequestDetailsModal from './PaymentRequestDetailsModal';
-import mockedData from '../../../utils/mockedData';
-import { useState } from 'react';
+import { StoryFn, Meta } from "@storybook/react";
+import PaymentRequestDetailsModal from "./PaymentRequestDetailsModal";
+import mockedData from "../../../utils/mockedData";
+import { useState } from "react";
 
 export default {
-  title: 'UI/PaymentRequestDetailsModal',
+  title: "UI/PaymentRequestDetailsModal",
   component: PaymentRequestDetailsModal,
   argTypes: {
     onDismiss: {
-      action: 'Dismiss',
+      action: "Dismiss",
     },
-    onRefundClick: { action: 'refund clicked' },
-    onTagAdded: { action: 'tag added' },
-    onTagCreated: { action: 'tag created' },
-    onTagDeleted: { action: 'tag deleted' },
+    onRefundClick: { action: "refund clicked" },
+    onTagAdded: { action: "tag added" },
+    onTagCreated: { action: "tag created" },
+    onTagDeleted: { action: "tag deleted" },
   },
 } as Meta<typeof PaymentRequestDetailsModal>;
 
@@ -47,5 +47,5 @@ Showcase.args = {
   open: false,
   paymentRequest: mockedData.paymentRequest.regular,
   merchantTags: mockedData.merchantTags,
-  hostedPaymentLink: 'https://api-dev.nofrixion.com/nextgen/pay/c4db21c3-17a4-4e3a-8b19-87b4e9c07766',
+  hostedPaymentLink: "https://api-dev.nofrixion.com/nextgen/pay/c4db21c3-17a4-4e3a-8b19-87b4e9c07766",
 };
