@@ -1,10 +1,8 @@
 import * as React from "react";
 const { useEffect, useState } = React;
-
 import CustomModal, { BaseModalProps } from "../CustomModal";
-import Switch from "../Switch";
-
-import Checkbox from "../Checkbox";
+import { Switch } from "../Switch";
+import { Checkbox } from "../Checkbox";
 import { AnimatePresence } from "framer-motion";
 import Listbox from "../Listbox";
 import AnimateHeightWrapper from "../../utils/AnimateHeight";
@@ -17,7 +15,7 @@ interface PaymentMethodsModalProps extends BaseModalProps {
   isPrefilledData: boolean;
 }
 
-const PaymentMethodsModal = ({
+export const PaymentMethodsModal = ({
   open,
   banks,
   userDefaults,
@@ -244,5 +242,3 @@ const PaymentMethodsModal = ({
     </CustomModal>
   );
 };
-
-export default PaymentMethodsModal;

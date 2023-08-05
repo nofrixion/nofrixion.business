@@ -1,5 +1,5 @@
 import * as React from "react";
-import Contact from "./Contact";
+import { Contact } from "./Contact";
 import {
   LocalPaymentAttempt,
   LocalPaymentRequest,
@@ -7,12 +7,12 @@ import {
   Currency,
   LocalPaymentMethodTypes,
 } from "@nofrixion/utils/types";
-import QRCode from "./QRCode";
+import { QRCode } from "./QRCode";
 import { CopyLink } from "./CopyLink";
-import AmountPaid from "./AmountPaid";
-import StatusBadge from "./PaymentRequestStatusBadge";
-import DetailsTabs from "./DetailsTabs";
-import TagManager from "./TagManager";
+import { AmountPaid } from "./AmountPaid";
+import { PaymentRequestStatusBadge as StatusBadge } from "./PaymentRequestStatusBadge";
+import { DetailsTabs } from "./DetailsTabs";
+import { TagManager } from "./TagManager";
 
 export interface PaymentRequestDetailsProps {
   paymentRequest: LocalPaymentRequest;

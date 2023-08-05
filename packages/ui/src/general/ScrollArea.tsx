@@ -7,7 +7,7 @@ interface ScrollAreaProps {
   hideScrollbar?: boolean;
 }
 
-const ScrollArea: React.FC<ScrollAreaProps> = ({ children, hideScrollbar = false }) => {
+export const ScrollArea: React.FC<ScrollAreaProps> = ({ children, hideScrollbar = false }) => {
   return (
     <RadixScrollArea.Root>
       <RadixScrollArea.Viewport>{children}</RadixScrollArea.Viewport>
@@ -23,5 +23,3 @@ const ScrollArea: React.FC<ScrollAreaProps> = ({ children, hideScrollbar = false
     </RadixScrollArea.Root>
   );
 };
-
-export default ScrollArea;

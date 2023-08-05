@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { cn } from "@nofrixion/utils";
 
 interface SVGProps extends React.SVGProps<SVGSVGElement> {
@@ -41,6 +40,27 @@ export const Icons = {
       <path d="M21 7.5H3" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  "bank-disabled/24": (className: string) => (
+    <SVG className={className} size="24">
+      <path
+        d="M9.5 18.0001L19.8342 18C19.9241 18.0001 20.0117 18.0331 20.0847 18.0944C20.1576 18.1557 20.2121 18.2422 20.2405 18.3415L20.9999 20.996"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M9.5 10H5V15M17.5 10H19V18H9.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 21H6.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7.5 10V12.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 13.5V18" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.5 11V18" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M20.5 7C20.5868 7.05141 20.9359 7.26258 20.9715 7.35928C21.0072 7.45597 21.0094 7.56246 20.9778 7.66065L20.3236 9.69358C20.2949 9.78275 20.2398 9.86032 20.1662 9.91531C20.0926 9.9703 20.0041 9.99993 19.9134 10H17.5M15.6513 4.09256L12.2181 2.06002C12.1523 2.0207 12.0777 2 12.0017 2C11.9258 2 11.8512 2.0207 11.7854 2.06002L3.21777 7.12666C3.131 7.17807 3.06411 7.259 3.02846 7.35569C2.9928 7.45239 2.99059 7.55888 3.02219 7.65707L3.68336 9.69358C3.71205 9.78275 3.7671 9.86032 3.84071 9.91531C3.91433 9.9703 4.00279 9.99993 4.09357 10H9.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M12.5 7.5H3" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M1.6001 22L22.6001 1" strokeWidth="1.5" strokeLinecap="round" />
+    </SVG>
+  ),
   "card/24": (className: string) => (
     <SVG className={className} size="24">
       <path
@@ -57,6 +77,25 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </SVG>
+  ),
+  "card-disabled/24": (className: string) => (
+    <SVG className={className} size="24">
+      <path
+        d="M13 7L3.56522 7C2.70077 7 2 7.72754 2 8.625V18.375M20 8.625V18.375C20 19.2725 19.2992 20 18.4348 20H7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M2 10.3845H9.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17 10.5L20 10.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17 13H15" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7 13H4" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M16.5 3.5H5.65217C4.7397 3.5 4 4.22754 4 5.125V7M23 5.125V14.875C23 15.7725 22.2603 16.5 21.3478 16.5H20"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M1.6001 22L22.6001 1" strokeWidth="1.5" strokeLinecap="round" />
     </SVG>
   ),
   "wallets/24": (className: string) => (
@@ -91,6 +130,37 @@ export const Icons = {
       <path d="M14.501 7.53662H17.9519" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  "wallets-disabled/24": (className: string) => (
+    <SVG className={className} size="24">
+      <path
+        d="M18.92 0.725169C18.4583 0.610759 17.9754 0.550049 17.4783 0.550049C14.179 0.550049 11.5044 3.22466 11.5044 6.52396C11.5044 7.06261 11.5757 7.58462 11.7093 8.08105M23.1069 4.51766C23.3305 5.14473 23.4522 5.82013 23.4522 6.52396C23.4522 9.82326 20.7776 12.4979 17.4783 12.4979C16.7594 12.4979 16.0702 12.3709 15.4318 12.1382"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19.2705 9.80145H18.7664C18.4487 9.80145 18.1357 9.75531 17.8364 9.66675"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M17 17.5L10 17.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M17 12.6403V20.2609C17 20.7222 16.7893 21.1645 16.4143 21.4907C16.0391 21.8169 15.5304 22 15 22H6M4 15.5V3.73913C4 3.27789 4.21071 2.83553 4.58578 2.50938C4.96086 2.18323 5.46957 2 6 2H13.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.7489 19.9978C10.6114 19.9978 10.5 19.8863 10.5 19.7489C10.5 19.6114 10.6114 19.5 10.7489 19.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.749 19.9978C10.8865 19.9978 10.9979 19.8863 10.9979 19.7489C10.9979 19.6114 10.8865 19.5 10.749 19.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M1.6001 22L22.6001 1" strokeWidth="1.5" strokeLinecap="round" />
+    </SVG>
+  ),
   "bitcoin/24": (className: string) => (
     <SVG className={className} size="24">
       <path d="M9.11523 11.1265L13.4619 12.2912" strokeLinecap="round" strokeLinejoin="round" />
@@ -106,6 +176,28 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </SVG>
+  ),
+  "bitcoin-disabled/24": (className: string) => (
+    <SVG className={className} size="24">
+      <path d="M13.1777 7.55636L13.6953 5.62451" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.3306 18.1815L10.8641 16.299" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M9.30391 10.4223L10.2799 6.77969L13.1364 7.53786M10.9014 16.2918L12.2972 16.6377C12.8736 16.7922 13.4878 16.7113 14.0046 16.4129C14.5214 16.1146 14.8985 15.6231 15.0529 15.0467C15.2073 14.4703 15.1265 13.8562 14.8281 13.3394C14.7504 13.2048 14.3377 12.6662 14.2357 12.552"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.2172 10.7001C16.0628 11.2765 15.6857 11.7679 15.1689 12.0663C14.9111 12.2151 14.6291 12.3098 14.3396 12.3482"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.5699 3.1027C15.2002 2.39772 13.6466 1.99976 12 1.99976C6.47715 1.99976 2 6.47691 2 11.9998C2 13.6744 2.41163 15.2528 3.13922 16.6395M20.646 6.97188C21.5068 8.44903 22 10.1668 22 11.9998C22 17.5226 17.5228 21.9998 12 21.9998C10.1675 21.9998 8.45021 21.5069 6.97334 20.6465"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M1.6001 22L22.6001 1" strokeWidth="1.5" strokeLinecap="round" />
     </SVG>
   ),
   "back/24": (className: string) => (

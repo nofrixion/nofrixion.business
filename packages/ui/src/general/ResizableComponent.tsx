@@ -3,7 +3,7 @@ import { motion, MotionConfig } from "framer-motion";
 import { PropsWithChildren } from "react";
 import useMeasure from "react-use-measure";
 
-const ResizableComponent: React.FC<PropsWithChildren> = ({ children }) => {
+export const ResizableComponent: React.FC<PropsWithChildren> = ({ children }) => {
   const [ref, { width }] = useMeasure();
 
   return (
@@ -38,5 +38,3 @@ const ignoreCircularReferences = () => {
     return value;
   };
 };
-
-export default ResizableComponent;

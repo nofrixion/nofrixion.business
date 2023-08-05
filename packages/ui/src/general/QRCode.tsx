@@ -7,7 +7,7 @@ interface QRCodeProps {
   url: string;
 }
 
-const QRCode: React.FC<QRCodeProps> = ({ url }) => {
+export const QRCode: React.FC<QRCodeProps> = ({ url }) => {
   const [isHovered, setIsHovered] = useState(false);
   const largeQrCodeCanvasRef = useRef<HTMLCanvasElement>(null);
   const qrCodeSvgRef = useRef<HTMLDivElement>(null);
@@ -127,5 +127,3 @@ const QRCode: React.FC<QRCodeProps> = ({ url }) => {
     </>
   );
 };
-
-export default QRCode;

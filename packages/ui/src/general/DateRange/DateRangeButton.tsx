@@ -15,7 +15,7 @@ const svgClassNames = (disabled: boolean) => {
   });
 };
 
-const DateRangeButton: React.FC<DateRangeButtonProps> = ({ direction, handleClick, disabled }) => {
+export const DateRangeButton: React.FC<DateRangeButtonProps> = ({ direction, handleClick, disabled }) => {
   return (
     <>
       {direction === "right" && (
@@ -50,5 +50,3 @@ const DateRangeButton: React.FC<DateRangeButtonProps> = ({ direction, handleClic
     </>
   );
 };
-
-export default DateRangeButton;

@@ -2,14 +2,14 @@ import * as React from "react";
 import { format, isEqual } from "date-fns";
 import { useEffect, useState } from "react";
 import { getDateFormat } from "@nofrixion/utils";
-import ResizableComponent from "../ResizableComponent";
+import { ResizableComponent } from "../ResizableComponent";
 
 interface DateRangeInputProps {
   value: string[]; // [fromDate, toDate]
   openCalendar: () => void;
 }
 
-const DateRangeInput: React.FC<DateRangeInputProps> = ({ value, openCalendar }) => {
+export const DateRangeInput: React.FC<DateRangeInputProps> = ({ value, openCalendar }) => {
   const [formattedDate, setFormattedDate] = useState<string>("");
   let fromDate: Date | undefined;
   let toDate: Date | undefined;
@@ -46,5 +46,3 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({ value, openCalendar }) 
     </div>
   );
 };
-
-export default DateRangeInput;

@@ -6,7 +6,7 @@ interface EmptyStateProps {
   onCreatePaymentRequest?: () => void;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }) => {
+export const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }) => {
   const title = state === "nothingFound" ? "Nothing found here" : "This list is empty";
   const description =
     state === "nothingFound"
@@ -110,5 +110,3 @@ const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }
     </div>
   );
 };
-
-export default EmptyState;

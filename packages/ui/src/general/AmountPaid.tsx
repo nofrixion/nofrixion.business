@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Currency, LocalPartialPaymentMethods } from "@nofrixion/utils/types";
-import { formatAmount, formatAmountAndDecimals } from "@nofrixion/utils/formatters";
+import { formatAmount, formatAmountAndDecimals } from "@nofrixion/utils";
 
 interface AmountPaidProps {
   amountPaid: number;
@@ -9,7 +9,7 @@ interface AmountPaidProps {
   partialPaymentMethod: LocalPartialPaymentMethods;
 }
 
-const AmountPaid: React.FC<AmountPaidProps> = ({ amountPaid, totalAmount, currency, partialPaymentMethod }) => {
+export const AmountPaid: React.FC<AmountPaidProps> = ({ amountPaid, totalAmount, currency, partialPaymentMethod }) => {
   const percentagePaid = amountPaid > totalAmount ? 100 : (amountPaid / totalAmount) * 100;
   const outstandingAmount = amountPaid > totalAmount ? 0 : totalAmount - amountPaid;
 
@@ -40,5 +40,3 @@ const AmountPaid: React.FC<AmountPaidProps> = ({ amountPaid, totalAmount, curren
     </div>
   );
 };
-
-export default AmountPaid;

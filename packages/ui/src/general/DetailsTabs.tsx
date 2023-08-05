@@ -3,10 +3,10 @@ const { useState } = React;
 import * as Tabs from "@radix-ui/react-tabs";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { cn } from "@nofrixion/utils";
-import PaymentInfo from "./PaymentInfo";
+import { PaymentInfo } from "./PaymentInfo";
 import Transactions from "./Transactions";
 import { LocalPaymentAttempt, LocalPaymentRequest } from "@nofrixion/utils/types";
-import ScrollArea from "./ScrollArea";
+import { ScrollArea } from "./ScrollArea";
 
 const tabs = ["Transactions", "Payment info"];
 
@@ -42,7 +42,7 @@ interface DetailsTabsProps {
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void;
 }
 
-const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onCapture }) => {
+export const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onCapture }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   return (
@@ -89,5 +89,3 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
     </MotionConfig>
   );
 };
-
-export default DetailsTabs;

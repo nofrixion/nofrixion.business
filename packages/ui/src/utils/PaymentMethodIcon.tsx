@@ -1,13 +1,6 @@
-import BankIcon from "../../../assets/icons/bank-icon.svg";
-import CardIcon from "../../../assets/icons/card-icon.svg";
-import WalletIcon from "../../../assets/icons/wallet-icon.svg";
-import BitcoinLightningIcon from "../../../assets/icons/bitcoin-icon.svg";
-
-import BankDisabledIcon from "../../../assets/icons/bank-disabled.svg";
-import CardDisabledIcon from "../../../assets/icons/card-disabled.svg";
-import WalletDisabledIcon from "../../../assets/icons/wallet-disabled.svg";
-import BitcoinDisabledIcon from "../../../assets/icons/bitcoin-disabled.svg";
-import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import * as React from "react";
+import { Icon, IconNames } from "../atoms";
+import { InfoTooltip } from "../general/InfoTooltip";
 
 interface PaymentMethodIconProps {
   paymentMethod: "bank" | "card" | "wallet" | "lightning";
@@ -18,18 +11,18 @@ interface PaymentMethodIconProps {
 const getIconDescription = (paymentMethodName: string, enabled: boolean) =>
   `${paymentMethodName} ${enabled ? "enabled" : "disabled"}`;
 
-const paymentMethodIcons = {
-  bank: BankIcon,
-  card: CardIcon,
-  wallet: WalletIcon,
-  lightning: BitcoinLightningIcon,
+const paymentMethodIcons: Record<string, IconNames> = {
+  bank: "bank/24",
+  card: "card/24",
+  wallet: "wallets/24",
+  lightning: "bitcoin/24",
 };
 
-const paymentMethodDisabledIcons = {
-  bank: BankDisabledIcon,
-  card: CardDisabledIcon,
-  wallet: WalletDisabledIcon,
-  lightning: BitcoinDisabledIcon,
+const paymentMethodDisabledIcons: Record<string, IconNames> = {
+  bank: "bank-disabled/24",
+  card: "card-disabled/24",
+  wallet: "wallets-disabled/24",
+  lightning: "bitcoin-disabled/24",
 };
 
 const paymentMethodsName = {
@@ -41,9 +34,8 @@ const paymentMethodsName = {
 
 const getImage: React.FC<PaymentMethodIconProps> = ({ paymentMethod, enabled = false }) => {
   return (
-    <img
-      src={enabled ? paymentMethodIcons[paymentMethod] : paymentMethodDisabledIcons[paymentMethod]}
-      alt={getIconDescription(paymentMethodsName[paymentMethod], enabled)}
+    <Icon
+      name={enabled ? paymentMethodIcons[paymentMethod] : paymentMethodDisabledIcons[paymentMethod]}
       className="w-6 h-6"
     />
   );

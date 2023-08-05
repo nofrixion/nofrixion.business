@@ -1,8 +1,8 @@
 import * as React from "react";
 const { useState } = React;
 import { LocalTag } from "@nofrixion/utils/types";
-import AddTag from "./AddTag";
-import Tag from "./Tag";
+import { AddTag } from "./AddTag";
+import { Tag } from "./Tag";
 import { AnimatePresence } from "framer-motion";
 
 interface TagManagerProps {
@@ -13,7 +13,7 @@ interface TagManagerProps {
   onCreated: (tag: LocalTag) => void;
 }
 
-const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagManagerProps) => {
+export const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagManagerProps) => {
   const [tagsArray, setTagsArray] = useState(tags);
 
   const handleDelete = (id: string) => {
@@ -55,5 +55,3 @@ const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagM
     </div>
   );
 };
-
-export default TagManager;

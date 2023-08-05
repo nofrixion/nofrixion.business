@@ -1,9 +1,9 @@
 import * as React from "react";
 import { LocalPaymentRequest } from "@nofrixion/utils/types";
-import { formatAmount, formatDate } from "@nofrixion/utils/formatters";
-import PaymentRequestActionMenu from "./PaymentRequestActionMenu";
+import { formatAmount, formatDate } from "@nofrixion/utils";
+import { PaymentRequestActionMenu } from "./PaymentRequestActionMenu";
 import { defaultAnonymousUserName } from "../utils/constants";
-import PaymentRequestStatusBadge from "./PaymentRequestStatusBadge";
+import { PaymentRequestStatusBadge } from "./PaymentRequestStatusBadge";
 
 interface PaymentRequestMobileCardProps extends LocalPaymentRequest {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -13,7 +13,7 @@ interface PaymentRequestMobileCardProps extends LocalPaymentRequest {
   onOpenPaymentPage?: () => void;
 }
 
-const PaymentRequestMobileCard: React.FC<PaymentRequestMobileCardProps> = ({
+export const PaymentRequestMobileCard: React.FC<PaymentRequestMobileCardProps> = ({
   status,
   createdAt,
   contact,
@@ -64,5 +64,3 @@ const PaymentRequestMobileCard: React.FC<PaymentRequestMobileCardProps> = ({
     </button>
   );
 };
-
-export default PaymentRequestMobileCard;

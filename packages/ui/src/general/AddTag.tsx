@@ -15,7 +15,7 @@ interface TagProps {
   onTagCreated?: (tag: LocalTag) => void;
 }
 
-const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => {
+export const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => {
   const [editMode, setEditMode] = useState(false);
   const [tagName, setTagName] = useState("");
   const [ref, { width }] = useMeasure();
@@ -238,5 +238,3 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
     </>
   );
 };
-
-export default AddTag;

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ButtonHTMLAttributes } from "react";
 
 interface BackArrowProps extends ButtonHTMLAttributes<HTMLButtonElement> {

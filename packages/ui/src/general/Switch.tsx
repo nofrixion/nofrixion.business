@@ -11,7 +11,7 @@ interface SwitchProps {
   className?: string;
 }
 
-const Switch: React.FC<SwitchProps> = ({ label, value, iconName, className, onChange }: SwitchProps) => {
+export const Switch: React.FC<SwitchProps> = ({ label, value, iconName, className, onChange }: SwitchProps) => {
   return (
     <div className={cn("flex w-full select-none items-center", className)}>
       <SwitchHeadless.Group>
@@ -36,5 +36,3 @@ const Switch: React.FC<SwitchProps> = ({ label, value, iconName, className, onCh
     </div>
   );
 };
-
-export default Switch;

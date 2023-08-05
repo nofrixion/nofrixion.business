@@ -3,7 +3,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Icon, IconNames } from "../atoms";
 import { cva } from "class-variance-authority";
 import { motion } from "framer-motion";
-import InfoTooltip from "./InfoTooltip";
+import { InfoTooltip } from "./InfoTooltip";
 
 const actionItemClassNames =
   "group text-xs leading-none rounded-1 flex items-center relative select-none outline-none cursor-pointer";
@@ -55,7 +55,7 @@ const PaymentRequestActionMenuItemContent: React.FC<PaymentRequestActionMenuItem
   );
 };
 
-const PaymentRequestActionMenu = ({
+export const PaymentRequestActionMenu = ({
   onDuplicate,
   onCopyLink,
   onDelete,
@@ -126,5 +126,3 @@ const PaymentRequestActionMenu = ({
     </DropdownMenu.Root>
   );
 };
-
-export default PaymentRequestActionMenu;

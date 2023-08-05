@@ -12,7 +12,7 @@ interface InfoTooltipProps {
   className?: string;
 }
 
-const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children, side = "top", className }) => {
+export const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children, side = "top", className }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -46,5 +46,3 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children, side = "to
     </Tooltip.Provider>
   );
 };
-
-export default InfoTooltip;

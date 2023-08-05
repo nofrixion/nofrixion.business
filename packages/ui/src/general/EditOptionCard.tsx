@@ -12,7 +12,14 @@ interface EditOptionCardProps {
   isLoading: boolean;
 }
 
-const EditOptionCard: React.FC<EditOptionCardProps> = ({ label, values, details, onClick, children, isLoading }) => {
+export const EditOptionCard: React.FC<EditOptionCardProps> = ({
+  label,
+  values,
+  details,
+  onClick,
+  children,
+  isLoading,
+}) => {
   const handleOnClick = () => {
     if (!isLoading) {
       onClick && onClick();
@@ -70,5 +77,3 @@ const EditOptionCard: React.FC<EditOptionCardProps> = ({ label, values, details,
     </button>
   );
 };
-
-export default EditOptionCard;

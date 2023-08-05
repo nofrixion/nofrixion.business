@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 const { useEffect } = React;
 import FilterButton from "./FilterButton";
-import { formatAmount } from "@nofrixion/utils/formatters";
+import { formatAmount } from "@nofrixion/utils";
 import SelectablePill from "./SelectablePill";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import MaskedInput from "react-text-mask";

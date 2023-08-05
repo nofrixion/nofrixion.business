@@ -8,7 +8,7 @@ interface PagerProps {
   onPageChange: (pageNumber: number) => void;
 }
 
-const Pager: React.FC<PagerProps> = ({ pageSize, totalRecords, onPageChange }) => {
+export const Pager: React.FC<PagerProps> = ({ pageSize, totalRecords, onPageChange }) => {
   const getToRecord = () => {
     if (pageSize > totalRecords) {
       return totalRecords;
@@ -104,5 +104,3 @@ const Pager: React.FC<PagerProps> = ({ pageSize, totalRecords, onPageChange }) =
     </div>
   );
 };
-
-export default Pager;

@@ -3,11 +3,11 @@ const { Fragment, useEffect, useState } = React;
 import { Dialog, Transition } from "@headlessui/react";
 import InputAmountField from "./InputAmountField";
 import InputTextField from "./InputTextField";
-import EditOptionCard from "./EditOptionCard";
+import { EditOptionCard } from "./EditOptionCard";
 import InputTextAreaField from "./InputTextAreaField";
 import { AnimatePresence, motion } from "framer-motion";
 import LayoutWrapper from "../utils/LayoutWrapper";
-import PaymentMethodsModal from "./modals/PaymentMethodsModal";
+import { PaymentMethodsModal } from "./modals/PaymentMethodsModal";
 import {
   Currency,
   BankSettings,
@@ -21,12 +21,12 @@ import {
   LocalPaymentRequestCreate,
 } from "@nofrixion/utils/types";
 import { cn, validateEmail } from "@nofrixion/utils";
-import PaymentConditionsModal from "./modals/PaymentConditionsModal";
-import PaymentNotificationsModal from "./modals/PaymentNotificationsModal";
+import { PaymentConditionsModal } from "./modals/PaymentConditionsModal";
+import { PaymentNotificationsModal } from "./modals/PaymentNotificationsModal";
 import { formatEmailAddressesForSummary, parseBoldText } from "../utils/uiFormaters";
 import PaymentMethodIcon from "../utils/PaymentMethodIcon";
 import _ from "lodash";
-import { formatAmountAndDecimals } from "@nofrixion/utils/formatters";
+import { formatAmountAndDecimals } from "@nofrixion/utils";
 import BackArrow from "../utils/BackArrow";
 import { Icon, Button } from "../atoms";
 
@@ -43,7 +43,7 @@ interface CreatePaymentRequestPageProps {
 
 const durationAnimationWidth = 0.3;
 
-const CreatePaymentRequestPage: React.FC<CreatePaymentRequestPageProps> = ({
+export const CreatePaymentRequestPage: React.FC<CreatePaymentRequestPageProps> = ({
   banks,
   userPaymentDefaults,
   onConfirm,
@@ -824,5 +824,3 @@ const CreatePaymentRequestPage: React.FC<CreatePaymentRequestPageProps> = ({
     </>
   );
 };
-
-export default CreatePaymentRequestPage;

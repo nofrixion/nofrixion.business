@@ -30,7 +30,8 @@ const emailVariants = cva("text-greyText", {
 interface ContactProps extends LocalContact {
   size?: VariantProps<typeof nameVariants>["size"];
 }
-const Contact: React.FC<ContactProps> = ({ name, email, size = "small" }) => {
+
+export const Contact: React.FC<ContactProps> = ({ name, email, size = "small" }) => {
   return (
     <div className="flex flex-col">
       <span className={nameVariants({ size: size })}>{name ?? defaultAnonymousUserName}</span>
@@ -38,5 +39,3 @@ const Contact: React.FC<ContactProps> = ({ name, email, size = "small" }) => {
     </div>
   );
 };
-
-export default Contact;

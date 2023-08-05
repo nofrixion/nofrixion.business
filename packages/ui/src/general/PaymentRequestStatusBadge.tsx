@@ -54,7 +54,7 @@ const getIconForStatus = (status: LocalPaymentStatus): IconNames => {
   }
 };
 
-const PaymentRequestStatusBadge: React.FC<PaymentRequestStatusBadgeProps> = ({ status, size = "small" }) => {
+export const PaymentRequestStatusBadge: React.FC<PaymentRequestStatusBadgeProps> = ({ status, size = "small" }) => {
   return (
     <div className={badge({ intent: status, size: size })}>
       <Icon className={icon({ size: size })} name={getIconForStatus(status)} />
@@ -62,5 +62,3 @@ const PaymentRequestStatusBadge: React.FC<PaymentRequestStatusBadgeProps> = ({ s
     </div>
   );
 };
-
-export default PaymentRequestStatusBadge;

@@ -1,6 +1,6 @@
 import * as React from "react";
 const { useState, useEffect } = React;
-import ResizableComponent from "./ResizableComponent";
+import { ResizableComponent } from "./ResizableComponent";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { motion } from "framer-motion";
 import { cva } from "class-variance-authority";

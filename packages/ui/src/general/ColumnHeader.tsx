@@ -7,8 +7,7 @@ interface ColumnHeaderProps {
   label: string;
   onSort: (event: SortDirection) => void;
 }
-
-const ColumnHeader: React.FC<ColumnHeaderProps> = ({ label, onSort }) => {
+export const ColumnHeader: React.FC<ColumnHeaderProps> = ({ label, onSort }) => {
   const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.NONE);
 
   useEffect(() => {
@@ -63,5 +62,3 @@ const ColumnHeader: React.FC<ColumnHeaderProps> = ({ label, onSort }) => {
     </button>
   );
 };
-
-export default ColumnHeader;

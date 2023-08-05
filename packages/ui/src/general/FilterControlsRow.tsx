@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import AmountFilter from "./AmountFilter";
 import TagFilter, { FilterableTag } from "./TagFilter";
 import { SelectSorter, TSorterOptions } from "../molecules";
-import { SortDirection } from "./ColumnHeader";
+import { SortDirection } from "@nofrixion/utils/types";
 
 interface FilterControlsRowProps {
   setDateRange: (dateRange: DateRange) => void;
@@ -24,7 +24,7 @@ interface FilterControlsRowProps {
   setAmountSortDirection?: (direction: SortDirection) => void;
 }
 
-const FilterControlsRow: React.FC<FilterControlsRowProps> = ({
+export const FilterControlsRow: React.FC<FilterControlsRowProps> = ({
   setDateRange,
   searchFilter,
   setSearchFilter,
@@ -101,5 +101,3 @@ const FilterControlsRow: React.FC<FilterControlsRowProps> = ({
     </div>
   );
 };
-
-export default FilterControlsRow;

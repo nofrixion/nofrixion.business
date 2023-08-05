@@ -1,7 +1,7 @@
 import * as React from "react";
 const { Fragment, useState } = React;
 import { Dialog, Transition } from "@headlessui/react";
-import Checkbox from "./Checkbox";
+import { Checkbox } from "./Checkbox";
 import { Button } from "../atoms";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@nofrixion/utils";

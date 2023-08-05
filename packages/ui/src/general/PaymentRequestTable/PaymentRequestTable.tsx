@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "@nofrixion/utils";
-import Pager from "../Pager";
-import PaymentRequestRow from "../PaymentRequestRow";
-import ColumnHeader, { SortDirection } from "../ColumnHeader";
-import { LocalPaymentRequest } from "@nofrixion/utils/types";
+import { Pager } from "../Pager";
+import { PaymentRequestRow } from "../PaymentRequestRow";
+import { ColumnHeader } from "../ColumnHeader";
+import { LocalPaymentRequest, SortDirection } from "@nofrixion/utils/types";
 import { Toaster } from "../Toast";
 
-import EmptyState from "./EmptyState";
-import PaymentRequestMobileCard from "../PaymentRequestMobileCard";
+import { EmptyState } from "./EmptyState";
+import { PaymentRequestMobileCard } from "../PaymentRequestMobileCard";
 
 interface PaymentRequestTableProps {
   paymentRequests: LocalPaymentRequest[];
@@ -31,7 +31,7 @@ interface PaymentRequestTableProps {
 
 const commonThClasses = "px-4 pb-4 font-normal";
 
-const PaymentRequestTable: React.FC<PaymentRequestTableProps> = ({
+export const PaymentRequestTable: React.FC<PaymentRequestTableProps> = ({
   paymentRequests,
   pageSize,
   totalRecords,
@@ -213,5 +213,3 @@ const PaymentRequestTable: React.FC<PaymentRequestTableProps> = ({
     </>
   );
 };
-
-export default PaymentRequestTable;

@@ -10,7 +10,7 @@ interface TagProps {
   onDelete?: (id: string) => void;
 }
 
-const Tag: React.FC<TagProps> = ({ id, label, onDelete }) => {
+export const Tag: React.FC<TagProps> = ({ id, label, onDelete }) => {
   const [deleteMode, setDeleteMode] = useState(false);
   const text = !deleteMode ? label : "Delete?";
   const ref = useRef(null);
@@ -106,5 +106,3 @@ const Tag: React.FC<TagProps> = ({ id, label, onDelete }) => {
     </MotionConfig>
   );
 };
-
-export default Tag;

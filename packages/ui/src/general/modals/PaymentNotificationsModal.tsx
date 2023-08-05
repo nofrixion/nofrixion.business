@@ -13,7 +13,7 @@ interface NotificationEmailsModalProps extends BaseModalProps {
   isPrefilledData: boolean;
 }
 
-const PaymentNotificationsModal: React.FC<NotificationEmailsModalProps> = ({
+export const PaymentNotificationsModal: React.FC<NotificationEmailsModalProps> = ({
   open,
   userDefaults,
   onDismiss,
@@ -114,5 +114,3 @@ const PaymentNotificationsModal: React.FC<NotificationEmailsModalProps> = ({
     </CustomModal>
   );
 };
-
-export default PaymentNotificationsModal;

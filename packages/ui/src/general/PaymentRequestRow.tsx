@@ -2,11 +2,11 @@ import * as React from "react";
 const { useState } = React;
 import { cn } from "@nofrixion/utils";
 import { LocalPaymentRequest } from "@nofrixion/utils/types";
-import { formatAmount, formatDate } from "@nofrixion/utils/formatters";
-import Chip from "./Chip";
-import Contact from "./Contact";
-import StatusBadge from "./PaymentRequestStatusBadge";
-import PaymentRequestActionMenu from "./PaymentRequestActionMenu";
+import { formatAmount, formatDate } from "@nofrixion/utils";
+import { Chip } from "./Chip";
+import { Contact } from "./Contact";
+import { PaymentRequestStatusBadge as StatusBadge } from "./PaymentRequestStatusBadge";
+import { PaymentRequestActionMenu } from "./PaymentRequestActionMenu";
 import { animate, AnimatePresence, motion } from "framer-motion";
 
 interface PaymentRequestRowProps extends LocalPaymentRequest {
@@ -20,7 +20,7 @@ interface PaymentRequestRowProps extends LocalPaymentRequest {
 
 const commonTdClasses = "px-4 py-3";
 
-const Row: React.FC<PaymentRequestRowProps> = ({
+export const PaymentRequestRow: React.FC<PaymentRequestRowProps> = ({
   id,
   status,
   createdAt,
@@ -129,5 +129,3 @@ const Row: React.FC<PaymentRequestRowProps> = ({
     </tr>
   );
 };
-
-export default Row;

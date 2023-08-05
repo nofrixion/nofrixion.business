@@ -1,7 +1,7 @@
 import * as React from "react";
 const { useEffect, useState } = React;
 import CustomModal, { BaseModalProps } from "../CustomModal";
-import Checkbox from "../Checkbox";
+import { Checkbox } from "../Checkbox";
 import { LocalPaymentConditionsFormValue, PaymentConditionsDefaults } from "@nofrixion/utils/types";
 
 interface PaymentConditionsModalProps extends BaseModalProps {
@@ -10,7 +10,12 @@ interface PaymentConditionsModalProps extends BaseModalProps {
   isPrefilledData: boolean;
 }
 
-const PaymentConditionsModal: React.FC<PaymentConditionsModalProps> = ({ open, userDefaults, onDismiss, onApply }) => {
+export const PaymentConditionsModal: React.FC<PaymentConditionsModalProps> = ({
+  open,
+  userDefaults,
+  onDismiss,
+  onApply,
+}) => {
   const [isAllowPartialEnabled, setIsAllowPartialEnabled] = useState<boolean>(
     userDefaults ? userDefaults.allowPartialPayments : false,
   );
@@ -64,5 +69,3 @@ const PaymentConditionsModal: React.FC<PaymentConditionsModalProps> = ({ open, u
     </CustomModal>
   );
 };
-
-export default PaymentConditionsModal;

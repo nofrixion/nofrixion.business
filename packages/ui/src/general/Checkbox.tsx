@@ -2,7 +2,7 @@ import * as React from "react";
 const { useId } = React;
 import * as RadixCheckbox from "@radix-ui/react-checkbox";
 import { Icon } from "../atoms";
-import InfoTooltip from "./InfoTooltip";
+import { InfoTooltip } from "./InfoTooltip";
 
 interface CheckboxProps {
   label: string;
@@ -12,7 +12,7 @@ interface CheckboxProps {
   onChange: (value: boolean) => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ label, description, value, infoText, onChange }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({ label, description, value, infoText, onChange }) => {
   const id = useId();
 
   return (
@@ -38,5 +38,3 @@ const Checkbox: React.FC<CheckboxProps> = ({ label, description, value, infoText
     </div>
   );
 };
-
-export default Checkbox;
