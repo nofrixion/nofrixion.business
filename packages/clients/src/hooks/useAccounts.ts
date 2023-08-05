@@ -1,6 +1,5 @@
 import { AccountsClient } from "../clients";
-import { Account, ApiResponse } from "../types";
-import { ApiProps, MerchantProps } from "../types/props";
+import { Account, ApiResponse , ApiProps, MerchantProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchAccounts = async (

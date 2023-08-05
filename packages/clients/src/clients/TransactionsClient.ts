@@ -1,5 +1,4 @@
-import { ApiProps, TransactionsProps } from "../types/props";
-import { ApiResponse, TransactionPageResponse } from "../types/ApiResponses";
+import { ApiProps, TransactionsProps , ApiResponse, TransactionPageResponse } from "@nofrixion/utils/types";
 import { BaseApiClient } from "./BaseApiClient";
 
 /**

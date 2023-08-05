@@ -1,6 +1,5 @@
 import { MerchantClient } from "../clients/MerchantClient";
-import { ApiResponse, Merchant } from "../types/ApiResponses";
-import { ApiProps } from "../types/props";
+import { ApiResponse, Merchant , ApiProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchMerchants = async (apiUrl: string, authToken?: string): Promise<ApiResponse<Merchant[]>> => {

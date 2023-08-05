@@ -1,14 +1,17 @@
-import { PaymentRequestProps, PaymentRequestPageProps, MetricsProps, ApiProps } from "../types/props";
-import { PaymentRequestCreate, PaymentRequestUpdate } from "../types/ApiRequests";
 import {
+  PaymentRequestProps,
+  PaymentRequestPageProps,
+  MetricsProps,
+  ApiProps,
+  PaymentRequestCreate,
+  PaymentRequestUpdate,
+
   ApiError,
   PaymentRequestMetrics,
   PaymentRequestMinimal,
   PaymentRequestPageResponse,
   PaymentRequest,
-  ApiResponse,
-} from "../types/ApiResponses";
-import { HttpMethod } from "../types/Enums";
+  ApiResponse, HttpMethod } from "@nofrixion/utils/types";
 import { BaseApiClient } from "./BaseApiClient";
 
 /**

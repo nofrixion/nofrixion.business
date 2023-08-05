@@ -1,6 +1,5 @@
 import { MerchantClient } from "../clients/MerchantClient";
-import { ApiResponse, MerchantBankSettings } from "../types/ApiResponses";
-import { ApiProps, MerchantProps } from "../types/props";
+import { ApiResponse, MerchantBankSettings , ApiProps, MerchantProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchBanks = async (

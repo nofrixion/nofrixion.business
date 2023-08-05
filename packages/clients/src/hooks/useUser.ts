@@ -1,6 +1,5 @@
 import { UsersClient } from "../clients";
-import { ApiResponse, User } from "../types/ApiResponses";
-import { ApiProps } from "../types/props";
+import { ApiResponse, User , ApiProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUser = async (apiUrl: string, authToken?: string): Promise<ApiResponse<User>> => {

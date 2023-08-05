@@ -1,7 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { ApiError, ApiResponse } from "../types/ApiResponses";
-import { HttpMethod } from "../types/Enums";
-import { PagedResponseProps } from "../types/props";
+import { ApiError, ApiResponse, HttpMethod, PagedResponseProps } from "@nofrixion/utils/types";
 
 export abstract class BaseApiClient {
   authToken?: string;

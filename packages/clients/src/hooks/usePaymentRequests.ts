@@ -1,7 +1,5 @@
 import { PaymentRequestClient } from "../clients";
-import { SortDirection, formatPaymentRequestSortExpression } from "../types";
-import { ApiResponse, PaymentRequestPageResponse } from "../types/ApiResponses";
-import { ApiProps, usePaymentRequestsProps } from "../types/props";
+import { SortDirection, formatPaymentRequestSortExpression , ApiResponse, PaymentRequestPageResponse , ApiProps, usePaymentRequestsProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchPaymentRequests = async (

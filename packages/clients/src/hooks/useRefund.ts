@@ -1,8 +1,7 @@
 import { useCallback, useState } from "react";
 import { UseMutationResult, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "../types";
+import { ApiError , ApiProps, RefundProps, usePaymentRequestsProps } from "@nofrixion/utils/types";
 import { PaymentRequestClient } from "../clients";
-import { ApiProps, RefundProps, usePaymentRequestsProps } from "../types/props";
 
 const refund = async (
   apiUrl: string,

@@ -12,5 +12,8 @@ module.exports = {
     "eslint-config-prettier",
   ],
   parserOptions: {},
-  ignorePatterns: ["dist/"],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
+  ignorePatterns: ["dist/", "node_modules/"],
 };

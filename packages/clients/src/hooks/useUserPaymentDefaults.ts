@@ -1,6 +1,5 @@
-import { ApiResponse, UserPaymentDefaults } from "../types/ApiResponses";
+import { ApiResponse, UserPaymentDefaults , ApiProps } from "@nofrixion/utils/types";
 import { ClientSettingsClient } from "../clients/ClientSettingsClient";
-import { ApiProps } from "../types/props";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUserPaymentDefaults = async (

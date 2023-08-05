@@ -1,5 +1,4 @@
-import { ApiProps, MerchantProps } from "../types/props";
-import { Account, ApiResponse, HttpMethod } from "../types";
+import { ApiProps, MerchantProps, Account, ApiResponse, HttpMethod } from "@nofrixion/utils/types";
 import { BaseApiClient } from "./BaseApiClient";
 
 /**

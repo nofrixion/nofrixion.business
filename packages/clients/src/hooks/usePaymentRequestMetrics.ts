@@ -1,6 +1,5 @@
 import { PaymentRequestClient } from "../clients";
-import { ApiResponse, PaymentRequestMetrics } from "../types/ApiResponses";
-import { ApiProps, usePaymentRequestMetricsProps } from "../types/props";
+import { ApiResponse, PaymentRequestMetrics , ApiProps, usePaymentRequestMetricsProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchPaymentRequestMetrics = async (

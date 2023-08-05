@@ -6,9 +6,25 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    "./types": {
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "types": [
+        "./dist/types/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
-    "dev": "tsup index.ts --watch --format esm,cjs --dts",
-    "build": "tsup index.ts --format esm,cjs --dts",
+    "dev": "tsup index.ts types/index.ts --watch --format esm,cjs --dts",
+    "build": "tsup index.ts types/index.ts --format esm,cjs --dts",
     "lint": "eslint ."
   },
   "devDependencies": {

@@ -1,6 +1,4 @@
-import { ApiProps } from "../types/props";
-import { ApiError, ApiResponse, UserPaymentDefaults } from "../types/ApiResponses";
-import { HttpMethod } from "../types/Enums";
+import { ApiProps, ApiError, ApiResponse, UserPaymentDefaults, HttpMethod } from "@nofrixion/utils/types";
 import { BaseApiClient } from "./BaseApiClient";
 
 /**

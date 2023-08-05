@@ -1,6 +1,5 @@
 import { TransactionsClient } from "../clients";
-import { ApiResponse, TransactionPageResponse } from "../types/ApiResponses";
-import { ApiProps, TransactionsProps } from "../types/props";
+import { ApiResponse, TransactionPageResponse , ApiProps, TransactionsProps } from "@nofrixion/utils/types";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchTransactions = async (

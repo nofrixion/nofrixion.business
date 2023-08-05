@@ -17,6 +17,7 @@
   "devDependencies": {
     "@nofrixion/eslint-config": "workspace:^",
     "@nofrixion/tsconfig": "workspace:^",
+    "@nofrixion/utils": "workspace:^",
     "@types/react": "^18.2.18",
     "react": "^18.2.0",
     "tsup": "^7.2.0"

@@ -1,5 +1,4 @@
-import { ApiProps } from "../types/props";
-import { ApiResponse, HttpMethod, User } from "../types";
+import { ApiProps , ApiResponse, HttpMethod, User } from "@nofrixion/utils/types";
 import { BaseApiClient } from "./BaseApiClient";
 
 /**

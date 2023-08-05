@@ -1,4 +1,4 @@
-import { ApiProps } from "../types/props";
+import { ApiProps } from "@nofrixion/utils/types";
 import { AccountsClient } from "./AccountsClient";
 import { ClientSettingsClient } from "./ClientSettingsClient";
 import { MerchantClient } from "./MerchantClient";
