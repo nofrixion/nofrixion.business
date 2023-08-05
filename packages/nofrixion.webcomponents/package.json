@@ -3,8 +3,11 @@
   "private": false,
   "version": "0.0.20",
   "type": "module",
+  "main": "./dist/index-react.js",
+  "module": "./dist/index-react.js",
+  "types": "./dist/index-react.d.ts",
   "scripts": {
-    "dev": "tsup src/index-webcomponents.ts --format esm,cjs --watch --dts --external react",
+    "dev": "tsup src/index-react.ts --format esm,cjs --watch --dts --external react",
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build": "tsc && vite build",
     "build-react": "tsc && vite build --config vite.config.react.ts",
@@ -98,15 +101,6 @@
     "vite-plugin-dts": "^2.3.0"
   },
   "files": [
-    "dist"
-  ],
-  "main": "./dist/nofrixion-components.umd.js",
-  "module": "./dist/nofrixion-components.es.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/nofrixion-components.es.js",
-      "require": "./dist/nofrixion-components.umd.js"
-    }
-  }
+    "dist/**"
+  ]
 }

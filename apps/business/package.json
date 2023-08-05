@@ -17,7 +17,7 @@
     "/dist"
   ],
   "dependencies": {
-    "@nofrixion/components": "workspace:*",
+    "@nofrixion/components": "^0.0.20",
     "@nofrixion/moneymoov": "workspace:*",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
