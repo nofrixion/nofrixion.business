@@ -1,10 +1,14 @@
 import * as React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Button } from "@nofrixion/ui";
+import { Button } from "@nofrixion/ui/atoms";
 
 export default {
-  title: "Button",
+  title: "Atoms/Button",
   component: Button,
+  args: {
+    previousArrow: false,
+    nextArrow: false,
+  },
   argTypes: {
     size: {
       control: { type: "radio" },
@@ -13,6 +17,13 @@ export default {
     variant: {
       control: { type: "radio" },
       options: ["primary", "primaryDark", "secondary", "tertiary", "text"],
+    },
+    previousArrow: {
+      control: { type: "boolean" },
+    },
+    nextArrow: {
+      control: { type: "boolean" },
+      defaultValue: false,
     },
     onClick: {
       action: "Clicked",

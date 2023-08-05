@@ -9,6 +9,9 @@ module.exports = {
     "eslint-config-prettier",
   ],
   parserOptions: {},
+  rules: {
+    "react/prop-types": "off",
+  },
   settings: {
     react: {
       // Tells eslint-plugin-react to automatically detect the version of React to use.

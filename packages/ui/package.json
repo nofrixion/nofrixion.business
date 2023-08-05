@@ -5,11 +5,32 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist",
-    "./styles.css": "./dist/index.css"
+    "./styles.css": "./dist/index.css",
+    "./atoms": {
+      "import": "./dist/atoms/index.mjs",
+      "require": "./dist/atoms/index.js"
+    },
+    "./molecules": {
+      "import": "./dist/molecules/index.mjs",
+      "require": "./dist/molecules/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "atoms": [
+        "./dist/atoms/index.d.ts"
+      ],
+      "molecules": [
+        "./dist/molecules/index.d.ts"
+      ]
+    }
   },
   "scripts": {
-    "dev": "tsup src/index.tsx --watch --format esm,cjs --dts --external react",
-    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.tsx src/atoms/index.ts src/molecules/index.ts --watch --format esm,cjs --dts --external react",
+    "build": "tsup src/index.tsx src/atoms/index.ts src/molecules/index.ts --format esm,cjs --dts --external react",
     "lint": "eslint ."
   },
   "dependencies": {

@@ -1,0 +1,17 @@
+import { Icon, Icons } from "@nofrixion/ui/atoms";
+import { Meta, Title, IconGallery, IconItem } from "@storybook/blocks";
+
+<Meta title="Icons" />
+
+# Icons
+
+<IconGallery>
+  {Object.entries(Icons).map((iconName, i) => {
+    return (
+      <IconItem key={i} name={iconName[0]}>
+        <Icon name={iconName[0]} />
+      </IconItem>
+    );
+})}
+
+</IconGallery>
