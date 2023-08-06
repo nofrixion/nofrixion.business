@@ -1,20 +1,16 @@
 {
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "build": "turbo run build",
-    "clean": "turbo run clean",
-    "dev": "turbo run dev",
+    "build": "turbo build",
+    "clean": "turbo clean",
+    "dev": "turbo dev --no-cache  --continue --concurrency 11",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
-    "test": "turbo run test"
+    "lint": "turbo lint",
+    "test": "turbo test"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
     "turbo": "latest"
   },
-  "packageManager": "npm@8.19.4"
+  "packageManager": "pnpm@8.6.10"
 }
