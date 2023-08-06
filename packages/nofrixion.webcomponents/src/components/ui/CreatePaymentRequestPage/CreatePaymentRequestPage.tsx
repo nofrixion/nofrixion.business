@@ -23,19 +23,19 @@ import {
   LocalPaymentMethodsFormValue,
   LocalPaymentNotificationsFormValue,
   LocalPaymentRequestCreate,
-} from '../../../types/LocalTypes'
+} from '@/types/LocalTypes'
 import classNames from 'classnames'
 import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
 
-import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters'
+import { formatEmailAddressesForSummary, parseBoldText } from '@/utils/uiFormaters'
 
 import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 import _ from 'lodash'
 import PaymentNotificationsModal from '../Modals/PaymentNotificationsModal/PaymentNotificationsModal'
-import { validateEmail } from '../../../utils/validation'
-import { formatAmountAndDecimals } from '../../../utils/formatters'
+import { validateEmail } from '@/utils/validation'
+import { formatAmountAndDecimals } from '@/utils/formatters'
 import BackArrow from '../utils/BackArrow'
-import { Button } from '../../ui/atoms'
+import { Button } from '@/components/ui/atoms'
 
 interface CreatePaymentRequestPageProps {
   banks: BankSettings[]

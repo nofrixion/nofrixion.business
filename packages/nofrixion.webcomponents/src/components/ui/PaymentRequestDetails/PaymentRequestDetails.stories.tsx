@@ -1,5 +1,5 @@
 import { StoryFn, Meta } from '@storybook/react'
-import mockedData from '../../../utils/mockedData'
+import mockedData from '@/utils/mockedData'
 import PaymentRequestDetails from './PaymentRequestDetails'
 
 export default {

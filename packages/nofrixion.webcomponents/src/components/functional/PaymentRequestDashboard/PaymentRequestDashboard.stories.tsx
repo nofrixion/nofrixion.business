@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react'
 import PaymentRequestDashboard from './PaymentRequestDashboard'
-import { apiUrls } from '../../../utils/constants'
+import { apiUrls } from '@/utils/constants'
 
 const meta: Meta<typeof PaymentRequestDashboard> = {
   title: 'Functional/PaymentRequestDashboard',

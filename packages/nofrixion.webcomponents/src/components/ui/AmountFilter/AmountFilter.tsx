@@ -1,7 +1,7 @@
 ﻿import FilterButton from '../FilterButton/FilterButton'
 import disabledCurrencyIcon from '../../../assets/icons/currency-icon-disabled.svg'
 import enabledCurrencyIcon from '../../../assets/icons/currency-icon-enabled.svg'
-import { formatAmount } from '../../../utils/formatters'
+import { formatAmount } from '@/utils/formatters'
 import closeIcon from '../../../assets/images/nf_close.svg'
 import SelectablePill from '../SelectablePill/SelectablePill'
 import React, { useEffect } from 'react'

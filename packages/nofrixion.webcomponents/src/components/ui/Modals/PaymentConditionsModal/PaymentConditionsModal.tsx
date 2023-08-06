@@ -1,7 +1,7 @@
 import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
 import { useEffect, useState } from 'react'
 import Checkbox from '../../Checkbox/Checkbox'
-import { LocalPaymentConditionsFormValue } from '../../../../types/LocalTypes'
+import { LocalPaymentConditionsFormValue } from '@/types/LocalTypes'
 import { PaymentConditionsDefaults, UserPaymentDefaults } from '@nofrixion/moneymoov'
 
 interface PaymentConditionsModalProps extends BaseModalProps {

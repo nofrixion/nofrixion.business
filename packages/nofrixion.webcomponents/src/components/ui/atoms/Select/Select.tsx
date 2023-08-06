@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 
-import { cn } from '../../../../utils'
+import { cn } from '@/utils'
 import { motion } from 'framer-motion'
-import { Icon } from '../../../ui/atoms'
+import { Icon } from '@/components/ui/atoms'
 
 const cancelDefaults = (event: any) => {
   event.preventDefault()

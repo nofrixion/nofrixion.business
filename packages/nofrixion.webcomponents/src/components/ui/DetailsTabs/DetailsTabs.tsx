@@ -4,7 +4,7 @@ import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import classNames from 'classnames'
 import PaymentInfo from '../PaymentInfo/PaymentInfo'
 import Transactions from '../Transactions/Transactions'
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
+import { LocalPaymentAttempt, LocalPaymentRequest } from '@/types/LocalTypes'
 import ScrollArea from '../ScrollArea/ScrollArea'
 
 const tabs = ['Transactions', 'Payment info']

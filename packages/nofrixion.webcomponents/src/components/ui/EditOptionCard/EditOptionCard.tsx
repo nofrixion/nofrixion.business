@@ -1,4 +1,4 @@
-import { parseBoldText } from '../../../utils/uiFormaters'
+import { parseBoldText } from '@/utils/uiFormaters'
 
 import EditIcon from '../../../assets/icons/edit-icon.svg'
 import classNames from 'classnames'

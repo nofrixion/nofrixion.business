@@ -1,7 +1,7 @@
-import { LocalPaymentRequest } from '../../../types/LocalTypes'
-import { formatAmount, formatDate } from '../../../utils/formatters'
+import { LocalPaymentRequest } from '@/types/LocalTypes'
+import { formatAmount, formatDate } from '@/utils/formatters'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
-import { defaultAnonymousUserName } from '../../../utils/constants'
+import { defaultAnonymousUserName } from '@/utils/constants'
 import PaymentRequestStatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
 interface PaymentRequestMobileCardProps extends LocalPaymentRequest {

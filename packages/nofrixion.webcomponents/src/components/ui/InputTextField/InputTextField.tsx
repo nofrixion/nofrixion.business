@@ -1,6 +1,6 @@
 import React, { useId, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
+import AnimateHeightWrapper from '@/components/ui/utils/AnimateHeight'
 
 export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string

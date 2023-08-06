@@ -1,5 +1,5 @@
 import { StoryFn, Meta } from '@storybook/react'
-import { apiUrls } from '../../../utils/constants'
+import { apiUrls } from '@/utils/constants'
 import CreatePaymentRequest from './CreatePaymentRequestPage'
 
 const meta: Meta<typeof CreatePaymentRequest> = {

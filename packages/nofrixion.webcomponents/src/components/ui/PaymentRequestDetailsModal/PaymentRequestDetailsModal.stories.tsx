@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 import PaymentRequestDetailsModal from './PaymentRequestDetailsModal'
-import mockedData from '../../../utils/mockedData'
+import mockedData from '@/utils/mockedData'
 import { useState } from 'react'
 
 export default {

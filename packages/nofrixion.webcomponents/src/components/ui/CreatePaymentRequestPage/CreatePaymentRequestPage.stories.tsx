@@ -4,7 +4,7 @@ import CreatePaymentRequestPage from './CreatePaymentRequestPage'
 import { Currency, PaymentProcessor } from '@nofrixion/moneymoov'
 import { useState } from 'react'
 import { action } from '@storybook/addon-actions'
-import { LocalPaymentRequestCreate } from '../../../types/LocalTypes'
+import { LocalPaymentRequestCreate } from '@/types/LocalTypes'
 
 export default {
   title: 'UI/CreatePaymentRequestPage',
