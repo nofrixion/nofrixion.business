@@ -2,8 +2,8 @@
 import SearchBar from '../SearchBar/SearchBar'
 import AmountFilter from '../AmountFilter/AmountFilter'
 import TagFilter, { FilterableTag } from '../TagFilter/TagFilter'
-import { SelectSorter, TSorterOptions } from '../../ui/molecules'
-import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+import { SelectSorter, TSorterOptions } from '@/components/ui/molecules'
+import { SortDirection } from '@/components/ui/ColumnHeader/ColumnHeader'
 
 interface FilterControlsRowProps {
   setDateRange: (dateRange: DateRange) => void

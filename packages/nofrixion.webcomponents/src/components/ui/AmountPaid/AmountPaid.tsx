@@ -1,6 +1,6 @@
 import { Currency } from '@nofrixion/moneymoov'
-import { LocalPartialPaymentMethods } from '../../../types/LocalEnums'
-import { formatAmountAndDecimals } from '../../../utils/formatters'
+import { LocalPartialPaymentMethods } from '@/types/LocalEnums'
+import { formatAmountAndDecimals } from '@/utils/formatters'
 
 const AmountPaid = ({
   amountPaid,

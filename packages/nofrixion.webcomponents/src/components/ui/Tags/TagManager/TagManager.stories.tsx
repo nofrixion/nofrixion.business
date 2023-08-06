@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 import TagManager from './TagManager'
-import { mockMerchantTags, mockTags } from '../../../../utils/mockedData'
+import { mockMerchantTags, mockTags } from '@/utils/mockedData'
 
 export default {
   title: 'UI/Tags/TagManager',

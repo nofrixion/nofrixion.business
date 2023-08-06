@@ -3,7 +3,7 @@ import InputAmountField from '../InputAmountField/InputAmountField'
 import { Currency } from '@nofrixion/moneymoov'
 import backButtonIcon from '../../../assets/icons/back-button-icon.svg'
 import { format } from 'date-fns'
-import { localCurrency } from '../../../utils/constants'
+import { localCurrency } from '@/utils/constants'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export interface CaptureModalProps {

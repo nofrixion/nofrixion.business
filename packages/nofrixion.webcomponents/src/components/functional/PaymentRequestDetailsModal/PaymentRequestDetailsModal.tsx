@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import UIPaymentRequestDetailsModal from '../../ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal'
-import { parseApiTagToLocalTag } from '../../../utils/parsers'
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import UIPaymentRequestDetailsModal from '@/components/ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal'
+import { parseApiTagToLocalTag } from '@/utils/parsers'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '@/types/LocalTypes'
 import {
   PaymentRequestClient,
   PaymentRequest,

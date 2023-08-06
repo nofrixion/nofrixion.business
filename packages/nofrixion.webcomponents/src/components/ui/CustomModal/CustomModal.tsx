@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Checkbox from '../Checkbox/Checkbox'
-import { Button } from '../../ui/atoms'
+import { Button } from '@/components/ui/atoms'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
 

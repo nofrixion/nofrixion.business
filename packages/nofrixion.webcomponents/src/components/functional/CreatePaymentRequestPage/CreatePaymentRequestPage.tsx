@@ -1,7 +1,7 @@
-import UICreatePaymentRequestPage from '../../ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
+import UICreatePaymentRequestPage from '@/components/ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
 
-import { LocalPaymentRequest, LocalPaymentRequestCreate } from '../../../types/LocalTypes'
-import { makeToast } from '../../ui/Toast/Toast'
+import { LocalPaymentRequest, LocalPaymentRequestCreate } from '@/types/LocalTypes'
+import { makeToast } from '@/components/ui/Toast/Toast'
 import {
   PaymentRequestClient,
   PaymentRequestCreate,
@@ -15,8 +15,8 @@ import {
   ApiResponse,
 } from '@nofrixion/moneymoov'
 
-import { defaultUserPaymentDefaults } from '../../../utils/constants'
-import { remotePaymentRequestToLocalPaymentRequest } from '../../../utils/parsers'
+import { defaultUserPaymentDefaults } from '@/utils/constants'
+import { remotePaymentRequestToLocalPaymentRequest } from '@/utils/parsers'
 import { useEffect, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 

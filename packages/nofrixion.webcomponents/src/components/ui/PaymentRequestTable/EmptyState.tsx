@@ -1,6 +1,6 @@
 import emptyStateIllustration from '../../../assets/images/empty-state.svg'
-import { Button } from '../../ui/atoms'
-import { Text } from '../../ui/atoms'
+import { Button } from '@/components/ui/atoms'
+import { Text } from '@/components/ui/atoms'
 
 interface EmptyStateProps {
   state: 'nothingFound' | 'empty'
