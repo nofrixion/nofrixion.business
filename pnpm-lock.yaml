@@ -250,8 +250,8 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
       '@nofrixion/moneymoov':
-        specifier: ^0.0.15
-        version: 0.0.15(@tanstack/react-query@4.32.0)(axios@1.4.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: workspace:*
+        version: link:../nofrixion.clients
       '@nofrixion/tsconfig':
         specifier: workspace:*
         version: link:../nofrixion-tsconfig
@@ -3077,20 +3077,6 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
-
-  /@nofrixion/moneymoov@0.0.15(@tanstack/react-query@4.32.0)(axios@1.4.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-uIIC+MToUXQNC9IlXSLu6QYvIeS0AhFvWDyfhlNYYCRtRm1heLh5hhfjuX1OrJTBgdglLdBej4bj+HYaWXCp5Q==}
-    peerDependencies:
-      '@tanstack/react-query': ^4.32.0
-      axios: ^1.4.0
-      react: ^18.2.0
-      react-dom: ^18.2.0
-    dependencies:
-      '@tanstack/react-query': 4.32.0(react-dom@18.2.0)(react@18.2.0)
-      axios: 1.4.0
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -13599,7 +13585,7 @@ packages:
     peerDependencies:
       vite: '>2.0.0-0'
     dependencies:
-      vite: 4.4.6(less@4.1.3)(terser@5.19.2)
+      vite: 4.4.6(@types/node@20.4.2)(terser@5.19.2)
     dev: true
 
   /vite-plugin-dts@2.3.0(vite@4.4.6):
