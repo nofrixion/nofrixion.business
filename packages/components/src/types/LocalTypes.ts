@@ -1,4 +1,4 @@
-import { Currency, PaymentRequestEventType, PaymentResult } from '@nofrixion/moneymoov'
+import { Currency, PaymentRequestEventType, PaymentResult } from '../../../clients/dist'
 import {
   LocalAddressType,
   LocalCardPaymentResponseStatus,

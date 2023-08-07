@@ -7,7 +7,7 @@ import {
   Wallets,
   type Tag,
   type PaymentRequestPaymentAttempt,
-} from '@nofrixion/moneymoov'
+} from '../../../clients/dist'
 
 import {
   LocalAddressType,
