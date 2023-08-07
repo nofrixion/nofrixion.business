@@ -31,7 +31,7 @@ const PaymentInfoRow: React.FC<PaymentInfoRowProps> = ({ label, content, childre
   )
 }
 
-interface PaymentInfoProps extends LocalPaymentRequest {}
+export interface PaymentInfoProps extends LocalPaymentRequest {}
 
 const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentInfoProps) => {
   // Parsed date should follow the following format: Dec 22nd, 2022

@@ -4,7 +4,7 @@ import AddTag from '../AddTag/AddTag'
 import Tag from '../Tag/Tag'
 import { AnimatePresence } from 'framer-motion'
 
-interface TagManagerProps {
+export interface TagManagerProps {
   tags: LocalTag[]
   availableTags: LocalTag[]
   onDeleted: (id: string) => void

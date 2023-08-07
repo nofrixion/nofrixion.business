@@ -37,7 +37,7 @@ import { formatAmountAndDecimals } from '@/utils/formatters'
 import BackArrow from '../utils/BackArrow'
 import { Button } from '@/components/ui/atoms'
 
-interface CreatePaymentRequestPageProps {
+export interface CreatePaymentRequestPageProps {
   banks: BankSettings[]
   userPaymentDefaults?: UserPaymentDefaults
   onConfirm: (data: LocalPaymentRequestCreate) => Promise<void>

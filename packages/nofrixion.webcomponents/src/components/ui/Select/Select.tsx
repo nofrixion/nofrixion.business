@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 
-interface SelectProps {
+export interface SelectProps {
   options: SelectOption[]
   selected: SelectOption
   onChange: (value: SelectOption) => void

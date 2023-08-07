@@ -24,7 +24,7 @@ const displayValue = {
 
 type TSorterOptions = keyof typeof options
 
-interface SelectSorterProps extends SelectProps {
+export interface SelectSorterProps extends SelectProps {
   onValueChange?: (value: TSorterOptions) => void
   defaultValue?: TSorterOptions
   value?: TSorterOptions

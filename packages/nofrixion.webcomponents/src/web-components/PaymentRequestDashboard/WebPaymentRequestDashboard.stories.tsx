@@ -2,6 +2,7 @@ import { html } from 'lit-html'
 import { apiUrls } from '../../utils/constants'
 
 import './WebPaymentRequestDashboard'
+import { string } from 'prop-types'
 
 export default {
   title: 'Payment Request Dashboard',
@@ -23,8 +24,14 @@ export default {
   },
 }
 
+interface TemplateProps {
+  token: string
+  merchantId: string
+  apiUrl: string
+}
+
 //👇 We create a “template” of how args map to rendering
-const Template = ({ token, merchantId, apiUrl }) =>
+const Template = ({ token, merchantId, apiUrl }: TemplateProps) =>
   html`<payment-request-dashboard
     .token=${token}
     .merchantId=${merchantId}

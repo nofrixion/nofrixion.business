@@ -31,7 +31,7 @@ const handleClick = (e: React.MouseEvent<HTMLDivElement>, handler?: () => void) 
   e.stopPropagation()
 }
 
-interface PaymentRequestActionMenuProps {
+export interface PaymentRequestActionMenuProps {
   onDuplicate?: () => void
   onCopyLink?: () => void
   onDelete?: () => void
@@ -39,7 +39,7 @@ interface PaymentRequestActionMenuProps {
   onOpenPaymentPage?: () => void
 }
 
-interface PaymentRequestActionMenuItemContentProps {
+export interface PaymentRequestActionMenuItemContentProps {
   label: string
   iconSource: string
 }

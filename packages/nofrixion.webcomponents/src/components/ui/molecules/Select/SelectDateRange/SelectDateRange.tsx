@@ -18,7 +18,7 @@ const options = {
 
 type TDateRangeOptions = keyof typeof options
 
-interface SelectDateRangePros extends SelectProps {
+export interface SelectDateRangePros extends SelectProps {
   onValueChange?: (value: TDateRangeOptions) => void
   defaultValue?: TDateRangeOptions
   value?: TDateRangeOptions

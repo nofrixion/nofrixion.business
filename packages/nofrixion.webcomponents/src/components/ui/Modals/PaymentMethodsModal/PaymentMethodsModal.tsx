@@ -13,7 +13,7 @@ import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { LocalPaymentMethodsFormValue } from '@/types/LocalTypes'
 import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
 
-interface PaymentMethodsModalProps extends BaseModalProps {
+export interface PaymentMethodsModalProps extends BaseModalProps {
   banks: BankSettings[]
   userDefaults?: PaymentMethodsDefaults
   onApply: (data: LocalPaymentMethodsFormValue) => void

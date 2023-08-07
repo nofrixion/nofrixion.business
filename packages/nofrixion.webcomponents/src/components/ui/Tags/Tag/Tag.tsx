@@ -4,7 +4,7 @@ import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import { useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 
-interface TagProps {
+export interface TagProps {
   id: string
   label: string
   onDelete?: (id: string) => void

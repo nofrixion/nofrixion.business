@@ -7,7 +7,7 @@ import { AnimatePresence } from 'framer-motion'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { validateEmail } from '@/utils/validation'
 
-interface NotificationEmailsModalProps extends BaseModalProps {
+export interface NotificationEmailsModalProps extends BaseModalProps {
   userDefaults?: NotificationEmailsDefaults
   onApply: (data: LocalPaymentNotificationsFormValue) => void
   isPrefilledData: boolean

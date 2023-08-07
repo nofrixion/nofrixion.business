@@ -3,7 +3,7 @@ import CheckedIcon from '../../../assets/icons/checked-icon.svg'
 import { useId } from 'react'
 import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
-interface CheckboxProps {
+export interface CheckboxProps {
   label: string
   description?: string
   infoText?: string

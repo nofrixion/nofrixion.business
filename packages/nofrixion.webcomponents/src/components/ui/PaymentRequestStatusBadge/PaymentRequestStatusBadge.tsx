@@ -36,7 +36,7 @@ const icon = cva('w-auto', {
   },
 })
 
-interface PaymentRequestStatusBadgeProps {
+export interface PaymentRequestStatusBadgeProps {
   status: LocalPaymentStatus
   size?: VariantProps<typeof badge>['size']
 }

@@ -5,7 +5,7 @@ import TagFilter, { FilterableTag } from '../TagFilter/TagFilter'
 import { SelectSorter, TSorterOptions } from '@/components/ui/molecules'
 import { SortDirection } from '@/components/ui/ColumnHeader/ColumnHeader'
 
-interface FilterControlsRowProps {
+export interface FilterControlsRowProps {
   setDateRange: (dateRange: DateRange) => void
   searchFilter: string
   setSearchFilter: (value: string) => void

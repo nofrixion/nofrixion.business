@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
-interface PagerProps {
+export interface PagerProps {
   pageSize: number
   totalRecords: number
   onPageChange: (pageNumber: number) => void

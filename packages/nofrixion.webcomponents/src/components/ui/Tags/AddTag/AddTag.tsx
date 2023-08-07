@@ -8,7 +8,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
 
-interface TagProps {
+export interface TagProps {
   tags: LocalTag[]
   availableTags: LocalTag[]
   onTagAdded?: (tag: LocalTag) => void

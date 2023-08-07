@@ -31,7 +31,7 @@ import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '@/types/Loc
 import { Button, Icon } from '@/components/ui/atoms'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-interface PaymentRequestDashboardProps {
+export interface PaymentRequestDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string

@@ -1,7 +1,7 @@
 import { Switch as SwitchHeadless } from '@headlessui/react'
 import classNames from 'classnames'
 
-interface SwitchProps {
+export interface SwitchProps {
   label: string
   value: boolean
   onChange: (value: boolean) => void

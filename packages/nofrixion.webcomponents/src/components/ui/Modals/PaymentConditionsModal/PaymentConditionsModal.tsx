@@ -4,7 +4,7 @@ import Checkbox from '../../Checkbox/Checkbox'
 import { LocalPaymentConditionsFormValue } from '@/types/LocalTypes'
 import { PaymentConditionsDefaults, UserPaymentDefaults } from '@nofrixion/moneymoov'
 
-interface PaymentConditionsModalProps extends BaseModalProps {
+export interface PaymentConditionsModalProps extends BaseModalProps {
   userDefaults?: PaymentConditionsDefaults
   onApply: (data: LocalPaymentConditionsFormValue) => void
   isPrefilledData: boolean

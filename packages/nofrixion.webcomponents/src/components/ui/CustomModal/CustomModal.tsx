@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/atoms'
 import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
 
-interface CustomModalProps extends BaseModalProps {
+export interface CustomModalProps extends BaseModalProps {
   title: string
   enableUseAsDefault?: boolean
   children: React.ReactNode

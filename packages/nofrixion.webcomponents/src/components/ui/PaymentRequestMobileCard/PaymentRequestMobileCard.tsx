@@ -4,7 +4,7 @@ import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequest
 import { defaultAnonymousUserName } from '@/utils/constants'
 import PaymentRequestStatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
-interface PaymentRequestMobileCardProps extends LocalPaymentRequest {
+export interface PaymentRequestMobileCardProps extends LocalPaymentRequest {
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onDuplicate?: () => void
   onCopyLink?: () => void

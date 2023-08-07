@@ -8,7 +8,7 @@ import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequest
 import { animate, AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-interface PaymentRequestRowProps extends LocalPaymentRequest {
+export interface PaymentRequestRowProps extends LocalPaymentRequest {
   onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
   onDuplicate?: () => void
   onCopyLink?: () => void

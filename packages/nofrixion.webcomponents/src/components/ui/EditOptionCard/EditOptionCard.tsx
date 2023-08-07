@@ -3,7 +3,7 @@ import { parseBoldText } from '@/utils/uiFormaters'
 import EditIcon from '../../../assets/icons/edit-icon.svg'
 import classNames from 'classnames'
 
-interface EditOptionCardProps {
+export interface EditOptionCardProps {
   label: string
   values?: string[]
   details?: string[]

@@ -26,7 +26,7 @@ const emailVariants = cva('text-greyText', {
   },
 })
 
-interface ContactProps extends LocalContact {
+export interface ContactProps extends LocalContact {
   size?: VariantProps<typeof nameVariants>['size']
 }
 

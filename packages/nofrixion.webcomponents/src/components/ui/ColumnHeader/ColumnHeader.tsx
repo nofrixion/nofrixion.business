@@ -7,7 +7,7 @@ export enum SortDirection {
   DESC = 'DESC',
 }
 
-interface ColumnHeaderProps {
+export interface ColumnHeaderProps {
   label: string
   onSort: (event: SortDirection) => void
 }

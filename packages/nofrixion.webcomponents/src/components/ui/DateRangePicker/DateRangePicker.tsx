@@ -16,7 +16,7 @@ export type DateRange = {
   toDate: Date
 }
 
-interface DateRangeFilterProps {
+export interface DateRangeFilterProps {
   onDateChange: (dateRange: DateRange) => void
 }
 

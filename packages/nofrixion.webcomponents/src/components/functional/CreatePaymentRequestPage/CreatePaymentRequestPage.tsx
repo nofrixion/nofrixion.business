@@ -20,7 +20,7 @@ import { remotePaymentRequestToLocalPaymentRequest } from '@/utils/parsers'
 import { useEffect, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-interface CreatePaymentRequesPageProps {
+export interface CreatePaymentRequesPageProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   merchantId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"

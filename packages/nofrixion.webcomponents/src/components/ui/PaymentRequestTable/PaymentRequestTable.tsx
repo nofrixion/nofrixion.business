@@ -8,7 +8,7 @@ import { Toaster } from '../Toast/Toast'
 import EmptyState from './EmptyState'
 import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard'
 
-interface PaymentRequestTableProps {
+export interface PaymentRequestTableProps {
   paymentRequests: LocalPaymentRequest[]
   pageSize: number
   totalRecords: number

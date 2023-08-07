@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import classNames from 'classnames'
 
-interface InfoTooltipProps {
+export interface InfoTooltipProps {
   content: string
   children?: React.ReactNode
   side?: 'top' | 'bottom' | 'left' | 'right'
