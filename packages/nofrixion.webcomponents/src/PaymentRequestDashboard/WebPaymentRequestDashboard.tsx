@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import PaymentRequestDashboard from '../../components/functional/PaymentRequestDashboard/PaymentRequestDashboard'
-
+import { Dashboard } from '@nofrixion/components'
 import r2wc from 'react-to-webcomponent'
 
-const WebPaymentRequestDashboard = r2wc(PaymentRequestDashboard, React, ReactDOM, {
+const WebPaymentRequestDashboard = r2wc(Dashboard, React, ReactDOM, {
   props: {
     token: 'string',
     apiUrl: 'string',

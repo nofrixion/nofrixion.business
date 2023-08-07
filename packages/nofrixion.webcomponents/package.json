@@ -1,5 +1,5 @@
 {
-  "name": "@nofrixion/components",
+  "name": "@nofrixion/webcomponents",
   "private": false,
   "version": "0.0.20",
   "type": "module",
@@ -7,16 +7,16 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "tsc && vite build",
     "story": "storybook dev -p 6006 --no-open",
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
+    "build": "tsc && vite build",
     "build-storybook": "storybook build",
     "lint": "eslint . --ext .ts,.tsx",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "@headlessui/react": "1.6.0",
+    "@nofrixion/components": "^0.0.20",
     "@nofrixion/moneymoov": "^0.0.18",
     "@nofrixion/tsconfig": "^0.0.0",
     "@radix-ui/react-checkbox": "^1.0.3",
