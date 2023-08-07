@@ -8,7 +8,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite build --watch --config vite.config.react.ts",
-    "dev-story": "storybook dev -p 6006 --no-open",
+    "story": "storybook dev -p 6006 --no-open",
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build": "tsc && vite build",
     "build-react": "tsc && vite build --config vite.config.react.ts",

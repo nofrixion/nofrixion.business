@@ -17,6 +17,9 @@
     "dev": {
       "cache": false
     },
+    "story": {
+      "cache": false
+    },
     "clean": {
       "cache": false
     }
