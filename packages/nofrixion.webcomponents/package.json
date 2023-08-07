@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@headlessui/react": "1.6.0",
-    "@nofrixion/components": "^0.0.20",
     "@nofrixion/moneymoov": "^0.0.18",
+    "@nofrixion/components": "^0.0.20",
     "@nofrixion/tsconfig": "^0.0.0",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
