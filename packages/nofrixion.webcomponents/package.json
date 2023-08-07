@@ -8,6 +8,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite build --watch --config vite.config.react.ts",
+    "dev-story": "storybook dev -p 6006 --no-open",
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build": "tsc && vite build",
     "build-react": "tsc && vite build --config vite.config.react.ts",
@@ -26,6 +27,7 @@
     "@radix-ui/react-select": "^1.2.2",
     "@radix-ui/react-tabs": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.5",
+    "@storybook/addon-docs": "^7.2.1",
     "@tanstack/react-query": "^4.32.0",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
