@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "story": "turbo run story",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "turbo": "latest"
+  },
+  "packageManager": "npm@8.19.4",
+  "workspaces": [
+    "./apps/*",
+    "./packages/*"
+  ]
+}
