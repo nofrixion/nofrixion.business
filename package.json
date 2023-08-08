@@ -13,7 +13,7 @@
     "prettier": "^2.7.1",
     "turbo": "latest"
   },
-  "packageManager": "npm@8.19.4",
+  "packageManager": "npm@9.6.5",
   "workspaces": [
     "./apps/*",
     "./packages/*"
