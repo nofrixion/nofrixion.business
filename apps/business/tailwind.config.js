@@ -19,9 +19,6 @@ module.exports = {
       boxShadow: {
         small: '0px 2px 8px 0px rgba(4, 41, 49, 0.10);',
       },
-      boxShadow: {
-        small: '0px 2px 8px 0px rgba(4, 41, 49, 0.10);',
-      },
     },
   },
   plugins: [],

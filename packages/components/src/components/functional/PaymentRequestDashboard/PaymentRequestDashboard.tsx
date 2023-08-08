@@ -204,9 +204,11 @@ const PaymentRequestDashboardMain = ({
 
   useEffect(() => {
     if (merchantTagsResponse?.status === 'success') {
-      setLocalMerchantTags(merchantTagsResponse.data.map((tag) => parseApiTagToLocalTag(tag)))
+      setLocalMerchantTags(
+        merchantTagsResponse.data.map((tag: LocalTag) => parseApiTagToLocalTag(tag)),
+      )
       setTags(
-        merchantTagsResponse.data.map((tag) => {
+        merchantTagsResponse.data.map((tag: LocalTag) => {
           return {
             id: tag.id,
             label: tag.name,
