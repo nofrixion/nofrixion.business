@@ -17,5 +17,8 @@
   "workspaces": [
     "./apps/*",
     "./packages/*"
-  ]
+  ],
+  "dependencies": {
+    "turbo-darwin-arm64": "^1.10.12"
+  }
 }

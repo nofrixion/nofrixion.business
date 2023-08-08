@@ -16,8 +16,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@nofrixion/moneymoov": "^0.0.18",
     "@headlessui/react": "1.6.0",
+    "@nofrixion/moneymoov": "^0.0.18",
     "@nofrixion/tsconfig": "^0.0.0",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
@@ -99,7 +99,7 @@
     "unplugin-tailwindcss-mangle": "^1.2.7",
     "vite": "^4.2.3",
     "vite-plugin-banner": "^0.7.0",
-    "vite-plugin-css-injected-by-js": "^3.1.1",
+    "vite-plugin-css-injected-by-js": "^3.3.0",
     "vite-plugin-dts": "^2.3.0"
   },
   "files": [
