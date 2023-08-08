@@ -1,4 +1,4 @@
-import { Currency } from '../../../clients/dist'
+import { Currency } from '@nofrixion/moneymoov'
 import {
   LocalAddressType,
   LocalPartialPaymentMethods,
