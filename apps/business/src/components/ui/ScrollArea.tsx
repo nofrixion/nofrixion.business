@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils/utils'
+import { cn } from '../../lib/utils/utils'
 import * as RadixScrollArea from '@radix-ui/react-scroll-area'
 import React from 'react'
 

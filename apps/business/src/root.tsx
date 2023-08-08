@@ -1,6 +1,6 @@
 import { useOutlet } from 'react-router-dom'
 import './index.css'
-import HotjarInjection from '@/components/HotjarInjection'
+import HotjarInjection from './components/HotjarInjection'
 
 const Root = () => {
   const outlet = useOutlet()

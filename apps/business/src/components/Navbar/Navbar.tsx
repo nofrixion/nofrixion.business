@@ -1,9 +1,9 @@
-import UserNav from '@/components/Navbar/UserNav'
+import UserNav from '../../components/Navbar/UserNav'
 import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
 import IconSort from '../../assets/icons/sort.svg'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import { navItems } from '@/lib/constants'
+import { navItems } from '../../lib/constants'
 
 import {
   DropdownMenu,
@@ -11,8 +11,8 @@ import {
   DropdownMenuContent,
   DropdownMenuPortal,
   DropdownMenuItem,
-} from '@/components/ui/DropDown'
-import { cn } from '@/lib/utils/utils'
+} from '../../components/ui/DropDown'
+import { cn } from '../../lib/utils/utils'
 
 const Navbar = () => {
   const currentRoute = useLocation().pathname

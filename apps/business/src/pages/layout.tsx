@@ -1,14 +1,14 @@
-import { Navbar } from '@/components/Navbar/Navbar'
+import { Navbar } from '../components/Navbar/Navbar'
 import { useMerchants, useUser } from '@nofrixion/moneymoov'
 import { useEffect } from 'react'
-import StickyFeedback from '@/components/StickyFeedback'
-import useMerchantStore from '@/lib/stores/useMerchantStore'
-import useMerchantsStore from '@/lib/stores/useMerchantsStore'
-import useUserStore from '@/lib/stores/useUserStore'
+import StickyFeedback from '../components/StickyFeedback'
+import useMerchantStore from '../lib/stores/useMerchantStore'
+import useMerchantsStore from '../lib/stores/useMerchantsStore'
+import useUserStore from '../lib/stores/useUserStore'
 import { useOutlet } from 'react-router-dom'
 import '../index.css'
-import { useAuth } from '@/lib/auth/useAuth'
-import { AuthContextType } from '@/lib/auth/AuthProvider'
+import { useAuth } from '../lib/auth/useAuth'
+import { AuthContextType } from '../lib/auth/AuthProvider'
 // interface DashboardLayoutProps {
 //   children: React.ReactNode
 // }

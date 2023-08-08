@@ -1,13 +1,12 @@
-import PricingCard, { PricingCardProps } from '@/components/ui/PricingCard'
-import ScrollArea from '@/components/ui/ScrollArea'
-import useUserStore from '@/lib/stores/useUserStore'
-import { sendSlackMessage } from '@/lib/utils/utils'
-import IconListCheck from '../../../public/icons/list-check.svg'
+import PricingCard, { PricingCardProps } from '../../components/ui/PricingCard'
+import ScrollArea from '../../components/ui/ScrollArea'
+import useUserStore from '../../lib/stores/useUserStore'
+import { sendSlackMessage } from '../../lib/utils/utils'
 import { useState } from 'react'
-import Button from '@/components/ui/Button'
-import InfoBox from '@/components/ui/InfoBox'
-import PricingCardPayByBank, { PricingPayByBankProps } from '@/components/ui/PricingCardPayByBank'
-import PricingCardAccounts, { PricingAccountsProps } from '@/components/ui/PricingCardAccounts'
+import PricingCardPayByBank, {
+  PricingPayByBankProps,
+} from '../../components/ui/PricingCardPayByBank'
+import PricingCardAccounts, { PricingAccountsProps } from '../../components/ui/PricingCardAccounts'
 
 const pricingCards: PricingCardProps[] = [
   {

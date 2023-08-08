@@ -1,6 +1,6 @@
-import { Account } from '@/lib/types/localTypes'
-import ScrollArea from '@/components/ui/ScrollArea'
-import AccountSummaryCard from '@/components/AccountSummaryCard'
+import { Account } from '../../../lib/types/localTypes'
+import ScrollArea from '../../../components/ui/ScrollArea'
+import AccountSummaryCard from '../../../components/AccountSummaryCard'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 

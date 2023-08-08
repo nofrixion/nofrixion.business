@@ -1,10 +1,10 @@
-import useMerchantStore from '@/lib/stores/useMerchantStore'
-import useStore from '@/lib/stores/useStore'
+import useMerchantStore from '../../lib/stores/useMerchantStore'
+import useStore from '../../lib/stores/useStore'
 
-import { NOFRIXION_API_URL } from '@/lib/constants'
+import { NOFRIXION_API_URL } from '../../lib/constants'
 import { AccountsReceivable as AccountsReceivableDashboard } from '@nofrixion/components'
-import { useAuth } from '@/lib/auth/useAuth'
-import { AuthContextType } from '@/lib/auth/AuthProvider'
+import { useAuth } from '../../lib/auth/useAuth'
+import { AuthContextType } from '../../lib/auth/AuthProvider'
 
 const AccountReceivablePage = () => {
   // const { data: session, status, update } = useSession()

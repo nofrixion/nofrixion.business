@@ -1,6 +1,6 @@
-import { Loader } from '@/components/ui/Loader/Loader'
+import { Loader } from '../../components/ui/Loader/Loader'
 import { Navigate, useLocation, Outlet } from 'react-router-dom'
-import { useAuth } from '@/lib/auth/useAuth'
+import { useAuth } from '../../lib/auth/useAuth'
 import { AuthContextType } from './AuthProvider'
 
 export const ProtectedRoutes = () => {

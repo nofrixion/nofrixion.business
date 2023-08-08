@@ -2,10 +2,10 @@ import IconArrowRight from '../assets/icons/arrow-right.svg'
 import GraphicDesktopMoneyMoovForBusiness from '../assets/graphics/for-business-diagram-desktop.svg'
 import LogoNofrixion from '../assets/graphics/nofrixion-logo.svg'
 import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
-import { useAuth } from '@/lib/auth/useAuth'
-import { AuthContextType } from '@/lib/auth/AuthProvider'
+import { useAuth } from '../lib/auth/useAuth'
+import { AuthContextType } from '../lib/auth/AuthProvider'
 import { Loader } from './ui/Loader/Loader'
-import { NOFRIXION_BFF_URL } from '@/lib/constants'
+import { NOFRIXION_BFF_URL } from '../lib/constants'
 
 const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
   return (

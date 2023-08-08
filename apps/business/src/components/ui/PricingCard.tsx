@@ -1,6 +1,6 @@
-import formatText from '@/lib/utils/formatText'
+import formatText from '../../lib/utils/formatText'
 import IconListCheck from '../../assets/icons/list-check.svg'
-import Button from '@/components/ui/Button'
+import Button from '../../components/ui/Button'
 import { useState } from 'react'
 import InfoBox from './InfoBox'
 

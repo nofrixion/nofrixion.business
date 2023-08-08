@@ -45,9 +45,6 @@ export default defineConfig({
     'import.meta.env.version': JSON.stringify(packageJson.version),
     'process.env': `"${process.env}"`,
   },
-  resolve: {
-    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src/') }],
-  },
   server: {
     port: 3001,
     strictPort: true,

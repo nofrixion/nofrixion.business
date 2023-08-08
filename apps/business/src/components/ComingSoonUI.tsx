@@ -1,8 +1,8 @@
-import { sendSlackMessage } from '@/lib/utils/utils'
+import { sendSlackMessage } from '../lib/utils/utils'
 import Button from './ui/Button'
-import useUserStore from '@/lib/stores/useUserStore'
+import useUserStore from '../lib/stores/useUserStore'
 import { useState } from 'react'
-import InfoBox from '@/components/ui/InfoBox'
+import InfoBox from '../components/ui/InfoBox'
 
 interface ComingSoonUIProps {
   title: string

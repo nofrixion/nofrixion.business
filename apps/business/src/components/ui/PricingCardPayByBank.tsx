@@ -1,4 +1,4 @@
-import { formatAmount } from '@/lib/formatters'
+import { formatAmount } from '../../lib/formatters'
 
 export interface PricingPayByBankProps {
   payByBankPricing: PricingPayByBank[]

@@ -1,10 +1,10 @@
-import { displayAmount, formatAmount, formatDate } from '@/lib/formatters'
+import { displayAmount, formatAmount, formatDate } from '../lib/formatters'
 import { Transaction, useTransactions } from '@nofrixion/moneymoov'
-import { Account } from '@/lib/types/localTypes'
-import { cn } from '@/lib/utils/utils'
-import { NOFRIXION_API_URL } from '@/lib/constants'
+import { Account } from '../lib/types/localTypes'
+import { cn } from '../lib/utils/utils'
+import { NOFRIXION_API_URL } from '../lib/constants'
 import { useEffect, useState } from 'react'
-import Card from '@/components/ui/atoms/Card/Card'
+import Card from '../components/ui/atoms/Card/Card'
 
 interface AccountSummaryCardProps {
   className?: string

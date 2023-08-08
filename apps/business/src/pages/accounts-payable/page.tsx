@@ -1,4 +1,4 @@
-import ComingSoonUI from '@/components/ComingSoonUI'
+import ComingSoonUI from '../../components/ComingSoonUI'
 
 const comingSoonItems = [
   'Connect with Xero',

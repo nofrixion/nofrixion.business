@@ -1,4 +1,4 @@
-import UnderConstructionUI from '@/components/UnderConstructionUI'
+import UnderConstructionUI from '../../components/UnderConstructionUI'
 
 const url = `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Merchant/Accounts`
 
