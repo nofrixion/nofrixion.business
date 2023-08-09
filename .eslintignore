@@ -1,5 +1,0 @@
-node_modules/
-dist/
-*.cjs
-env.d.ts
-components/

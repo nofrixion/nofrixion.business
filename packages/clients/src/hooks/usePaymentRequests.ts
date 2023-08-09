@@ -1,5 +1,5 @@
 import { PaymentRequestClient } from '../clients'
-import { SortDirection, formatApiResponse, formatPaymentRequestSortExpression } from '../types'
+import { SortDirection, formatPaymentRequestSortExpression } from '../types'
 import { ApiResponse, PaymentRequestPageResponse } from '../types/ApiResponses'
 import { ApiProps, usePaymentRequestsProps } from '../types/props'
 import { useQuery } from '@tanstack/react-query'

@@ -423,7 +423,6 @@ const PaymentRequestDashboardMain = ({
     if (paymentRequests.status === 'success') {
       setLocalPaymentRequests((prev) => [
         ...prev,
-        // eslint-disable-next-line no-unsafe-optional-chaining
         ...paymentRequests.data.content?.map((pr) => remotePaymentRequestToLocalPaymentRequest(pr)),
       ])
       setShowMorePage(showMorePage + 1)

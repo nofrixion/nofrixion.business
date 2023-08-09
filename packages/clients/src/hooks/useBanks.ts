@@ -1,5 +1,4 @@
 import { MerchantClient } from '../clients/MerchantClient'
-import { formatApiResponse } from '../types'
 import { ApiResponse, MerchantBankSettings } from '../types/ApiResponses'
 import { ApiProps, MerchantProps } from '../types/props'
 import { useQuery } from '@tanstack/react-query'

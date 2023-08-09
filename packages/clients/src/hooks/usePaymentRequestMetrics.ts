@@ -1,5 +1,4 @@
 import { PaymentRequestClient } from '../clients'
-import { formatApiResponse } from '../types'
 import { ApiResponse, PaymentRequestMetrics } from '../types/ApiResponses'
 import { ApiProps, usePaymentRequestMetricsProps } from '../types/props'
 import { useQuery } from '@tanstack/react-query'

@@ -1,5 +1,4 @@
 import { TransactionsClient } from '../clients'
-import { formatApiResponse } from '../types'
 import { ApiResponse, TransactionPageResponse } from '../types/ApiResponses'
 import { ApiProps, TransactionsProps } from '../types/props'
 import { useQuery } from '@tanstack/react-query'
