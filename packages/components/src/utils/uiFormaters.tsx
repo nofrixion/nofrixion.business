@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 
 const parseHighlightedText = (text: string) => {
   const boldRegex = /\*(.*?)\*/g
@@ -14,7 +14,7 @@ const parseHighlightedText = (text: string) => {
       )
     } else {
       // otherwise, return the regular text
-      return <React.Fragment key={index}>{part}</React.Fragment>
+      return <Fragment key={index}>{part}</Fragment>
     }
   })
 }

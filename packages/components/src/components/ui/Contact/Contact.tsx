@@ -1,6 +1,6 @@
 import { VariantProps, cva } from 'class-variance-authority'
-import { LocalContact } from '@/types/LocalTypes'
-import { defaultAnonymousUserName } from '@/utils/constants'
+import { LocalContact } from '../../../types/LocalTypes'
+import { defaultAnonymousUserName } from '../../../utils/constants'
 
 const nameVariants = cva('', {
   variants: {

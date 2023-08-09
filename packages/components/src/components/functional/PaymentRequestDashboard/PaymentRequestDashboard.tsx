@@ -1,7 +1,7 @@
-import Tab from '@/components/ui/Tab/Tab'
+import Tab from '../../ui/Tab/Tab'
 import * as Tabs from '@radix-ui/react-tabs'
-import React, { useEffect, useState } from 'react'
-import { DateRange } from '@/components/ui/DateRangePicker/DateRangePicker'
+import { useEffect, useState } from 'react'
+import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import {
   Currency,
   PaymentRequestClient,
@@ -14,21 +14,24 @@ import {
   PaymentRequest,
   ApiError,
 } from '@nofrixion/moneymoov'
-import PaymentRequestTable from '@/components/ui/PaymentRequestTable/PaymentRequestTable'
-import { SortDirection } from '@/components/ui/ColumnHeader/ColumnHeader'
-import { LocalPaymentRequest, LocalPaymentRequestCreate, LocalTag } from '@/types/LocalTypes'
-import { makeToast } from '@/components/ui/Toast/Toast'
-import { parseApiTagToLocalTag, remotePaymentRequestToLocalPaymentRequest } from '@/utils/parsers'
+import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable'
+import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+import { LocalPaymentRequest, LocalPaymentRequestCreate, LocalTag } from '../../../types/LocalTypes'
+import { makeToast } from '../../ui/Toast/Toast'
+import {
+  parseApiTagToLocalTag,
+  remotePaymentRequestToLocalPaymentRequest,
+} from '../../../utils/parsers'
 import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
-import LayoutWrapper from '@/components/ui/utils/LayoutWrapper'
+import LayoutWrapper from '../../ui/utils/LayoutWrapper'
 import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal'
-import FilterControlsRow from '@/components/ui/FilterControlsRow/FilterControlsRow'
-import { FilterableTag } from '@/components/ui/TagFilter/TagFilter'
-import ScrollArea from '@/components/ui/ScrollArea/ScrollArea'
-import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '@/types/LocalEnums'
-import { Button, Icon } from '@/components/ui/atoms'
+import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow'
+import { FilterableTag } from '../../ui/TagFilter/TagFilter'
+import ScrollArea from '../../ui/ScrollArea/ScrollArea'
+import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
+import { Button, Icon } from '../../ui/atoms'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export interface PaymentRequestDashboardProps {
@@ -79,11 +82,11 @@ const PaymentRequestDashboardMain = ({
     toDate: endOfDay(new Date()),
   })
   const [searchFilter, setSearchFilter] = useState<string>('')
-  const [currencyFilter, setCurrencyFilter] = React.useState<string | undefined>()
-  const [minAmountFilter, setMinAmountFilter] = React.useState<number | undefined>()
-  const [maxAmountFilter, setMaxAmountFilter] = React.useState<number | undefined>()
-  const [tags, setTags] = React.useState<FilterableTag[]>([])
-  const [tagsFilter, setTagsFilter] = React.useState<string[]>([])
+  const [currencyFilter, setCurrencyFilter] = useState<string | undefined>()
+  const [minAmountFilter, setMinAmountFilter] = useState<number | undefined>()
+  const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
+  const [tags, setTags] = useState<FilterableTag[]>([])
+  const [tagsFilter, setTagsFilter] = useState<string[]>([])
   const [showMorePage, setShowMorePage] = useState(1)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [metrics, setMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
@@ -150,11 +153,7 @@ const PaymentRequestDashboardMain = ({
 
   const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>()
 
-  const {
-    data: metricsResponse,
-    isLoading: isLoadingMetrics,
-    error: metricsError,
-  } = usePaymentRequestMetrics(
+  const { data: metricsResponse, isLoading: isLoadingMetrics } = usePaymentRequestMetrics(
     {
       merchantId: merchantId,
       fromDateMS: dateRange.fromDate.getTime(),
@@ -168,11 +167,10 @@ const PaymentRequestDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const {
-    data: merchantTagsResponse,
-    isLoading: isMerchantTagsLoading,
-    error: merchantTagsError,
-  } = useMerchantTags({ merchantId: merchantId }, { apiUrl: apiUrl, authToken: token })
+  const { data: merchantTagsResponse } = useMerchantTags(
+    { merchantId: merchantId },
+    { apiUrl: apiUrl, authToken: token },
+  )
 
   const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
 
@@ -423,7 +421,7 @@ const PaymentRequestDashboardMain = ({
     if (paymentRequests.status === 'success') {
       setLocalPaymentRequests((prev) => [
         ...prev,
-        ...paymentRequests.data.content?.map((pr) => remotePaymentRequestToLocalPaymentRequest(pr)),
+        ...paymentRequests.data.content.map((pr) => remotePaymentRequestToLocalPaymentRequest(pr)),
       ])
       setShowMorePage(showMorePage + 1)
     }

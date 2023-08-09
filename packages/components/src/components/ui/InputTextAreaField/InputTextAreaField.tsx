@@ -1,6 +1,6 @@
-import React, { useId, useState } from 'react'
+import { forwardRef, useId, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import AnimateHeightWrapper from '@/components/ui/utils/AnimateHeight'
+import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
 export interface InputTextAreaFieldProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   label: string
@@ -10,7 +10,7 @@ export interface InputTextAreaFieldProps extends React.InputHTMLAttributes<HTMLT
   enableQuickValidation?: boolean // If enabled, the validation will be done on every change, not only after blur
   error?: string
 }
-const InputTextAreaField = React.forwardRef<HTMLTextAreaElement, InputTextAreaFieldProps>(
+const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldProps>(
   (
     {
       label,
@@ -88,5 +88,7 @@ const InputTextAreaField = React.forwardRef<HTMLTextAreaElement, InputTextAreaFi
     )
   },
 )
+
+InputTextAreaField.displayName = 'InputTextAreaField'
 
 export default InputTextAreaField

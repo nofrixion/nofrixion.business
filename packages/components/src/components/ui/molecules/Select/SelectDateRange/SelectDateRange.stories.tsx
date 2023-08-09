@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 
-import { SelectDateRange, type TDateRangeOptions } from '@/components/ui/molecules'
+import { SelectDateRange, type TDateRangeOptions } from './SelectDateRange'
 import { useState } from 'react'
 
 export default {

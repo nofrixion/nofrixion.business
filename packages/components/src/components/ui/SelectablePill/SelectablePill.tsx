@@ -1,5 +1,5 @@
 ﻿import classNames from 'classnames'
-import { useId, useState } from 'react'
+import { useId } from 'react'
 export interface SelectablePillProps {
   label: string
   value?: string

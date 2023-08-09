@@ -1,6 +1,6 @@
 ﻿import SelectablePill from './SelectablePill'
 import { Meta, StoryFn } from '@storybook/react'
-import React, { FormEventHandler, useState } from 'react'
+import { useState } from 'react'
 
 export default {
   title: 'UI/Selectable Pill',

@@ -2,14 +2,14 @@
 import searchIconEnabled from '../../../assets/icons/search-icon-enabled.svg'
 import closeIcon from '../../../assets/images/nf_close.svg'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   setValue: (value: string) => void
 }
 
-const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
+const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
   ({ maxLength = 100, value, setValue, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState<boolean>(false)
 
@@ -73,5 +73,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
     )
   },
 )
+
+SearchBar.displayName = 'SearchBar'
 
 export default SearchBar

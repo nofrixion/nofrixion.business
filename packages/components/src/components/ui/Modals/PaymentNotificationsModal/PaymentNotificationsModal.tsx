@@ -1,11 +1,11 @@
 import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
 import { useEffect, useState } from 'react'
-import { LocalPaymentNotificationsFormValue } from '@/types/LocalTypes'
+import { LocalPaymentNotificationsFormValue } from '../../../../types/LocalTypes'
 import { NotificationEmailsDefaults } from '@nofrixion/moneymoov'
 import InputTextField from '../../InputTextField/InputTextField'
 import { AnimatePresence } from 'framer-motion'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
-import { validateEmail } from '@/utils/validation'
+import { validateEmail } from '../../../../utils/validation'
 
 export interface NotificationEmailsModalProps extends BaseModalProps {
   userDefaults?: NotificationEmailsDefaults
@@ -18,9 +18,7 @@ const PaymentNotificationsModal = ({
   userDefaults,
   onDismiss,
   onApply,
-  isPrefilledData = false,
 }: NotificationEmailsModalProps) => {
-  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
   const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : '')
   const [hasEmailError, setHasEmailError] = useState(false)
   const [currentState, setCurrentState] = useState<LocalPaymentNotificationsFormValue>()

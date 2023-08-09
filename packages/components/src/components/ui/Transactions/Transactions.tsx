@@ -1,13 +1,13 @@
-import { LocalPaymentMethodTypes } from '@/types/LocalEnums'
+import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import CardIcon from '../../../assets/icons/card-icon.svg'
 import BankIcon from '../../../assets/icons/bank-icon.svg'
 import WalletIcon from '../../../assets/icons/wallet-icon.svg'
 import TickBadgeIcon from '../../../assets/icons/tick-badge-icon.svg'
 import { format } from 'date-fns'
 import classNames from 'classnames'
-import { LocalPaymentAttempt } from '@/types/LocalTypes'
+import { LocalPaymentAttempt } from '../../../types/LocalTypes'
 import { Currency } from '@nofrixion/moneymoov'
-import React from 'react'
+import { Fragment } from 'react'
 
 export interface TransactionsProps {
   transactions: LocalPaymentAttempt[]
@@ -29,7 +29,7 @@ const PaymentMethodIcon = ({ paymentMethod }: { paymentMethod: LocalPaymentMetho
   }
 }
 
-const Transactions = ({ transactions, onRefund, onCapture }: TransactionsProps) => {
+const Transactions = ({ transactions, onCapture }: TransactionsProps) => {
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -44,7 +44,7 @@ const Transactions = ({ transactions, onRefund, onCapture }: TransactionsProps) 
         <table className="w-full">
           <tbody>
             {transactions.map((transaction, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 <tr
                   className={classNames('group whitespace-nowrap', {
                     'border-b':
@@ -190,7 +190,7 @@ const Transactions = ({ transactions, onRefund, onCapture }: TransactionsProps) 
                     </td>
                   </tr>
                 ))}
-              </React.Fragment>
+              </Fragment>
             ))}
           </tbody>
         </table>

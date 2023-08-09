@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 import PaymentRequestDetailsModal from './PaymentRequestDetailsModal'
-import mockedData from '@/utils/mockedData'
+import mockedData from '../../../utils/mockedData'
 import { useState } from 'react'
 
 export default {
@@ -18,7 +18,7 @@ export default {
 } as Meta<typeof PaymentRequestDetailsModal>
 
 const Template: StoryFn<typeof PaymentRequestDetailsModal> = (args) => {
-  let [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const openModal = () => {
     setIsOpen(true)

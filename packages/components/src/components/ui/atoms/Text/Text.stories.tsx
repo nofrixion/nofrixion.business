@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 
-import { Text } from '@/components/ui/atoms'
+import { Text } from './Text'
 
 export default {
   title: 'Atoms/Text',

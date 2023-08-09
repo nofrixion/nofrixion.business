@@ -7,6 +7,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
     'plugin:jsx-a11y/recommended',
 
     // This disables the formatting rules in ESLint that Prettier is going to be responsible for handling.

@@ -1,6 +1,6 @@
 import { cva, VariantProps } from 'class-variance-authority'
-import { cn } from '@/utils'
-import { Icon } from '@/components/ui/atoms/Icon/Icon'
+import { cn } from '../../../../utils'
+import { Icon } from '../Icon/Icon'
 
 const buttonVariants = cva(
   'rounded-full inline-flex items-center justify-center whitespace-nowrap align-middle cursor-pointer transition w-full disabled:opacity-20 disabled:cursor-not-allowed',

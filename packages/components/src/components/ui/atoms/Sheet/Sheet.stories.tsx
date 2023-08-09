@@ -7,7 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/atoms/Sheet/Sheet'
+} from './Sheet'
 import { useState } from 'react'
 
 export default {

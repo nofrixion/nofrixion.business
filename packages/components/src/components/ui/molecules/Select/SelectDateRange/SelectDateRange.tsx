@@ -5,8 +5,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/atoms/Select/Select'
-import { cn } from '@/utils'
+} from '../../../atoms/Select/Select'
+import { cn } from '../../../../../utils'
 
 const options = {
   today: 'Today',

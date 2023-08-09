@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 
-import { SelectSorter, type TSorterOptions } from '@/components/ui/molecules'
+import { SelectSorter, type TSorterOptions } from './SelectSorter'
 import { useState } from 'react'
 
 export default {

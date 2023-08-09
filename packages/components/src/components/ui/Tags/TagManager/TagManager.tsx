@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LocalTag } from '@/types/LocalTypes'
+import { LocalTag } from '../../../../types/LocalTypes'
 import AddTag from '../AddTag/AddTag'
 import Tag from '../Tag/Tag'
 import { AnimatePresence } from 'framer-motion'
@@ -22,7 +22,7 @@ const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagM
   }
 
   const handleTagAdded = (tag: LocalTag) => {
-    var index = tagsArray.findIndex((item) => item.name === tag.name)
+    const index = tagsArray.findIndex((item) => item.name === tag.name)
 
     setTagsArray([...tagsArray, tag])
 

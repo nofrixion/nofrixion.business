@@ -12,6 +12,7 @@
     "story": "storybook dev -p 6006 --no-open",
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build-storybook": "storybook build",
+    "lint": "eslint .",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "prepare": "tw-patch install"
   },
