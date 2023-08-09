@@ -21,7 +21,7 @@ const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
       <h2 className="biz-relative biz-mt-[6.625rem] lg:biz-mt-[7.688rem] biz-px-10 biz-text-[2rem] biz-font-bold biz-leading-[2.421rem] lg:biz-px-0 biz-text-center">
         MoneyMoov for Business
         <span className="biz-align-super biz-uppercase biz-text-white biz-bg-[#023] biz-rounded-2xl biz-px-2 biz-py-0.5 biz-text-[10px] biz-leading-normal biz-ml-0.5">
-          Beta+
+          Beta
         </span>
       </h2>
 
