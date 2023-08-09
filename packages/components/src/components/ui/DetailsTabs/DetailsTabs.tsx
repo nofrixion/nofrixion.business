@@ -1,7 +1,7 @@
 import * as Tabs from '@radix-ui/react-tabs'
 import classNames from 'classnames'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
 import PaymentInfo from '../PaymentInfo/PaymentInfo'
@@ -36,9 +36,9 @@ const TabContent: React.FC<TabProps> = ({ value, selectedTab, children }) => {
 // Get type of classnames
 const underlineClasses = 'w-full h-px absolute bottom-0'
 
-export interface DetailsTabsProps {
+interface DetailsTabsProps {
   paymentRequest: LocalPaymentRequest
-  onRefund: (paymentAttemptID: string) => void
+  onRefund: (paymentAttempt: LocalPaymentAttempt) => void
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void
 }
 
@@ -80,6 +80,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
           <ScrollArea>
             <Transactions
               transactions={paymentRequest.paymentAttempts}
+              cardAuthoriseOnly={!paymentRequest.captureFunds}
               onRefund={onRefund}
               onCapture={onCapture}
             ></Transactions>

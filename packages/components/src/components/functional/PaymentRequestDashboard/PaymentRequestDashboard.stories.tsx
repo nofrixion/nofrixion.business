@@ -21,16 +21,15 @@ const meta: Meta<typeof PaymentRequestDashboard> = {
         type: 'text',
       },
     },
+    onUnauthorized: {
+      action: 'onUnauthorized',
+    },
   },
 } as Meta<typeof PaymentRequestDashboard>
 
-const Template: StoryFn<typeof PaymentRequestDashboard> = (args) => {
-  return (
-    <div className="px-6 md:px-14 bg-mainGrey pt-[64px] pb-10">
-      <PaymentRequestDashboard {...args} />
-    </div>
-  )
-}
+const Template: StoryFn<typeof PaymentRequestDashboard> = (args) => (
+  <PaymentRequestDashboard {...args} />
+)
 
 export const Showcase = Template.bind({})
 

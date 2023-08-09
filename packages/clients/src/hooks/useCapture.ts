@@ -3,9 +3,9 @@ import { useCallback, useState } from 'react'
 
 import { PaymentRequestClient } from '../clients'
 import { ApiError } from '../types'
-import { ApiProps, RefundProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, CaptureProps, usePaymentRequestsProps } from '../types/props'
 
-const refund = async (
+const capture = async (
   apiUrl: string,
   authorizationId: string,
   paymentRequestId: string,
@@ -16,12 +16,12 @@ const refund = async (
   error?: ApiError
 }> => {
   const client = new PaymentRequestClient({ apiUrl, authToken })
-  const response = await client.refundCardPayment(paymentRequestId, authorizationId, amount)
+  const response = await client.captureCardPayment(paymentRequestId, authorizationId, amount)
 
   return response
 }
 
-export const useRefund = (
+export const useCapture = (
   {
     merchantId,
     statusSortDirection,
@@ -41,7 +41,7 @@ export const useRefund = (
   }: usePaymentRequestsProps,
   { apiUrl, authToken }: ApiProps,
 ): {
-  processRefund: (refundProps: RefundProps) => Promise<{ error: ApiError | undefined }>
+  processCapture: (captureProps: CaptureProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
@@ -53,20 +53,6 @@ export const useRefund = (
     paymentRequestID,
     apiUrl,
     authToken,
-  ]
-
-  const METRICS_QUERY_KEY = [
-    'PaymentRequestMetrics',
-    apiUrl,
-    authToken,
-    currency,
-    fromDateMS,
-    toDateMS,
-    maxAmount,
-    merchantId,
-    minAmount,
-    search,
-    tags,
   ]
 
   const PAYMENT_REQUESTS_QUERY_KEY = [
@@ -94,10 +80,10 @@ export const useRefund = (
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
     Error,
-    RefundProps
+    CaptureProps
   > = useMutation({
-    mutationFn: (variables: RefundProps) =>
-      refund(
+    mutationFn: (variables: CaptureProps) =>
+      capture(
         apiUrl,
         variables.authorizationId,
         variables.paymentRequestId,
@@ -106,17 +92,14 @@ export const useRefund = (
       ),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
       if (data.success) {
-        // After refund is successful, invalidate the payment requests cache, the single payment request cache,
-        // and the metrics cache because the status of the payment request has changed
-        queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: SINGLE_PAYMENT_REQUEST_QUERY_KEY })
-        queryClient.invalidateQueries({ queryKey: METRICS_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
       }
     },
   })
 
-  const processRefund = useCallback(
-    async ({ authorizationId, paymentRequestId, amount }: RefundProps) => {
+  const processCapture = useCallback(
+    async ({ authorizationId, paymentRequestId, amount }: CaptureProps) => {
       if (paymentRequestId) {
         setPaymentRequestID(paymentRequestId)
         const result = await mutation.mutateAsync({
@@ -136,5 +119,5 @@ export const useRefund = (
     [mutation],
   )
 
-  return { processRefund }
+  return { processCapture }
 }
