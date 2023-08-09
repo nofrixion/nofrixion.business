@@ -5,7 +5,7 @@
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "story": "turbo run story",
-    "format": "prettier --list-different --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --check --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "prepare": "husky install",
