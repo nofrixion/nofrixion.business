@@ -14,8 +14,7 @@
     "build-storybook": "storybook build",
     "lint": "eslint .",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "prepare": "tw-patch install",
-    "format": "prettier --write src//**/*.{ts,tsx} --config ../../.prettierrc"
+    "prepare": "tw-patch install"
   },
   "dependencies": {
     "@headlessui/react": "1.6.0",

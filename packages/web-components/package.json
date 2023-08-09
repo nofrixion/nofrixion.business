@@ -11,8 +11,7 @@
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build": "tsc && vite build",
     "build-storybook": "storybook build",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "format": "prettier --write src//**/*.{ts,tsx} --config ../../.prettierrc"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "@headlessui/react": "1.6.0",

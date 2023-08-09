@@ -5,9 +5,11 @@
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "story": "turbo run story",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --list-different --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "prepare": "husky install",
+    "pre-commit": "turbo run lint && npm run format"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
@@ -19,6 +21,7 @@
     "./packages/*"
   ],
   "dependencies": {
+    "husky": "^8.0.3",
     "turbo-darwin-arm64": "^1.10.12"
   }
 }
