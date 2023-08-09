@@ -12,12 +12,6 @@ export interface PaymentRequestPageProps
     PaymentRequestProps,
     MerchantProps {}
 
-export interface PaymentRequestProps {
-  paymentRequestId?: string
-  includeEvents?: boolean
-  merchantId?: string
-}
-
 export interface FilterResponseProps {
   fromDate?: Date
   toDate?: Date
@@ -42,6 +36,12 @@ export interface MerchantProps {
 
 export interface AccountProps {
   accountId?: string
+}
+
+export interface PaymentRequestProps {
+  paymentRequestId?: string
+  includeEvents?: boolean
+  merchantId?: string
 }
 
 export interface TransactionsProps extends AccountProps {
@@ -74,6 +74,12 @@ export interface usePaymentRequestMetricsProps extends MetricsProps {
 }
 
 export interface RefundProps {
+  authorizationId: string
+  paymentRequestId: string
+  amount?: number
+}
+
+export interface CaptureProps {
   authorizationId: string
   paymentRequestId: string
   amount?: number
