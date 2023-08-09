@@ -19,4 +19,7 @@ export default defineConfig({
       fileName: () => `web-components.js`,
     },
   },
+  define: {
+    'process.env': `"${process.env}"`,
+  },
 })
