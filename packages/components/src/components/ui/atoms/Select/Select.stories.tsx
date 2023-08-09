@@ -1,12 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/atoms/Select/Select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 
 export default {
   title: 'Atoms/Select',

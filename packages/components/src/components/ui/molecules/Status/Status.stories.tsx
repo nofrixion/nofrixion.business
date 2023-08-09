@@ -1,6 +1,5 @@
 import { StoryFn, Meta } from '@storybook/react'
-
-import { Status } from '@/components/ui/molecules'
+import { Status } from './Status'
 
 export default {
   title: 'Molecules/Status',

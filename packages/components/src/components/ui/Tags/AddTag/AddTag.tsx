@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Downshift from 'downshift'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import useMeasure from 'react-use-measure'
-import { LocalTag } from '@/types/LocalTypes'
-import { useRef } from 'react'
+import { LocalTag } from '../../../../types/LocalTypes'
 import { useOnClickOutside } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
@@ -50,7 +49,9 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
   }
 
   const saveTag = () => {
-    var existingTag = availableTags.find((tag) => tag.name?.toLowerCase() === tagName.toLowerCase())
+    const existingTag = availableTags.find(
+      (tag) => tag.name?.toLowerCase() === tagName.toLowerCase(),
+    )
 
     if (existingTag) {
       onTagAdded && onTagAdded(existingTag)
@@ -106,9 +107,9 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
           transition={{ duration: animationDuration }}
           className="inline-flex items-center space-x-1 max-h-[2.0625rem] text-greyText hover:text-default-text px-3 py-2 rounded-full text-sm leading-4 border-borderGrey border-[1px] border-dashed hover:border-solid hover:border-controlGreyHover whitespace-nowrap align-middle select-none cursor-pointer"
         >
-          <div onClick={() => setEditMode(true)}>
+          <button onClick={() => setEditMode(true)}>
             <span>Add tag</span>
-          </div>
+          </button>
         </motion.div>
       )}
 
@@ -141,6 +142,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
                     <div {...getRootProps({}, { suppressRefError: true })}>
                       <input
                         {...getInputProps()}
+                        // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus
                         type="text"
                         className="appearance-none outline-none border-none min-w-[3rem] max-w-[10rem] inline-block text-sm leading-4 text-default-text"
@@ -166,6 +168,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
                               )
                               .map((item, index) => (
                                 <li
+                                  key={`option-${index}`}
                                   className={classNames(
                                     'cursor-default select-none py-2 px-4 whitespace-nowrap w-full',
                                     {

@@ -1,5 +1,4 @@
-﻿import React from 'react'
-import { Meta, StoryFn } from '@storybook/react'
+﻿import { Meta, StoryFn } from '@storybook/react'
 import CaptureModal, { CaptureModalProps } from './CaptureModal'
 import { action } from '@storybook/addon-actions'
 import { Currency } from '@nofrixion/moneymoov'

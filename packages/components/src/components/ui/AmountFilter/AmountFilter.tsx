@@ -1,10 +1,10 @@
 ﻿import FilterButton from '../FilterButton/FilterButton'
 import disabledCurrencyIcon from '../../../assets/icons/currency-icon-disabled.svg'
 import enabledCurrencyIcon from '../../../assets/icons/currency-icon-enabled.svg'
-import { formatAmount } from '@/utils/formatters'
+import { formatAmount } from '../../../utils/formatters'
 import closeIcon from '../../../assets/images/nf_close.svg'
 import SelectablePill from '../SelectablePill/SelectablePill'
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import MaskedInput from 'react-text-mask'
 
@@ -23,7 +23,7 @@ export interface ActiveFilterControlProps {
 }
 
 const ActiveFilterControl: React.FC<ActiveFilterControlProps> = ({ label, onClick }) => {
-  const onClose = (event: React.PointerEvent<HTMLAnchorElement>) => {
+  const onClose = (event: React.PointerEvent<HTMLDivElement>) => {
     onClick()
     event.preventDefault()
     event.stopPropagation()
@@ -32,9 +32,9 @@ const ActiveFilterControl: React.FC<ActiveFilterControlProps> = ({ label, onClic
   return (
     <div className="inline-flex space-x-2 px-2 items-center rounded-full border border-solid border-borderGreyHighlighted">
       <span className="text-default-text text-sm leading-6">{label}</span>
-      <a onPointerDown={onClose} role="button" href="">
+      <div onPointerDown={onClose}>
         <img src={closeIcon} alt="Close" title="Close" className="w-2 h-2" />
-      </a>
+      </div>
     </div>
   )
 }
@@ -47,14 +47,14 @@ const AmountFilter: React.FC<AmountFilterProps> = ({
   maxAmount,
   setMaxAmount,
 }) => {
-  const [localCurrency, setLocalCurrency] = React.useState<string>(currency ?? '')
-  const [localMinAmount, setLocalMinAmount] = React.useState<string>(
+  const [localCurrency, setLocalCurrency] = useState<string>(currency ?? '')
+  const [localMinAmount, setLocalMinAmount] = useState<string>(
     minAmount ? minAmount.toString() : '',
   )
-  const [localMaxAmount, setLocalMaxAmount] = React.useState<string>(
+  const [localMaxAmount, setLocalMaxAmount] = useState<string>(
     maxAmount ? maxAmount.toString() : '',
   )
-  const [isFiltered, setIsFiltered] = React.useState<boolean>(false)
+  const [isFiltered, setIsFiltered] = useState<boolean>(false)
 
   const commonInputClassNames =
     'outline-none border border-solid border-borderGrey rounded px-2 py-1 appearance-none'
@@ -110,6 +110,7 @@ const AmountFilter: React.FC<AmountFilterProps> = ({
 
   const onMinAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const masked = event.target.value
+    // eslint-disable-next-line no-useless-escape
     event.target.value = event.target.value.replace(/[^\d\.\-]/g, '')
     setLocalMinAmount(event.target.value)
     event.target.value = masked
@@ -117,12 +118,13 @@ const AmountFilter: React.FC<AmountFilterProps> = ({
 
   const onMaxAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const masked = event.target.value
+    // eslint-disable-next-line no-useless-escape
     event.target.value = event.target.value.replace(/[^\d\.\-]/g, '')
     setLocalMaxAmount(event.target.value)
     event.target.value = masked
   }
 
-  const clearCurrency = (preventDefault: boolean = true) => {
+  const clearCurrency = () => {
     setLocalCurrency('')
 
     if (setCurrency) {

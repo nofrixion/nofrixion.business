@@ -1,6 +1,5 @@
 ﻿import { toast, ToastContainer, Slide, CloseButtonProps } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
-import closeIcon from '../../../assets/images/nf_close.svg'
 
 interface ToastProps {
   positionY: 'top' | 'bottom'

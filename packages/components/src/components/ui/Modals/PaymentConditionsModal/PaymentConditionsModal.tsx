@@ -1,8 +1,8 @@
 import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
 import { useEffect, useState } from 'react'
 import Checkbox from '../../Checkbox/Checkbox'
-import { LocalPaymentConditionsFormValue } from '@/types/LocalTypes'
-import { PaymentConditionsDefaults, UserPaymentDefaults } from '@nofrixion/moneymoov'
+import { LocalPaymentConditionsFormValue } from '../../../../types/LocalTypes'
+import { PaymentConditionsDefaults } from '@nofrixion/moneymoov'
 
 export interface PaymentConditionsModalProps extends BaseModalProps {
   userDefaults?: PaymentConditionsDefaults
@@ -15,12 +15,10 @@ const PaymentConditionsModal = ({
   userDefaults,
   onDismiss,
   onApply,
-  isPrefilledData = false,
 }: PaymentConditionsModalProps) => {
   const [isAllowPartialEnabled, setIsAllowPartialEnabled] = useState<boolean>(
     userDefaults ? userDefaults.allowPartialPayments : false,
   )
-  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
   const [currentState, setCurrentState] = useState<LocalPaymentConditionsFormValue>()
   const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false)
 

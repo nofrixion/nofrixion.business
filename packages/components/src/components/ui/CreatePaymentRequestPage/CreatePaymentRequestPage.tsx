@@ -23,19 +23,19 @@ import {
   LocalPaymentMethodsFormValue,
   LocalPaymentNotificationsFormValue,
   LocalPaymentRequestCreate,
-} from '@/types/LocalTypes'
+} from '../../../types/LocalTypes'
 import classNames from 'classnames'
 import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
 
-import { formatEmailAddressesForSummary, parseBoldText } from '@/utils/uiFormaters'
+import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters'
 
 import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 import _ from 'lodash'
 import PaymentNotificationsModal from '../Modals/PaymentNotificationsModal/PaymentNotificationsModal'
-import { validateEmail } from '@/utils/validation'
-import { formatAmountAndDecimals } from '@/utils/formatters'
+import { validateEmail } from '../../../utils/validation'
+import { formatAmountAndDecimals } from '../../../utils/formatters'
 import BackArrow from '../utils/BackArrow'
-import { Button } from '@/components/ui/atoms'
+import { Button } from '../../ui/atoms/Button/Button'
 
 export interface CreatePaymentRequestPageProps {
   banks: BankSettings[]
@@ -390,6 +390,7 @@ const CreatePaymentRequestPage = ({
 
   const onValidateDescription = (description: string): string | undefined => {
     // Get invalid characters if any (using the same regex from backend "[a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+")
+    // eslint-disable-next-line no-useless-escape
     const invalidCharacters = description.match(/[^a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+/g)
 
     if (description.length > 0 && invalidCharacters) {

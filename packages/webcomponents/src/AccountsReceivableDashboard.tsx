@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { AccountsReceivable } from '@nofrixion/components'
 import r2wc from 'react-to-webcomponent'

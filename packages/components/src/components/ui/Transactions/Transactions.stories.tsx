@@ -1,6 +1,6 @@
 import { StoryFn, Meta } from '@storybook/react'
 import Transactions from './Transactions'
-import { mockPaymentAttempts } from '@/utils/mockedData'
+import { mockPaymentAttempts } from '../../../utils/mockedData'
 
 export default {
   title: 'UI/Transactions',

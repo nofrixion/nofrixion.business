@@ -6,7 +6,6 @@ import {
   PartialPaymentMethods,
   PaymentMethodTypes,
   PaymentProcessor,
-  PaymentRequestEventType,
   PaymentResult,
   Wallets,
 } from './Enums'

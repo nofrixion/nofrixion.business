@@ -1,8 +1,7 @@
 ﻿import FilterButton from '../FilterButton/FilterButton'
-import React, { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import disabledTagIcon from '../../../assets/icons/tag-icon-disabled.svg'
 import enabledTagIcon from '../../../assets/icons/tag-icon-enabled.svg'
-import filterIcon from '../../../assets/icons/filter-icon.svg'
 import SelectablePill from '../SelectablePill/SelectablePill'
 
 export interface FilterableTag {
@@ -17,29 +16,29 @@ export interface TagFilterProps {
 }
 
 const TagFilter: React.FC<TagFilterProps> = ({ tags, setTags }) => {
-  const [localTags, setLocalTags] = React.useState<FilterableTag[]>([...tags])
-  const [isFiltered, setIsFiltered] = React.useState<boolean>(false)
+  const [localTags, setLocalTags] = useState<FilterableTag[]>([...tags])
+  const [isFiltered, setIsFiltered] = useState<boolean>(false)
 
   useEffect(() => {
-    let tempArray = tags.map((tag) => ({ ...tag }))
+    const tempArray = tags.map((tag) => ({ ...tag }))
     setLocalTags([...tempArray])
     checkIfIsFiltered()
   }, [tags])
 
   const onReset = () => {
-    let tempArray = localTags.map((tag) => ({ ...tag }))
+    const tempArray = localTags.map((tag) => ({ ...tag }))
     tempArray.forEach((tag) => (tag.isSelected = false))
     setLocalTags([...tempArray])
     setTags([...tempArray])
   }
 
   const onCancel = () => {
-    let tempArray = tags.map((tag) => ({ ...tag }))
+    const tempArray = tags.map((tag) => ({ ...tag }))
     setLocalTags([...tempArray])
   }
 
   const onApply = () => {
-    let tempArray = localTags.map((tag) => ({ ...tag }))
+    const tempArray = localTags.map((tag) => ({ ...tag }))
     setTags([...tempArray])
     let isFiltered = false
     localTags.forEach((tag) => {
@@ -93,7 +92,7 @@ const TagFilter: React.FC<TagFilterProps> = ({ tags, setTags }) => {
               label={tag.label}
               selected={tag.isSelected}
               onSelect={(selected) => {
-                let tempArray = [...localTags]
+                const tempArray = [...localTags]
                 tempArray[index].isSelected = selected
                 setLocalTags([...tempArray])
               }}

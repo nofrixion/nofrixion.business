@@ -1,10 +1,10 @@
-﻿import React from 'react'
-import InputAmountField from '../InputAmountField/InputAmountField'
+﻿import InputAmountField from '../InputAmountField/InputAmountField'
 import { Currency } from '@nofrixion/moneymoov'
 import backButtonIcon from '../../../assets/icons/back-button-icon.svg'
 import { format } from 'date-fns'
-import { localCurrency } from '@/utils/constants'
+import { localCurrency } from '../../../utils/constants'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 
 export interface CaptureModalProps {
   initialAmount: string
@@ -31,8 +31,8 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
   transactionDate,
   contactName,
 }) => {
-  const [isCaptureButtonDisabled, setIsCaptureButtonDisabled] = React.useState(false)
-  const [validationErrorMessage, setValidationErrorMessage] = React.useState('')
+  const [isCaptureButtonDisabled, setIsCaptureButtonDisabled] = useState(false)
+  const [validationErrorMessage, setValidationErrorMessage] = useState('')
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -48,7 +48,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
     setIsCaptureButtonDisabled(true)
 
     setValidationErrorMessage('')
-    let parsedAmount = Number(initialAmount)
+    const parsedAmount = Number(initialAmount)
     if (parsedAmount < 0) {
       setValidationErrorMessage('The amount must be greater than 0.')
     } else if (parsedAmount === 0) {
@@ -60,11 +60,6 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
     }
 
     setIsCaptureButtonDisabled(false)
-  }
-
-  const onAmountInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValidationErrorMessage('')
-    setAmountToCapture(event.target.value)
   }
 
   return (

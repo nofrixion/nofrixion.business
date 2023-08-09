@@ -1,10 +1,5 @@
-import { Currency, PaymentRequestEventType, PaymentResult } from '@nofrixion/moneymoov'
-import {
-  LocalAddressType,
-  LocalCardPaymentResponseStatus,
-  LocalPartialPaymentMethods,
-  LocalPaymentMethodTypes,
-} from './LocalEnums'
+import { Currency } from '@nofrixion/moneymoov'
+import { LocalAddressType, LocalPartialPaymentMethods, LocalPaymentMethodTypes } from './LocalEnums'
 
 export interface LocalContact {
   name?: string

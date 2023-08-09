@@ -3,7 +3,6 @@ import path from 'node:path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
-import { resolve } from 'path'
 import { vitePlugin as utwm } from 'unplugin-tailwindcss-mangle'
 
 const builtClassesPrefix = 'nf-wc-'
@@ -30,7 +29,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'NoFrixionComponents',
       formats: ['es'],
-      fileName: (format) => `index.js`,
+      fileName: () => `index.js`,
     },
     rollupOptions: {
       external: ['react', 'react-dom'],

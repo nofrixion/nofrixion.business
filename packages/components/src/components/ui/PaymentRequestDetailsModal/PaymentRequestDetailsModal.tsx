@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails'
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '@/types/LocalTypes'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
 import CaptureModal from '../CaptureModal/CaptureModal'
 import { Currency } from '@nofrixion/moneymoov'
-import { Sheet, SheetContent } from '@/components/ui/atoms'
+import { Sheet, SheetContent } from '../../ui/atoms'
 
 export interface PaymentRequestDetailsModalProps {
   paymentRequest: LocalPaymentRequest
@@ -31,10 +31,8 @@ const PaymentRequestDetailsModal = ({
   open,
   onDismiss,
 }: PaymentRequestDetailsModalProps) => {
-  const [selectedTransaction, setSelectedTransaction] = React.useState<
-    LocalPaymentAttempt | undefined
-  >()
-  const [amountToCapture, setAmountToCapture] = React.useState<string | undefined>(
+  const [selectedTransaction, setSelectedTransaction] = useState<LocalPaymentAttempt | undefined>()
+  const [amountToCapture, setAmountToCapture] = useState<string | undefined>(
     ((selectedTransaction?.amount ?? 0) - (selectedTransaction?.capturedAmount ?? 0)).toString(),
   )
   const maxCapturableAmount =
@@ -48,7 +46,7 @@ const PaymentRequestDetailsModal = ({
   const onCaptureClick = async () => {
     if (selectedTransaction) {
       let parsedAmount = Number(amountToCapture)
-      let remainingAmount = selectedTransaction.amount - (selectedTransaction.capturedAmount ?? 0)
+      const remainingAmount = selectedTransaction.amount - (selectedTransaction.capturedAmount ?? 0)
       parsedAmount = (parsedAmount ?? 0) > remainingAmount ? remainingAmount : parsedAmount!
       await onCapture(selectedTransaction.attemptKey, parsedAmount)
       onCaptureDismiss()

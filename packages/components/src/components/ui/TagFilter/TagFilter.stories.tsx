@@ -1,14 +1,14 @@
 ﻿import TagFilter, { FilterableTag } from './TagFilter'
 import { Meta, StoryFn } from '@storybook/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export default {
   title: 'UI/Tag Filter',
   component: TagFilter,
 } as Meta<typeof TagFilter>
 
-const Template: StoryFn<typeof TagFilter> = (args) => {
-  const [localTags, setLocalTags] = React.useState<FilterableTag[]>([
+const Template: StoryFn<typeof TagFilter> = () => {
+  const [localTags, setLocalTags] = useState<FilterableTag[]>([
     {
       id: '1',
       label: 'Name of tag',

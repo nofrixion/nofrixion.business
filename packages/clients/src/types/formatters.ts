@@ -1,4 +1,3 @@
-import { ApiResponse } from './ApiResponses'
 import { SortDirection } from './Enums'
 
 /**
@@ -39,15 +38,4 @@ const formatPaymentRequestSortExpression = (
   return sortExpression
 }
 
-function formatApiResponse<T>(message: string): ApiResponse<T> {
-  return {
-    status: 'error',
-    error: {
-      title: message,
-      detail: message,
-    },
-    timestamp: new Date(),
-  }
-}
-
-export { formatPaymentRequestSortExpression, formatApiResponse }
+export { formatPaymentRequestSortExpression }

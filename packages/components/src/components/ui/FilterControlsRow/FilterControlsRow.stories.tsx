@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react'
+﻿import { useState } from 'react'
 import FilterControlsRow from './FilterControlsRow'
 import { Meta, StoryFn } from '@storybook/react'
 import { FilterableTag } from '../TagFilter/TagFilter'
@@ -10,10 +10,10 @@ export default {
 
 const Template: StoryFn<typeof FilterControlsRow> = (args) => {
   const [searchFilter, setSearchFilter] = useState<string>('')
-  const [currency, setCurrency] = React.useState<string | undefined>()
-  const [minAmount, setMinAmount] = React.useState<number | undefined>()
-  const [maxAmount, setMaxAmount] = React.useState<number | undefined>()
-  const [tags, setTags] = React.useState<FilterableTag[]>([
+  const [currency, setCurrency] = useState<string | undefined>()
+  const [minAmount, setMinAmount] = useState<number | undefined>()
+  const [maxAmount, setMaxAmount] = useState<number | undefined>()
+  const [tags, setTags] = useState<FilterableTag[]>([
     {
       id: '1',
       label: 'Name of tag',

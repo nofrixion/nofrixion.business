@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { InputHTMLAttributes, useEffect, useState } from 'react'
 import ResizableComponent from '../ResizableComponent/ResizableComponent'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { motion } from 'framer-motion'
 import { cva } from 'class-variance-authority'
 import { Currency } from '@nofrixion/moneymoov'
-import { localCurrency } from '@/utils/constants'
+import { localCurrency } from '../../../utils/constants'
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
-import { cn } from '@/utils'
+import { cn } from '../../../utils'
 
-export interface InputAmountFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputAmountFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   currency: string
   onCurrencyChange: (currency: string) => void
   allowCurrencyChange?: boolean
@@ -81,6 +81,7 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
           inputMode="decimal"
           onChange={(e) => {
             const masked = e.target.value
+            // eslint-disable-next-line no-useless-escape
             e.target.value = e.target.value.replace(/[^\d\.\-]/g, '')
             onChange && onChange(e)
             e.target.value = masked

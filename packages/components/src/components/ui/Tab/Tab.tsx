@@ -56,7 +56,7 @@ const Tab = ({
   totalAmountInEuros,
   totalAmountInPounds,
 }: TabProps) => {
-  let formatter = new Intl.NumberFormat('en-US', {
+  const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })

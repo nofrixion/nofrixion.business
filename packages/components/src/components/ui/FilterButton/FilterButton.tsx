@@ -1,5 +1,5 @@
 ﻿import classNames from 'classnames'
-import React, { Children, useState } from 'react'
+import { Children, isValidElement, useState } from 'react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -48,7 +48,7 @@ const FilterButton: FilterButtonFC = ({
     'outline-none px-3 py-1 cursor-pointer leading-6 text-13px rounded-full transition-all'
 
   Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && typeof child.type !== 'string') {
+    if (isValidElement(child) && typeof child.type !== 'string') {
       switch (child.type.name) {
         case FilterButtonFilteredLayout.name:
           filteredLayout = child
@@ -60,11 +60,11 @@ const FilterButton: FilterButtonFC = ({
     }
   })
 
-  const onMouseOver = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onMouseOver = () => {
     setIconSource(highlightedIconSource)
   }
 
-  const onMouseOut = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onMouseOut = () => {
     setIconSource(defaultIconSource)
   }
 
@@ -104,6 +104,8 @@ const FilterButton: FilterButtonFC = ({
             })}
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
+            onFocus={() => {}}
+            onBlur={() => {}}
           >
             {isFiltered && filteredLayout ? (
               filteredLayout

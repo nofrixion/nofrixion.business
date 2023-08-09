@@ -15,6 +15,7 @@ export interface PaymentRequestPageProps
 export interface PaymentRequestProps {
   paymentRequestId?: string
   includeEvents?: boolean
+  merchantId?: string
 }
 
 export interface FilterResponseProps {
@@ -41,12 +42,6 @@ export interface MerchantProps {
 
 export interface AccountProps {
   accountId?: string
-}
-
-export interface PaymentRequestProps {
-  paymentRequestId?: string
-  includeEvents?: boolean
-  merchantId?: string
 }
 
 export interface TransactionsProps extends AccountProps {

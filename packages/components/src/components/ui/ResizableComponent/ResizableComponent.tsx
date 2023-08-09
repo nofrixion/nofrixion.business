@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react'
 import useMeasure from 'react-use-measure'
 
 const ResizableComponent: React.FC<PropsWithChildren> = ({ children }) => {
-  let [ref, { width }] = useMeasure()
+  const [ref, { width }] = useMeasure()
 
   return (
     <MotionConfig transition={{ duration: 0.25 }}>

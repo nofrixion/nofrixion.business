@@ -4,8 +4,8 @@ import * as React from 'react'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '@/utils'
-import { Icon } from '@/components/ui/atoms'
+import { cn } from '../../../../utils'
+import { Icon } from '../Icon/Icon'
 
 const Sheet = SheetPrimitive.Root
 

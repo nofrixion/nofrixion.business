@@ -1,6 +1,6 @@
 import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfDay } from 'date-fns'
 import { SortDirection } from '../components/ui/ColumnHeader/ColumnHeader'
-import type { TDateRangeOptions } from '@/components/ui/molecules'
+import type { TDateRangeOptions } from '../components/ui/molecules'
 
 // This function formats a date as a string, returning a human-readable
 // representation of either "Today" or "Yesterday" if the date is within the

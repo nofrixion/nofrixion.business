@@ -11,7 +11,7 @@ const QRCode = ({ url }: { url: string }) => {
     const largeQRCodeCanvas = largeQrCodeCanvasRef.current as HTMLCanvasElement
 
     // Get the canvas context in 2D
-    var ctx = largeQRCodeCanvas.getContext('2d')
+    const ctx = largeQRCodeCanvas.getContext('2d')
 
     if (ctx) {
       // Get QR code svg generated through QRCodeComponent

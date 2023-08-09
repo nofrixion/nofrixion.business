@@ -1,11 +1,11 @@
-import { LocalPaymentRequest } from '@/types/LocalTypes'
-import { formatAmount, formatDate } from '@/utils/formatters'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { formatAmount, formatDate } from '../../../utils/formatters'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
-import { defaultAnonymousUserName } from '@/utils/constants'
+import { defaultAnonymousUserName } from '../../../utils/constants'
 import PaymentRequestStatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
 export interface PaymentRequestMobileCardProps extends LocalPaymentRequest {
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onClick?: React.MouseEventHandler<HTMLDivElement>
   onDuplicate?: () => void
   onCopyLink?: () => void
   onDelete?: () => void
@@ -37,6 +37,7 @@ const PaymentRequestMobileCard = ({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       className="bg-white p-4 pr-2 rounded-lg tabular-nums w-full cursor-pointer"
       onClick={onClick}

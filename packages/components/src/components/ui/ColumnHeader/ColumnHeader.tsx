@@ -30,7 +30,7 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
   }
 
   return (
-    <div className="columnSort group" onClick={doSort}>
+    <button className="columnSort group" onClick={doSort}>
       <span className="select-none uppercase">{label}</span>
 
       <div
@@ -66,7 +66,7 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
           <path d="M9 1L5 5L1 1" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-    </div>
+    </button>
   )
 }
 

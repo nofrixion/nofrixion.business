@@ -2,8 +2,8 @@
 import SearchBar from '../SearchBar/SearchBar'
 import AmountFilter from '../AmountFilter/AmountFilter'
 import TagFilter, { FilterableTag } from '../TagFilter/TagFilter'
-import { SelectSorter, TSorterOptions } from '@/components/ui/molecules'
-import { SortDirection } from '@/components/ui/ColumnHeader/ColumnHeader'
+import { SelectSorter, TSorterOptions } from '../../ui/molecules'
+import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
 
 export interface FilterControlsRowProps {
   setDateRange: (dateRange: DateRange) => void
@@ -21,17 +21,6 @@ export interface FilterControlsRowProps {
   setCreatedSortDirection?: (direction: SortDirection) => void
   amountSortDirection: SortDirection
   setAmountSortDirection?: (direction: SortDirection) => void
-}
-
-const sortOptions = {
-  created: {
-    ASC: 'olderFirst',
-    DESC: 'moreRecentFirst',
-  },
-  amount: {
-    ASC: 'amountLowToHigh',
-    DESC: 'amountHighToLow',
-  },
 }
 
 const FilterControlsRow = ({

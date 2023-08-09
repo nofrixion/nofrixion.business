@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react'
 import DetailsTabs from './DetailsTabs'
-import mockedData from '@/utils/mockedData'
+import mockedData from '../../../utils/mockedData'
 
 export default {
   title: 'UI/Details Tabs',
