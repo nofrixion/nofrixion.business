@@ -1,5 +1,5 @@
 import { Currency, PaymentProcessor } from '@nofrixion/moneymoov'
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import PaymentMethodsModal from './PaymentMethodsModal'
 

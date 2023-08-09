@@ -1,4 +1,4 @@
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { mockPaymentAttempts } from '../../../utils/mockedData'
 import Transactions from './Transactions'

@@ -1,4 +1,4 @@
-import { cva,VariantProps } from 'class-variance-authority'
+import { cva, VariantProps } from 'class-variance-authority'
 
 import paidIcon from '../../../assets/images/paymentrequest_status_paid.svg'
 import partiallyPaidIcon from '../../../assets/images/paymentrequest_status_partial.svg'

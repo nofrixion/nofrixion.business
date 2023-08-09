@@ -57,4 +57,4 @@ const navItems: INavItem[] = [
   },
 ]
 
-export { navItems,NOFRIXION_API_URL, NOFRIXION_BFF_URL }
+export { navItems, NOFRIXION_API_URL, NOFRIXION_BFF_URL }

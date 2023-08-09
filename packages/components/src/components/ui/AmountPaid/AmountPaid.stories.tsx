@@ -1,5 +1,5 @@
 import { Currency } from '@nofrixion/moneymoov'
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import AmountPaid from './AmountPaid'
 

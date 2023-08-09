@@ -1,4 +1,4 @@
-import { useLocation,useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
 import IconSort from '../../assets/icons/sort.svg'

@@ -263,4 +263,4 @@ const remotePaymentRequestToLocalPaymentRequest = (
   }
 }
 
-export { parseApiTagToLocalTag,remotePaymentRequestToLocalPaymentRequest }
+export { parseApiTagToLocalTag, remotePaymentRequestToLocalPaymentRequest }

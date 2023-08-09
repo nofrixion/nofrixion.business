@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { useLocation,useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
 import IconLogout from '../../assets/icons/logout.svg'

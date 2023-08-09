@@ -1,4 +1,4 @@
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { mockMerchantTags, mockTags } from '../../../../utils/mockedData'
 import TagManager from './TagManager'

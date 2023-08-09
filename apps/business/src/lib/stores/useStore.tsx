@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const useStore = <T, F>(
   store: (callback: (state: T) => unknown) => unknown,

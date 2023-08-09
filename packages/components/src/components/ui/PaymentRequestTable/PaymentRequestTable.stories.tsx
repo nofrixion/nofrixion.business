@@ -1,4 +1,4 @@
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import mockedData from '../../../utils/mockedData'

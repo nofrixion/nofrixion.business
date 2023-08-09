@@ -1,6 +1,6 @@
 import * as Tabs from '@radix-ui/react-tabs'
 import classNames from 'classnames'
-import { AnimatePresence, motion,MotionConfig } from 'framer-motion'
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import React, { useState } from 'react'
 
 import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'

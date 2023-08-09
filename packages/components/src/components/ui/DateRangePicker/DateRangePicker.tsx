@@ -1,6 +1,6 @@
 import './DateRangePicker.css'
 
-import { add, endOfDay, format, isSameDay,startOfDay } from 'date-fns'
+import { add, endOfDay, format, isSameDay, startOfDay } from 'date-fns'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
 

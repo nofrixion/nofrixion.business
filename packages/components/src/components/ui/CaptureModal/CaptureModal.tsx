@@ -1,6 +1,6 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
-import { AnimatePresence,motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
 import backButtonIcon from '../../../assets/icons/back-button-icon.svg'

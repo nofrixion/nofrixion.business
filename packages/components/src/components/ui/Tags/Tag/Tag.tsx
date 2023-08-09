@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import { AnimatePresence, motion,MotionConfig } from 'framer-motion'
-import { useEffect, useRef,useState } from 'react'
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 
 export interface TagProps {

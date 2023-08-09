@@ -1,4 +1,4 @@
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 

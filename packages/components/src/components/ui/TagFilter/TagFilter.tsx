@@ -1,4 +1,4 @@
-﻿import { useEffect,useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 
 import disabledTagIcon from '../../../assets/icons/tag-icon-disabled.svg'
 import enabledTagIcon from '../../../assets/icons/tag-icon-enabled.svg'

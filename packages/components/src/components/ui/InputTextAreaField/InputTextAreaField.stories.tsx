@@ -1,4 +1,4 @@
-import { Meta,StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React, { useState } from 'react'
 
 import InputTextAreaField, { InputTextAreaFieldProps } from './InputTextAreaField'

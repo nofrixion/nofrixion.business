@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Currency } from '@nofrixion/moneymoov'
-import { Fragment,useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
 import { Sheet, SheetContent } from '../../ui/atoms'
