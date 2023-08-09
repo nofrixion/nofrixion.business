@@ -1,7 +1,8 @@
-﻿import { useState } from 'react'
-import FilterControlsRow from './FilterControlsRow'
-import { Meta, StoryFn } from '@storybook/react'
+﻿import { Meta, StoryFn } from '@storybook/react'
+import { useState } from 'react'
+
 import { FilterableTag } from '../TagFilter/TagFilter'
+import FilterControlsRow from './FilterControlsRow'
 
 export default {
   title: 'UI/Filter Controls Row',

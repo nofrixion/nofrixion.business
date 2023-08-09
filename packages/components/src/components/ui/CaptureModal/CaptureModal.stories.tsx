@@ -1,7 +1,8 @@
-﻿import { Meta, StoryFn } from '@storybook/react'
-import CaptureModal, { CaptureModalProps } from './CaptureModal'
+﻿import { Currency } from '@nofrixion/moneymoov'
 import { action } from '@storybook/addon-actions'
-import { Currency } from '@nofrixion/moneymoov'
+import { Meta, StoryFn } from '@storybook/react'
+
+import CaptureModal, { CaptureModalProps } from './CaptureModal'
 
 const meta: Meta<typeof CaptureModal> = {
   title: 'UI/Capture Modal',

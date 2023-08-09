@@ -1,10 +1,10 @@
+import { Meta,StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import { StoryFn, Meta } from '@storybook/react'
-import BankIcon from '../../../assets/icons/bank-icon.svg'
-import CardIcon from '../../../assets/icons/card-icon.svg'
-import ApplePayIcon from '../../../assets/icons/apple-icon.svg'
-import BitcoinIcon from '../../../assets/icons/bitcoin-icon.svg'
 
+import ApplePayIcon from '../../../assets/icons/apple-icon.svg'
+import BankIcon from '../../../assets/icons/bank-icon.svg'
+import BitcoinIcon from '../../../assets/icons/bitcoin-icon.svg'
+import CardIcon from '../../../assets/icons/card-icon.svg'
 import Switch from './Switch'
 
 export default {

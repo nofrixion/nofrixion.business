@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+
 import { ApiError, ApiResponse } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
 import { PagedResponseProps } from '../types/props'

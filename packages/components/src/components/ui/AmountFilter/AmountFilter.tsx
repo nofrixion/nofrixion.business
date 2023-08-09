@@ -1,12 +1,13 @@
-﻿import FilterButton from '../FilterButton/FilterButton'
+﻿import { useEffect, useState } from 'react'
+import MaskedInput from 'react-text-mask'
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+
 import disabledCurrencyIcon from '../../../assets/icons/currency-icon-disabled.svg'
 import enabledCurrencyIcon from '../../../assets/icons/currency-icon-enabled.svg'
-import { formatAmount } from '../../../utils/formatters'
 import closeIcon from '../../../assets/images/nf_close.svg'
+import { formatAmount } from '../../../utils/formatters'
+import FilterButton from '../FilterButton/FilterButton'
 import SelectablePill from '../SelectablePill/SelectablePill'
-import { useEffect, useState } from 'react'
-import createNumberMask from 'text-mask-addons/dist/createNumberMask'
-import MaskedInput from 'react-text-mask'
 
 export interface AmountFilterProps {
   currency?: string

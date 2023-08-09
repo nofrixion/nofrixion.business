@@ -1,6 +1,7 @@
-﻿import TagFilter, { FilterableTag } from './TagFilter'
-import { Meta, StoryFn } from '@storybook/react'
+﻿import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
+
+import TagFilter, { FilterableTag } from './TagFilter'
 
 export default {
   title: 'UI/Tag Filter',

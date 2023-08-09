@@ -1,4 +1,5 @@
 import { Currency } from '@nofrixion/moneymoov'
+
 import { LocalPartialPaymentMethods } from '../../../types/LocalEnums'
 import { formatAmountAndDecimals } from '../../../utils/formatters'
 

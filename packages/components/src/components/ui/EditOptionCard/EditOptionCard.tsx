@@ -1,7 +1,7 @@
-import { parseBoldText } from '../../../utils/uiFormaters'
+import classNames from 'classnames'
 
 import EditIcon from '../../../assets/icons/edit-icon.svg'
-import classNames from 'classnames'
+import { parseBoldText } from '../../../utils/uiFormaters'
 
 export interface EditOptionCardProps {
   label: string

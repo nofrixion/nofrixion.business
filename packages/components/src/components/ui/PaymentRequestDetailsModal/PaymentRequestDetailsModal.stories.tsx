@@ -1,7 +1,8 @@
-import { StoryFn, Meta } from '@storybook/react'
-import PaymentRequestDetailsModal from './PaymentRequestDetailsModal'
-import mockedData from '../../../utils/mockedData'
+import { Meta,StoryFn } from '@storybook/react'
 import { useState } from 'react'
+
+import mockedData from '../../../utils/mockedData'
+import PaymentRequestDetailsModal from './PaymentRequestDetailsModal'
 
 export default {
   title: 'UI/PaymentRequestDetailsModal',

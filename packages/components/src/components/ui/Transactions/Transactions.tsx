@@ -1,13 +1,14 @@
-import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
-import CardIcon from '../../../assets/icons/card-icon.svg'
-import BankIcon from '../../../assets/icons/bank-icon.svg'
-import WalletIcon from '../../../assets/icons/wallet-icon.svg'
-import TickBadgeIcon from '../../../assets/icons/tick-badge-icon.svg'
-import { format } from 'date-fns'
-import classNames from 'classnames'
-import { LocalPaymentAttempt } from '../../../types/LocalTypes'
 import { Currency } from '@nofrixion/moneymoov'
+import classNames from 'classnames'
+import { format } from 'date-fns'
 import { Fragment } from 'react'
+
+import BankIcon from '../../../assets/icons/bank-icon.svg'
+import CardIcon from '../../../assets/icons/card-icon.svg'
+import TickBadgeIcon from '../../../assets/icons/tick-badge-icon.svg'
+import WalletIcon from '../../../assets/icons/wallet-icon.svg'
+import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
+import { LocalPaymentAttempt } from '../../../types/LocalTypes'
 
 export interface TransactionsProps {
   transactions: LocalPaymentAttempt[]

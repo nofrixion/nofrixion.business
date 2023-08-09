@@ -1,5 +1,5 @@
-import { ApiProps } from '../types/props'
 import { ApiResponse, HttpMethod, User } from '../types'
+import { ApiProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**

@@ -1,41 +1,39 @@
-import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import InputAmountField from '../InputAmountField/InputAmountField'
-import InputTextField from '../InputTextField/InputTextField'
-import EditOptionCard from '../EditOptionCard/EditOptionCard'
-
-import AlertIcon from '../../../assets/icons/alert-icon.svg'
-import NextIcon from '../../../assets/icons/next-icon.svg'
-import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
-import { AnimatePresence, motion } from 'framer-motion'
-import LayoutWrapper from '../utils/LayoutWrapper'
-import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal'
 import {
-  Currency,
   BankSettings,
+  Currency,
   NotificationEmailsDefaults,
   PaymentConditionsDefaults,
   PaymentMethodsDefaults,
   UserPaymentDefaults,
 } from '@nofrixion/moneymoov'
+import classNames from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import _ from 'lodash'
+import { Fragment, useEffect, useState } from 'react'
+
+import AlertIcon from '../../../assets/icons/alert-icon.svg'
+import NextIcon from '../../../assets/icons/next-icon.svg'
 import {
   LocalPaymentConditionsFormValue,
   LocalPaymentMethodsFormValue,
   LocalPaymentNotificationsFormValue,
   LocalPaymentRequestCreate,
 } from '../../../types/LocalTypes'
-import classNames from 'classnames'
-import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
-
-import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters'
-
-import PaymentMethodIcon from '../utils/PaymentMethodIcon'
-import _ from 'lodash'
-import PaymentNotificationsModal from '../Modals/PaymentNotificationsModal/PaymentNotificationsModal'
-import { validateEmail } from '../../../utils/validation'
 import { formatAmountAndDecimals } from '../../../utils/formatters'
-import BackArrow from '../utils/BackArrow'
+import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters'
+import { validateEmail } from '../../../utils/validation'
 import { Button } from '../../ui/atoms/Button/Button'
+import EditOptionCard from '../EditOptionCard/EditOptionCard'
+import InputAmountField from '../InputAmountField/InputAmountField'
+import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
+import InputTextField from '../InputTextField/InputTextField'
+import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
+import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal'
+import PaymentNotificationsModal from '../Modals/PaymentNotificationsModal/PaymentNotificationsModal'
+import BackArrow from '../utils/BackArrow'
+import LayoutWrapper from '../utils/LayoutWrapper'
+import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 
 export interface CreatePaymentRequestPageProps {
   banks: BankSettings[]

@@ -1,6 +1,6 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import QRCodeComponent from 'react-qr-code'
-import { AnimatePresence, motion } from 'framer-motion'
 
 const QRCode = ({ url }: { url: string }) => {
   const [isHovered, setIsHovered] = useState(false)

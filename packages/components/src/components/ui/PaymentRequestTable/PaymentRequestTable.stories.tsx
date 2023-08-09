@@ -1,8 +1,8 @@
-import { StoryFn, Meta } from '@storybook/react'
+import { Meta,StoryFn } from '@storybook/react'
 
-import PaymentRequestTable from './PaymentRequestTable'
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import mockedData from '../../../utils/mockedData'
+import PaymentRequestTable from './PaymentRequestTable'
 
 export default {
   title: 'UI/Payment Request Table',

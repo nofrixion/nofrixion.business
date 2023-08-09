@@ -1,10 +1,11 @@
-﻿import InputAmountField from '../InputAmountField/InputAmountField'
-import { Currency } from '@nofrixion/moneymoov'
-import backButtonIcon from '../../../assets/icons/back-button-icon.svg'
+﻿import { Currency } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
-import { localCurrency } from '../../../utils/constants'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence,motion } from 'framer-motion'
 import { useState } from 'react'
+
+import backButtonIcon from '../../../assets/icons/back-button-icon.svg'
+import { localCurrency } from '../../../utils/constants'
+import InputAmountField from '../InputAmountField/InputAmountField'
 
 export interface CaptureModalProps {
   initialAmount: string

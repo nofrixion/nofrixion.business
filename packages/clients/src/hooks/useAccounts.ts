@@ -1,7 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { AccountsClient } from '../clients'
 import { Account, ApiResponse } from '../types'
 import { ApiProps, MerchantProps } from '../types/props'
-import { useQuery } from '@tanstack/react-query'
 
 const fetchAccounts = async (
   apiUrl: string,

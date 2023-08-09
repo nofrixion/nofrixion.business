@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+
 import CopyLinkIcon from '../../../assets/icons/copy-link-icon.svg'
 import TickMarkIcon from '../../../assets/icons/tick-mark-icon.svg'
 

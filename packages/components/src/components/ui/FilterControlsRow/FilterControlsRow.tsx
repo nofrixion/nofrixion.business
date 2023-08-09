@@ -1,9 +1,9 @@
-﻿import DateRangePicker, { DateRange } from '../DateRangePicker/DateRangePicker'
-import SearchBar from '../SearchBar/SearchBar'
-import AmountFilter from '../AmountFilter/AmountFilter'
-import TagFilter, { FilterableTag } from '../TagFilter/TagFilter'
+﻿import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
 import { SelectSorter, TSorterOptions } from '../../ui/molecules'
-import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+import AmountFilter from '../AmountFilter/AmountFilter'
+import DateRangePicker, { DateRange } from '../DateRangePicker/DateRangePicker'
+import SearchBar from '../SearchBar/SearchBar'
+import TagFilter, { FilterableTag } from '../TagFilter/TagFilter'
 
 export interface FilterControlsRowProps {
   setDateRange: (dateRange: DateRange) => void

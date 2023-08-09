@@ -1,12 +1,14 @@
+import './DateRangePicker.css'
+
+import { add, endOfDay, format, isSameDay,startOfDay } from 'date-fns'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
-import DateRangeInput from './DateRangeInput'
-import './DateRangePicker.css'
-import { add, startOfDay, endOfDay, format, isSameDay } from 'date-fns'
-import { getSelectRangeText } from '../../../utils/formatters'
-import DateRangeButton from './DateRangeButton'
-import { SelectDateRange, type TDateRangeOptions } from '../../ui/molecules'
+
 import { cn } from '../../../utils'
+import { getSelectRangeText } from '../../../utils/formatters'
+import { SelectDateRange, type TDateRangeOptions } from '../../ui/molecules'
+import DateRangeButton from './DateRangeButton'
+import DateRangeInput from './DateRangeInput'
 
 const pillClasses =
   'text-default-text leading-6 hover:text-greyText bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-defaultText hover:stroke-controlGrey'

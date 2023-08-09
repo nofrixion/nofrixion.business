@@ -1,4 +1,3 @@
-import { Text } from './Text/Text'
 import { Button } from './Button/Button'
 import { Icon } from './Icon/Icon'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select/Select'
@@ -10,9 +9,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from './Sheet/Sheet'
+import { Text } from './Text/Text'
 
 export {
-  Text,
   Button,
   Icon,
   Select,
@@ -26,4 +25,5 @@ export {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  Text,
 }

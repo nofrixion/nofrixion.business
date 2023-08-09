@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
-import UIPaymentRequestDetailsModal from '../../ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal'
-import { parseApiTagToLocalTag } from '../../../utils/parsers'
-import { LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
 import {
-  PaymentRequestClient,
-  PaymentRequest,
-  PaymentRequestUpdate,
   MerchantClient,
+  PaymentRequest,
+  PaymentRequestClient,
+  PaymentRequestUpdate,
 } from '@nofrixion/moneymoov'
+import { useEffect, useState } from 'react'
+
+import { LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import { parseApiTagToLocalTag } from '../../../utils/parsers'
+import UIPaymentRequestDetailsModal from '../../ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal'
 
 interface PaymentRequestDetailsModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."

@@ -1,4 +1,5 @@
 import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfDay } from 'date-fns'
+
 import { SortDirection } from '../components/ui/ColumnHeader/ColumnHeader'
 import type { TDateRangeOptions } from '../components/ui/molecules'
 
@@ -125,9 +126,9 @@ const getSelectRangeText = (fromDate: Date, toDate: Date): TDateRangeOptions | u
 }
 
 export {
-  formatDate,
   formatAmount,
   formatAmountAndDecimals,
+  formatDate,
   formatPaymentRequestSortExpression,
   getDateFormat,
   getSelectRangeText,

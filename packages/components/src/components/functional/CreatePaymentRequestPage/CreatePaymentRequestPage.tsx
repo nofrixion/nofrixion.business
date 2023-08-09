@@ -1,24 +1,23 @@
-import UICreatePaymentRequestPage from '../../ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
-
-import { LocalPaymentRequest, LocalPaymentRequestCreate } from '../../../types/LocalTypes'
-import { makeToast } from '../../ui/Toast/Toast'
 import {
+  ApiResponse,
+  BankSettings,
+  CardTokenCreateModes,
+  ClientSettingsClient,
+  PartialPaymentMethods,
   PaymentRequestClient,
   PaymentRequestCreate,
-  UserPaymentDefaults,
   useBanks,
-  CardTokenCreateModes,
-  PartialPaymentMethods,
+  UserPaymentDefaults,
   useUserPaymentDefaults,
-  ClientSettingsClient,
-  BankSettings,
-  ApiResponse,
 } from '@nofrixion/moneymoov'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 
+import { LocalPaymentRequest, LocalPaymentRequestCreate } from '../../../types/LocalTypes'
 import { defaultUserPaymentDefaults } from '../../../utils/constants'
 import { remotePaymentRequestToLocalPaymentRequest } from '../../../utils/parsers'
-import { useEffect, useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import UICreatePaymentRequestPage from '../../ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
+import { makeToast } from '../../ui/Toast/Toast'
 
 export interface CreatePaymentRequesPageProps {
   token?: string // Example: "eyJhbGciOiJIUz..."

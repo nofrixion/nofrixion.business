@@ -1,4 +1,6 @@
 import { type SelectProps } from '@radix-ui/react-select'
+
+import { cn } from '../../../../../utils'
 import {
   Select,
   SelectContent,
@@ -6,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../../atoms/Select/Select'
-import { cn } from '../../../../../utils'
 
 const options = {
   today: 'Today',

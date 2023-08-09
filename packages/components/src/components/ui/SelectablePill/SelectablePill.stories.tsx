@@ -1,6 +1,7 @@
-﻿import SelectablePill from './SelectablePill'
-import { Meta, StoryFn } from '@storybook/react'
+﻿import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
+
+import SelectablePill from './SelectablePill'
 
 export default {
   title: 'UI/Selectable Pill',

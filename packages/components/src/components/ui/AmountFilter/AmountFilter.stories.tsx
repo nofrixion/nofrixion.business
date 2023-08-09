@@ -1,6 +1,7 @@
-﻿import AmountFilter from './AmountFilter'
-import { Meta, StoryFn } from '@storybook/react'
+﻿import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
+
+import AmountFilter from './AmountFilter'
 
 export default {
   title: 'UI/Amount Filter',

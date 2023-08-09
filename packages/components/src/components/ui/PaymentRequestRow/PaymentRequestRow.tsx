@@ -1,12 +1,13 @@
 import classNames from 'classnames'
+import { animate, AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
+
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import { formatAmount, formatDate } from '../../../utils/formatters'
 import Chip from '../Chip/Chip'
 import Contact from '../Contact/Contact'
-import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
-import { animate, AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
 export interface PaymentRequestRowProps extends LocalPaymentRequest {
   onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void

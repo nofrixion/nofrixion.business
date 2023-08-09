@@ -1,12 +1,11 @@
-import BankIcon from '../../../assets/icons/bank-icon.svg'
-import CardIcon from '../../../assets/icons/card-icon.svg'
-import WalletIcon from '../../../assets/icons/wallet-icon.svg'
-import BitcoinLightningIcon from '../../../assets/icons/bitcoin-icon.svg'
-
 import BankDisabledIcon from '../../../assets/icons/bank-disabled.svg'
-import CardDisabledIcon from '../../../assets/icons/card-disabled.svg'
-import WalletDisabledIcon from '../../../assets/icons/wallet-disabled.svg'
+import BankIcon from '../../../assets/icons/bank-icon.svg'
 import BitcoinDisabledIcon from '../../../assets/icons/bitcoin-disabled.svg'
+import BitcoinLightningIcon from '../../../assets/icons/bitcoin-icon.svg'
+import CardDisabledIcon from '../../../assets/icons/card-disabled.svg'
+import CardIcon from '../../../assets/icons/card-icon.svg'
+import WalletDisabledIcon from '../../../assets/icons/wallet-disabled.svg'
+import WalletIcon from '../../../assets/icons/wallet-icon.svg'
 import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 interface PaymentMethodIconProps {

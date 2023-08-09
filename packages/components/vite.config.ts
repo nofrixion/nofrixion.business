@@ -1,9 +1,10 @@
-import react from '@vitejs/plugin-react-swc'
 import path from 'node:path'
-import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+
+import react from '@vitejs/plugin-react-swc'
 import { vitePlugin as utwm } from 'unplugin-tailwindcss-mangle'
+import { defineConfig } from 'vite'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import dts from 'vite-plugin-dts'
 
 const builtClassesPrefix = 'nf-wc-'
 

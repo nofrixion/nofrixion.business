@@ -1,7 +1,8 @@
-import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 import { format } from 'date-fns'
-import { LocalPaymentRequest } from '../../../types/LocalTypes'
+
 import { LocalAddressType, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 
 interface PaymentInfoRowProps {
   label: string

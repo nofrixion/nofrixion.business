@@ -1,8 +1,9 @@
+import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+
 import { LocalTag } from '../../../../types/LocalTypes'
 import AddTag from '../AddTag/AddTag'
 import Tag from '../Tag/Tag'
-import { AnimatePresence } from 'framer-motion'
 
 export interface TagManagerProps {
   tags: LocalTag[]

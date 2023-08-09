@@ -1,7 +1,8 @@
-import { StoryFn, Meta } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+import { Meta,StoryFn } from '@storybook/react'
+
 import { apiUrls } from '../../../utils/constants'
 import CreatePaymentRequest from './CreatePaymentRequestPage'
-import { action } from '@storybook/addon-actions'
 
 const meta: Meta<typeof CreatePaymentRequest> = {
   title: 'Functional/Create Payment Request',

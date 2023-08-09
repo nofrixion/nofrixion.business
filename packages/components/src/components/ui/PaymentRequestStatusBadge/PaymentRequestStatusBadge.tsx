@@ -1,7 +1,8 @@
-import unpaidIcon from '../../../assets/images/paymentrequest_status_unpaid.svg'
+import { cva,VariantProps } from 'class-variance-authority'
+
 import paidIcon from '../../../assets/images/paymentrequest_status_paid.svg'
 import partiallyPaidIcon from '../../../assets/images/paymentrequest_status_partial.svg'
-import { VariantProps, cva } from 'class-variance-authority'
+import unpaidIcon from '../../../assets/images/paymentrequest_status_unpaid.svg'
 import { LocalPaymentStatus } from '../../../types/LocalTypes'
 
 const badge = cva('rounded-full  space-x-2 inline-flex items-center', {

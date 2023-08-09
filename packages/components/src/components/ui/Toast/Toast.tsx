@@ -1,5 +1,6 @@
-﻿import { toast, ToastContainer, Slide, CloseButtonProps } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
+﻿import 'react-toastify/dist/ReactToastify.min.css'
+
+import { CloseButtonProps,Slide, toast, ToastContainer } from 'react-toastify'
 
 interface ToastProps {
   positionY: 'top' | 'bottom'

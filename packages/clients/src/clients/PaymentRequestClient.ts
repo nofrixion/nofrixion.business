@@ -1,19 +1,19 @@
-import {
-  PaymentRequestProps,
-  PaymentRequestPageProps,
-  MetricsProps,
-  ApiProps,
-} from '../types/props'
 import { PaymentRequestCreate, PaymentRequestUpdate } from '../types/ApiRequests'
 import {
   ApiError,
+  ApiResponse,
+  PaymentRequest,
   PaymentRequestMetrics,
   PaymentRequestMinimal,
   PaymentRequestPageResponse,
-  PaymentRequest,
-  ApiResponse,
 } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
+import {
+  ApiProps,
+  MetricsProps,
+  PaymentRequestPageProps,
+  PaymentRequestProps,
+} from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**

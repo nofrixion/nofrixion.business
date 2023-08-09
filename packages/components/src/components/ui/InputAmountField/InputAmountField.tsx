@@ -1,13 +1,14 @@
-import { InputHTMLAttributes, useEffect, useState } from 'react'
-import ResizableComponent from '../ResizableComponent/ResizableComponent'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { motion } from 'framer-motion'
-import { cva } from 'class-variance-authority'
 import { Currency } from '@nofrixion/moneymoov'
-import { localCurrency } from '../../../utils/constants'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { cva } from 'class-variance-authority'
+import { motion } from 'framer-motion'
+import { InputHTMLAttributes, useEffect, useState } from 'react'
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+
 import { cn } from '../../../utils'
+import { localCurrency } from '../../../utils/constants'
+import ResizableComponent from '../ResizableComponent/ResizableComponent'
 
 export interface InputAmountFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   currency: string

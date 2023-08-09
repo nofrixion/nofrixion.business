@@ -1,9 +1,10 @@
-﻿import searchIconDisabled from '../../../assets/icons/search-icon-disabled.svg'
+﻿import classNames from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import { forwardRef, useState } from 'react'
+
+import searchIconDisabled from '../../../assets/icons/search-icon-disabled.svg'
 import searchIconEnabled from '../../../assets/icons/search-icon-enabled.svg'
 import closeIcon from '../../../assets/images/nf_close.svg'
-import classNames from 'classnames'
-import { forwardRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 
 export interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   setValue: (value: string) => void

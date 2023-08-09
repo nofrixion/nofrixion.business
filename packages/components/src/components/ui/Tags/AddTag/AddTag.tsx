@@ -1,11 +1,12 @@
-import { useEffect, useState, useRef } from 'react'
+import classNames from 'classnames'
 import Downshift from 'downshift'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
+import { useEffect, useRef,useState } from 'react'
 import useMeasure from 'react-use-measure'
-import { LocalTag } from '../../../../types/LocalTypes'
 import { useOnClickOutside } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
-import classNames from 'classnames'
+
+import { LocalTag } from '../../../../types/LocalTypes'
 
 export interface TagProps {
   tags: LocalTag[]

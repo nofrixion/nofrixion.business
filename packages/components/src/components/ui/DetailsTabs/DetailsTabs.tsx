@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
 import * as Tabs from '@radix-ui/react-tabs'
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import classNames from 'classnames'
-import PaymentInfo from '../PaymentInfo/PaymentInfo'
-import Transactions from '../Transactions/Transactions'
+import { AnimatePresence, motion,MotionConfig } from 'framer-motion'
+import React, { useState } from 'react'
+
 import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
+import PaymentInfo from '../PaymentInfo/PaymentInfo'
 import ScrollArea from '../ScrollArea/ScrollArea'
+import Transactions from '../Transactions/Transactions'
 
 const tabs = ['Transactions', 'Payment info']
 

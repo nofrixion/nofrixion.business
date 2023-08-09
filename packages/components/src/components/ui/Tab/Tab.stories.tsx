@@ -1,7 +1,8 @@
-import { Meta, StoryFn } from '@storybook/react'
 import { PaymentRequestStatus } from '@nofrixion/moneymoov'
-import Tab from './Tab'
 import * as Tabs from '@radix-ui/react-tabs'
+import { Meta, StoryFn } from '@storybook/react'
+
+import Tab from './Tab'
 
 export default {
   title: 'UI/Tab',

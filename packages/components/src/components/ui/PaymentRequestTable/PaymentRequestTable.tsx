@@ -1,12 +1,12 @@
 import classNames from 'classnames'
-import Pager from '../Pager/Pager'
-import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow'
-import ColumnHeader, { SortDirection } from '../ColumnHeader/ColumnHeader'
-import { LocalPaymentRequest } from '../../../types/LocalTypes'
-import { Toaster } from '../Toast/Toast'
 
-import EmptyState from './EmptyState'
+import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import ColumnHeader, { SortDirection } from '../ColumnHeader/ColumnHeader'
+import Pager from '../Pager/Pager'
 import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard'
+import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow'
+import { Toaster } from '../Toast/Toast'
+import EmptyState from './EmptyState'
 
 export interface PaymentRequestTableProps {
   paymentRequests: LocalPaymentRequest[]

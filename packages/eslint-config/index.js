@@ -15,9 +15,12 @@ module.exports = {
     'eslint-config-prettier',
   ],
   parserOptions: {},
+  plugins: ['simple-import-sort'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
     'react/prop-types': 'off',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
   },
   settings: {
     react: {

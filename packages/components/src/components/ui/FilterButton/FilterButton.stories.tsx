@@ -1,9 +1,10 @@
-﻿import disabledTagIcon from '../../../assets/icons/tag-icon-disabled.svg'
-import enabledTagIcon from '../../../assets/icons/tag-icon-enabled.svg'
+﻿import { Meta, StoryFn } from '@storybook/react'
+
 import disabledCurrencyIcon from '../../../assets/icons/currency-icon-disabled.svg'
 import enabledCurrencyIcon from '../../../assets/icons/currency-icon-enabled.svg'
+import disabledTagIcon from '../../../assets/icons/tag-icon-disabled.svg'
+import enabledTagIcon from '../../../assets/icons/tag-icon-enabled.svg'
 import FilterButton from './FilterButton'
-import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'UI/Filter Button',

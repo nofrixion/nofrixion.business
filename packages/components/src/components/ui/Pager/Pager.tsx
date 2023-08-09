@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import classNames from 'classnames'
+import { useEffect, useState } from 'react'
 
 export interface PagerProps {
   pageSize: number

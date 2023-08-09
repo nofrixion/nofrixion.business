@@ -1,5 +1,6 @@
-import { forwardRef, useId, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import { forwardRef, useId, useState } from 'react'
+
 import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
 export interface InputTextAreaFieldProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {

@@ -1,6 +1,6 @@
-import { ApiProps } from '../types/props'
 import { ApiError, ApiResponse, UserPaymentDefaults } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
+import { ApiProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**

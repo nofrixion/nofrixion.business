@@ -1,11 +1,12 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import copyIcon from '../../../assets/images/nf_copy.svg'
-import linkIcon from '../../../assets/images/nf_link.svg'
-import trashIcon from '../../../assets/images/nf_trash.svg'
-import openIcon from '../../../assets/images/nf_open.svg'
-import trashDisabledIcon from '../../../assets/images/nf_trash_disabled.svg'
 import { cva } from 'class-variance-authority'
 import { motion } from 'framer-motion'
+
+import copyIcon from '../../../assets/images/nf_copy.svg'
+import linkIcon from '../../../assets/images/nf_link.svg'
+import openIcon from '../../../assets/images/nf_open.svg'
+import trashIcon from '../../../assets/images/nf_trash.svg'
+import trashDisabledIcon from '../../../assets/images/nf_trash_disabled.svg'
 import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 const actionItemClassNames =

@@ -1,7 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { PaymentRequestClient } from '../clients'
 import { ApiResponse, PaymentRequest } from '../types/ApiResponses'
 import { ApiProps, usePaymentRequestProps } from '../types/props'
-import { useQuery } from '@tanstack/react-query'
 
 const fetchPaymentRequest = async (
   apiUrl: string,

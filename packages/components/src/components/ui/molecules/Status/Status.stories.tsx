@@ -1,4 +1,5 @@
-import { StoryFn, Meta } from '@storybook/react'
+import { Meta,StoryFn } from '@storybook/react'
+
 import { Status } from './Status'
 
 export default {

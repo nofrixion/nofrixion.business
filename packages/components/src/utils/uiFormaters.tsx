@@ -48,7 +48,7 @@ const formatSentenceFromList = (list: string[]) => {
 }
 
 export {
-  parseHighlightedText as parseBoldText,
   formatEmailAddressesForSummary,
   formatSentenceFromList,
+  parseHighlightedText as parseBoldText,
 }

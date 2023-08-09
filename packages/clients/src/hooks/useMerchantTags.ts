@@ -1,7 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { MerchantClient } from '../clients/MerchantClient'
 import { ApiResponse, Tag } from '../types/ApiResponses'
 import { ApiProps, MerchantProps } from '../types/props'
-import { useQuery } from '@tanstack/react-query'
 
 const fetchMerchantTags = async (
   apiUrl: string,

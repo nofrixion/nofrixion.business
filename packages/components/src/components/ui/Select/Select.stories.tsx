@@ -1,5 +1,5 @@
+import { Meta,StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import { StoryFn, Meta } from '@storybook/react'
 
 import Select, { SelectOption } from './Select'
 

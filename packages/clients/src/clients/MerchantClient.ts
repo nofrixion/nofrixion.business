@@ -1,6 +1,6 @@
-import { ApiProps, MerchantProps } from '../types/props'
 import { ApiError, ApiResponse, Merchant, MerchantBankSettings, Tag } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
+import { ApiProps, MerchantProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**

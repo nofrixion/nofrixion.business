@@ -1,7 +1,7 @@
-import { StoryFn, Meta } from '@storybook/react'
+import { Meta,StoryFn } from '@storybook/react'
 
-import PaymentInfo from './PaymentInfo'
 import mockedData from '../../../utils/mockedData'
+import PaymentInfo from './PaymentInfo'
 
 export default {
   title: 'UI/PaymentInfo',

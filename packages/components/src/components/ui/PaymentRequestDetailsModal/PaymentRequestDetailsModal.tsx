@@ -1,10 +1,11 @@
-import { useState, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails'
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
-import CaptureModal from '../CaptureModal/CaptureModal'
 import { Currency } from '@nofrixion/moneymoov'
+import { Fragment,useState } from 'react'
+
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
 import { Sheet, SheetContent } from '../../ui/atoms'
+import CaptureModal from '../CaptureModal/CaptureModal'
+import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails'
 
 export interface PaymentRequestDetailsModalProps {
   paymentRequest: LocalPaymentRequest

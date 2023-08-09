@@ -1,7 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { UsersClient } from '../clients'
 import { ApiResponse, User } from '../types/ApiResponses'
 import { ApiProps } from '../types/props'
-import { useQuery } from '@tanstack/react-query'
 
 const fetchUser = async (apiUrl: string, authToken?: string): Promise<ApiResponse<User>> => {
   const client = new UsersClient({ apiUrl, authToken })

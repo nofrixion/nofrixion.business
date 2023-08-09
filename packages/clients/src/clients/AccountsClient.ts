@@ -1,5 +1,5 @@
-import { ApiProps, MerchantProps } from '../types/props'
 import { Account, ApiResponse, HttpMethod } from '../types'
+import { ApiProps, MerchantProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**

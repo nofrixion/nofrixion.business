@@ -1,8 +1,8 @@
+import { action } from '@storybook/addon-actions'
+import { Meta,StoryFn } from '@storybook/react'
 import React, { useState } from 'react'
-import { StoryFn, Meta } from '@storybook/react'
 
 import InputAmountField, { InputAmountFieldProps } from './InputAmountField'
-import { action } from '@storybook/addon-actions'
 
 const meta: Meta<typeof InputAmountField> = {
   title: 'UI/InputAmountField',

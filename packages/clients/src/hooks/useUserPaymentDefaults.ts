@@ -1,7 +1,8 @@
-import { ApiResponse, UserPaymentDefaults } from '../types/ApiResponses'
-import { ClientSettingsClient } from '../clients/ClientSettingsClient'
-import { ApiProps } from '../types/props'
 import { useQuery } from '@tanstack/react-query'
+
+import { ClientSettingsClient } from '../clients/ClientSettingsClient'
+import { ApiResponse, UserPaymentDefaults } from '../types/ApiResponses'
+import { ApiProps } from '../types/props'
 
 const fetchUserPaymentDefaults = async (
   apiUrl: string,

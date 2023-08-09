@@ -1,6 +1,7 @@
-﻿import { useState } from 'react'
+﻿import { Meta, StoryFn } from '@storybook/react'
+import { useState } from 'react'
+
 import SearchBar from './SearchBar'
-import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'UI/SearchBar',

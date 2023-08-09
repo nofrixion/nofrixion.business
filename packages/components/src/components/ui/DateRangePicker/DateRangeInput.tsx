@@ -1,5 +1,6 @@
 import { format, isEqual } from 'date-fns'
 import { useEffect, useState } from 'react'
+
 import { getDateFormat } from '../../../utils/formatters'
 import ResizableComponent from '../ResizableComponent/ResizableComponent'
 

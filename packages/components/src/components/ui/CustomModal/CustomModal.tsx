@@ -1,9 +1,10 @@
-import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import Checkbox from '../Checkbox/Checkbox'
-import { Button } from '../../ui/atoms'
-import { AnimatePresence, motion } from 'framer-motion'
 import classNames from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Fragment, useState } from 'react'
+
+import { Button } from '../../ui/atoms'
+import Checkbox from '../Checkbox/Checkbox'
 
 export interface CustomModalProps extends BaseModalProps {
   title: string

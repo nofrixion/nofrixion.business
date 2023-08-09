@@ -1,7 +1,7 @@
-﻿import classNames from 'classnames'
-import { Children, isValidElement, useState } from 'react'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+﻿import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Children, isValidElement, useState } from 'react'
 
 export type FilterButtonFC = React.FC<FilterButtonProps> & {
   FilteredLayout: React.FC<FilterButtonFilteredLayoutProps>

@@ -1,7 +1,7 @@
-import { StoryFn, Meta } from '@storybook/react'
+import { Meta,StoryFn } from '@storybook/react'
+import { useState } from 'react'
 
 import { SelectSorter, type TSorterOptions } from './SelectSorter'
-import { useState } from 'react'
 
 export default {
   title: 'Molecules/Select Sorter',

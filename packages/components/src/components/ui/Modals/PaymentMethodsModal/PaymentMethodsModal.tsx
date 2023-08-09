@@ -1,17 +1,17 @@
-import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
-import Switch from '../../Switch/Switch'
+import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
+import { AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 import BankIcon from '../../../../assets/icons/bank-icon.svg'
+import BitcoinIcon from '../../../../assets/icons/bitcoin-icon.svg'
 import CardIcon from '../../../../assets/icons/card-icon.svg'
 import ApplePayIcon from '../../../../assets/icons/wallet-icon.svg'
-import BitcoinIcon from '../../../../assets/icons/bitcoin-icon.svg'
-import { useEffect, useState } from 'react'
-import Checkbox from '../../Checkbox/Checkbox'
-import { AnimatePresence } from 'framer-motion'
-import Select from '../../Select/Select'
-import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { LocalPaymentMethodsFormValue } from '../../../../types/LocalTypes'
-import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
+import Checkbox from '../../Checkbox/Checkbox'
+import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
+import Select from '../../Select/Select'
+import Switch from '../../Switch/Switch'
+import AnimateHeightWrapper from '../../utils/AnimateHeight'
 
 export interface PaymentMethodsModalProps extends BaseModalProps {
   banks: BankSettings[]

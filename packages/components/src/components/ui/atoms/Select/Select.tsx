@@ -1,8 +1,8 @@
-import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
+import { motion } from 'framer-motion'
+import * as React from 'react'
 
 import { cn } from '../../../../utils'
-import { motion } from 'framer-motion'
 import { Icon } from '../Icon/Icon'
 
 const cancelDefaults = (event: any) => {
@@ -141,11 +141,11 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
 export {
   Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
   SelectContent,
-  SelectLabel,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 }
