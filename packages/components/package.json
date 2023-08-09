@@ -13,7 +13,8 @@
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build-storybook": "storybook build",
     "lint": "eslint . --ext .ts,.tsx",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "prepare": "tw-patch"
   },
   "dependencies": {
     "@headlessui/react": "1.6.0",

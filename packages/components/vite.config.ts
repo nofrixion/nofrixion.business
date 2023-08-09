@@ -4,10 +4,21 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { resolve } from 'path'
+import { vitePlugin as utwm } from 'unplugin-tailwindcss-mangle'
+
+const builtClassesPrefix = 'nf-wc-'
 
 export default defineConfig({
   plugins: [
     react(),
+    utwm({
+      classGenerator: {
+        classPrefix: builtClassesPrefix,
+        customGenerate: (original, options) => {
+          return options.classPrefix + original
+        },
+      },
+    }),
     cssInjectedByJsPlugin(),
     dts({
       insertTypesEntry: true,
