@@ -21,7 +21,6 @@
     "./packages/*"
   ],
   "dependencies": {
-    "husky": "^8.0.3",
-    "turbo-darwin-arm64": "^1.10.12"
+    "husky": "^8.0.3"
   }
 }
