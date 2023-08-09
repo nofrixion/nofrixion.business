@@ -1,30 +1,28 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { useLocation,useNavigate } from 'react-router-dom'
+
+import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
+import IconLogout from '../../assets/icons/logout.svg'
+import PricingIcon from '../../assets/icons/pricing.svg'
+import IconSort from '../../assets/icons/sort.svg'
+import UsersIcon from '../../assets/icons/users.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-  DropdownMenuItem,
 } from '../../components/ui/DropDown'
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { getAvatarName } from '../../lib/formatters'
-import useStore from '../../lib/stores/useStore'
-import useMerchantStore from '../../lib/stores/useMerchantStore'
-
-import useMerchantsStore from '../../lib/stores/useMerchantsStore'
-
-import IconSort from '../../assets/icons/sort.svg'
-import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
-import IconLogout from '../../assets/icons/logout.svg'
-import UsersIcon from '../../assets/icons/users.svg'
-import PricingIcon from '../../assets/icons/pricing.svg'
-
-import useUserStore from '../../lib/stores/useUserStore'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../../lib/auth/useAuth'
 import { AuthContextType } from '../../lib/auth/AuthProvider'
+import { useAuth } from '../../lib/auth/useAuth'
+import { getAvatarName } from '../../lib/formatters'
+import useMerchantsStore from '../../lib/stores/useMerchantsStore'
+import useMerchantStore from '../../lib/stores/useMerchantStore'
+import useStore from '../../lib/stores/useStore'
+import useUserStore from '../../lib/stores/useUserStore'
 
 const merchantImage = (shortName: string) =>
   `https://cdn.nofrixion.com/nextgen/assets/merchants/${shortName}/${shortName}.svg`

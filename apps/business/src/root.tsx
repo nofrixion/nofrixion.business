@@ -1,5 +1,7 @@
-import { useOutlet } from 'react-router-dom'
 import './index.css'
+
+import { useOutlet } from 'react-router-dom'
+
 import HotjarInjection from './components/HotjarInjection'
 
 const Root = () => {

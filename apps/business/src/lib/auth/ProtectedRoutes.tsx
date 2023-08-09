@@ -1,5 +1,6 @@
+import { Navigate, Outlet,useLocation } from 'react-router-dom'
+
 import { Loader } from '../../components/ui/Loader/Loader'
-import { Navigate, useLocation, Outlet } from 'react-router-dom'
 import { useAuth } from '../../lib/auth/useAuth'
 import { AuthContextType } from './AuthProvider'
 

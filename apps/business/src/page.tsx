@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+
 import HomeUI from './components/HomeUI'
 
 function HomeFallback() {

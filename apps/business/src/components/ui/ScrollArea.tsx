@@ -1,15 +1,16 @@
-import { cn } from '../../lib/utils/utils'
 import * as RadixScrollArea from '@radix-ui/react-scroll-area'
-import React from 'react'
+import { forwardRef } from 'react'
+
+import { cn } from '../../lib/utils/utils'
 
 type ScrollAreaProps = {
   enableCustomScrollbar?: true
 }
 
-const ScrollArea = React.forwardRef<
+const ScrollArea = forwardRef<
   React.ElementRef<typeof RadixScrollArea.Viewport>,
   React.ComponentPropsWithoutRef<typeof RadixScrollArea.Root> & ScrollAreaProps
->(({ className, children, enableCustomScrollbar, ...props }, ref) => (
+>(({ children, enableCustomScrollbar, ...props }, ref) => (
   <RadixScrollArea.Root {...props}>
     <RadixScrollArea.Viewport ref={ref} className="biz-snap-x biz-snap-mandatory">
       {children}

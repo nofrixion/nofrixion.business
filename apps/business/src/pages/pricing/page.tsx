@@ -1,12 +1,11 @@
 import PricingCard, { PricingCardProps } from '../../components/ui/PricingCard'
-import ScrollArea from '../../components/ui/ScrollArea'
-import useUserStore from '../../lib/stores/useUserStore'
-import { sendSlackMessage } from '../../lib/utils/utils'
-import { useState } from 'react'
+import PricingCardAccounts, { PricingAccountsProps } from '../../components/ui/PricingCardAccounts'
 import PricingCardPayByBank, {
   PricingPayByBankProps,
 } from '../../components/ui/PricingCardPayByBank'
-import PricingCardAccounts, { PricingAccountsProps } from '../../components/ui/PricingCardAccounts'
+import ScrollArea from '../../components/ui/ScrollArea'
+import useUserStore from '../../lib/stores/useUserStore'
+import { sendSlackMessage } from '../../lib/utils/utils'
 
 const pricingCards: PricingCardProps[] = [
   {
@@ -54,13 +53,6 @@ const pricingCards: PricingCardProps[] = [
     extraText: 'All features from *Basic*, *Accounts receivable* and *Accounts payable*.',
     items: ['*300 free* monthly SEPA transactions+'],
   },
-]
-
-const payPerUsePricing = [
-  'View-only access to your account balance, transactions and payment requests',
-  'Predefined funds transfer to your bank account',
-  'Refund payments',
-  'Single user',
 ]
 
 const pricingPayByBank: PricingPayByBankProps = {
@@ -124,18 +116,8 @@ const pricingAccounts: PricingAccountsProps = {
 const PricingPage: React.FC = () => {
   const { user } = useUserStore()
 
-  const [isInterested, setIsInterested] = useState(false)
-
   const onInterestedClick = ({ amount, name }: { amount: number; name: string }) => {
     const message = `🤑 ${user?.emailAddress ?? 'Someone'} wants to pay ${amount}€/m for *${name}*`
-
-    sendSlackMessage(message)
-  }
-
-  const onPayPerUseClick = () => {
-    setIsInterested(true)
-
-    const message = `🤑 ${user?.emailAddress ?? 'Someone'} is interested in pay-per-use.`
 
     sendSlackMessage(message)
   }

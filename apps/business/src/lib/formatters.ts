@@ -1,4 +1,6 @@
-import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfDay } from 'date-fns'
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { formatDistanceToNowStrict, isToday, isYesterday } from 'date-fns'
 
 // Get "Avatar" string form of Merchant name
 // The merchant name should be the first character of each word in the name up to 2 words
@@ -6,7 +8,6 @@ import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfD
 // If the merchant name is two words or more words, return the first character of each word
 // If merchant name is
 // - "NoFrixion", return "NO"
-
 import { Currency } from './types/localTypes'
 
 // - "Green Bench", return "GB"
@@ -63,4 +64,4 @@ const formatDate = (date: Date): string => {
   return formatDistanceToNowStrict(date, { addSuffix: true })
 }
 
-export { getAvatarName, formatAmount, displayAmount, formatDate }
+export { displayAmount, formatAmount, formatDate, getAvatarName }

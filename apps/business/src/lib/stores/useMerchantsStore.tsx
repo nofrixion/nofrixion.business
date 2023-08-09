@@ -1,5 +1,6 @@
-import { Merchant } from '../types/localTypes'
 import { create } from 'zustand'
+
+import { Merchant } from '../types/localTypes'
 
 type MerchantsStore = {
   merchants?: Merchant[]

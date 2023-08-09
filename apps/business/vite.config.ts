@@ -1,11 +1,13 @@
+import path from 'node:path'
+
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
-import path from 'node:path'
-import basicSsl from '@vitejs/plugin-basic-ssl'
-import packageJson from './package.json'
 import banner from 'vite-plugin-banner'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import dts from 'vite-plugin-dts'
+
+import packageJson from './package.json'
 
 export default defineConfig({
   plugins: [
@@ -23,7 +25,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'NoFrixionBusiness',
       formats: ['umd'],
-      fileName: (format) => `nofrixion-business.js`,
+      fileName: () => `nofrixion-business.js`,
     },
     rollupOptions: {
       input: {

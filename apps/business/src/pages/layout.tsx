@@ -1,14 +1,16 @@
-import { Navbar } from '../components/Navbar/Navbar'
+import '../index.css'
+
 import { useMerchants, useUser } from '@nofrixion/moneymoov'
 import { useEffect } from 'react'
-import StickyFeedback from '../components/StickyFeedback'
-import useMerchantStore from '../lib/stores/useMerchantStore'
-import useMerchantsStore from '../lib/stores/useMerchantsStore'
-import useUserStore from '../lib/stores/useUserStore'
 import { useOutlet } from 'react-router-dom'
-import '../index.css'
-import { useAuth } from '../lib/auth/useAuth'
+
+import { Navbar } from '../components/Navbar/Navbar'
+import StickyFeedback from '../components/StickyFeedback'
 import { AuthContextType } from '../lib/auth/AuthProvider'
+import { useAuth } from '../lib/auth/useAuth'
+import useMerchantsStore from '../lib/stores/useMerchantsStore'
+import useMerchantStore from '../lib/stores/useMerchantStore'
+import useUserStore from '../lib/stores/useUserStore'
 // interface DashboardLayoutProps {
 //   children: React.ReactNode
 // }
@@ -25,19 +27,11 @@ const Layout = () => {
 
   // Fetch merchants and user data
   // and store them in global state
-  const {
-    data: merchantsResponse,
-    isLoading: isMerchantsLoading,
-    isError: isMerchantsError,
-  } = useMerchants({
+  const { data: merchantsResponse } = useMerchants({
     apiUrl: apiUrl,
   })
 
-  const {
-    data: userResponse,
-    isLoading: isUserLoading,
-    isError: isUserError,
-  } = useUser({
+  const { data: userResponse } = useUser({
     apiUrl: apiUrl,
   })
 

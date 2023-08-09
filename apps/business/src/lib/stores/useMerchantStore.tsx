@@ -1,6 +1,7 @@
-import { Merchant } from '../types/localTypes'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+
+import { Merchant } from '../types/localTypes'
 
 type MerchantStore = {
   merchant?: Merchant

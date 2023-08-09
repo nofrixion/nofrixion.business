@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+import { useState } from 'react'
+
+import InfoBox from '../components/ui/InfoBox'
+import useUserStore from '../lib/stores/useUserStore'
 import { sendSlackMessage } from '../lib/utils/utils'
 import Button from './ui/Button'
-import useUserStore from '../lib/stores/useUserStore'
-import { useState } from 'react'
-import InfoBox from '../components/ui/InfoBox'
 
 interface ComingSoonUIProps {
   title: string

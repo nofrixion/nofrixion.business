@@ -7,7 +7,7 @@
     "dev": "vite",
     "build-dev": "tsc && vite build --mode dev",
     "build": "tsc && vite build",
-    "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
+    "lint": "eslint .",
     "format": "prettier --write src//**/*.{ts,tsx} --config ./.prettierrc",
     "preview": "vite preview",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
@@ -37,7 +37,8 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
-    "@nofrixion/tsconfig": "^0.0.0",
+    "@nofrixion/eslint-config": "*",
+    "@nofrixion/tsconfig": "*",
     "@types/node": "^20.3.3",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",

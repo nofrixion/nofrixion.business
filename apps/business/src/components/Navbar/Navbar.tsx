@@ -1,17 +1,16 @@
-import UserNav from '../../components/Navbar/UserNav'
+import { useLocation,useNavigate } from 'react-router-dom'
+
 import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
 import IconSort from '../../assets/icons/sort.svg'
-import { useNavigate, useLocation } from 'react-router-dom'
-
-import { navItems } from '../../lib/constants'
-
+import UserNav from '../../components/Navbar/UserNav'
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuPortal,
   DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
 } from '../../components/ui/DropDown'
+import { navItems } from '../../lib/constants'
 import { cn } from '../../lib/utils/utils'
 
 const Navbar = () => {

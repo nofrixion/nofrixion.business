@@ -1,11 +1,13 @@
-import IconArrowRight from '../assets/icons/arrow-right.svg'
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
+
 import GraphicDesktopMoneyMoovForBusiness from '../assets/graphics/for-business-diagram-desktop.svg'
 import LogoNofrixion from '../assets/graphics/nofrixion-logo.svg'
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
-import { useAuth } from '../lib/auth/useAuth'
+import IconArrowRight from '../assets/icons/arrow-right.svg'
 import { AuthContextType } from '../lib/auth/AuthProvider'
-import { Loader } from './ui/Loader/Loader'
+import { useAuth } from '../lib/auth/useAuth'
 import { NOFRIXION_BFF_URL } from '../lib/constants'
+import { Loader } from './ui/Loader/Loader'
 
 const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
   return (

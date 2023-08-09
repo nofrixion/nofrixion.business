@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { addSeconds } from 'date-fns'
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+
 import { NOFRIXION_BFF_URL } from '../constants'
 
 const config = {
@@ -62,8 +62,6 @@ const useAuthUser = () => {
 
   const logOut = useCallback(
     (callback?: string) => {
-      const origin = location.state?.from?.pathname
-
       const url = `${logoutUrl}&returnUrl=/?callbackUrl=${callback ?? '/'}`
 
       setIsLoggedIn(false)

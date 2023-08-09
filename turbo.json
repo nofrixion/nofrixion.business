@@ -13,7 +13,8 @@
     "lint": {},
     "dev": {
       "dependsOn": ["^build"],
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "story": {
       "cache": false

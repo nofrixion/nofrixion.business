@@ -1,7 +1,8 @@
-import formatText from '../../lib/utils/formatText'
+import { useState } from 'react'
+
 import IconListCheck from '../../assets/icons/list-check.svg'
 import Button from '../../components/ui/Button'
-import { useState } from 'react'
+import formatText from '../../lib/utils/formatText'
 import InfoBox from './InfoBox'
 
 export interface PricingCardProps {

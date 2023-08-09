@@ -1,10 +1,10 @@
-import IconDashboard from '../assets/icons/dashboard.svg'
-import IconCurrentAccounts from '../assets/icons/current-accounts.svg'
-import IconAccountsReceivable from '../assets/icons/accounts-receivable.svg'
 import IconAccountsPayable from '../assets/icons/accounts-payable.svg'
+import IconAccountsReceivable from '../assets/icons/accounts-receivable.svg'
+import IconCurrentAccounts from '../assets/icons/current-accounts.svg'
+import IconDashboard from '../assets/icons/dashboard.svg'
 import IconPayouts from '../assets/icons/payouts.svg'
-import IconUsers from '../assets/icons/users.svg'
 import IconPricing from '../assets/icons/pricing.svg'
+import IconUsers from '../assets/icons/users.svg'
 
 const NOFRIXION_API_URL = import.meta.env.VITE_PUBLIC_NOFRIXION_API_URL
 const NOFRIXION_BFF_URL = import.meta.env.VITE_PUBLIC_BFF_URL
@@ -57,4 +57,4 @@ const navItems: INavItem[] = [
   },
 ]
 
-export { NOFRIXION_API_URL, NOFRIXION_BFF_URL, navItems }
+export { navItems,NOFRIXION_API_URL, NOFRIXION_BFF_URL }

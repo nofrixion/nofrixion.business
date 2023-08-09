@@ -1,5 +1,6 @@
-import { User } from '../types/localTypes'
 import { create } from 'zustand'
+
+import { User } from '../types/localTypes'
 
 type UserStore = {
   user?: User

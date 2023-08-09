@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { useAuth } from './useAuth'
+
 import { AuthContextType } from './AuthProvider'
+import { useAuth } from './useAuth'
 
 const events = ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress']
 

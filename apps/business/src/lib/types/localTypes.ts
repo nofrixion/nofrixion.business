@@ -13,10 +13,6 @@ export enum AccountIdentifierType {
   DD = 'DD',
 }
 
-interface BaseParams {
-  accessToken: string
-}
-
 export interface Merchant {
   id: string
   name: string
@@ -72,15 +68,6 @@ export interface PaymentRequestMetrics {
   paid: number
   unpaid: number
   partiallyPaid: number
-}
-
-export interface AccountIdentifier {
-  type: AccountIdentifierType
-  currency: string
-  bic: string
-  iban: string
-  accountNumber: string
-  sortCode: string
 }
 
 export interface Transaction {

@@ -1,18 +1,17 @@
-import AccountSummaryCard from '../../components/AccountSummaryCard'
-import AcountsReceivableCard from '../../components/AcountsReceivableCard'
 import { PaymentRequestMetrics, useAccounts, usePaymentRequestMetrics } from '@nofrixion/moneymoov'
-import { Account } from '../../lib/types/localTypes'
 import { addDays, startOfDay } from 'date-fns'
-import AccountPayableCard from '../../components/AccountPayableCard'
-import { Loader } from '../../components/ui/Loader/Loader'
-import ScrollArea from '../../components/ui/ScrollArea'
-import useMerchantStore from '../../lib/stores/useMerchantStore'
-import { NOFRIXION_API_URL } from '../../lib/constants'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../lib/auth/useAuth'
-import { AuthContextType } from '../../lib/auth/AuthProvider'
+
+import AccountPayableCard from '../../components/AccountPayableCard'
+import AcountsReceivableCard from '../../components/AcountsReceivableCard'
+import { Loader } from '../../components/ui/Loader/Loader'
 import AccountsCarousel from '../../components/ui/molecules/AccountsCarousel'
+import { AuthContextType } from '../../lib/auth/AuthProvider'
+import { useAuth } from '../../lib/auth/useAuth'
+import { NOFRIXION_API_URL } from '../../lib/constants'
+import useMerchantStore from '../../lib/stores/useMerchantStore'
+import { Account } from '../../lib/types/localTypes'
 
 const last30Days = addDays(new Date(), -30)
 
