@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { AccountsReceivable } from '@nofrixion/components'
 import r2wc from 'react-to-webcomponent'
+import React from 'react'
 
 const DashBoard = r2wc(AccountsReceivable, React, ReactDOM, {
   props: {
