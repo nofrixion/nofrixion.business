@@ -36,7 +36,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
           type="text"
           maxLength={maxLength}
           className={classNames(
-            'inline outline outline-1 hover:outline-borderGrey focus:outline-borderGrey ' +
+            'inline outline-none hover:outline-borderGrey hover:outline hover:outline-1 focus:outline focus:outline-1 focus:outline-borderGrey ' +
               'focus:rounded-lg focus:w-48 py-2 pl-9 pr-1 text-sm placeholder:text-greyText ' +
               'placeholder:opacity-100 text-default-text bg-[12px] bg-no-repeat transition-all',
             {
@@ -47,7 +47,6 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
           style={{
             backgroundImage:
               value || isFocused ? `url(${searchIconEnabled})` : `url(${searchIconDisabled})`,
-            outlineColor: 'transparent',
           }}
           placeholder="Search"
           onChange={onChange}
