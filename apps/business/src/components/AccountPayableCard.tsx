@@ -14,7 +14,7 @@ const AccountPayableCard: React.FC<AccountPayableCardProps> = ({ onShowViewAll, 
       style={{ width: '100%' }}
       srcSet={`${WavesGraphicMobile} 1800w, ${WavesGraphic} 4092w`}
       sizes="(max-width: 1800px) 1800px, 4092px"
-      className="biz-h-full biz-my-12 lg:biz-my-auto"
+      className="h-full my-12 lg:my-auto"
     />
   </Card>
 )

@@ -9,9 +9,7 @@ export const ProtectedRoutes = () => {
   const location = useLocation()
 
   if (authContext && authContext.authState?.isLoading) {
-    return (
-      <Loader className="biz-flex biz-items-center biz-justify-center biz-p-24 biz-min-h-screen" />
-    )
+    return <Loader className="flex items-center justify-center p-24 min-h-screen" />
   }
 
   if (!authContext || !authContext.authState?.isLoggedIn || authContext.authState?.isError) {

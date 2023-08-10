@@ -17,7 +17,7 @@ const AccountReceivablePage = () => {
   return (
     // Div is needed to prevent the dashboard from being
     // rendered as two separate components
-    <div className="md:-biz-mx-4">
+    <div className="md:-mx-4">
       <AccountsReceivableDashboard
         merchantId={merchant ? merchant.id : ''}
         apiUrl={NOFRIXION_API_URL}

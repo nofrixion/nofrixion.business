@@ -5,5 +5,4 @@ import sharedConfig from '@nofrixion/tailwind-config/tailwind.config.cjs'
 
 module.exports = {
   presets: [sharedConfig],
-  prefix: 'biz-',
 }

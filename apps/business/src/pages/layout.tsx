@@ -70,11 +70,11 @@ const Layout = () => {
 
   return (
     <>
-      <div className="biz-font-inter biz-h-full">
+      <div className="font-inter h-full">
         <StickyFeedback />
         <Navbar />
-        <div className="biz-min-h-screen biz-flex">
-          <div className="biz-bg-main-gray-bg biz-w-full biz-pb-28 biz-px-6 md:biz-px-[72px] biz-pt-8 md:biz-pb-16">
+        <div className="min-h-screen flex">
+          <div className="bg-main-gray-bg w-full pb-28 px-6 md:px-[72px] pt-8 md:pb-16">
             {outlet}
           </div>
         </div>

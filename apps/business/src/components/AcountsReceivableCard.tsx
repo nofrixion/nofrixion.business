@@ -15,26 +15,26 @@ const MetricInfo: React.FC<{
   value?: number
 }> = ({ type, value }) => {
   return (
-    <div className="biz-pt-4 biz-pb-6 md:biz-px-8 biz-inline-flex biz-flex-col biz-items-center">
+    <div className="pt-4 pb-6 md:px-8 inline-flex flex-col items-center">
       <span
-        className={cn('biz-mb-4 biz-text-[40px] biz-font-medium', {
-          'biz-invisible': value === undefined,
+        className={cn('mb-4 text-[40px] font-medium', {
+          invisible: value === undefined,
         })}
       >
         {value ?? 0}
       </span>
-      <div className="biz-flex biz-items-center">
+      <div className="flex items-center">
         <div
-          className={cn('biz-h-1.5 biz-w-1.5 biz-rounded-full', {
-            'biz-bg-[#ABB2BA]': type === 'unpaid',
-            'biz-bg-[#E88C30]': type === 'partiallyPaid',
-            'biz-bg-[#29A37A]': type === 'paid',
+          className={cn('h-1.5 w-1.5 rounded-full', {
+            'bg-[#ABB2BA]': type === 'unpaid',
+            'bg-[#E88C30]': type === 'partiallyPaid',
+            'bg-[#29A37A]': type === 'paid',
           })}
         ></div>
         <span
-          className={cn('biz-block biz-text-sm/6 biz-font-medium biz-ml-1', {
-            'biz-text-[#E88C30]': type === 'partiallyPaid',
-            'biz-text-[#29A37A]': type === 'paid',
+          className={cn('block text-sm/6 font-medium ml-1', {
+            'text-[#E88C30]': type === 'partiallyPaid',
+            'text-[#29A37A]': type === 'paid',
           })}
         >
           {type === 'unpaid' && 'Unpaid'}
@@ -53,7 +53,7 @@ const AcountsReceivableCard: React.FC<AcountsReceivableCardProps> = ({
   onShowViewAll,
 }) => (
   <Card onShowViewAll={onShowViewAll} title="Accounts receivable" subtext="Last 30 days">
-    <div className="biz-mt-16 biz-w-full biz-flex biz-flex-col md:biz-flex-row biz-justify-between">
+    <div className="mt-16 w-full flex flex-col md:flex-row justify-between">
       <MetricInfo type="unpaid" value={unpaid} />
       <MetricInfo type="partiallyPaid" value={partiallyPaid} />
       <MetricInfo type="paid" value={paid} />

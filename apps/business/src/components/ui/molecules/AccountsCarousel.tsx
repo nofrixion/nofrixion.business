@@ -64,9 +64,9 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
       {scrollState !== 'left' && scrollState !== 'not-needed' && (
         <button
           onClick={scrollLeft}
-          className="biz-hidden lg:biz-flex biz-absolute biz-top-0 -biz-left-0.5 biz-h-full biz-w-[104px] biz-bg-gradient-to-l biz-from-transparent biz-to-main-gray-bg  biz-items-center biz-justify-start biz-pr-4"
+          className="hidden lg:flex absolute top-0 -left-0.5 h-full w-[104px] bg-gradient-to-l from-transparent to-main-gray-bg  items-center justify-start pr-4"
         >
-          <div className="biz-w-12 biz-h-8 biz-bg-white biz-rounded-full biz-flex biz-justify-center biz-items-center biz-shadow-small">
+          <div className="w-12 h-8 bg-white rounded-full flex justify-center items-center shadow-small">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="9"
@@ -85,7 +85,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
         </button>
       )}
 
-      <div className="biz-flex biz-space-x-4">
+      <div className="flex space-x-4">
         {accounts
           .sort((a, b) => a.accountName.localeCompare(b.accountName))
           .map((account: Account) => {
@@ -93,7 +93,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
               <AccountSummaryCard
                 key={account.id}
                 account={account}
-                className="md:biz-snap-center lg:biz-snap-start" // Snap to center when scrolling (only for tablet resolution)
+                className="md:snap-center lg:snap-start" // Snap to center when scrolling (only for tablet resolution)
                 onClick={() => {
                   navigate('current-accounts')
                 }}
@@ -106,9 +106,9 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
       {scrollState !== 'right' && scrollState !== 'not-needed' && (
         <button
           onClick={scrollRight}
-          className="biz-hidden lg:biz-flex biz-absolute biz-top-0 -biz-right-0.5 biz-h-full biz-w-[104px] biz-bg-gradient-to-r biz-from-transparent biz-to-main-gray-bg biz-items-center biz-justify-end biz-pl-4"
+          className="hidden lg:flex absolute top-0 -right-0.5 h-full w-[104px] bg-gradient-to-r from-transparent to-main-gray-bg items-center justify-end pl-4"
         >
-          <div className="biz-w-12 biz-h-8 biz-bg-white biz-rounded-full biz-flex biz-justify-center biz-items-center biz-shadow-small">
+          <div className="w-12 h-8 bg-white rounded-full flex justify-center items-center shadow-small">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="9"

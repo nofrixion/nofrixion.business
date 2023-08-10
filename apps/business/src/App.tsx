@@ -48,17 +48,14 @@ function NotFound() {
 
   return (
     <>
-      <main className="biz-flex biz-flex-col biz-items-center biz-justify-center biz-p-24 biz-min-h-screen">
-        <div className="biz-flex biz-justify-center biz-items-center biz-text-gray-text biz-mb-8">
+      <main className="flex flex-col items-center justify-center p-24 min-h-screen">
+        <div className="flex justify-center items-center text-gray-text mb-8">
           <img src={LogoNofrixion} alt="Nofrixion Logo" width={200} height={200} />
         </div>
         <h3>
           No route exists for <code>{location.pathname}</code>
         </h3>
-        <Button
-          className="biz-flex biz-mx-auto biz-py-3 biz-px-[24px] biz-mt-8"
-          onClick={() => navigate('/home')}
-        >
+        <Button className="flex mx-auto py-3 px-[24px] mt-8" onClick={() => navigate('/home')}>
           {'Return to home page'}
         </Button>
       </main>
