@@ -11,7 +11,7 @@ import DateRangeButton from './DateRangeButton'
 import DateRangeInput from './DateRangeInput'
 
 const pillClasses =
-  'text-default-text leading-6 hover:text-grey-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-defaultText hover:stroke-control-grey'
+  'text-default-text leading-6 hover:text-grey-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-default-text hover:stroke-control-grey'
 
 export type DateRange = {
   fromDate: Date

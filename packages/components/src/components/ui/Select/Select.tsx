@@ -24,7 +24,7 @@ const Select: React.FC<SelectProps> = ({ options, selected: selectedOption, onCh
       <div className="relative">
         <Listbox.Button className="relative w-full cursor-default rounded-md bg-white p-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-transparent focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-green text-sm/4 px-3 py-4 border border-border-grey font-medium">
           <span className="block truncate pr-2">{selectedOption.label}</span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 stroke-defaultText hover:stroke-control-grey">
+          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 stroke-default-text hover:stroke-control-grey">
             <svg
               width="10"
               height="8"

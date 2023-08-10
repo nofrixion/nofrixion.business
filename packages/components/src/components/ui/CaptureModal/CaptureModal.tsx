@@ -69,10 +69,10 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
             <Icon name="back/24" />
           </button>
-          <span className="block text-2xl font-semibold text-defaultText mt-8">
+          <span className="block text-2xl font-semibold text-default-text mt-8">
             Confirm card payment capture
           </span>
-          <p className="mt-12 text-defaultText text-sm font-normal">
+          <p className="mt-12 text-default-text text-sm font-normal">
             You are about to capture the card payment made
             {contactName && <span className="font-semibold">{` by ${contactName}`}</span>} on{' '}
             <span className="font-semibold">{format(transactionDate, 'MMM do, yyyy')}</span>

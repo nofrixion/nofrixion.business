@@ -72,7 +72,7 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
         </span>
         <MaskedInput
           className={cn(
-            'block w-full pl-7 rounded font-normal text-sm text-defaultText appearance-none',
+            'block w-full pl-7 rounded font-normal text-sm text-default-text appearance-none',
             {
               'mr-1': allowCurrencyChange,
               'pr-2 text-right text-xl leading-5 font-semibold': !allowCurrencyChange,
