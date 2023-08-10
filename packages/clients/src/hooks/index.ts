@@ -1,5 +1,6 @@
 export { useAccounts } from './useAccounts'
 export { useBanks } from './useBanks'
+export { useCapture } from './useCapture'
 export { useMerchants } from './useMerchants'
 export { useMerchantTags } from './useMerchantTags'
 export { usePaymentRequest } from './usePaymentRequest'
