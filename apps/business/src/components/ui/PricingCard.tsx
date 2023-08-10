@@ -30,46 +30,44 @@ const PricingCard: React.FC<PricingCardProps> = ({
   }
 
   return (
-    <div className="biz-flex biz-flex-col biz-items-center biz-py-10 biz-px-6 biz-shrink-0 biz-w-80 biz-h-[650px] biz-rounded-lg biz-bg-white biz-mb-16">
-      <div className="biz-flex biz-flex-col biz-items-center biz-h-full">
-        <h6 className="biz-font-bold biz-tracking-[0.75px] biz-uppercase biz-mb-4">{title}</h6>
-        <div className="biz-mb-6">
-          <span className="biz-text-[#05C7C6] biz-text-[40px] biz-font-semibold biz-mr-1">
-            € {price}
-          </span>
+    <div className="flex flex-col items-center py-10 px-6 shrink-0 w-80 h-[650px] rounded-lg bg-white mb-16">
+      <div className="flex flex-col items-center h-full">
+        <h6 className="font-bold tracking-[0.75px] uppercase mb-4">{title}</h6>
+        <div className="mb-6">
+          <span className="text-[#05C7C6] text-[40px] font-semibold mr-1">€ {price}</span>
 
-          <span className="biz-text-gray-text ">/month</span>
+          <span className="text-gray-text ">/month</span>
         </div>
 
-        <div className="biz-mb-6 biz-text-center">
-          <div className="biz-text-[#00264D] biz-text-[13px] biz-font-normal biz-leading-[15.73px] biz-h-[32px]">
+        <div className="mb-6 text-center">
+          <div className="text-[#00264D] text-[13px] font-normal leading-[15.73px] h-[32px]">
             {extraTitle}
           </div>
         </div>
 
-        <div className="biz-mb-8 biz-w-full biz-flex">
+        <div className="mb-8 w-full flex">
           {!isInterested ? (
-            <Button className="biz-mx-auto biz-py-3 biz-px-[24px]" onClick={onInterested}>
+            <Button className="mx-auto py-3 px-[24px]" onClick={onInterested}>
               {'Contact me about this pack'}
             </Button>
           ) : (
             <InfoBox
-              className="biz-w-full biz-py-2"
+              className="w-full py-2"
               title="Thanks!"
               message="Our sales team will contact you soon."
             />
           )}
         </div>
 
-        <div className="biz-mb-8 biz-h-[1px] biz-w-[120px] biz-bg-[#D5DBDD]">
+        <div className="mb-8 h-[1px] w-[120px] bg-[#D5DBDD]">
           <hr />
         </div>
 
-        {extraText && <p className="biz-mb-4 biz-text-sm/6 biz-mr-auto">{formatText(extraText)}</p>}
+        {extraText && <p className="mb-4 text-sm/6 mr-auto">{formatText(extraText)}</p>}
 
         {items && items.length > 0 && (
           <ul
-            className="biz-pl-5 biz-text-sm/6"
+            className="pl-5 text-sm/6"
             style={{
               listStyleImage: `url('${IconListCheck}')`,
             }}

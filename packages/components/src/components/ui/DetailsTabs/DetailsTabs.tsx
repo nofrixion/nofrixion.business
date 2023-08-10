@@ -53,7 +53,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
             return (
               <Tabs.Trigger
                 key={tab}
-                className="relative w-full h-10 select-none text-sm/6 text-greyText transition hover:text-default-text data-[state=active]:text-default-text"
+                className="relative w-full h-10 select-none text-sm/6 text-grey-text transition hover:text-default-text data-[state=active]:text-default-text"
                 value={tab}
               >
                 {tab}
@@ -61,17 +61,17 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
                 {selectedTab == tab ? (
                   <motion.div
                     layoutId="underline"
-                    className={classNames(underlineClasses, 'bg-primaryGreen z-10')}
+                    className={classNames(underlineClasses, 'bg-primary-green z-10')}
                   />
                 ) : (
-                  <div className={classNames(underlineClasses, 'bg-borderGrey')} />
+                  <div className={classNames(underlineClasses, 'bg-border-grey')} />
                 )}
 
                 {/* 
                   Underline for when the animation is happening
                   so that the underline doesn't disappear
                 */}
-                <div className={classNames(underlineClasses, 'bg-borderGrey')} />
+                <div className={classNames(underlineClasses, 'bg-border-grey')} />
               </Tabs.Trigger>
             )
           })}

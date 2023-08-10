@@ -31,7 +31,7 @@ const ActiveFilterControl: React.FC<ActiveFilterControlProps> = ({ label, onClic
   }
 
   return (
-    <div className="inline-flex space-x-2 px-2 items-center rounded-full border border-solid border-borderGreyHighlighted">
+    <div className="inline-flex space-x-2 px-2 items-center rounded-full border border-solid border-border-grey-highlighted">
       <span className="text-default-text text-sm leading-6">{label}</span>
       <div onPointerDown={onClose}>
         <img src={closeIcon} alt="Close" title="Close" className="w-2 h-2" />
@@ -58,7 +58,7 @@ const AmountFilter: React.FC<AmountFilterProps> = ({
   const [isFiltered, setIsFiltered] = useState<boolean>(false)
 
   const commonInputClassNames =
-    'outline-none border border-solid border-borderGrey rounded px-2 py-1 appearance-none'
+    'outline-none border border-solid border-border-grey rounded px-2 py-1 appearance-none'
 
   const maskOptions = {
     prefix: '',

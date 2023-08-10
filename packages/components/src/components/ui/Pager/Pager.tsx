@@ -62,8 +62,8 @@ const Pager = ({ pageSize, totalRecords, onPageChange }: PagerProps) => {
   }
 
   const svgClassNames = (show: boolean) => {
-    return classNames('h-3 w-3 mt-1 ml-1 stroke-controlGrey', {
-      'cursor-pointer hover:stroke-controlGreyHover': show,
+    return classNames('h-3 w-3 mt-1 ml-1 stroke-control-grey', {
+      'cursor-pointer hover:stroke-control-grey-hover': show,
     })
   }
 

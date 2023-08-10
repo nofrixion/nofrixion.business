@@ -69,7 +69,7 @@ const PaymentRequestDetails = ({
                 </span>
               )}
               {paymentRequest.description && (
-                <span className="text-sm leading-[1.313rem] font-normal text-greyText">
+                <span className="text-sm leading-[1.313rem] font-normal text-grey-text">
                   {paymentRequest.description}
                 </span>
               )}

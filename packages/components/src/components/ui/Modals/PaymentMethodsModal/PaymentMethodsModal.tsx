@@ -1,6 +1,6 @@
 import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
 import { AnimatePresence } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import BankIcon from '../../../../assets/icons/bank-icon.svg'
 import BitcoinIcon from '../../../../assets/icons/bitcoin-icon.svg'
@@ -199,7 +199,7 @@ const PaymentMethodsModal = ({
 
   const ValidationAlert: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     return (
-      <div className="w-full p-3 mt-6 bg-warningYellow rounded">
+      <div className="w-full p-3 mt-6 bg-warning-yellow rounded">
         <p className="text-sm text-default-text font-normal">{children}</p>
       </div>
     )
@@ -217,7 +217,7 @@ const PaymentMethodsModal = ({
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
     >
-      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-borderGrey">
+      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey">
         <Switch
           icon={ApplePayIcon}
           label="Apple Pay / Google Pay"

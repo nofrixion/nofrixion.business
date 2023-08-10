@@ -12,25 +12,25 @@ export interface PricingPayByBank {
 
 const PricingCardPayByBank: React.FC<PricingPayByBankProps> = ({ payByBankPricing }) => {
   return (
-    <div className="sm:biz-p-6 md:biz-p-8 lg:biz-p-10 biz-p-4 2xl:biz-w-[649px] md:biz-w-[521.47px]">
-      <div className="biz-mb-4">
-        <span className="biz-text-[#00264D] biz-text-xl biz-leading-10 biz-font-semibold">
+    <div className="sm:p-6 md:p-8 lg:p-10 p-4 2xl:w-[649px] md:w-[521.47px]">
+      <div className="mb-4">
+        <span className="text-[#00264D] text-xl leading-10 font-semibold">
           Pay by bank cost per fulfilled transaction
         </span>
       </div>
 
       {payByBankPricing && payByBankPricing.length > 0 && (
-        <div className="biz-flex biz-flex-col">
+        <div className="flex flex-col">
           {payByBankPricing.map((item, index) => (
             <div
               key={index}
-              className="biz-flex biz-flex-row biz-border-b biz-border-[#D5DBDD] biz-text-[#00264D] biz-font-normal biz-text-base biz-py-1"
+              className="flex flex-row border-b border-[#D5DBDD] text-[#00264D] font-normal text-base py-1"
             >
-              <div className="biz-leading-10 biz-w-6/12">{item.limit} </div>
-              <div className="biz-leading-9 biz-text-xs biz-text-[#143252] biz-align-middle biz-w-3/12">
+              <div className="leading-10 w-6/12">{item.limit} </div>
+              <div className="leading-9 text-xs text-[#143252] align-middle w-3/12">
                 {item.feeCondition}{' '}
               </div>
-              <div className="biz-leading-9 biz-font-semibold biz-text-right biz-w-3/12">
+              <div className="leading-9 font-semibold text-right w-3/12">
                 €{formatAmount(item.amount)}
               </div>
             </div>
@@ -38,8 +38,8 @@ const PricingCardPayByBank: React.FC<PricingPayByBankProps> = ({ payByBankPricin
         </div>
       )}
 
-      <div className="biz-text-right biz-mt-2">
-        <span className="biz-text-[#73808C] biz-leading-6 biz-text-xs biz-font-normal">
+      <div className="text-right mt-2">
+        <span className="text-[#73808C] leading-6 text-xs font-normal">
           For GBP payments the same fee schedule applies in GBP.
         </span>
       </div>

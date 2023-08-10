@@ -16,7 +16,7 @@ const DropdownMenuSub = DropdownMenuPrimitive.Sub
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
 const itemClassname =
-  'biz-text-sm/8 biz-flex biz-select-none biz-outline-none data-[highlighted]:biz-text-nav-accent focus:biz-text-nav-accent biz-cursor-pointer biz-py-2 data-[disabled]:biz-opacity-50 data-[disabled]:biz-cursor-not-allowed'
+  'text-sm/8 flex select-none outline-none data-[highlighted]:text-nav-accent focus:text-nav-accent cursor-pointer py-2 data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed'
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
@@ -29,7 +29,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
 >(({ className, icon, children, ...props }, ref) => (
   <DropdownMenuPrimitive.SubTrigger ref={ref} className={cn(itemClassname, className)} {...props}>
     {icon && (
-      <div className="biz-mr-3 biz-my-auto">
+      <div className="mr-3 my-auto">
         <img src={icon.src} alt={icon.alt} />
       </div>
     )}
@@ -44,7 +44,7 @@ const DropdownMenuSubContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.SubContent
     ref={ref}
-    className={cn('biz-bg-dark-bg biz-rounded-lg biz-py-4 biz-px-6 biz-text-white', className)}
+    className={cn('bg-dark-bg rounded-lg py-4 px-6 text-white', className)}
     {...props}
   />
 ))
@@ -58,10 +58,7 @@ const DropdownMenuContent = React.forwardRef<
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
-      className={cn(
-        'biz-min-w-[140px] biz-bg-dark-bg biz-rounded-lg biz-py-4 biz-pl-8 biz-pr-10 biz-text-white',
-        className,
-      )}
+      className={cn('min-w-[140px] bg-dark-bg rounded-lg py-4 pl-8 pr-10 text-white', className)}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
@@ -80,7 +77,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item ref={ref} className={cn(itemClassname, className)} {...props}>
     <>
       {icon && (
-        <div className="biz-mr-3 biz-my-auto">
+        <div className="mr-3 my-auto">
           <img src={icon.src} alt={icon.alt} />
         </div>
       )}

@@ -113,7 +113,7 @@ const PaymentNotificationsModal = ({
           )}
         </AnimatePresence>
       </div>
-      <div className="mt-2 text-greyText font-normal text-xs">
+      <div className="mt-2 text-grey-text font-normal text-xs">
         Use commas to include more than one email address.
       </div>
     </CustomModal>

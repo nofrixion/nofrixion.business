@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import { MouseEventHandler } from 'react'
 
 const svgClassNames = (disabled: boolean) => {
-  return classNames('h-3 w-3 stroke-controlGrey', {
+  return classNames('h-3 w-3 stroke-control-grey', {
     'cursor-default': disabled,
-    'cursor-pointer group-hover:stroke-controlGreyHover': !disabled,
+    'cursor-pointer group-hover:stroke-control-grey-hover': !disabled,
   })
 }
 

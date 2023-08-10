@@ -57,23 +57,21 @@ const DashboardPage = () => {
 
   if (isAccountsLoading || isMetricsLoading) {
     return (
-      <div className="biz-flex biz-justify-center biz-items-center biz-h-full">
-        <Loader className="biz-flex biz-items-center biz-justify-center biz-p-24 biz-min-h-screen" />
+      <div className="flex justify-center items-center h-full">
+        <Loader className="flex items-center justify-center p-24 min-h-screen" />
       </div>
     )
   }
 
   return (
     <>
-      <h1 className="biz-text-[1.75rem]/8 biz-font-medium biz-mb-8 md:biz-mb-16">
-        Your current status
-      </h1>
-      <div className="md:-biz-mx-4">
-        <div className="-biz-mx-8 md:-biz-mx-14 biz-px-8 md:biz-px-14">
+      <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16">Your current status</h1>
+      <div className="md:-mx-4">
+        <div className="-mx-8 md:-mx-14 px-8 md:px-14">
           {!isAccountsLoading && accounts && <AccountsCarousel accounts={accounts} />}
         </div>
 
-        <div className="biz-flex biz-flex-col lg:biz-flex-row biz-gap-4 biz-mt-4">
+        <div className="flex flex-col lg:flex-row gap-4 mt-4">
           <AcountsReceivableCard
             onShowViewAll={() => {
               navigate('accounts-receivable')

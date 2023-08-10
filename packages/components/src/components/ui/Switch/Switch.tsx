@@ -21,7 +21,7 @@ const Switch = ({ label, value, icon, className, onChange }: SwitchProps) => {
           checked={value}
           onChange={onChange}
           className={`${
-            value ? 'bg-primaryGreen' : 'bg-borderGrey'
+            value ? 'bg-primary-green' : 'bg-border-grey'
           } relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 ease-in-out`}
         >
           <span

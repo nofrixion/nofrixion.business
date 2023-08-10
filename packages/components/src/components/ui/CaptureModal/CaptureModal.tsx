@@ -1,9 +1,9 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
-import classNames from 'classnames'
 import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
+import { cn } from '../../../utils'
 import { localCurrency } from '../../../utils/constants'
 import { Icon } from '../atoms'
 import InputAmountField from '../InputAmountField/InputAmountField'
@@ -72,10 +72,10 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
             <Icon name="back/24" />
           </button>
-          <span className="block text-2xl font-semibold text-defaultText mt-8">
+          <span className="block text-2xl font-semibold text-default-text mt-8">
             Confirm card payment capture
           </span>
-          <p className="mt-12 text-defaultText text-sm font-normal">
+          <p className="mt-12 text-default-text text-sm font-normal">
             You are about to capture the card payment made
             {contactName && <span className="font-semibold">{` by ${contactName}`}</span>} on{' '}
             <span className="font-semibold">{format(transactionDate, 'MMM do, yyyy')}</span>
@@ -91,7 +91,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           </p>
           <div className="mt-12 md:flex">
             <div className="md:w-[152px]">
-              <span className="text-sm leading-8 font-normal text-greyText md:leading-[48px]">
+              <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
                 Capture
               </span>
             </div>
@@ -105,7 +105,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                   onChange={(e) => setAmountToCapture(e.target.value)}
                 ></InputAmountField>
               </div>
-              <span className="mt-2 block text-13px leading-5 font-normal text-greyText">
+              <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                 There are {getCurrencySymbol(currency)} {formatter.format(maxCapturableAmount)}{' '}
                 remaining to capture.
               </span>
@@ -125,7 +125,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           </div>
           <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
             <button
-              className={classNames(
+              className={cn(
                 'justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]',
                 {
                   '!bg-greyText disabled:!opacity-100 cursor-not-allowed': isCaptureButtonDisabled,

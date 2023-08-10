@@ -10,32 +10,30 @@ export interface PricingAccounts {
 
 const PricingCardAccounts: React.FC<PricingAccountsProps> = ({ accountPricing }) => {
   return (
-    <div className="sm:biz-p-6 md:biz-p-8 lg:biz-p-10 biz-p-4 2xl:biz-w-[649px] md:biz-w-[521.47px]">
-      <div className="biz-mb-4">
-        <span className="biz-text-[#00264D] biz-text-xl biz-leading-10 biz-font-semibold">
-          Accounts
-        </span>
+    <div className="sm:p-6 md:p-8 lg:p-10 p-4 2xl:w-[649px] md:w-[521.47px]">
+      <div className="mb-4">
+        <span className="text-[#00264D] text-xl leading-10 font-semibold">Accounts</span>
       </div>
 
       {accountPricing && accountPricing.length > 0 && (
-        <div className="biz-flex biz-flex-col">
+        <div className="flex flex-col">
           {accountPricing.map((item, index) => (
             <div
               key={index}
-              className="biz-flex biz-flex-row biz-border-b biz-border-[#D5DBDD] biz-text-[#00264D] biz-font-normal biz-text-base biz-leading-10 biz-py-1"
+              className="flex flex-row border-b border-[#D5DBDD] text-[#00264D] font-normal text-base leading-10 py-1"
             >
-              <div className="biz-w-5/12 biz-leading-10">{item.limit} </div>
-              <div className="biz-text-xs biz-text-[#143252]  biz-w-5/12 biz-px-1 biz-leading-10">
+              <div className="w-5/12 leading-10">{item.limit} </div>
+              <div className="text-xs text-[#143252]  w-5/12 px-1 leading-10">
                 {item.feeCondition && item.amount && <span>{item.feeCondition}</span>}
               </div>
-              <div className="biz-font-semibold biz-text-right biz-w-2/12 biz-leading-10">
+              <div className="font-semibold text-right w-2/12 leading-10">
                 {item.amount ? (
                   <span>
                     €{item.amount}
-                    <span className="biz-font-normal">/year</span>
+                    <span className="font-normal">/year</span>
                   </span>
                 ) : (
-                  <span className="biz-text-[#29A37A]">{item.feeCondition}</span>
+                  <span className="text-[#29A37A]">{item.feeCondition}</span>
                 )}
               </div>
             </div>

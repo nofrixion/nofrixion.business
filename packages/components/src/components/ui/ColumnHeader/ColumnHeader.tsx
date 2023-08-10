@@ -39,8 +39,8 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
       >
         <svg
           className={classNames({
-            'stroke-controlGreyHover': sortDirection === SortDirection.ASC,
-            'stroke-controlGrey':
+            'stroke-control-grey-hover': sortDirection === SortDirection.ASC,
+            'stroke-control-grey':
               sortDirection === SortDirection.NONE || sortDirection === SortDirection.DESC,
           })}
           width="10"
@@ -53,8 +53,8 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
         </svg>
         <svg
           className={classNames({
-            'stroke-controlGreyHover': sortDirection === SortDirection.DESC,
-            'stroke-controlGrey':
+            'stroke-control-grey-hover': sortDirection === SortDirection.DESC,
+            'stroke-control-grey':
               sortDirection === SortDirection.NONE || sortDirection === SortDirection.ASC,
           })}
           width="10"

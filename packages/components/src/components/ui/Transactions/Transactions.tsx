@@ -1,5 +1,4 @@
 import { Currency } from '@nofrixion/moneymoov'
-import classNames from 'classnames'
 import { format } from 'date-fns'
 import { Fragment } from 'react'
 
@@ -9,6 +8,7 @@ import {
   SubTransactionType,
 } from '../../../types/LocalEnums'
 import { LocalPaymentAttempt } from '../../../types/LocalTypes'
+import { cn } from '../../../utils'
 import {
   getSubTransactions,
   hasRefundOrCaptureAttempts,
@@ -37,12 +37,12 @@ const PaymentMethodIcon = ({
       switch (wallet) {
         case LocalWallets.ApplePay:
         case LocalWallets.GooglePay:
-          return <Icon name="wallets/24" className="text-controlGreyHover" />
+          return <Icon name="wallets/24" className="text-control-grey-hover" />
         default:
-          return <Icon name="card/24" className="text-controlGreyHover" />
+          return <Icon name="card/24" className="text-control-grey-hover" />
       }
     case LocalPaymentMethodTypes.Pisp:
-      return <Icon name="bank/24" className="text-controlGreyHover" />
+      return <Icon name="bank/24" className="text-control-grey-hover" />
     case LocalPaymentMethodTypes.ApplePay:
     case LocalPaymentMethodTypes.GooglePay:
       return <Icon name="wallets/24" />
@@ -72,12 +72,12 @@ const Transactions = ({
             {transactions.map((transaction, index) => (
               <Fragment key={index}>
                 <tr
-                  className={classNames('group whitespace-nowrap', {
+                  className={cn('group whitespace-nowrap', {
                     'border-b': !hasRefundOrCaptureAttempts(transaction),
                   })}
                 >
                   <td
-                    className={classNames('text-[0.813rem] pb-2 leading-6', {
+                    className={cn('text-[0.813rem] pb-2 leading-6', {
                       'pt-2': index !== 0,
                     })}
                   >
@@ -92,7 +92,7 @@ const Transactions = ({
                     </span>
                   </td>
                   <td
-                    className={classNames('pl-2 lg:pl-6 pb-2 text-right', { 'pt-2': index !== 0 })}
+                    className={cn('pl-2 lg:pl-6 pb-2 text-right', { 'pt-2': index !== 0 })}
                   >
                     <span className="mr-2 text-sm font-medium leading-6 tabular-nums">
                       <span className="lg:hidden">
@@ -104,12 +104,12 @@ const Transactions = ({
                       }).format(Number(transaction.amount))}
                     </span>
                   </td>
-                  <td className={classNames('hidden lg:table-cell pb-2', { 'pt-2': index !== 0 })}>
-                    <span className="text-greyText font-normal text-[0.813rem] leading-6">
+                  <td className={cn('hidden lg:table-cell pb-2', { 'pt-2': index !== 0 })}>
+                    <span className="text-grey-text font-normal text-[0.813rem] leading-6">
                       {transaction.currency}
                     </span>
                   </td>
-                  <td className={classNames('pl-2 lg:pl-6 pb-2', { 'pt-2': index !== 0 })}>
+                  <td className={cn('pl-2 lg:pl-6 pb-2', { 'pt-2': index !== 0 })}>
                     <div className="flex flex-row items-center">
                       <span className="mr-2">
                         <PaymentMethodIcon
@@ -132,7 +132,7 @@ const Transactions = ({
                     </div>
                   </td>
                   <td
-                    className={classNames('pl-2 pb-2 lg:pl-6 leading-6', {
+                    className={cn('pl-2 pb-2 lg:pl-6 leading-6', {
                       'pt-2': index !== 0,
                     })}
                   >
@@ -140,14 +140,14 @@ const Transactions = ({
                       {isCaptureable(transaction) && (
                         <button
                           type="button"
-                          className="text-white text-13px leading-4 bg-primaryGreen hover:bg-primaryGreenHover rounded-full px-2 py-1 transition-colors"
+                          className="text-white text-13px leading-4 bg-primary-green hover:bg-primary-green-hover rounded-full px-2 py-1 transition-colors"
                           onClick={() => onCapture(transaction)}
                         >
                           Capture
                         </button>
                       )}
                       {transaction.status === 'authorized' && (
-                        <span className="text-greyText text-[10px] leading-4 block px-1 border rounded border-solid border-borderGreyHighlighted">
+                        <span className="text-grey-text text-[10px] leading-4 block px-1 border rounded border-solid border-border-grey-highlighted">
                           Authorized
                         </span>
                       )}
@@ -165,7 +165,7 @@ const Transactions = ({
                         subTransaction.type !== SubTransactionType.Capture)) && (
                       <tr
                         key={`ev_${evIndex}`}
-                        className={classNames('text-xs leading-6 group whitespace-nowrap', {
+                        className={cn('text-xs leading-6 group whitespace-nowrap', {
                           'border-b [&>td]:pb-2':
                             evIndex === getSubTransactions(transaction).length - 1,
                         })}
@@ -185,7 +185,7 @@ const Transactions = ({
                         </td>
                         <td className="pl-2 lg:pl-6 text-right py-0">
                           <span
-                            className={classNames('mr-2 font-medium tabular-nums ', {
+                            className={cn('mr-2 font-medium tabular-nums ', {
                               'text-[#29A37A]': subTransaction.type === SubTransactionType.Capture,
                             })}
                           >
@@ -197,7 +197,7 @@ const Transactions = ({
                           </span>
                         </td>
                         <td className="hidden lg:table-cell py-0">
-                          <span className="text-greyText font-normal">
+                          <span className="text-grey-text font-normal">
                             {subTransaction.currency}
                           </span>
                         </td>
@@ -205,7 +205,7 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="capture/12" className="text-controlGreyHover" />
+                                <Icon name="capture/12" className="text-control-grey-hover" />
                               </span>
                               <span>Captured</span>
                             </div>
@@ -215,7 +215,7 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="return/12" className="text-controlGreyHover" />
+                                <Icon name="return/12" className="text-control-grey-hover" />
                               </span>
                               <span>Refund</span>
                             </div>

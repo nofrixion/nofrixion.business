@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-
 import BankDisabledIcon from '../../../assets/icons/bank-disabled.svg'
 import BankIcon from '../../../assets/icons/bank-icon.svg'
 import BitcoinDisabledIcon from '../../../assets/icons/bitcoin-disabled.svg'
@@ -8,6 +6,7 @@ import CardDisabledIcon from '../../../assets/icons/card-disabled.svg'
 import CardIcon from '../../../assets/icons/card-icon.svg'
 import WalletDisabledIcon from '../../../assets/icons/wallet-disabled.svg'
 import WalletIcon from '../../../assets/icons/wallet-icon.svg'
+import { cn } from '../../../utils'
 import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 interface PaymentMethodIconProps {
@@ -65,7 +64,7 @@ const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
 
   return (
     <InfoTooltip
-      className={classNames(defaultIconClassNames, iconClassNames)}
+      className={cn(defaultIconClassNames, iconClassNames)}
       content={
         showInfoTooltip ? getIconDescription(paymentMethodsName[paymentMethod], enabled) : ''
       }

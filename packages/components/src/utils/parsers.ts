@@ -274,7 +274,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
     status: parseApiStatusToLocalStatus(status),
     createdAt: new Date(inserted),
     contact: {
-      name: addresses.length ? `${addresses[0].firstName ?? ''} ${addresses[0].lastName ?? ''}`.trim() : undefined,
+      name: addresses.length
+        ? `${addresses[0].firstName ?? ''} ${addresses[0].lastName ?? ''}`.trim()
+        : undefined,
       email: customerEmailAddress ?? undefined,
     },
     amount: amount,

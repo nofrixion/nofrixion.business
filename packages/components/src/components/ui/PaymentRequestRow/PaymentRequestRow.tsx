@@ -74,13 +74,13 @@ const Row = ({
             >
               <div className="ml-auto mr-11 space-x-1">
                 <button
-                  className="bg-negativeRed rounded px-5 py-2 text-white font-normal text-sm hover:bg-darkerNegativeRed"
+                  className="bg-negative-red rounded px-5 py-2 text-white font-normal text-sm hover:bg-darker-negative-red"
                   onClick={onConfirmDeletePaymentRequestClicked}
                 >
                   Delete
                 </button>
                 <button
-                  className="bg-white rounded px-5 py-2 text-default-text font-normal text-sm hover:text-greyText"
+                  className="bg-white rounded px-5 py-2 text-default-text font-normal text-sm hover:text-grey-text"
                   onClick={onCancelDeletingPaymentRequestClicked}
                 >
                   Cancel
@@ -113,7 +113,7 @@ const Row = ({
       </td>
 
       <td className={`py-3 custom-backdrop-blur-${id}`}>
-        <span className="text-greyText text-sm block">{currency}</span>
+        <span className="text-grey-text text-sm block">{currency}</span>
       </td>
 
       <td className={classNames(commonTdClasses, `text-right pr-1.5 custom-backdrop-blur-${id}`)}>

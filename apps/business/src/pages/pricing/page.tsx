@@ -124,16 +124,14 @@ const PricingPage: React.FC = () => {
 
   return (
     <>
-      <h1 className="biz-text-[1.75rem]/8 biz-font-medium biz-mb-[10px]">
-        MoneyMoov for Business Packages
-      </h1>
-      <span className="biz-flex biz-text-[#00264D] biz-text-base biz-mb-12">
+      <h1 className="text-[1.75rem]/8 font-medium mb-[10px]">MoneyMoov for Business Packages</h1>
+      <span className="flex text-[#00264D] text-base mb-12">
         Pricing for up to 5 users. Contact us for Larger / Enterprise pricing.
       </span>
 
-      <div className="-biz-mx-8 md:-biz-mx-[72px]">
+      <div className="-mx-8 md:-mx-[72px]">
         <ScrollArea>
-          <div className="biz-flex biz-gap-4 biz-px-8 md:biz-px-14">
+          <div className="flex gap-4 px-8 md:px-14">
             {pricingCards.map((card, index) => (
               <PricingCard
                 key={index}
@@ -147,25 +145,25 @@ const PricingPage: React.FC = () => {
         </ScrollArea>
       </div>
 
-      <div className="biz-mb-8 biz-pl-6">
-        <span className="biz-flex biz-text-[#00264D] biz-text-sm biz-leading-6">
+      <div className="mb-8 pl-6">
+        <span className="flex text-[#00264D] text-sm leading-6">
           + Additional SEPA transactions: €0.25 / transaction.
         </span>
       </div>
 
-      {/*<div className="biz-flex biz-flex-wrap xl:biz-h-[214px] biz-bg-white biz-flex-row biz-p-6">
-        <div className="biz-pr-8 biz-w-[301px] md:biz-pb-4 biz-pb-4">
-          <div className="biz-text-[#05C7C6] biz-leading-[43.57px] biz-font-semibold biz-text-4xl biz-mb-4">
+      {/*<div className="flex flex-wrap xl:h-[214px] bg-white flex-row p-6">
+        <div className="pr-8 w-[301px] md:pb-4 pb-4">
+          <div className="text-[#05C7C6] leading-[43.57px] font-semibold text-4xl mb-4">
             PAY-PER-USE
           </div>
-          <span className="biz-leading-5 biz-font-normal biz-text-[13px]">
+          <span className="leading-5 font-normal text-[13px]">
             For customers using our ecommerce plugins or through direct API
             access.
           </span>
         </div>
-        <div className="biz-pr-8 biz-w-[596px] md:biz-pb-4 biz-pb-4">
+        <div className="pr-8 w-[596px] md:pb-4 pb-4">
           <ul
-            className="biz-pl-5 biz-text-sm/6"
+            className="pl-5 text-sm/6"
             style={{
               listStyleImage: `url('${IconListCheck.src}')`,
             }}
@@ -175,17 +173,17 @@ const PricingPage: React.FC = () => {
             ))}
           </ul>
         </div>
-        <div className="2xl:biz-w-[382.84px] xl:biz-w-[182.84px] biz-w-full biz-text-right md:biz-py-4 md:biz-pr-6">
+        <div className="2xl:w-[382.84px] xl:w-[182.84px] w-full text-right md:py-4 md:pr-6">
           {!isInterested ? (
             <Button
-              className="biz-mx-auto biz-py-3 biz-px-6"
+              className="mx-auto py-3 px-6"
               onClick={onPayPerUseClick}
             >
               {"Request"}
             </Button>
           ) : (
             <InfoBox
-              className="biz-text-left biz-w-full biz-py-3 biz-px-6"
+              className="text-left w-full py-3 px-6"
               title="Thanks!"
               message="Our sales team will contact you soon."
             />
@@ -193,11 +191,11 @@ const PricingPage: React.FC = () => {
         </div>
           </div>*/}
 
-      <div className="biz-mb-4 biz-mt-12">
-        <h1 className="biz-text-[1.75rem]/8 biz-font-medium biz-mb-[10px]">Addtional Fees</h1>
+      <div className="mb-4 mt-12">
+        <h1 className="text-[1.75rem]/8 font-medium mb-[10px]">Addtional Fees</h1>
       </div>
 
-      <div className="biz-flex biz-flex-wrap biz-mb-4">
+      <div className="flex flex-wrap mb-4">
         <PricingCardPayByBank payByBankPricing={pricingPayByBank.payByBankPricing} />
         <PricingCardAccounts accountPricing={pricingAccounts.accountPricing} />
       </div>

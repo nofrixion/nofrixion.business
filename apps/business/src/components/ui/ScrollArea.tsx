@@ -12,25 +12,24 @@ const ScrollArea = forwardRef<
   React.ComponentPropsWithoutRef<typeof RadixScrollArea.Root> & ScrollAreaProps
 >(({ children, enableCustomScrollbar, ...props }, ref) => (
   <RadixScrollArea.Root {...props}>
-    <RadixScrollArea.Viewport ref={ref} className="biz-snap-x biz-snap-mandatory">
+    <RadixScrollArea.Viewport ref={ref} className="snap-x snap-mandatory">
       {children}
     </RadixScrollArea.Viewport>
     <RadixScrollArea.Scrollbar
       forceMount
       // forceMount={enableCustomScrollbar}
-      // biz-flex-col
+      // flex-col
       className={cn(
-        'biz-flex biz-select-none biz-overflow-hidden biz-touch-none biz-rounded-lg biz-bg-gray-100 biz-transition-colors biz-duration-[160ms] biz-ease-out hover:biz-bg-gray-200 biz-flex-col biz-h-2',
+        'flex select-none overflow-hidden touch-none rounded-lg bg-gray-100 transition-colors duration-[160ms] ease-out hover:bg-gray-200 flex-col h-2',
         {
-          'biz-hidden md:biz-flex biz-mt-4 biz-mx-auto !biz-relative biz-h-0.5 biz-w-40 biz-bg-[#E0E7EA]':
-            enableCustomScrollbar,
+          'hidden md:flex mt-4 mx-auto !relative h-0.5 w-40 bg-[#E0E7EA]': enableCustomScrollbar,
         },
       )}
       orientation="horizontal"
     >
       <RadixScrollArea.Thumb
-        className={cn('biz-flex-1 biz-rounded-lg biz-bg-gray-300', {
-          'biz-bg-[#477085]': enableCustomScrollbar,
+        className={cn('flex-1 rounded-lg bg-gray-300', {
+          'bg-[#477085]': enableCustomScrollbar,
         })}
       />
     </RadixScrollArea.Scrollbar>

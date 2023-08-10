@@ -43,32 +43,32 @@ const UserNav = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          className="!biz-ml-auto !biz-mr-8 md:!biz-mr-14 biz-relative biz-my-auto biz-text-white biz-flex"
+          className="!ml-auto !mr-8 md:!mr-14 relative my-auto text-white flex"
           aria-label="User settings"
         >
           {/* Merchant image */}
-          <div className="biz-hidden md:biz-flex biz-h-10 biz-w-10 biz-rounded-full biz-bg-white biz-justify-center biz-items-center">
+          <div className="hidden md:flex h-10 w-10 rounded-full bg-white justify-center items-center">
             <Avatar>
               <AvatarImage
-                className="biz-h-10 biz-w-10"
+                className="h-10 w-10"
                 src={merchantImage(merchant?.shortName ?? '')}
                 alt={`${merchant?.shortName} logo`}
               />
-              <AvatarFallback className="biz-text-black">
+              <AvatarFallback className="text-black">
                 {getAvatarName(merchant?.name || '')}
               </AvatarFallback>
             </Avatar>
           </div>
 
           {/* Merchant name */}
-          <div className="biz-ml-4 biz-flex biz-flex-col biz-items-start biz-mr-2 md:biz-mr-11">
-            <p className="biz-font-semibold">{merchant?.name ?? 'Merchant unknown'}</p>
-            <p className="biz-text-nav-accent biz-text-xs">
+          <div className="ml-4 flex flex-col items-start mr-2 md:mr-11">
+            <p className="font-semibold">{merchant?.name ?? 'Merchant unknown'}</p>
+            <p className="text-nav-accent text-xs">
               {user?.firstName} {user?.lastName}
             </p>
           </div>
 
-          <img src={IconSort} className="biz-my-auto" alt="Chevron Icon" />
+          <img src={IconSort} className="my-auto" alt="Chevron Icon" />
         </button>
       </DropdownMenuTrigger>
 
@@ -134,10 +134,7 @@ const UserNav = () => {
             Log out
           </DropdownMenuItem>
           {import.meta.env.version && (
-            <DropdownMenuItem
-              className="biz-text-[10px] biz-mt-4 biz-text-[#A6C8D9] biz-p-0"
-              disabled
-            >
+            <DropdownMenuItem className="text-[10px] mt-4 text-[#A6C8D9] p-0" disabled>
               Version {import.meta.env.version}
             </DropdownMenuItem>
           )}
