@@ -7,10 +7,31 @@ import { vitePlugin as utwm } from 'unplugin-tailwindcss-mangle'
 
 const builtClassesPrefix = 'nf-wc-'
 
+const preserveClassNames = [
+  // https://tailwindcss.com/docs/transition-timing-function start
+  // https://github.com/sonofmagic/tailwindcss-mangle/issues/21
+  'ease-out',
+  'ease-linear',
+  'ease-in',
+  'ease-in-out',
+  // https://tailwindcss.com/docs/transition-timing-function end
+]
+
+const includeClassNames = ['collapse']
+
 export default defineConfig({
   plugins: [
     react(),
     utwm({
+      mangleClassFilter(className) {
+        // If classname is in the preserveClassNames array, don't mangle it
+        if (preserveClassNames.includes(className)) return false
+
+        // If classname is in the includeClassNames array, mangle it
+        if (includeClassNames.includes(className)) return true
+
+        return /[:-]/.test(className)
+      },
       classGenerator: {
         classPrefix: builtClassesPrefix,
         customGenerate: (original, options) => {
