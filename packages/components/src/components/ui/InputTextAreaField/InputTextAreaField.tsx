@@ -59,12 +59,12 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
             </label>
 
             {required && (
-              <div className="text-greyText font-normal text-xs leading-4">REQUIRED</div>
+              <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
             )}
           </div>
           <textarea
             id={textId}
-            className="resize-none pl-3 pt-3 border border-borderGrey rounded-[0.25rem] h-28 inline-block font-normal text-sm text-default-text"
+            className="resize-none pl-3 pt-3 border border-border-grey rounded-[0.25rem] h-28 inline-block font-normal text-sm text-default-text"
             ref={ref}
             onChange={handleOnChange}
             onBlur={handleOnBlur}
@@ -73,7 +73,7 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
             {...props}
           />
           {maxLength && (
-            <div className="text-right mt-2 text-greyText font-normal text-[0.813rem] leading-5">
+            <div className="text-right mt-2 text-grey-text font-normal text-[0.813rem] leading-5">
               {value?.toString().length}/{maxLength}
             </div>
           )}

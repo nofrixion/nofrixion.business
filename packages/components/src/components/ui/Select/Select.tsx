@@ -22,9 +22,9 @@ const Select: React.FC<SelectProps> = ({ options, selected: selectedOption, onCh
       onChange={(value) => onChangeValue(options.find((o) => o.value === value) ?? options[0])}
     >
       <div className="relative">
-        <Listbox.Button className="relative w-full cursor-default rounded-md bg-white p-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-transparent focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-positiveActionBackground text-sm/4 px-3 py-4 border border-borderGrey font-medium">
+        <Listbox.Button className="relative w-full cursor-default rounded-md bg-white p-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-transparent focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-green text-sm/4 px-3 py-4 border border-border-grey font-medium">
           <span className="block truncate pr-2">{selectedOption.label}</span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 stroke-defaultText hover:stroke-controlGrey">
+          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 stroke-defaultText hover:stroke-control-grey">
             <svg
               width="10"
               height="8"
@@ -51,7 +51,7 @@ const Select: React.FC<SelectProps> = ({ options, selected: selectedOption, onCh
                 key={optionIdx}
                 className={({ active }) =>
                   `relative cursor-default select-none py-2 px-4 ${
-                    active ? 'bg-greyBg' : 'text-gray-900'
+                    active ? 'bg-grey-bg' : 'text-gray-900'
                   }`
                 }
                 value={option.value}

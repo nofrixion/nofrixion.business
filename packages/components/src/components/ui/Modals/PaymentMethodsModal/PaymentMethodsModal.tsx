@@ -157,7 +157,7 @@ const PaymentMethodsModal = ({
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
     >
-      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-borderGrey">
+      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey">
         <Switch
           icon={ApplePayIcon}
           label="Apple Pay / Google Pay"

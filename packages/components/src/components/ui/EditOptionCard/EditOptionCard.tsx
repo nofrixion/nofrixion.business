@@ -28,16 +28,16 @@ const EditOptionCard = ({
   return (
     <button
       className={classNames(
-        'bg-mainGrey group rounded-lg p-4 w-full flex flex-col text-sm/6 transition ease-in-out text-left',
+        'bg-main-grey group rounded-lg p-4 w-full flex flex-col text-sm/6 transition ease-in-out text-left',
         {
-          'hover:bg-greyBg': !isLoading,
+          'hover:bg-grey-bg': !isLoading,
           'cursor-default': isLoading,
         },
       )}
       onClick={handleOnClick}
     >
       <div className="flex flex-col md:flex-row w-full">
-        <span className="text-greyText mb-3.5 md:mb-0">{label}</span>
+        <span className="text-grey-text mb-3.5 md:mb-0">{label}</span>
 
         <div className="hidden md:block">
           <img
@@ -69,7 +69,7 @@ const EditOptionCard = ({
         )}
       </div>
       {!isLoading && details && details.length > 0 && (
-        <div className="flex flex-col mt-2 text-greyText text-xs md:ml-auto">
+        <div className="flex flex-col mt-2 text-grey-text text-xs md:ml-auto">
           {details?.map((detail, index) => {
             return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>
           })}

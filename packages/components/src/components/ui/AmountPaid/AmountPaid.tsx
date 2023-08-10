@@ -30,19 +30,19 @@ const AmountPaid = ({
         <div className="flex flex-row h-[0.125rem]">
           {percentagePaid !== 0 && (
             <div
-              className="bg-positiveActionBackground rounded-l-sm"
+              className="bg-primary-green rounded-l-sm"
               style={{ flexGrow: `${percentagePaid}` }}
             ></div>
           )}
           <div
-            className="bg-greyBg rounded-r-sm"
+            className="bg-grey-bg rounded-r-sm"
             style={{ flexGrow: `${100 - percentagePaid}` }}
           ></div>
         </div>
       )}
 
       {partialPaymentMethod === LocalPartialPaymentMethods.Partial && (
-        <span className="text-sm leading-[1.063rem] text-greyText font-medium mt-2">
+        <span className="text-sm leading-[1.063rem] text-grey-text font-medium mt-2">
           {currency == Currency.GBP ? '£' : '€'}
           <span>
             {new Intl.NumberFormat(navigator.language, {

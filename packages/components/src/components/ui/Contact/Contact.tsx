@@ -15,7 +15,7 @@ const nameVariants = cva('', {
   },
 })
 
-const emailVariants = cva('text-greyText', {
+const emailVariants = cva('text-grey-text', {
   variants: {
     size: {
       small: ['text-xs'],

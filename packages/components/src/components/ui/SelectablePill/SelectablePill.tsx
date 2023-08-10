@@ -44,9 +44,9 @@ const SelectablePill: React.FC<SelectablePillProps> = ({
         <label
           htmlFor={'rd-' + uniqueId}
           className={classNames(commonClassNames, {
-            'border-borderGrey hover:border-borderGreyHighlighted bg-white text-greyText':
+            'border-border-grey hover:border-border-grey-highlighted bg-white text-grey-text':
               !selected,
-            'border-selectedPill bg-selectedPill text-white': selected,
+            'border-selected-pill bg-selected-pill text-white': selected,
           })}
         >
           {label}

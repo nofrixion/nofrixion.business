@@ -408,9 +408,9 @@ const CreatePaymentRequestPage = ({
   const renderSettingsReview = () => {
     return (
       <>
-        <div className="h-px w-full bg-borderGrey mt-6 md:mt-12"></div>
+        <div className="h-px w-full bg-border-grey mt-6 md:mt-12"></div>
         <div className={classNames('mt-6 md:mt-12', reviewRowClassNames)}>
-          <span className="leading-6 text-greyText w-40 shrink-0">Settings</span>
+          <span className="leading-6 text-grey-text w-40 shrink-0">Settings</span>
           <div className="flex flex-col w-full space-y-4 md:space-y-6">
             <span className="text-sm/6">
               {!paymentConditionsFormValue.allowPartialPayments
@@ -438,7 +438,7 @@ const CreatePaymentRequestPage = ({
             </div>
 
             {availableMethodsDetails.length > 0 && (
-              <div className="flex flex-col text-greyText text-xs">
+              <div className="flex flex-col text-grey-text text-xs">
                 {availableMethodsDetails?.map((detail, index) => {
                   return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>
                 })}
@@ -446,7 +446,7 @@ const CreatePaymentRequestPage = ({
             )}
 
             {paymentNotificationsFormValue.emailAddresses && (
-              <div className="flex text-greyText text-xs">
+              <div className="flex text-grey-text text-xs">
                 <span>
                   Payment notification to{' '}
                   {formatEmailAddressesForSummary(paymentNotificationsFormValue.emailAddresses)}
@@ -469,7 +469,7 @@ const CreatePaymentRequestPage = ({
             {/* Amount */}
             {currency && amount && (
               <LayoutWrapper key="amount" className={reviewRowClassNames}>
-                <span className="leading-6 text-greyText w-40 shrink-0">Amount</span>
+                <span className="leading-6 text-grey-text w-40 shrink-0">Amount</span>
                 <span className="font-semibold text-[2rem]/8 w-full">
                   {currency == 'GBP' ? '£' : '€'} {amountValueWithCommas}
                   <sup className="ml-0.5 text-xl">.{amountDecimals}</sup>
@@ -480,7 +480,7 @@ const CreatePaymentRequestPage = ({
             {/* Product or service + description */}
             {(productOrService || description) && (
               <LayoutWrapper key="product-or-service-wrapper" className={reviewRowClassNames}>
-                <span className="leading-6 text-greyText w-40 shrink-0">Product/Service</span>
+                <span className="leading-6 text-grey-text w-40 shrink-0">Product/Service</span>
 
                 <div className="flex flex-col w-full">
                   {productOrService && (
@@ -503,7 +503,7 @@ const CreatePaymentRequestPage = ({
             {/* Name */}
             {(firstName || lastName || email) && (
               <LayoutWrapper key="from" className={reviewRowClassNames}>
-                <span className="leading-6 text-greyText w-40 shrink-0 break-words">Customer</span>
+                <span className="leading-6 text-grey-text w-40 shrink-0 break-words">Customer</span>
 
                 <div className="flex flex-col w-full">
                   {(firstName || lastName) && (
@@ -831,7 +831,7 @@ const CreatePaymentRequestPage = ({
                   </AnimatePresence>
 
                   {/* Right side */}
-                  <div className="hidden lg:block lg:flex-1 bg-mainGrey">
+                  <div className="hidden lg:block lg:flex-1 bg-main-grey">
                     {renderReviewSummary()}
                   </div>
                 </Dialog.Panel>

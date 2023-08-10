@@ -88,7 +88,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           </p>
           <div className="mt-12 md:flex">
             <div className="md:w-[152px]">
-              <span className="text-sm leading-8 font-normal text-greyText md:leading-[48px]">
+              <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
                 Capture
               </span>
             </div>
@@ -102,7 +102,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                   onChange={(e) => setAmountToCapture(e.target.value)}
                 ></InputAmountField>
               </div>
-              <span className="mt-2 block text-13px leading-5 font-normal text-greyText">
+              <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                 There are {getCurrencySymbol(currency)} {formatter.format(maxCapturableAmount)}{' '}
                 remaining to capture.
               </span>

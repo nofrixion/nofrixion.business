@@ -11,7 +11,7 @@ import DateRangeButton from './DateRangeButton'
 import DateRangeInput from './DateRangeInput'
 
 const pillClasses =
-  'text-default-text leading-6 hover:text-greyText bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-defaultText hover:stroke-controlGrey'
+  'text-default-text leading-6 hover:text-grey-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-defaultText hover:stroke-control-grey'
 
 export type DateRange = {
   fromDate: Date
@@ -101,7 +101,7 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         }
       />
 
-      <div className={cn(pillClasses, 'hidden md:flex py-2 pr-4 border-borderGrey border-l')}>
+      <div className={cn(pillClasses, 'hidden md:flex py-2 pr-4 border-border-grey border-l')}>
         <DatePicker
           value={dates}
           onChange={(changes: DateObject[]) => {

@@ -6,7 +6,7 @@ import copyIcon from '../../../assets/images/nf_copy.svg'
 import linkIcon from '../../../assets/images/nf_link.svg'
 import openIcon from '../../../assets/images/nf_open.svg'
 import trashIcon from '../../../assets/images/nf_trash.svg'
-import trashDisabledIcon from '../../../assets/images/nf_trash_disabled.svg'
+import trashdisabledIcon from '../../../assets/images/nf_trash_disabled.svg'
 import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 const actionItemClassNames =
@@ -14,9 +14,9 @@ const actionItemClassNames =
 const actionItem = cva(actionItemClassNames, {
   variants: {
     intent: {
-      neutral: ['data-[highlighted]:text-greyText'],
-      negative: ['text-negativeRed data-[highlighted]:text-highlightedNegativeRed'],
-      disabled: ['text-disabledText data-[highlighted]:text-greyText'],
+      neutral: ['data-[highlighted]:text-grey-text'],
+      negative: ['text-negative-red data-[highlighted]:text-highlighted-negative-red'],
+      disabled: ['text-disabled-text data-[highlighted]:text-grey-text'],
     },
   },
   defaultVariants: {
@@ -77,7 +77,7 @@ const PaymentRequestActionMenu = ({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button
-          className="rounded-full w-6 h-6 p-1 inline-flex items-center justify-center outline-none cursor-pointer align-middle hover:bg-greyBg fill-[#8F99A3] hover:fill-[#454D54] data-[state='open']:fill-[#454D54]"
+          className="rounded-full w-6 h-6 p-1 inline-flex items-center justify-center outline-none cursor-pointer align-middle hover:bg-grey-bg fill-[#8F99A3] hover:fill-[#454D54] data-[state='open']:fill-[#454D54]"
           aria-label="Actions"
           onBlur={onBlur}
         >
@@ -131,7 +131,7 @@ const PaymentRequestActionMenu = ({
                 >
                   <PaymentRequestActionMenuItemContent
                     label="Delete not available"
-                    iconSource={trashDisabledIcon}
+                    iconSource={trashdisabledIcon}
                   />
                 </InfoTooltip>
               </DropdownMenu.Item>

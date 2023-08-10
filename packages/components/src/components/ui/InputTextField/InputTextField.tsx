@@ -45,7 +45,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
             </label>
 
             {required && (
-              <div className="text-greyText font-normal text-xs leading-4">REQUIRED</div>
+              <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
             )}
           </div>
           <input
@@ -56,11 +56,11 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
             value={value}
             onChange={handleOnChange}
             onBlur={handleOnBlur}
-            className="pl-3 border border-borderGrey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text"
+            className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text"
             {...props}
           />
           {maxLength && (
-            <div className="text-right mt-2 text-greyText font-normal text-[0.813rem] leading-5">
+            <div className="text-right mt-2 text-grey-text font-normal text-[0.813rem] leading-5">
               {value?.toString().length}/{maxLength}
             </div>
           )}

@@ -37,11 +37,11 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
           type="text"
           maxLength={maxLength}
           className={classNames(
-            'inline outline-none hover:outline-borderGrey hover:outline hover:outline-1 focus:outline focus:outline-1 focus:outline-borderGrey ' +
-              'focus:rounded-lg focus:w-48 py-2 pl-9 pr-1 text-sm placeholder:text-greyText ' +
+            'inline outline-none hover:outline-border-grey hover:outline hover:outline-1 focus:outline focus:outline-1 focus:outline-border-grey ' +
+              'focus:rounded-lg focus:w-48 py-2 pl-9 pr-1 text-sm placeholder:text-grey-text ' +
               'placeholder:opacity-100 text-default-text bg-[12px] bg-no-repeat transition-all',
             {
-              'outline-borderGrey rounded-lg w-48 pr-9': value,
+              'outline-border-grey rounded-lg w-48 pr-9': value,
               'rounded w-24': !value,
             },
           )}

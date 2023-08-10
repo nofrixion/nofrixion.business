@@ -9,7 +9,7 @@ const BackArrow: React.FC<BackArrowProps> = ({ intent = 'close', ...props }) => 
     <button className="inline-block lg:ml-[3.25rem] w-6 h-6" {...props}>
       {intent === 'back' ? (
         <svg
-          className="w-6 h-6 min-w-[1.5rem] min-h-[1.5rem] transition stroke-controlGrey hover:stroke-controlGreyHover"
+          className="w-6 h-6 min-w-[1.5rem] min-h-[1.5rem] transition stroke-control-grey hover:stroke-control-grey-hover"
           width="26"
           height="22"
           viewBox="0 0 26 22"

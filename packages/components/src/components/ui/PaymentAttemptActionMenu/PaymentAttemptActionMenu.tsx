@@ -9,9 +9,9 @@ const actionItemClassNames =
 const actionItem = cva(actionItemClassNames, {
   variants: {
     intent: {
-      neutral: ['data-[highlighted]:text-greyText'],
-      negative: ['text-negativeRed data-[highlighted]:text-highlightedNegativeRed'],
-      disabled: ['text-disabledText data-[highlighted]:text-greyText'],
+      neutral: ['data-[highlighted]:text-grey-text'],
+      negative: ['text-negative-red data-[highlighted]:text-highlighted-negative-red'],
+      disabled: ['text-disabled-text data-[highlighted]:text-grey-text'],
     },
   },
   defaultVariants: {
@@ -59,7 +59,7 @@ const PaymentAttemptActionMenu = ({ onRefund, onBlur }: PaymentAttemptActionMenu
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button
-          className="rounded-full w-6 h-6 inline-flex items-center justify-center outline-none cursor-pointer align-middle hover:bg-greyBg text-[#8F99A3] hover:text-controlGreyHover data-[state='open']:text-controlGreyHover"
+          className="rounded-full w-6 h-6 inline-flex items-center justify-center outline-none cursor-pointer align-middle hover:bg-grey-bg text-[#8F99A3] hover:text-control-grey-hover data-[state='open']:text-control-grey-hover"
           aria-label="Actions"
           onBlur={onBlur}
         >

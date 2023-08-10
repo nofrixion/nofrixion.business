@@ -24,14 +24,14 @@
 .columnSort {
   @apply inline-flex;
   @apply text-sm;
-  @apply text-greyText;
+  @apply text-grey-text;
   @apply cursor-pointer;
   @apply transition;
   @apply items-center;
 }
 
 .columnSort:hover {
-  @apply text-controlGreyHover;
+  @apply text-control-grey-hover;
 }
 
 .Toastify__toast {

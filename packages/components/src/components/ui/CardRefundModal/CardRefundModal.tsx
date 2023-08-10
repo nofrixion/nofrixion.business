@@ -105,7 +105,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
             {isPartialRefundPossible && (
               <div className="mt-12 md:flex">
                 <div className="md:w-[152px]">
-                  <span className="text-sm leading-8 font-normal text-greyText md:leading-[48px]">
+                  <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
                     Refund
                   </span>
                 </div>
@@ -120,7 +120,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       onChange={(e) => setAmountToRefund(e.target.value)}
                     ></InputAmountField>
                   </div>
-                  <span className="mt-2 block text-13px leading-5 font-normal text-greyText">
+                  <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                     There are {getCurrencySymbol(currency)} {formatter.format(maxRefundableAmount)}{' '}
                     available to refund.
                   </span>
