@@ -18,9 +18,7 @@ const InfoTooltip = ({ content, children, side = 'top', className }: InfoTooltip
   return (
     <Tooltip.Provider delayDuration={0}>
       <Tooltip.Root open={open} onOpenChange={setOpen}>
-        <Tooltip.Trigger
-          className={cn('w-4 h-4 min-w-[1rem] min-h-[1rem] inline-flex', className)}
-        >
+        <Tooltip.Trigger className={cn('w-4 h-4 min-w-[1rem] min-h-[1rem] inline-flex', className)}>
           <>
             {/* If no children show img */}
             {!children && (

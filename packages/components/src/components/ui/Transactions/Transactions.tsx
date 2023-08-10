@@ -91,9 +91,7 @@ const Transactions = ({
                       {transaction.occurredAt && format(transaction.occurredAt, 'MMM do, yyyy')}
                     </span>
                   </td>
-                  <td
-                    className={cn('pl-2 lg:pl-6 pb-2 text-right', { 'pt-2': index !== 0 })}
-                  >
+                  <td className={cn('pl-2 lg:pl-6 pb-2 text-right', { 'pt-2': index !== 0 })}>
                     <span className="mr-2 text-sm font-medium leading-6 tabular-nums">
                       <span className="lg:hidden">
                         {transaction.currency === Currency.EUR ? '€' : '£'}
