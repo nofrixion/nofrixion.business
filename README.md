@@ -13,11 +13,11 @@ Welcome to the MoneyMoov for Business repo, a centralized monorepo for managing 
 
 ## 🚀 How to Get Started
 
-Before you begin, there's a preconditions to be aware of:
+Before you begin, there's a few preconditions to be aware of:
 
 ### Precondition:
 
-- You need the BFF .NET project running locally. Check it out at [this link](https://bitbucket.org/nofrixion/nofrixion.bff) (please note that it's closed source for now).
+- You need the BFF .NET project running locally. This is available in the `./bff` folder.
 
 ### Setup and Launch:
 

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nofrixion.Bff", "Nofrixion.Bff\Nofrixion.Bff.csproj", "{AD35E0F7-5200-4864-88DE-D40A0A44ECB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoFrixion.Common", "..\..\nofrixion.common\src\NoFrixion.Common\NoFrixion.Common.csproj", "{8BC67058-7E49-44AA-AE16-55D999157285}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD35E0F7-5200-4864-88DE-D40A0A44ECB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD35E0F7-5200-4864-88DE-D40A0A44ECB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD35E0F7-5200-4864-88DE-D40A0A44ECB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD35E0F7-5200-4864-88DE-D40A0A44ECB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BC67058-7E49-44AA-AE16-55D999157285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BC67058-7E49-44AA-AE16-55D999157285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BC67058-7E49-44AA-AE16-55D999157285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BC67058-7E49-44AA-AE16-55D999157285}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
