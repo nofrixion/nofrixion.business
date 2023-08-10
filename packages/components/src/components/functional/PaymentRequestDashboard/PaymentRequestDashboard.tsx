@@ -493,7 +493,7 @@ const PaymentRequestDashboardMain = ({
   const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
   return (
-    <div className="font-inter bg-mainGrey text-default-text h-full">
+    <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px]">
         <span className="md:pl-4 leading-8 font-medium text-2xl md:text-[1.75rem]">
           Accounts Receivable

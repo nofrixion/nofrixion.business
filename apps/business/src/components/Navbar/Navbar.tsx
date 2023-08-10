@@ -18,25 +18,21 @@ const Navbar = () => {
   const navigate = useNavigate()
 
   return (
-    <nav className="biz-flex biz-text-white biz-bg-dark-bg biz-h-20 biz-pl-8 md:biz-pl-14 biz-w-full">
+    <nav className="flex text-white bg-dark-bg h-20 pl-8 md:pl-14 w-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div
             className={cn(
-              'biz-relative biz-text-xs biz-leading-10 biz-pt-2 biz-pb-2 biz-flex biz-items-center 2xl:biz-text-sm biz-cursor-pointer',
+              'relative text-xs leading-10 pt-2 pb-2 flex items-center 2xl:text-sm cursor-pointer',
             )}
           >
             <img src={IconNoFrixion} alt={`NoFrixion icon`} />
 
-            <img
-              src={IconSort}
-              className="biz-ml-2 md:biz-ml-4 biz-my-auto"
-              alt="Navigation icon"
-            />
+            <img src={IconSort} className="ml-2 md:ml-4 my-auto" alt="Navigation icon" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
-          <DropdownMenuContent sideOffset={10} align="center" className="biz-mx-6">
+          <DropdownMenuContent sideOffset={10} align="center" className="mx-6">
             {navItems
               .filter((item) => !item.isHidden)
               .map((item) => {

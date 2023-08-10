@@ -43,7 +43,7 @@ const FilterButton: FilterButtonFC = ({
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
   const filterButtonClassNames =
-    'outline-none inline-flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-greyBg hover:text-default-text transition-all'
+    'outline-none inline-flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-grey-bg hover:text-default-text transition-all'
   const actionButtonClassNames =
     'outline-none px-3 py-1 cursor-pointer leading-6 text-13px rounded-full transition-all'
 
@@ -98,9 +98,9 @@ const FilterButton: FilterButtonFC = ({
         <DropdownMenu.Trigger asChild>
           <button
             className={classNames(filterButtonClassNames, {
-              'text-greyText': !isDialogOpen,
+              'text-grey-text': !isDialogOpen,
               'text-default-text': isDialogOpen,
-              'bg-greyBg': isFiltered && filteredLayout,
+              'bg-grey-bg': isFiltered && filteredLayout,
             })}
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
@@ -140,7 +140,7 @@ const FilterButton: FilterButtonFC = ({
                       <button
                         className={classNames(
                           actionButtonClassNames,
-                          'bg-white text-default-text border border-solid border-borderGrey hover:border-borderGreyHighlighted',
+                          'bg-white text-default-text border border-solid border-border-grey hover:border-border-grey-highlighted',
                         )}
                         onClick={onReset}
                       >
@@ -150,7 +150,7 @@ const FilterButton: FilterButtonFC = ({
                         <button
                           className={classNames(
                             actionButtonClassNames,
-                            'bg-white text-greyText hover:text-default-text',
+                            'bg-white text-grey-text hover:text-default-text',
                           )}
                           onClick={onCancelClick}
                         >
@@ -159,7 +159,7 @@ const FilterButton: FilterButtonFC = ({
                         <button
                           className={classNames(
                             actionButtonClassNames,
-                            'bg-primaryGreen font-semibold text-white rounded-full hover:bg-primaryGreenHover',
+                            'bg-primary-green font-semibold text-white rounded-full hover:bg-primary-green-hover',
                           )}
                           onClick={onApplyClick}
                         >

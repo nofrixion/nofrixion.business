@@ -16,29 +16,24 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={cn(
-        'biz-p-6 md:biz-p-10 biz-rounded-lg biz-bg-white biz-w-full biz-text-default-text',
-        className,
-      )}
+      className={cn('p-6 md:p-10 rounded-lg bg-white w-full text-default-text', className)}
       {...props}
     >
-      <div className="biz-flex biz-justify-between">
+      <div className="flex justify-between">
         {(title || subtext) && (
-          <div className="biz-flex biz-flex-col">
-            {title && <span className="biz-font-semibold biz-text-xl">{title}</span>}
+          <div className="flex flex-col">
+            {title && <span className="font-semibold text-xl">{title}</span>}
 
-            {subtext && (
-              <span className="biz-text-gray-text biz-text-sm/4 biz-mt-2">{subtext}</span>
-            )}
+            {subtext && <span className="text-gray-text text-sm/4 mt-2">{subtext}</span>}
           </div>
         )}
 
         {onShowViewAll && (
           <button
             onClick={onShowViewAll}
-            className="biz-flex biz-items-center biz-h-6 biz-justify-end biz-space-x-2 biz-underline biz-underline-offset-2 hover:biz-no-underline"
+            className="flex items-center h-6 justify-end space-x-2 underline underline-offset-2 hover:no-underline"
           >
-            <span className="biz-hidden md:biz-inline-block biz-text-sm">View all</span>
+            <span className="hidden md:inline-block text-sm">View all</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"

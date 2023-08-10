@@ -106,7 +106,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
             opacity: 0,
           }}
           transition={{ duration: animationDuration }}
-          className="inline-flex items-center space-x-1 max-h-[2.0625rem] text-greyText hover:text-default-text px-3 py-2 rounded-full text-sm leading-4 border-borderGrey border-[1px] border-dashed hover:border-solid hover:border-controlGreyHover whitespace-nowrap align-middle select-none cursor-pointer"
+          className="inline-flex items-center space-x-1 max-h-[2.0625rem] text-grey-text hover:text-default-text px-3 py-2 rounded-full text-sm leading-4 border-border-grey border-[1px] border-dashed hover:border-solid hover:border-control-grey-hover whitespace-nowrap align-middle select-none cursor-pointer"
         >
           <button onClick={() => setEditMode(true)}>
             <span>Add tag</span>
@@ -118,7 +118,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
         <MotionConfig transition={{ duration: animationDuration }}>
           <motion.div
             animate={{ width: width + 8 }}
-            className="relative inline-flex text-default-text min-h-[2.0625rem] max-h-[2.0625rem] py-2 rounded-full border-borderGrey border-[1px] border-solid text-sm leading-4 whitespace-nowrap align-middle select-none"
+            className="relative inline-flex text-default-text min-h-[2.0625rem] max-h-[2.0625rem] py-2 rounded-full border-border-grey border-[1px] border-solid text-sm leading-4 whitespace-nowrap align-middle select-none"
             ref={componentRef}
           >
             <div ref={ref} className="inline-flex items-center space-x-1 pl-3">
@@ -173,7 +173,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
                                   className={classNames(
                                     'cursor-default select-none py-2 px-4 whitespace-nowrap w-full',
                                     {
-                                      'pointer-events-none text-disabledText': !itemEnabled(
+                                      'pointer-events-none text-disabled-text': !itemEnabled(
                                         item.value,
                                       ),
                                     },

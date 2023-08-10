@@ -9,7 +9,7 @@ const Root = () => {
 
   return (
     <>
-      <div className="biz-font-inter biz-h-full">{outlet}</div>
+      <div className="font-inter h-full">{outlet}</div>
 
       <HotjarInjection />
     </>

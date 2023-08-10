@@ -13,7 +13,7 @@ interface PaymentInfoRowProps {
 const PaymentInfoRow: React.FC<PaymentInfoRowProps> = ({ label, content, children }) => {
   return (
     <div className="text-sm/6 lg:flex">
-      <span className="text-greyText font-medium lg:font-normal mb-1 lg:w-36 mr-4 block">
+      <span className="text-grey-text font-medium lg:font-normal mb-1 lg:w-36 mr-4 block">
         {label}
       </span>
 

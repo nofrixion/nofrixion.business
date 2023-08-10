@@ -61,7 +61,7 @@ const SelectTrigger = React.forwardRef<
     </div>
     {/* Show sub text only on mobile */}
     {subText && (
-      <span className="block md:hidden text-greyText text-xs font-normal">{subText}</span>
+      <span className="block md:hidden text-grey-text text-xs font-normal">{subText}</span>
     )}
   </SelectPrimitive.Trigger>
 ))
@@ -117,7 +117,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full px-3 py-0.5 cursor-default select-none items-center rounded-full text-sm outline-none transition active:bg-greyBg lg:focus:bg-greyBg focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=checked]:text-[#099]',
+      'relative flex w-full px-3 py-0.5 cursor-default select-none items-center rounded-full text-sm outline-none transition active:bg-grey-bg lg:focus:bg-grey-bg focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=checked]:text-[#099]',
       className,
     )}
     {...props}

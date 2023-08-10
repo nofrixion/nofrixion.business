@@ -8,16 +8,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: ['bg-primaryGreen', 'text-white', 'hover:bg-primaryGreenHover', 'stroke:white'],
+        primary: ['bg-primary-green', 'text-white', 'hover:bg-primary-green-hover', 'stroke:white'],
         primaryDark: ['bg-[#006A80]', 'text-white', 'hover:bg-[#144752]', 'stroke:white'],
-        secondary: ['bg-secondaryButton', 'text-default-text', 'hover:bg-secondaryButtonHover'],
+        secondary: ['bg-secondary-button', 'text-default-text', 'hover:bg-secondary-button-hover'],
         tertiary: [
           'border',
-          'border-borderGrey',
-          'hover:border-borderGreyHighlighted',
+          'border-border-grey',
+          'hover:border-border-grey-highlighted',
           'text-default-text',
         ],
-        text: ['text-greyText', 'hover:text-greyTextHover'],
+        text: ['text-grey-text', 'hover:text-grey-text-hover'],
       },
       size: {
         big: ['text-base', 'px-3', 'py-3', 'md:px-6', 'font-normal', 'leading-6'],
@@ -40,7 +40,7 @@ const arrow = cva('w-full h-full', {
       primaryDark: ['text-white'],
       secondary: ['text-[#454D54]'],
       tertiary: ['text-[#454D54]'],
-      text: ['text-[#454D54]', 'hover:text-greyTextHover'],
+      text: ['text-[#454D54]', 'hover:text-grey-text-hover'],
     },
   },
   defaultVariants: {

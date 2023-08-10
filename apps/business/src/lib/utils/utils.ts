@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
 const customTwMerge = extendTailwindMerge({
-  prefix: 'biz-',
+  prefix: '',
 })
 
 export const cn = (...inputs: ClassValue[]) => customTwMerge(clsx(inputs))

@@ -69,10 +69,10 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
             <Icon name="back/24" />
           </button>
-          <span className="block text-2xl font-semibold text-defaultText mt-8">
+          <span className="block text-2xl font-semibold text-default-text mt-8">
             Confirm card payment capture
           </span>
-          <p className="mt-12 text-defaultText text-sm font-normal">
+          <p className="mt-12 text-default-text text-sm font-normal">
             You are about to capture the card payment made
             {contactName && <span className="font-semibold">{` by ${contactName}`}</span>} on{' '}
             <span className="font-semibold">{format(transactionDate, 'MMM do, yyyy')}</span>
@@ -88,7 +88,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           </p>
           <div className="mt-12 md:flex">
             <div className="md:w-[152px]">
-              <span className="text-sm leading-8 font-normal text-greyText md:leading-[48px]">
+              <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
                 Capture
               </span>
             </div>
@@ -102,7 +102,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                   onChange={(e) => setAmountToCapture(e.target.value)}
                 ></InputAmountField>
               </div>
-              <span className="mt-2 block text-13px leading-5 font-normal text-greyText">
+              <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                 There are {getCurrencySymbol(currency)} {formatter.format(maxCapturableAmount)}{' '}
                 remaining to capture.
               </span>

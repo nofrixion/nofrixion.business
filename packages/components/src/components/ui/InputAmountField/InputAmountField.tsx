@@ -22,7 +22,7 @@ const actionItemClassNames =
 const actionItem = cva(actionItemClassNames, {
   variants: {
     intent: {
-      neutral: ['data-[highlighted]:text-greyText'],
+      neutral: ['data-[highlighted]:text-grey-text'],
       selected: ['text-[#009999] data-[highlighted]:cursor-default'],
     },
   },
@@ -65,14 +65,14 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
   }, [selectedCurrency])
 
   return (
-    <div className="flex w-full h-12 border border-borderGrey rounded justify-between">
+    <div className="flex w-full h-12 border border-border-grey rounded justify-between">
       <div className="flex relative w-full">
-        <span className="flex absolute inset-y-0 pointer-events-none items-center ml-3 font-normal text-sm text-greyText">
+        <span className="flex absolute inset-y-0 pointer-events-none items-center ml-3 font-normal text-sm text-grey-text">
           {selectedCurrency.symbol}
         </span>
         <MaskedInput
           className={cn(
-            'block w-full pl-7 rounded font-normal text-sm text-defaultText appearance-none',
+            'block w-full pl-7 rounded font-normal text-sm text-default-text appearance-none',
             {
               'mr-1': allowCurrencyChange,
               'pr-2 text-right text-xl leading-5 font-semibold': !allowCurrencyChange,
@@ -93,7 +93,7 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
       {allowCurrencyChange && (
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
-            <div className="flex h-full items-center pl-3 mr-3 text-greyText font-normal leading-4 hover:text-default-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-greyText hover:stroke-default-text">
+            <div className="flex h-full items-center pl-3 mr-3 text-grey-text font-normal leading-4 hover:text-default-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-grey-text hover:stroke-default-text">
               <ResizableComponent>
                 <span className="mr-2">{selectedCurrency.code}</span>
               </ResizableComponent>

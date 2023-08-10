@@ -11,34 +11,31 @@ import { Loader } from './ui/Loader/Loader'
 
 const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
   return (
-    <div className="biz-relative biz-flex biz-h-auto biz-max-w-[600px] biz-flex-col biz-items-center biz-rounded-[3rem] biz-pb-8 lg:biz-h-[23.625rem] lg:biz-w-[37.5rem] lg:biz-max-w-none biz-bg-[#F3F7F6] biz-text-[#143252]">
-      <div className="biz-absolute biz-top-[0.3rem] biz-w-full -biz-translate-y-1/2 lg:biz-top-2 lg:biz-w-auto">
+    <div className="relative flex h-auto max-w-[600px] flex-col items-center rounded-[3rem] pb-8 lg:h-[23.625rem] lg:w-[37.5rem] lg:max-w-none bg-[#F3F7F6] text-[#143252]">
+      <div className="absolute top-[0.3rem] w-full -translate-y-1/2 lg:top-2 lg:w-auto">
         <img
           src={GraphicDesktopMoneyMoovForBusiness}
           alt="MoneyMoov for Business Graphic"
-          className="biz-mx-auto biz-h-full biz-w-full biz-object-cover"
+          className="mx-auto h-full w-full object-cover"
         />
       </div>
 
-      <h2 className="biz-relative biz-mt-[6.625rem] lg:biz-mt-[7.688rem] biz-px-10 biz-text-[2rem] biz-font-bold biz-leading-[2.421rem] lg:biz-px-0 biz-text-center">
+      <h2 className="relative mt-[6.625rem] lg:mt-[7.688rem] px-10 text-[2rem] font-bold leading-[2.421rem] lg:px-0 text-center">
         MoneyMoov for Business
-        <span className="biz-align-super biz-uppercase biz-text-white biz-bg-[#023] biz-rounded-2xl biz-px-2 biz-py-0.5 biz-text-[10px] biz-leading-normal biz-ml-0.5">
+        <span className="align-super uppercase text-white bg-[#023] rounded-2xl px-2 py-0.5 text-[10px] leading-normal ml-0.5">
           Beta
         </span>
       </h2>
 
-      <p className="biz-mt-6 biz-px-6 biz-text-center biz-text-sm biz-leading-6 sm:biz-px-32 lg:biz-mt-8 lg:biz-w-10/12 lg:biz-px-0 lg:biz-text-base xl:biz-w-2/3">
+      <p className="mt-6 px-6 text-center text-sm leading-6 sm:px-32 lg:mt-8 lg:w-10/12 lg:px-0 lg:text-base xl:w-2/3">
         Send, receive, store and reconcile <b>automatically</b>. The intelligent Current Account
         that seamlessly blends into your business operations.
       </p>
 
       <button onClick={onEnterPressed}>
-        <a
-          href="#"
-          className="biz-flex biz-rounded-full biz-px-6 biz-py-3 biz-mt-8 biz-bg-[#001933] biz-text-white"
-        >
+        <a href="#" className="flex rounded-full px-6 py-3 mt-8 bg-[#001933] text-white">
           <span>Enter</span>
-          <img src={IconArrowRight} className="biz-ml-2 biz-h-6 biz-w-6" alt="Right icon" />
+          <img src={IconArrowRight} className="ml-2 h-6 w-6" alt="Right icon" />
         </a>
       </button>
     </div>
@@ -54,9 +51,7 @@ const HomeUI = () => {
   const callbackUrl = searchParams.get('callbackUrl')
 
   if (authState?.isLoading) {
-    return (
-      <Loader className="biz-flex biz-items-center biz-justify-center biz-p-24 biz-min-h-screen" />
-    )
+    return <Loader className="flex items-center justify-center p-24 min-h-screen" />
   }
 
   if (authState?.isLoggedIn) {
@@ -64,7 +59,7 @@ const HomeUI = () => {
   }
 
   return (
-    <main className="biz-flex biz-items-center biz-justify-center biz-p-24 biz-min-h-screen">
+    <main className="flex items-center justify-center p-24 min-h-screen">
       <div>
         <CardHome
           onEnterPressed={() => {
@@ -74,8 +69,8 @@ const HomeUI = () => {
           }}
         />
 
-        <div className="biz-flex biz-justify-center biz-items-center biz-text-gray-text biz-mt-8">
-          <span className="biz-mr-4">Powered by</span>
+        <div className="flex justify-center items-center text-gray-text mt-8">
+          <span className="mr-4">Powered by</span>
 
           <img src={LogoNofrixion} alt="Nofrixion Logo" />
         </div>

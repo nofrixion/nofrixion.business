@@ -51,7 +51,7 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close className="fixed lg:hidden bottom-0 w-full px-6 mx-auto py-4 z-20 bg-gradient-to-b from-transparent via-mainGrey via-30% to-mainGrey lg:-left-14 lg:top-4 lg:pointer-events-none lg:opacity-0">
+      <SheetPrimitive.Close className="fixed lg:hidden bottom-0 w-full px-6 mx-auto py-4 z-20 bg-gradient-to-b from-transparent via-main-grey via-30% to-main-grey lg:-left-14 lg:top-4 lg:pointer-events-none lg:opacity-0">
         <div className="w-full h-12 px-16 whitespace-nowrap flex justify-center items-center rounded-full py-3 text-sm cursor-pointer bg-[#DEE5ED] transition hover:bg-[#BDCCDB]">
           <Icon name="close/16" />
           <span className="ml-2">Close</span>

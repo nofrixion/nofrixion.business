@@ -28,13 +28,13 @@ const ComingSoonUI: React.FC<ComingSoonUIProps> = ({ title, comingSoonItems, vid
 
   return (
     <>
-      <h1 className="biz-text-[1.75rem]/8 biz-font-medium">{title}</h1>
+      <h1 className="text-[1.75rem]/8 font-medium">{title}</h1>
 
-      <div className="biz-mt-14 biz-leading-8 biz-flex biz-flex-col lg:biz-flex-row">
-        <div className="biz-mb-8 lg:biz-mr-20 xl:biz-mr-80 md:biz-w-96">
-          <h6 className="biz-font-semibold biz-mb-[10px]">Coming soon</h6>
+      <div className="mt-14 leading-8 flex flex-col lg:flex-row">
+        <div className="mb-8 lg:mr-20 xl:mr-80 md:w-96">
+          <h6 className="font-semibold mb-[10px]">Coming soon</h6>
 
-          <ul className="biz-list-disc biz-pl-5 biz-mb-16">
+          <ul className="list-disc pl-5 mb-16">
             {comingSoonItems.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
@@ -52,9 +52,9 @@ const ComingSoonUI: React.FC<ComingSoonUIProps> = ({ title, comingSoonItems, vid
           )}
         </div>
 
-        <div className="biz-pr-4 biz-pt-2">
-          <div className="biz-max-w-md biz-overflow-hidden biz-rounded-2xl lg:biz-mr-auto lg:biz-max-w-lg">
-            <video className="biz-w-full" controls poster={video.coverUrl}>
+        <div className="pr-4 pt-2">
+          <div className="max-w-md overflow-hidden rounded-2xl lg:mr-auto lg:max-w-lg">
+            <video className="w-full" controls poster={video.coverUrl}>
               <source src={video.url} type="video/mp4" />
               Your browser does not support the video tag.
             </video>

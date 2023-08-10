@@ -92,7 +92,7 @@ const CustomModal = ({
               <Dialog.Panel className="flex flex-col w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
                 <button className="ml-auto mt-6 mr-6" onClick={handleOnDismiss}>
                   <svg
-                    className="w-4 h-4 transition stroke-controlGrey hover:stroke-controlGreyHover"
+                    className="w-4 h-4 transition stroke-control-grey hover:stroke-control-grey-hover"
                     width="16"
                     height="16"
                     viewBox="0 0 16 15"
@@ -122,7 +122,7 @@ const CustomModal = ({
                 <div
                   className={classNames(
                     buttonRowClassName,
-                    'bg-mainGrey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
+                    'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
                   )}
                 >
                   <div>
