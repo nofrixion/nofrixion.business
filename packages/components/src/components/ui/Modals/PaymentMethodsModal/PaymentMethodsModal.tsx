@@ -89,22 +89,9 @@ const PaymentMethodsModal = ({
     const shouldShowNoPaymentMethodAlert =
       !isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled
 
-    /* Delay display animations by 200 to avoid weird stretching animations */
-    if (shouldShowWalletOnlyAlert && !showWalletOnlyAlert) {
-      setTimeout(() => setShowWalletOnlyAlert(true), 200)
-    } else {
-      setShowWalletOnlyAlert(shouldShowWalletOnlyAlert)
-    }
-    if (shouldShowPispAmountAlert && !showPispAmountAlert) {
-      setTimeout(() => setShowPispAmountAlert(true), 200)
-    } else {
-      setShowPispAmountAlert(shouldShowPispAmountAlert)
-    }
-    if (shouldShowNoPaymentMethodAlert && !showNoPaymentMethodAlert) {
-      setTimeout(() => setShowNoPaymentMethodAlert(true), 200)
-    } else {
-      setShowNoPaymentMethodAlert(shouldShowNoPaymentMethodAlert)
-    }
+    setShowPispAmountAlert(shouldShowPispAmountAlert)
+    setShowWalletOnlyAlert(shouldShowWalletOnlyAlert)
+    setShowNoPaymentMethodAlert(shouldShowNoPaymentMethodAlert)
   }, [
     isBankEnabled,
     isCardEnabled,
@@ -315,7 +302,7 @@ const PaymentMethodsModal = ({
       <div className="flex flex-col space-y-4">
         <AnimatePresence>
           {showPispAmountAlert && (
-            <AnimateHeightWrapper layoutId="amount-pisp-alert">
+            <AnimateHeightWrapper layout="position" layoutId="amount-pisp-alert">
               <ValidationAlert>
                 The minimum amount for bank payments is {currencySymbol}
                 {formatter.format(minimumCurrencyAmount)}. You must use another payment method for
@@ -324,7 +311,7 @@ const PaymentMethodsModal = ({
             </AnimateHeightWrapper>
           )}
           {showWalletOnlyAlert && (
-            <AnimateHeightWrapper layoutId="wallet-card-alert">
+            <AnimateHeightWrapper layout="position" layoutId="wallet-card-alert">
               <ValidationAlert>
                 Do your customers have access to Apple Pay or Google Pay? If you are unsure, you may
                 want to consider adding a second payment method as a backup.
@@ -332,7 +319,7 @@ const PaymentMethodsModal = ({
             </AnimateHeightWrapper>
           )}
           {showNoPaymentMethodAlert && (
-            <AnimateHeightWrapper layoutId="wallet-card-alert">
+            <AnimateHeightWrapper layout="position" layoutId="no-payment-methods-alert">
               <ValidationAlert>At least one payment method has to be enabled.</ValidationAlert>
             </AnimateHeightWrapper>
           )}
