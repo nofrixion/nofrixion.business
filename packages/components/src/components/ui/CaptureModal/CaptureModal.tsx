@@ -1,4 +1,5 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
+import classNames from 'classnames'
 import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
@@ -6,6 +7,7 @@ import { useState } from 'react'
 import { localCurrency } from '../../../utils/constants'
 import { Icon } from '../atoms'
 import InputAmountField from '../InputAmountField/InputAmountField'
+import { Loader } from '../Loader/Loader'
 export interface CaptureModalProps {
   initialAmount: string
   currency: Currency.EUR | Currency.GBP
@@ -51,15 +53,16 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
     const parsedAmount = Number(initialAmount)
     if (parsedAmount < 0) {
       setValidationErrorMessage('The amount must be greater than 0.')
+      setIsCaptureButtonDisabled(false)
     } else if (parsedAmount === 0) {
       setValidationErrorMessage("The amount can't be 0.")
+      setIsCaptureButtonDisabled(false)
     } else if (maxCapturableAmount && parsedAmount > maxCapturableAmount) {
       setValidationErrorMessage("You can't capture more than the remaining amount.")
+      setIsCaptureButtonDisabled(false)
     } else {
       await onCapture()
     }
-
-    setIsCaptureButtonDisabled(false)
   }
 
   return (
@@ -122,11 +125,16 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
           </div>
           <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
             <button
-              className="justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]"
+              className={classNames(
+                'justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]',
+                {
+                  '!bg-greyText disabled:!opacity-100 cursor-not-allowed': isCaptureButtonDisabled,
+                },
+              )}
               onClick={onCaptureClick}
               disabled={isCaptureButtonDisabled}
             >
-              Confirm capture
+              {isCaptureButtonDisabled ? <Loader className="h-6 w-6 mx-auto" /> : 'Confirm capture'}
             </button>
           </div>
         </div>

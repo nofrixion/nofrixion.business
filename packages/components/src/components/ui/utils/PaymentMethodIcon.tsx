@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import BankDisabledIcon from '../../../assets/icons/bank-disabled.svg'
 import BankIcon from '../../../assets/icons/bank-icon.svg'
 import BitcoinDisabledIcon from '../../../assets/icons/bitcoin-disabled.svg'
@@ -12,7 +14,10 @@ interface PaymentMethodIconProps {
   paymentMethod: 'bank' | 'card' | 'wallet' | 'lightning'
   showInfoTooltip?: boolean
   enabled?: boolean
+  iconClassNames?: string
 }
+
+const defaultIconClassNames = 'w-6 h-6'
 
 const getIconDescription = (paymentMethodName: string, enabled: boolean) =>
   `${paymentMethodName} ${enabled ? 'enabled' : 'disabled'}`
@@ -43,7 +48,7 @@ const getImage: React.FC<PaymentMethodIconProps> = ({ paymentMethod, enabled = f
     <img
       src={enabled ? paymentMethodIcons[paymentMethod] : paymentMethodDisabledIcons[paymentMethod]}
       alt={getIconDescription(paymentMethodsName[paymentMethod], enabled)}
-      className="w-6 h-6"
+      className={defaultIconClassNames}
     />
   )
 }
@@ -52,6 +57,7 @@ const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
   paymentMethod,
   showInfoTooltip = true,
   enabled = false,
+  iconClassNames,
 }) => {
   if (!showInfoTooltip) {
     return getImage({ paymentMethod, enabled })
@@ -59,7 +65,7 @@ const PaymentMethodIcon: React.FC<PaymentMethodIconProps> = ({
 
   return (
     <InfoTooltip
-      className="w-6 h-6 lg:w-4 lg:h-4"
+      className={classNames(defaultIconClassNames, iconClassNames)}
       content={
         showInfoTooltip ? getIconDescription(paymentMethodsName[paymentMethod], enabled) : ''
       }
