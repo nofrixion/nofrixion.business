@@ -18,6 +18,10 @@ Before you begin, there's a few preconditions to be aware of:
 ### Precondition:
 
 - You need the BFF .NET project running locally. This is available in the `./bff` folder.
+- You need the BFF .NET project running locally. This is available in the `./bff` folder.
+- Locate the file at `bff/NoFrixion.Bff/appsettings.json`.
+- Create a local development `appsettings.json` file called `appsettings.development.json` and copy the contents into the file.
+- Change the `ClientId` and `ClientSecret` to match your specific development environment.
 
 ### Setup and Launch:
 
