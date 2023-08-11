@@ -1,17 +1,16 @@
-import { Account, AccountsClient } from '@nofrixion/moneymoov'
+import { Currency, useAccounts } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
-import { useState } from 'react'
 
+import { formatAmount } from '../../../utils/formatters'
 import { Button, Icon } from '../../ui/atoms'
-import { makeToast } from '../../ui/Toast/Toast'
 import LayoutWrapper from '../../ui/utils/LayoutWrapper'
 
 export interface CurrentAccountsProps {
-  token?: string // Example: "eyJhbGciOiJIUz..."
-  apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
-  onUnauthorized: () => void
+  apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
+  token?: string // Example: "eyJhbGciOiJIUz..."
+  onUnauthorized?: () => void
 }
 
 const queryClient = new QueryClient()
@@ -40,29 +39,27 @@ const CurrentAccountsMain = ({
   merchantId,
   onUnauthorized,
 }: CurrentAccountsProps) => {
-  const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
+  const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
 
-  const getCurrentAccounts = async () => {
-    const accountsClient = new AccountsClient({
-      apiUrl: apiUrl,
-      authToken: token,
-    })
-
-    const response = await accountsClient.getAccounts({ merchantId: merchantId })
-
-    if (response.status === 'error') {
-      makeToast('error', response.error.title)
-      return
-    }
-
-    if (response.data) {
-      setAccounts(response.data)
+  if (accounts?.status == 'error') {
+    if (accounts?.error && accounts?.error.status === 401) {
+      onUnauthorized && onUnauthorized()
     }
   }
 
-  getCurrentAccounts()
   const onCreatePaymentAccount = () => {
-    console.log('It works!', merchantId, onUnauthorized())
+    console.log('It works!', merchantId)
+  }
+
+  const getAccountCurrency = (currency: Currency) => {
+    if (!currency) {
+      return
+    }
+    if (Currency.EUR === currency) {
+      return '€'
+    } else if (Currency.GBP === currency) {
+      return '£'
+    }
   }
 
   return (
@@ -74,28 +71,38 @@ const CurrentAccountsMain = ({
         <LayoutGroup>
           <AnimatePresence initial={false}>
             <LayoutWrapper>
-              <Button
-                size="big"
-                onClick={onCreatePaymentAccount}
-                className="w-10 h-10 md:w-full md:h-full bg-secondary-button text-default-text"
-              >
-                <Icon name="add/16" className="pr-2 text-default-text" />
-                <span className="hidden md:inline-block">New Account</span>
+              <Button size="big" onClick={onCreatePaymentAccount} variant="secondary">
+                <Icon name="add/16" className="text-default-text" />
+                <span className="pl-2 md:inline-block">New Account</span>
               </Button>
             </LayoutWrapper>
           </AnimatePresence>
         </LayoutGroup>
-
-        <div>
-          {accounts && (
-            <div>
-              {accounts.forEach((x) => {
-                ;<li>{}</li>
-              })}
-            </div>
-          )}
-        </div>
       </div>
+
+      {accounts?.status === 'success' && accounts.data && (
+        <div className="flex-row mb-8 md:mb-[68px]">
+          {accounts.data.map((account, index) => (
+            <div key={index} className="flex h-[124px] p-8 mb-8 bg-white">
+              <div>
+                <span>{account.accountName}</span>
+                <span></span>
+              </div>
+              <div className="text-right">
+                <span className="text-4xl font-semibold leading-9">
+                  {getAccountCurrency(account.currency)} {formatAmount(account.balance)}
+                </span>
+                <div className="text-sm font-normal leading-4 mt-2">
+                  <span className="pr-2">Available</span>
+                  <span>
+                    {getAccountCurrency(account.currency)} {formatAmount(account.availableBalance)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
