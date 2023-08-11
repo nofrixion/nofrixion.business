@@ -14,6 +14,9 @@ import Switch from '../../Switch/Switch'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 
 export interface PaymentMethodsModalProps extends BaseModalProps {
+  amount: string
+  currencySymbol: '€' | '£'
+  minimumCurrencyAmount: number
   banks: BankSettings[]
   userDefaults?: PaymentMethodsDefaults
   onApply: (data: LocalPaymentMethodsFormValue) => void
@@ -21,6 +24,9 @@ export interface PaymentMethodsModalProps extends BaseModalProps {
 }
 
 const PaymentMethodsModal = ({
+  amount,
+  currencySymbol,
+  minimumCurrencyAmount,
   open,
   banks,
   userDefaults,
@@ -44,6 +50,17 @@ const PaymentMethodsModal = ({
   const [priorityBank, setPriorityBank] = useState<BankSettings | undefined>()
   const [currentState, setCurrentState] = useState<LocalPaymentMethodsFormValue>()
   const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false)
+  const [applyEnabled, setApplyEnabled] = useState<boolean>(true)
+
+  /* Error alert states */
+  const [showWalletOnlyAlert, setShowWalletOnlyAlert] = useState<boolean>(false)
+  const [showPispAmountAlert, setShowPispAmountAlert] = useState<boolean>(false)
+  const [showNoPaymentMethodAlert, setShowNoPaymentMethodAlert] = useState<boolean>(false)
+
+  const formatter = new Intl.NumberFormat(navigator.language, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
 
   useEffect(() => {
     setEnableUseAsDefault(
@@ -56,6 +73,25 @@ const PaymentMethodsModal = ({
         userDefaults?.pispPriorityBank !== isPriorityBankEnabled ||
         (isPriorityBankEnabled && userDefaults?.pispPriorityBankID !== priorityBank?.bankID),
     )
+
+    setApplyEnabled(
+      (isBankEnabled && (!amount || Number(amount) >= minimumCurrencyAmount)) ||
+        (!isBankEnabled && (isWalletEnabled || isCardEnabled || isLightningEnabled)),
+    )
+
+    const shouldShowPispAmountAlert = !!(
+      isBankEnabled &&
+      amount &&
+      Number(amount) < minimumCurrencyAmount
+    )
+    const shouldShowWalletOnlyAlert =
+      isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled
+    const shouldShowNoPaymentMethodAlert =
+      !isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled
+
+    setShowPispAmountAlert(shouldShowPispAmountAlert)
+    setShowWalletOnlyAlert(shouldShowWalletOnlyAlert)
+    setShowNoPaymentMethodAlert(shouldShowNoPaymentMethodAlert)
   }, [
     isBankEnabled,
     isCardEnabled,
@@ -64,6 +100,8 @@ const PaymentMethodsModal = ({
     isCaptureFundsEnabled,
     isPriorityBankEnabled,
     priorityBank,
+    minimumCurrencyAmount,
+    amount,
   ])
 
   useEffect(() => {
@@ -146,6 +184,14 @@ const PaymentMethodsModal = ({
     }
   }
 
+  const ValidationAlert: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+    return (
+      <div className="w-full p-3 mt-6 bg-warning-yellow rounded">
+        <p className="text-sm text-default-text font-normal">{children}</p>
+      </div>
+    )
+  }
+
   return (
     <CustomModal
       title="Payment methods"
@@ -153,6 +199,7 @@ const PaymentMethodsModal = ({
       enableUseAsDefault={enableUseAsDefault}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
+      onApplyEnabled={applyEnabled}
       buttonRowClassName={
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
@@ -252,18 +299,32 @@ const PaymentMethodsModal = ({
         />
       </div>
 
-      <AnimatePresence initial={false}>
-        {isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled && (
-          <AnimateHeightWrapper layoutId="wallet-card-alert">
-            <div className="w-full p-3 mt-6 bg-[#FCF5CF] rounded">
-              <p className="text-sm text-default-text font-normal">
+      <div className="flex flex-col space-y-4">
+        <AnimatePresence>
+          {showPispAmountAlert && (
+            <AnimateHeightWrapper layout="position" layoutId="amount-pisp-alert">
+              <ValidationAlert>
+                The minimum amount for bank payments is {currencySymbol}
+                {formatter.format(minimumCurrencyAmount)}. You must use another payment method for
+                lower amounts.
+              </ValidationAlert>
+            </AnimateHeightWrapper>
+          )}
+          {showWalletOnlyAlert && (
+            <AnimateHeightWrapper layout="position" layoutId="wallet-card-alert">
+              <ValidationAlert>
                 Do your customers have access to Apple Pay or Google Pay? If you are unsure, you may
                 want to consider adding a second payment method as a backup.
-              </p>
-            </div>
-          </AnimateHeightWrapper>
-        )}
-      </AnimatePresence>
+              </ValidationAlert>
+            </AnimateHeightWrapper>
+          )}
+          {showNoPaymentMethodAlert && (
+            <AnimateHeightWrapper layout="position" layoutId="no-payment-methods-alert">
+              <ValidationAlert>At least one payment method has to be enabled.</ValidationAlert>
+            </AnimateHeightWrapper>
+          )}
+        </AnimatePresence>
+      </div>
     </CustomModal>
   )
 }

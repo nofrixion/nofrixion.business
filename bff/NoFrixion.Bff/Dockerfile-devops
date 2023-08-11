@@ -11,9 +11,9 @@ COPY ["/", ""]
 # RUN ls -al
 RUN echo "buildID is: $buildId"
 
-RUN dotnet restore "nofrixion.bff/src/NoFrixion.Bff/Nofrixion.Bff.csproj"
-RUN dotnet build "nofrixion.bff/src/NoFrixion.Bff/Nofrixion.Bff.csproj" --no-restore -c Release /p:SourceRevisionId=$buildId
-RUN dotnet publish "nofrixion.bff/src/NoFrixion.Bff/Nofrixion.Bff.csproj" --no-build -c Release -o /app/publish
+RUN dotnet restore "nofrixion.business/bff/NoFrixion.Bff/Nofrixion.Bff.csproj"
+RUN dotnet build "nofrixion.business/bff/NoFrixion.Bff/Nofrixion.Bff.csproj" --no-restore -c Release /p:SourceRevisionId=$buildId
+RUN dotnet publish "nofrixion.business/bff/NoFrixion.Bff/Nofrixion.Bff.csproj" --no-build -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 as final
 WORKDIR /app

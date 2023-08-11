@@ -1,8 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react'
-import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Fragment, useState } from 'react'
 
+import { cn } from '../../../utils'
 import { Button } from '../../ui/atoms'
 import Checkbox from '../Checkbox/Checkbox'
 
@@ -120,7 +120,7 @@ const CustomModal = ({
                 <div className="px-6 md:px-12">{children}</div>
 
                 <div
-                  className={classNames(
+                  className={cn(
                     buttonRowClassName,
                     'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
                   )}

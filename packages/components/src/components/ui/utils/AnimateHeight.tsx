@@ -3,12 +3,15 @@ import { motion } from 'framer-motion'
 const AnimateHeightWrapper = ({
   children,
   layoutId,
+  layout,
 }: {
   children: React.ReactNode
   layoutId: string
+  layout?: boolean | 'position' | 'size' | 'preserve-aspect'
 }) => {
   return (
     <motion.div
+      layout={layout}
       layoutId={layoutId}
       initial={{ opacity: 0, height: 0 }}
       animate={{

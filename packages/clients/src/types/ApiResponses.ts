@@ -140,6 +140,7 @@ export type ApiError = {
   title: string
   status?: number
   detail: string
+  errors?: { [key: string]: string[] }
 }
 
 export type ApiResponse<T> =
