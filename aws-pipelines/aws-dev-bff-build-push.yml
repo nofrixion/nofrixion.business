@@ -22,7 +22,7 @@ variables:
   dockerfilePath: 'nofrixion.business/bff/NoFrixion.Bff/Dockerfile-devops'
   kustomizeOverlayPath: 'nofrixion.business.cicd/kubernetes/bff/overlays-aws/dev/'
   # Gives option to automate and run 'develop' tag in DEV, moov-X.XX tags in sandbox/prod
-  tag: develop
+  tag: $(Build.SourceBranchName)
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -33,17 +33,17 @@ resources:
     type: bitbucket
     endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.business.cicd
-    ref: develop
+    ref: $(Build.SourceBranch)
   - repository: moneymoov-dotnet-sdk
     type: github
     endpoint: github.com_sipsorcery
     name: nofrixion/moneymoov-dotnet
-    ref: develop
+    ref: $(Build.SourceBranch)
   - repository: nofrixion.common
     type: bitbucket
     endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.common
-    ref: develop
+    ref: $(Build.SourceBranch)
 
 pool:
   vmImage: $(vmImageName)
