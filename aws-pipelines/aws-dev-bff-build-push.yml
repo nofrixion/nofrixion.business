@@ -22,7 +22,7 @@ variables:
   dockerfilePath: 'nofrixion.business/bff/NoFrixion.Bff/Dockerfile-devops'
   kustomizeOverlayPath: 'nofrixion.business.cicd/kubernetes/bff/overlays-aws/dev/'
   # Gives option to automate and run 'develop' tag in DEV, moov-X.XX tags in sandbox/prod
-  tag: $(Build.SourceBranchName)
+  tag: develop
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
