@@ -1,8 +1,8 @@
 import {
-  MerchantClient,
-  PaymentRequest,
-  PaymentRequestClient,
-  PaymentRequestUpdate,
+  Tag,
+  useAddTag,
+  useCreateTag,
+  useDeleteTag,
   usePaymentRequest,
   usePaymentRequestsProps,
 } from '@nofrixion/moneymoov'
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { makeToast } from '../../../components/ui/Toast/Toast'
 import { LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
 import {
-  parseApiTagToLocalTag,
+  parseLocalTagToApiTag,
   remotePaymentRequestToLocalPaymentRequest,
 } from '../../../utils/parsers'
 import UIPaymentRequestDetailsModal from '../../ui/PaymentRequestDetailsModal/PaymentRequestDetailsModal'
@@ -36,11 +36,8 @@ const PaymentRequestDetailsModal = ({
   merchantId,
   selectedPaymentRequestID,
   merchantTags,
-  paymentRequests,
   open,
   onDismiss,
-  setMerchantTags,
-  setPaymentRequests,
   onRefund,
   onCapture,
   statusSortDirection,
@@ -58,13 +55,70 @@ const PaymentRequestDetailsModal = ({
   maxAmount,
   tags,
 }: PaymentRequestDetailsModalProps) => {
-  const paymentRequestClient = new PaymentRequestClient({
-    apiUrl: apiUrl,
-    authToken: token,
-  })
-  const merchantClient = new MerchantClient({ apiUrl: apiUrl, authToken: token })
-
   const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined)
+
+  const { createTag } = useCreateTag(
+    {
+      merchantId: merchantId,
+      statusSortDirection: statusSortDirection,
+      createdSortDirection: createdSortDirection,
+      contactSortDirection: contactSortDirection,
+      amountSortDirection: amountSortDirection,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      fromDateMS: fromDateMS,
+      toDateMS: toDateMS,
+      status: status,
+      search: search,
+      currency: currency,
+      minAmount: minAmount,
+      maxAmount: maxAmount,
+      tags: tags,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const { addTag } = useAddTag(
+    {
+      merchantId: merchantId,
+      statusSortDirection: statusSortDirection,
+      createdSortDirection: createdSortDirection,
+      contactSortDirection: contactSortDirection,
+      amountSortDirection: amountSortDirection,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      fromDateMS: fromDateMS,
+      toDateMS: toDateMS,
+      status: status,
+      search: search,
+      currency: currency,
+      minAmount: minAmount,
+      maxAmount: maxAmount,
+      tags: tags,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const { deleteTag } = useDeleteTag(
+    {
+      merchantId: merchantId,
+      statusSortDirection: statusSortDirection,
+      createdSortDirection: createdSortDirection,
+      contactSortDirection: contactSortDirection,
+      amountSortDirection: amountSortDirection,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      fromDateMS: fromDateMS,
+      toDateMS: toDateMS,
+      status: status,
+      search: search,
+      currency: currency,
+      minAmount: minAmount,
+      maxAmount: maxAmount,
+      tags: tags,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
 
   const { data: paymentRequestResponse } = usePaymentRequest(
     {
@@ -99,61 +153,32 @@ const PaymentRequestDetailsModal = ({
     }
   }, [paymentRequestResponse])
 
-  const updatePaymentRequests = (updatedPaymentRequest: PaymentRequest) => {
-    const index = paymentRequests.findIndex(
-      (paymentRequest) => paymentRequest.id === selectedPaymentRequestID,
-    )
-
-    if (index !== -1) {
-      paymentRequests[index].tags = updatedPaymentRequest.tags.map((tag) =>
-        parseApiTagToLocalTag(tag),
-      )
-    }
-    setPaymentRequests(paymentRequests)
-  }
-
   const onTagAdded = async (tag: LocalTag) => {
     if (paymentRequest) {
       const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
-      const paymentRequestUpdate: PaymentRequestUpdate = {
-        tagIds: existingTagIds.concat(tag.id),
-      }
-      const paymentRequestTagAdd = await paymentRequestClient.update(
-        paymentRequest.id,
-        paymentRequestUpdate,
-      )
-      if (paymentRequestTagAdd.status === 'error') {
-        console.log(paymentRequestTagAdd.error)
-      } else if (paymentRequestTagAdd.data) {
-        updatePaymentRequests(paymentRequestTagAdd.data)
+      const apiTag: Tag = parseLocalTagToApiTag(tag)
+      const response = await addTag({
+        paymentRequestId: paymentRequest.id,
+        tag: apiTag,
+        existingTagsIds: existingTagIds,
+      })
+      if (response.error) {
+        makeToast('error', 'Could not add tag.')
       }
     }
   }
 
   const onTagCreated = async (tag: LocalTag) => {
     if (paymentRequest) {
-      const response = await merchantClient.addTag({ merchantId }, parseApiTagToLocalTag(tag))
-      if (response.status === 'error') {
-        console.log(response.error)
-      } else {
-        const createdTag = response.data
-        if (createdTag) {
-          merchantTags.push(createdTag)
-          setMerchantTags(merchantTags)
-          const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
-          const paymentRequestUpdate: PaymentRequestUpdate = {
-            tagIds: existingTagIds.concat(createdTag.id),
-          }
-          const paymentRequestTagAdd = await paymentRequestClient.update(
-            paymentRequest.id,
-            paymentRequestUpdate,
-          )
-          if (paymentRequestTagAdd.status === 'error') {
-            console.log(paymentRequestTagAdd.error)
-          } else if (paymentRequestTagAdd.data) {
-            updatePaymentRequests(paymentRequestTagAdd.data)
-          }
-        }
+      const apiTag: Tag = parseLocalTagToApiTag(tag)
+      const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
+      const response = await createTag({
+        tag: apiTag,
+        existingTagsIds: existingTagIds,
+        paymentRequestId: paymentRequest.id,
+      })
+      if (response.error) {
+        makeToast('error', 'Could not create tag.')
       }
     }
   }
@@ -161,17 +186,13 @@ const PaymentRequestDetailsModal = ({
   const onTagDeleted = async (tagIdToDelete: string) => {
     if (paymentRequest) {
       const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
-      const paymentRequestUpdate: PaymentRequestUpdate = {
-        tagIds: existingTagIds.filter((id) => id !== tagIdToDelete),
-      }
-      const paymentRequestTagDelete = await paymentRequestClient.update(
-        paymentRequest.id,
-        paymentRequestUpdate,
-      )
-      if (paymentRequestTagDelete.status === 'error') {
-        console.log(paymentRequestTagDelete.error)
-      } else if (paymentRequestTagDelete.data) {
-        updatePaymentRequests(paymentRequestTagDelete.data)
+      const response = await deleteTag({
+        tagId: tagIdToDelete,
+        existingTagsIds: existingTagIds,
+        paymentRequestId: paymentRequest.id,
+      })
+      if (response.error) {
+        makeToast('error', 'Could not delete tag.')
       }
     }
   }

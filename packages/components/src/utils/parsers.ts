@@ -37,6 +37,16 @@ const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
   }
 }
 
+const parseLocalTagToApiTag = (tag: LocalTag): Tag => {
+  return {
+    id: tag.id,
+    name: tag.name,
+    colourHex: tag.colourHex,
+    description: tag.description,
+    merchantID: tag.merchantID,
+  }
+}
+
 const remotePaymentRequestToLocalPaymentRequest = (
   remotePaymentRequest: PaymentRequest,
 ): LocalPaymentRequest => {
@@ -301,4 +311,4 @@ const remotePaymentRequestToLocalPaymentRequest = (
   }
 }
 
-export { parseApiTagToLocalTag, remotePaymentRequestToLocalPaymentRequest }
+export { parseApiTagToLocalTag, parseLocalTagToApiTag, remotePaymentRequestToLocalPaymentRequest }
