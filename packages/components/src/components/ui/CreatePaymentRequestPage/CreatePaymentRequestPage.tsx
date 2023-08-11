@@ -599,7 +599,7 @@ const CreatePaymentRequestPage = ({
             {/* Settings */}
             {/* Show only on desktop so we get the animation only on desktop */}
             {isReviewing && (
-              <div className="hidden md:block">
+              <div key="settings-desktop" className="hidden md:block">
                 <LayoutWrapper
                   key="settings"
                   animateOnExit={false}
@@ -611,8 +611,12 @@ const CreatePaymentRequestPage = ({
               </div>
             )}
 
-            {/* Show only on desktop so we DONt get the animation on mobile */}
-            {isReviewing && <div className="block md:hidden">{renderSettingsReview()}</div>}
+            {/* Show only on desktop so we DONT get the animation on mobile */}
+            {isReviewing && (
+              <div key="settings-mobile" className="block md:hidden">
+                {renderSettingsReview()}
+              </div>
+            )}
 
             {/* Buttons */}
             {currency &&
