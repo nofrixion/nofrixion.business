@@ -703,7 +703,7 @@ const CreatePaymentRequestPage = ({
                           onClick={onConfirmClicked}
                           disabled={isSubmitting}
                           className={cn({
-                            '!bg-greyText disabled:!opacity-100': isSubmitting,
+                            '!bg-grey-text disabled:!opacity-100': isSubmitting,
                           })}
                         >
                           {isSubmitting ? (

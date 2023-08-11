@@ -49,7 +49,6 @@ const PaymentMethodsModal = ({
   const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
   const [priorityBank, setPriorityBank] = useState<BankSettings | undefined>()
   const [currentState, setCurrentState] = useState<LocalPaymentMethodsFormValue>()
-  const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false)
   const [applyEnabled, setApplyEnabled] = useState<boolean>(true)
 
   /* Error alert states */
@@ -63,17 +62,6 @@ const PaymentMethodsModal = ({
   })
 
   useEffect(() => {
-    setEnableUseAsDefault(
-      !userDefaults ||
-        userDefaults?.pisp !== isBankEnabled ||
-        userDefaults?.card !== isCardEnabled ||
-        userDefaults?.wallet !== isWalletEnabled ||
-        userDefaults?.lightning !== isLightningEnabled ||
-        userDefaults?.cardAuthorizeOnly === isCaptureFundsEnabled ||
-        userDefaults?.pispPriorityBank !== isPriorityBankEnabled ||
-        (isPriorityBankEnabled && userDefaults?.pispPriorityBankID !== priorityBank?.bankID),
-    )
-
     setApplyEnabled(
       (isBankEnabled && (!amount || Number(amount) >= minimumCurrencyAmount)) ||
         (!isBankEnabled && (isWalletEnabled || isCardEnabled || isLightningEnabled)),
@@ -196,7 +184,7 @@ const PaymentMethodsModal = ({
     <CustomModal
       title="Payment methods"
       open={open}
-      enableUseAsDefault={enableUseAsDefault}
+      enableUseAsDefault={true}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
       onApplyEnabled={applyEnabled}
