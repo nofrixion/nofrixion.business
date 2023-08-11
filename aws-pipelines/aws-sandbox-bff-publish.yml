@@ -28,17 +28,17 @@ resources:
   repositories:
   - repository: nofrixion.business.cicd
     type: bitbucket
-    endpoint: $(nofrixionBitbucketEndpoint)
+    endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.business.cicd
     ref: $(Build.SourceBranch)
   - repository: moneymoov-dotnet-sdk
     type: github
-    endpoint: $(nofrixionGithubEndpoint)
+    endpoint: github.com_sipsorcery
     name: nofrixion/moneymoov-dotnet
     ref: $(Build.SourceBranch)
   - repository: nofrixion.common
     type: bitbucket
-    endpoint: $(nofrixionBitbucketEndpoint)
+    endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.common
     ref: $(Build.SourceBranch)
 
