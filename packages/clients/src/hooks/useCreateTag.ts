@@ -93,6 +93,8 @@ export const useCreateTag = (
     tags,
   ]
 
+  const MERCHANT_TAGS_QUERY_KEY = ['MerchantTags', merchantId, apiUrl, authToken]
+
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
@@ -112,6 +114,7 @@ export const useCreateTag = (
       if (data.success) {
         // After create tag is successful, invalidate the payment requests cache, the single payment request cache
         queryClient.invalidateQueries({ queryKey: SINGLE_PAYMENT_REQUEST_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: MERCHANT_TAGS_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
       }
     },
