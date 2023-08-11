@@ -21,5 +21,8 @@
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "dotnet.defaultSolution": "bff/NoFrixion.Bff.sln"
+  "dotnet.defaultSolution": "bff/NoFrixion.Bff.sln",
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }
