@@ -1,5 +1,4 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { motion } from 'framer-motion'
 import { Fragment, useState } from 'react'
 
 import { cn } from '../../../utils'
@@ -119,17 +118,11 @@ const CustomModal = ({
                   )}
                 >
                   <div>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <Checkbox
-                        label="Use as my default"
-                        value={isDefaultChecked}
-                        onChange={setIsDefaultChecked}
-                      />
-                    </motion.div>
+                    <Checkbox
+                      label="Use as my default"
+                      value={isDefaultChecked}
+                      onChange={setIsDefaultChecked}
+                    />
                   </div>
 
                   <Button
