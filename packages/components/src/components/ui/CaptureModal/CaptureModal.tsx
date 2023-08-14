@@ -128,7 +128,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
               className={cn(
                 'justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]',
                 {
-                  '!bg-greyText disabled:!opacity-100 cursor-not-allowed': isCaptureButtonDisabled,
+                  '!bg-grey-text disabled:!opacity-100 cursor-not-allowed': isCaptureButtonDisabled,
                 },
               )}
               onClick={onCaptureClick}
