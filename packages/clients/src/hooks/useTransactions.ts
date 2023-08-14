@@ -10,23 +10,34 @@ const fetchTransactions = async (
   authToken?: string,
   pageNumber?: number,
   pageSize?: number,
+  sort?: string,
+  search?: string,
 ): Promise<ApiResponse<TransactionPageResponse>> => {
   const client = new TransactionsClient({ apiUrl, authToken })
 
-  const response = await client.get({ accountId, pageNumber, pageSize })
+  const response = await client.get({ accountId, pageNumber, pageSize, sort, search })
 
   return response
 }
 
 export const useTransactions = (
-  { accountId, pageNumber, pageSize }: TransactionsProps,
+  { accountId, pageNumber, pageSize, sort, search }: TransactionsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
-  const QUERY_KEY = ['Transactions', accountId, pageNumber, pageSize, apiUrl, authToken]
+  const QUERY_KEY = [
+    'Transactions',
+    accountId,
+    pageNumber,
+    pageSize,
+    apiUrl,
+    authToken,
+    sort,
+    search,
+  ]
 
   return useQuery<ApiResponse<TransactionPageResponse>, Error>(
     QUERY_KEY,
-    () => fetchTransactions(apiUrl, accountId, authToken, pageNumber, pageSize),
+    () => fetchTransactions(apiUrl, accountId, authToken, pageNumber, pageSize, sort, search),
     {
       enabled: !!accountId,
     },
