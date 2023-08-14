@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { PaymentRequestClient } from '../clients'
-import { formatPaymentRequestSortExpression, SortDirection } from '../types'
+import { formatSortExpression, SortDirection } from '../types'
 import { ApiResponse, PaymentRequestPageResponse } from '../types/ApiResponses'
 import { ApiProps, usePaymentRequestsProps } from '../types/props'
 
@@ -24,12 +24,12 @@ const fetchPaymentRequests = async (
   maxAmount?: number,
   tags?: string[],
 ): Promise<ApiResponse<PaymentRequestPageResponse>> => {
-  const sortExpression = formatPaymentRequestSortExpression(
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-  )
+  const sortExpression = formatSortExpression({
+    statusSortDirection: statusSortDirection,
+    createdSortDirection: createdSortDirection,
+    contactSortDirection: contactSortDirection,
+    amountSortDirection: amountSortDirection,
+  })
 
   const client = new PaymentRequestClient({ apiUrl, authToken })
 
