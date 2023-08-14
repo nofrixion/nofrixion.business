@@ -4,10 +4,10 @@ import { formatAmount } from '../../../utils/formatters'
 
 export interface AccountProps {
   account: AccountModel
-  //onClick: () => void
+  onAccountClick: () => void
 }
 
-const Account: React.FC<AccountProps> = ({ account }) => {
+const Account: React.FC<AccountProps> = ({ account, onAccountClick }) => {
   const getAccountCurrency = (currency: Currency) => {
     if (!currency) {
       return
@@ -20,9 +20,13 @@ const Account: React.FC<AccountProps> = ({ account }) => {
   }
 
   return (
-    <div className="flex h-[124px] p-8 mb-8 bg-white">
+    <div
+      className="flex h-[124px] p-8 mb-8 bg-white hover:cursor-pointer gap-8 justify-between"
+      onClick={() => onAccountClick()}
+      aria-hidden="true"
+    >
       <div>
-        <span>{account.accountName}</span>
+        <span className="font-semibold text-xl leading-5">{account.accountName}</span>
         <span></span>
       </div>
       <div className="text-right">

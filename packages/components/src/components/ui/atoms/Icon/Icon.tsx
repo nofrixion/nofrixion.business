@@ -197,6 +197,19 @@ export const Icons = {
       <path d="M0.5 2L4 5.5L7.5 2" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'copy/12px': (className: string) => (
+    <SVG className={className} size="12">
+      <path
+        d="M9.375 3.25V1.875C9.375 1.59886 9.15115 1.375 8.875 1.375H1.875C1.59886 1.375 1.375 1.59885 1.375 1.875V8.875C1.375 9.15115 1.59886 9.375 1.875 9.375H3.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.625 5.125C4.625 4.84885 4.84886 4.625 5.125 4.625H12.125C12.4011 4.625 12.625 4.84886 12.625 5.125V12.125C12.625 12.4011 12.4011 12.625 12.125 12.625H5.125C4.84885 12.625 4.625 12.4011 4.625 12.125V5.125Z"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons
