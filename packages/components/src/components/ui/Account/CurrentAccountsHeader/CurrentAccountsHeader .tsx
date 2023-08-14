@@ -1,7 +1,7 @@
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
 
-import { Button, Icon } from '../../ui/atoms'
-import LayoutWrapper from '../../ui/utils/LayoutWrapper'
+import { Button, Icon } from '../../atoms'
+import LayoutWrapper from '../../utils/LayoutWrapper'
 
 export interface CurrentAccountsHeaderProps {
   onCreatePaymentAccount: () => void

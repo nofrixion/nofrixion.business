@@ -119,6 +119,19 @@ export const Icons = {
       <circle cx="12.4998" cy="18.2608" r="0.782717" stroke="#454D54" strokeWidth="1.565" />
     </SVG>
   ),
+  'copy/16px': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M11.1667 3V1.16667C11.1667 0.79848 10.8682 0.5 10.5 0.5H1.16667C0.79848 0.5 0.5 0.798473 0.5 1.16667V10.5C0.5 10.8682 0.79848 11.1667 1.16667 11.1667H3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.8335 5.49992C4.8335 5.13173 5.13198 4.83325 5.50016 4.83325H14.8335C15.2017 4.83325 15.5002 5.13173 15.5002 5.49992V14.8333C15.5002 15.2015 15.2017 15.4999 14.8335 15.4999H5.50016C5.13197 15.4999 4.8335 15.2015 4.8335 14.8333V5.49992Z"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
   'close/16': (className: string) => (
     <SVG className={className} size="16">
       <path d="M2 2L14 14" strokeLinecap="round" strokeLinejoin="round" />
@@ -195,19 +208,6 @@ export const Icons = {
   'arrow-down/8': (className: string) => (
     <SVG className={className} size="8">
       <path d="M0.5 2L4 5.5L7.5 2" strokeLinecap="round" strokeLinejoin="round" />
-    </SVG>
-  ),
-  'copy/12px': (className: string) => (
-    <SVG className={className} size="12">
-      <path
-        d="M9.375 3.25V1.875C9.375 1.59886 9.15115 1.375 8.875 1.375H1.875C1.59886 1.375 1.375 1.59885 1.375 1.875V8.875C1.375 9.15115 1.59886 9.375 1.875 9.375H3.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M4.625 5.125C4.625 4.84885 4.84886 4.625 5.125 4.625H12.125C12.4011 4.625 12.625 4.84886 12.625 5.125V12.125C12.625 12.4011 12.4011 12.625 12.125 12.625H5.125C4.84885 12.625 4.625 12.4011 4.625 12.125V5.125Z"
-        strokeLinejoin="round"
-      />
     </SVG>
   ),
 } as const

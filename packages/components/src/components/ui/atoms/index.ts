@@ -1,4 +1,5 @@
 import { Button } from './Button/Button'
+import DisplayAndCopy from './DisplayAndCopy/DisplayAndCopy'
 import { Icon } from './Icon/Icon'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select/Select'
 import {
@@ -13,6 +14,7 @@ import { Text } from './Text/Text'
 
 export {
   Button,
+  DisplayAndCopy,
   Icon,
   Select,
   SelectContent,

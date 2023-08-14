@@ -1,7 +1,7 @@
 import { useAccounts } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import CurrentAcountsList from '../../ui/Account/CurrentAcountsList'
+import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
 
 export interface CurrentAccountsListProps {
   merchantId: string
@@ -53,11 +53,15 @@ const CurrentAccountsMain = ({
   }
 
   return (
-    <CurrentAcountsList
-      accounts={accounts}
-      onAccountClick={onAccountClick}
-      onCreatePaymentAccount={onCreatePaymentAccount}
-    />
+    <>
+      {accounts?.status === 'success' && accounts.data && (
+        <CurrentAcountsList
+          accounts={accounts.data}
+          onAccountClick={onAccountClick}
+          onCreatePaymentAccount={onCreatePaymentAccount}
+        />
+      )}
+    </>
   )
 }
 
