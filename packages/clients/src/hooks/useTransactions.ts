@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { TransactionsClient } from '../clients'
+import { formatSortExpression, SortDirection } from '../types'
 import { ApiResponse, TransactionPageResponse } from '../types/ApiResponses'
-import { ApiProps, TransactionsProps } from '../types/props'
+import { ApiProps, useTransactionsProps } from '../types/props'
 
 const fetchTransactions = async (
   apiUrl: string,
@@ -10,18 +11,49 @@ const fetchTransactions = async (
   authToken?: string,
   pageNumber?: number,
   pageSize?: number,
-  sort?: string,
   search?: string,
+  dateSortDirection?: SortDirection,
+  toSortDirection?: SortDirection,
+  referenceSortDirection?: SortDirection,
+  amountSortDirection?: SortDirection,
+  descriptionSortDirection?: SortDirection,
+  typeSortDirection?: SortDirection,
 ): Promise<ApiResponse<TransactionPageResponse>> => {
+  const sortExpression = formatSortExpression({
+    dateSortDirection: dateSortDirection,
+    toSortDirection: toSortDirection,
+    referenceSortDirection: referenceSortDirection,
+    amountSortDirection: amountSortDirection,
+    descriptionSortDirection: descriptionSortDirection,
+    typeSortDirection: typeSortDirection,
+  })
+
   const client = new TransactionsClient({ apiUrl, authToken })
 
-  const response = await client.get({ accountId, pageNumber, pageSize, sort, search })
+  const response = await client.get({
+    accountId,
+    pageNumber,
+    pageSize,
+    sort: sortExpression,
+    search,
+  })
 
   return response
 }
 
 export const useTransactions = (
-  { accountId, pageNumber, pageSize, sort, search }: TransactionsProps,
+  {
+    accountId,
+    pageNumber,
+    pageSize,
+    search,
+    dateSortDirection,
+    toSortDirection,
+    referenceSortDirection,
+    amountSortDirection,
+    descriptionSortDirection,
+    typeSortDirection,
+  }: useTransactionsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
   const QUERY_KEY = [
@@ -31,13 +63,32 @@ export const useTransactions = (
     pageSize,
     apiUrl,
     authToken,
-    sort,
     search,
+    dateSortDirection,
+    toSortDirection,
+    referenceSortDirection,
+    amountSortDirection,
+    descriptionSortDirection,
+    typeSortDirection,
   ]
 
   return useQuery<ApiResponse<TransactionPageResponse>, Error>(
     QUERY_KEY,
-    () => fetchTransactions(apiUrl, accountId, authToken, pageNumber, pageSize, sort, search),
+    () =>
+      fetchTransactions(
+        apiUrl,
+        accountId,
+        authToken,
+        pageNumber,
+        pageSize,
+        search,
+        dateSortDirection,
+        toSortDirection,
+        referenceSortDirection,
+        amountSortDirection,
+        descriptionSortDirection,
+        typeSortDirection,
+      ),
     {
       enabled: !!accountId,
     },
