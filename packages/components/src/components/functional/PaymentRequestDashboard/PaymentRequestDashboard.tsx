@@ -1,7 +1,7 @@
 import {
   ApiError,
   Currency,
-  formatPaymentRequestSortExpression,
+  formatSortExpression,
   PaymentRequest,
   PaymentRequestClient,
   PaymentRequestMetrics,
@@ -430,12 +430,12 @@ const PaymentRequestDashboardMain = ({
   const fetchNextPage = async () => {
     setIsLoadingMore(true)
 
-    const sort = formatPaymentRequestSortExpression(
+    const sort = formatSortExpression({
       statusSortDirection,
       createdSortDirection,
       contactSortDirection,
       amountSortDirection,
-    )
+    })
 
     const paymentRequests = await client.getAll({
       pageNumber: showMorePage + 1,

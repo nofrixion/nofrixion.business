@@ -50,6 +50,22 @@ export interface TransactionsProps extends AccountProps {
   pageSize?: number
   fromDate?: Date
   toDate?: Date
+  sort?: string
+  search?: string
+}
+
+export interface useTransactionsProps extends AccountProps {
+  pageNumber?: number
+  pageSize?: number
+  fromDateMS?: number
+  toDateMS?: number
+  search?: string
+  dateSortDirection?: SortDirection
+  toSortDirection?: SortDirection
+  referenceSortDirection?: SortDirection
+  amountSortDirection?: SortDirection
+  descriptionSortDirection?: SortDirection
+  typeSortDirection?: SortDirection
 }
 
 export interface usePaymentRequestProps extends MerchantProps, PaymentRequestProps {
