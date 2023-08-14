@@ -12,6 +12,12 @@ interface SortExpressionProps {
   typeSortDirection?: SortDirection
 }
 
+/**
+ * Formats the given sort direction into a string that can be used in the API
+ * @param SortExpressionProps Props containing the sort directions
+ * @returns An expression to sort the order of the records. Example "Amount desc,Inserted asc".
+ */
+
 const formatSortExpression = ({ ...props }: SortExpressionProps): string => {
   let sortExpression = ''
 
