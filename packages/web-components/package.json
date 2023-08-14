@@ -7,7 +7,7 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "story": "storybook dev -p 6006 --no-open",
+    "story-old": "storybook dev -p 6006 --no-open",
     "dev-web": "storybook dev -p 6007 -c .storybook-webcomponents --no-open --quiet",
     "build": "tsc && vite build",
     "build-storybook": "storybook build",
