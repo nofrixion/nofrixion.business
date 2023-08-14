@@ -45,3 +45,6 @@ wwwroot/js/*.js.map
 # Ignore local pay elements. Must use CDN for all non-local deployments.
 bff/NoFrixion.Bff/wwwroot/js/nofrixion-business.js
 bff/NoFrixion.Bff/wwwroot/nofrixion-business.js
+
+# Ignore storybook build
+storybook-static

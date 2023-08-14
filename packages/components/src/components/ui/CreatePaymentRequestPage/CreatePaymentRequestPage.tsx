@@ -514,7 +514,7 @@ const CreatePaymentRequestPage = ({
             {/* Amount */}
             {currency && amount && (
               <LayoutWrapper key="amount" className={reviewRowClassNames}>
-                <span className="leading-6 text-greyText w-40 shrink-0">Amount</span>
+                <span className="leading-6 text-grey-text w-40 shrink-0">Amount</span>
                 <span
                   className={cn('font-semibold text-[2rem]/8 inline p-1', {
                     'bg-warning-yellow rounded':
