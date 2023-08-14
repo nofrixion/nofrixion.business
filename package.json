@@ -5,6 +5,7 @@
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "story": "turbo run story",
+    "build-storybook": "npm run build-storybook -w @nofrixion/components",
     "format": "prettier --check --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",
