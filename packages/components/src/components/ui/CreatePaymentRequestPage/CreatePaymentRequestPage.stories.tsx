@@ -1,4 +1,4 @@
-import { Currency, PaymentProcessor } from '@nofrixion/moneymoov'
+import { ApiError, Currency, PaymentProcessor } from '@nofrixion/moneymoov'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
 
@@ -28,8 +28,9 @@ const Template: StoryFn<typeof CreatePaymentRequestPage> = (args) => {
     setIsOpen(false)
   }
 
-  const onCreatePaymentRequest = async () => {
+  const onCreatePaymentRequest = async (): Promise<ApiError | undefined> => {
     onClose()
+    return undefined
   }
 
   return (

@@ -33,6 +33,7 @@ module.exports = {
         'dark-bg': '#002233',
         'nav-accent': '#3DD7F5',
         'information-bg': '#CEF',
+        'warning-yellow': '#FCF5CF',
       },
       fontSize: {
         '13px': '0.8125rem',

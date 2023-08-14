@@ -1,9 +1,9 @@
 import * as Tooltip from '@radix-ui/react-tooltip'
-import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
 import InfoIcon from '../../../assets/icons/info-icon.svg'
+import { cn } from '../../../utils'
 
 export interface InfoTooltipProps {
   content: string
@@ -18,9 +18,7 @@ const InfoTooltip = ({ content, children, side = 'top', className }: InfoTooltip
   return (
     <Tooltip.Provider delayDuration={0}>
       <Tooltip.Root open={open} onOpenChange={setOpen}>
-        <Tooltip.Trigger
-          className={classNames('w-4 h-4 min-w-[1rem] min-h-[1rem] inline-flex', className)}
-        >
+        <Tooltip.Trigger className={cn('w-4 h-4 min-w-[1rem] min-h-[1rem] inline-flex', className)}>
           <>
             {/* If no children show img */}
             {!children && (

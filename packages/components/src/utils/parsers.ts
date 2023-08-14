@@ -37,6 +37,16 @@ const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
   }
 }
 
+const parseLocalTagToApiTag = (tag: LocalTag): Tag => {
+  return {
+    id: tag.id,
+    name: tag.name,
+    colourHex: tag.colourHex,
+    description: tag.description,
+    merchantID: tag.merchantID,
+  }
+}
+
 const remotePaymentRequestToLocalPaymentRequest = (
   remotePaymentRequest: PaymentRequest,
 ): LocalPaymentRequest => {
@@ -274,7 +284,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
     status: parseApiStatusToLocalStatus(status),
     createdAt: new Date(inserted),
     contact: {
-      name: addresses.length ? `${addresses[0].firstName} ${addresses[0].lastName}` : undefined,
+      name: addresses.length
+        ? `${addresses[0].firstName ?? ''} ${addresses[0].lastName ?? ''}`.trim()
+        : undefined,
       email: customerEmailAddress ?? undefined,
     },
     amount: amount,
@@ -299,4 +311,4 @@ const remotePaymentRequestToLocalPaymentRequest = (
   }
 }
 
-export { parseApiTagToLocalTag, remotePaymentRequestToLocalPaymentRequest }
+export { parseApiTagToLocalTag, parseLocalTagToApiTag, remotePaymentRequestToLocalPaymentRequest }

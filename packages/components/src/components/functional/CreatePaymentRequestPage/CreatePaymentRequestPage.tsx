@@ -1,4 +1,5 @@
 import {
+  ApiError,
   ApiResponse,
   BankSettings,
   CardTokenCreateModes,
@@ -152,7 +153,9 @@ const CreatePaymentRequestPageMain = ({
     }
   }
 
-  const onCreatePaymentRequest = async (paymentRequestToCreate: LocalPaymentRequestCreate) => {
+  const onCreatePaymentRequest = async (
+    paymentRequestToCreate: LocalPaymentRequestCreate,
+  ): Promise<ApiError | undefined> => {
     const parsedPaymentRequestToCreate = parseLocalPaymentRequestCreateToRemotePaymentRequest(
       merchantId,
       paymentRequestToCreate,
@@ -164,7 +167,7 @@ const CreatePaymentRequestPageMain = ({
     // Maybe we should have a redirectUrl that we can redirect to? This could be a parameter in the web-component
     if (response.status === 'error') {
       makeToast('error', response.error.title)
-      return
+      return response.error
     }
 
     if (response.data) {

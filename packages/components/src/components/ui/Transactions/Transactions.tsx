@@ -1,5 +1,4 @@
 import { Currency } from '@nofrixion/moneymoov'
-import classNames from 'classnames'
 import { format } from 'date-fns'
 import { Fragment } from 'react'
 
@@ -9,6 +8,7 @@ import {
   SubTransactionType,
 } from '../../../types/LocalEnums'
 import { LocalPaymentAttempt } from '../../../types/LocalTypes'
+import { cn } from '../../../utils'
 import {
   getSubTransactions,
   hasRefundOrCaptureAttempts,
@@ -72,12 +72,12 @@ const Transactions = ({
             {transactions.map((transaction, index) => (
               <Fragment key={index}>
                 <tr
-                  className={classNames('group whitespace-nowrap', {
+                  className={cn('group whitespace-nowrap', {
                     'border-b': !hasRefundOrCaptureAttempts(transaction),
                   })}
                 >
                   <td
-                    className={classNames('text-[0.813rem] pb-2 leading-6', {
+                    className={cn('text-[0.813rem] pb-2 leading-6', {
                       'pt-2': index !== 0,
                     })}
                   >
@@ -91,9 +91,7 @@ const Transactions = ({
                       {transaction.occurredAt && format(transaction.occurredAt, 'MMM do, yyyy')}
                     </span>
                   </td>
-                  <td
-                    className={classNames('pl-2 lg:pl-6 pb-2 text-right', { 'pt-2': index !== 0 })}
-                  >
+                  <td className={cn('pl-2 lg:pl-6 pb-2 text-right', { 'pt-2': index !== 0 })}>
                     <span className="mr-2 text-sm font-medium leading-6 tabular-nums">
                       <span className="lg:hidden">
                         {transaction.currency === Currency.EUR ? '€' : '£'}
@@ -104,12 +102,12 @@ const Transactions = ({
                       }).format(Number(transaction.amount))}
                     </span>
                   </td>
-                  <td className={classNames('hidden lg:table-cell pb-2', { 'pt-2': index !== 0 })}>
+                  <td className={cn('hidden lg:table-cell pb-2', { 'pt-2': index !== 0 })}>
                     <span className="text-grey-text font-normal text-[0.813rem] leading-6">
                       {transaction.currency}
                     </span>
                   </td>
-                  <td className={classNames('pl-2 lg:pl-6 pb-2', { 'pt-2': index !== 0 })}>
+                  <td className={cn('pl-2 lg:pl-6 pb-2', { 'pt-2': index !== 0 })}>
                     <div className="flex flex-row items-center">
                       <span className="mr-2">
                         <PaymentMethodIcon
@@ -132,7 +130,7 @@ const Transactions = ({
                     </div>
                   </td>
                   <td
-                    className={classNames('pl-2 pb-2 lg:pl-6 leading-6', {
+                    className={cn('pl-2 pb-2 lg:pl-6 leading-6', {
                       'pt-2': index !== 0,
                     })}
                   >
@@ -165,7 +163,7 @@ const Transactions = ({
                         subTransaction.type !== SubTransactionType.Capture)) && (
                       <tr
                         key={`ev_${evIndex}`}
-                        className={classNames('text-xs leading-6 group whitespace-nowrap', {
+                        className={cn('text-xs leading-6 group whitespace-nowrap', {
                           'border-b [&>td]:pb-2':
                             evIndex === getSubTransactions(transaction).length - 1,
                         })}
@@ -185,7 +183,7 @@ const Transactions = ({
                         </td>
                         <td className="pl-2 lg:pl-6 text-right py-0">
                           <span
-                            className={classNames('mr-2 font-medium tabular-nums ', {
+                            className={cn('mr-2 font-medium tabular-nums ', {
                               'text-[#29A37A]': subTransaction.type === SubTransactionType.Capture,
                             })}
                           >

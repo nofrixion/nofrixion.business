@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useEffect, useState } from 'react'
 import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
 
 import GraphicDesktopMoneyMoovForBusiness from '../assets/graphics/for-business-diagram-desktop.svg'
@@ -32,11 +32,12 @@ const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
         that seamlessly blends into your business operations.
       </p>
 
-      <button onClick={onEnterPressed}>
-        <a href="#" className="flex rounded-full px-6 py-3 mt-8 bg-[#001933] text-white">
-          <span>Enter</span>
-          <img src={IconArrowRight} className="ml-2 h-6 w-6" alt="Right icon" />
-        </a>
+      <button
+        className="flex rounded-full px-6 py-3 mt-8 bg-[#001933] text-white"
+        onClick={onEnterPressed}
+      >
+        <span>Enter</span>
+        <img src={IconArrowRight} className="ml-2 h-6 w-6" alt="Right icon" />
       </button>
     </div>
   )
@@ -50,7 +51,21 @@ const HomeUI = () => {
 
   const callbackUrl = searchParams.get('callbackUrl')
 
-  if (authState?.isLoading) {
+  const [finishedFirstLoading, setFinishedFirstLoading] = useState(false)
+
+  useEffect(() => {
+    if (!authState) {
+      return
+    }
+
+    if (!authState?.isLoading) {
+      setFinishedFirstLoading(true)
+    }
+  }, [authState?.isLoading])
+
+  // Note: added `finishedFirstLoading` to prevent the page from flashing the loader
+  // as react-query is fetching the user data every time the page is focused
+  if (authState?.isLoading && !finishedFirstLoading) {
     return <Loader className="flex items-center justify-center p-24 min-h-screen" />
   }
 

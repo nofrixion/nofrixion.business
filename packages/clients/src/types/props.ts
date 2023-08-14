@@ -1,3 +1,4 @@
+import { Tag } from './ApiResponses'
 import { SortDirection } from './Enums'
 
 export interface PagedResponseProps extends FilterResponseProps, MerchantProps, AccountProps {
@@ -83,4 +84,22 @@ export interface CaptureProps {
   authorizationId: string
   paymentRequestId: string
   amount?: number
+}
+
+export interface DeleteTagProps {
+  paymentRequestId: string
+  tagId: string
+  existingTagsIds: string[]
+}
+
+export interface AddTagProps {
+  paymentRequestId: string
+  tag: Tag
+  existingTagsIds: string[]
+}
+
+export interface CreateTagProps {
+  paymentRequestId: string
+  tag: Tag
+  existingTagsIds: string[]
 }

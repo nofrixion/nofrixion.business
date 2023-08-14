@@ -6,8 +6,8 @@ import IconPayouts from '../assets/icons/payouts.svg'
 import IconPricing from '../assets/icons/pricing.svg'
 import IconUsers from '../assets/icons/users.svg'
 
-const NOFRIXION_API_URL = import.meta.env.VITE_PUBLIC_NOFRIXION_API_URL
-const NOFRIXION_BFF_URL = import.meta.env.VITE_PUBLIC_BFF_URL
+const NOFRIXION_API_URL = '/api'
+const NOFRIXION_BFF_URL = '/bff'
 
 interface INavItem {
   leftIcon: any
