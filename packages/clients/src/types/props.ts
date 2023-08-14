@@ -57,8 +57,8 @@ export interface TransactionsProps extends AccountProps {
 export interface useTransactionsProps extends AccountProps {
   pageNumber?: number
   pageSize?: number
-  fromDate?: Date
-  toDate?: Date
+  fromDateMS?: number
+  toDateMS?: number
   search?: string
   dateSortDirection?: SortDirection
   toSortDirection?: SortDirection
