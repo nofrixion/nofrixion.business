@@ -75,7 +75,6 @@ const PaymentNotificationsModal = ({
     <CustomModal
       title="Payment notifications"
       open={open}
-      enableUseAsDefault={true}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
       onApplyEnabled={!hasEmailError}

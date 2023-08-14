@@ -50,7 +50,6 @@ const PaymentConditionsModal = ({
     <CustomModal
       title="Payment conditions"
       open={open}
-      enableUseAsDefault={true}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
     >

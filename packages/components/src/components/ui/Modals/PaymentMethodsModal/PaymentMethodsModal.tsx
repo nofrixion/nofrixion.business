@@ -184,7 +184,6 @@ const PaymentMethodsModal = ({
     <CustomModal
       title="Payment methods"
       open={open}
-      enableUseAsDefault={true}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
       onApplyEnabled={applyEnabled}

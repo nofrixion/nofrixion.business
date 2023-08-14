@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Fragment, useState } from 'react'
 
 import { cn } from '../../../utils'
@@ -8,7 +8,6 @@ import Checkbox from '../Checkbox/Checkbox'
 
 export interface CustomModalProps extends BaseModalProps {
   title: string
-  enableUseAsDefault?: boolean
   children: React.ReactNode
   onApplyEnabled?: boolean
   buttonRowClassName?: string
@@ -28,7 +27,6 @@ const CustomModal = ({
   title,
   children,
   open,
-  enableUseAsDefault,
   onApply,
   onDismiss,
   onApplyEnabled = true,
@@ -39,11 +37,6 @@ const CustomModal = ({
 
   const onApplyClicked = () => {
     if (!onApply) return
-
-    if (!enableUseAsDefault) {
-      onApply({})
-      return
-    }
 
     // Add the isDefaultChecked value to the formData
     const formData = {
@@ -126,21 +119,17 @@ const CustomModal = ({
                   )}
                 >
                   <div>
-                    <AnimatePresence>
-                      {enableUseAsDefault && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                        >
-                          <Checkbox
-                            label="Use as my default"
-                            value={isDefaultChecked}
-                            onChange={setIsDefaultChecked}
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <Checkbox
+                        label="Use as my default"
+                        value={isDefaultChecked}
+                        onChange={setIsDefaultChecked}
+                      />
+                    </motion.div>
                   </div>
 
                   <Button

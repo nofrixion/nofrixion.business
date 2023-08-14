@@ -26,6 +26,5 @@ export const Showcase = Template.bind({})
 Showcase.args = {
   title: 'I am a modal',
   open: true,
-  enableUseAsDefault: true,
   children: <div>I am the content of the modal</div>,
 }
