@@ -3,9 +3,11 @@ import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
+import { cn } from '../../../utils'
 import { localCurrency } from '../../../utils/constants'
 import { Icon } from '../atoms'
 import InputAmountField from '../InputAmountField/InputAmountField'
+import { Loader } from '../Loader/Loader'
 
 export interface CardRefundModalProps {
   initialAmount: string
@@ -148,12 +150,24 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
             )}
             <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
               <button
-                className="justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]"
+                className={cn(
+                  'justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]',
+                  {
+                    '!bg-grey-text disabled:!opacity-100 cursor-not-allowed':
+                      isRefundButtonDisabled,
+                  },
+                )}
                 onClick={onRefundClick}
                 disabled={isRefundButtonDisabled}
               >
-                Confirm {!isVoid && <span>refund</span>}
-                {isVoid && <span>void</span>}
+                {isRefundButtonDisabled ? (
+                  <Loader className="h-6 w-6 mx-auto" />
+                ) : (
+                  <span>
+                    Confirm {!isVoid && <span>refund</span>}
+                    {isVoid && <span>void</span>}
+                  </span>
+                )}
               </button>
             </div>
           </div>

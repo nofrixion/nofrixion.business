@@ -198,8 +198,8 @@ const Transactions = ({
                             <span className="lg:hidden">
                               {subTransaction.currency === Currency.EUR ? '€' : '£'}
                             </span>
-                            {subTransaction.type === SubTransactionType.Refund ||
-                              (subTransaction.type === SubTransactionType.Void && <span>-</span>)}
+                            {(subTransaction.type === SubTransactionType.Refund ||
+                              subTransaction.type === SubTransactionType.Void) && <span>-</span>}
                             {formatter.format(subTransaction.amount)}
                           </span>
                         </td>
