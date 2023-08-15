@@ -1,29 +1,30 @@
 {
+  "name": "nofrixion-business-monorepo",
   "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "clean": "turbo run clean",
-    "dev": "turbo run dev",
-    "story": "turbo run story",
-    "build-storybook": "npm run build-storybook -w @nofrixion/components",
-    "format": "prettier --check --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "prepare": "husky install",
-    "pre-commit": "turbo run lint && npm run format"
-  },
-  "devDependencies": {
-    "prettier": "^2.7.1",
-    "turbo": "latest"
-  },
-  "packageManager": "npm@8.19.4",
   "workspaces": [
     "./apps/*",
     "./packages/*",
     "./npm/*"
   ],
+  "scripts": {
+    "build": "turbo run build",
+    "build-storybook": "npm run build-storybook -w @nofrixion/components",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "format": "prettier --check --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "manypkg check",
+    "lint": "turbo run lint",
+    "pre-commit": "turbo run lint && npm run format",
+    "prepare": "husky install",
+    "story": "turbo run story",
+    "test": "turbo run test"
+  },
   "dependencies": {
     "@changesets/cli": "^2.26.2",
-    "husky": "^8.0.3"
-  }
+    "@manypkg/cli": "latest",
+    "husky": "^8.0.3",
+    "prettier": "^2.7.1",
+    "turbo": "latest"
+  },
+  "packageManager": "npm@8.19.4"
 }
