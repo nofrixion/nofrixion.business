@@ -198,7 +198,8 @@ const Transactions = ({
                             <span className="lg:hidden">
                               {subTransaction.currency === Currency.EUR ? '€' : '£'}
                             </span>
-                            {subTransaction.type === SubTransactionType.Refund && <span>-</span>}
+                            {subTransaction.type === SubTransactionType.Refund ||
+                              (subTransaction.type === SubTransactionType.Void && <span>-</span>)}
                             {formatter.format(subTransaction.amount)}
                           </span>
                         </td>
@@ -211,7 +212,7 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="capture/16" className="text-control-grey-hover" />
+                                <Icon name="capture/12" className="text-control-grey-hover" />
                               </span>
                               <span>Captured</span>
                             </div>
@@ -221,7 +222,7 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="return/16" className="text-control-grey-hover" />
+                                <Icon name="return/12" className="text-control-grey-hover" />
                               </span>
                               <span>Refund</span>
                             </div>
@@ -231,7 +232,7 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="void/16" className="text-control-grey-hover" />
+                                <Icon name="void/12" className="text-control-grey-hover" />
                               </span>
                               <span>Void</span>
                             </div>

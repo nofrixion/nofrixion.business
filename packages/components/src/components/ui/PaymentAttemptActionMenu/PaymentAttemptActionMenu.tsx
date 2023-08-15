@@ -36,7 +36,7 @@ export interface PaymentAttemptActionMenuProps {
 
 interface PaymentAttemptActionMenuItemContentProps {
   label: string
-  iconName: 'return/12' | 'void/12'
+  iconName: 'return/16' | 'void/16'
 }
 
 const PaymentAttemptActionMenuItemContent = ({
@@ -89,13 +89,13 @@ const PaymentAttemptActionMenu = ({
           >
             {!isCardVoid && (
               <DropdownMenu.Item className={actionItem()} onClick={onRefundClick}>
-                <PaymentAttemptActionMenuItemContent label="Refund" iconName="return/12" />
+                <PaymentAttemptActionMenuItemContent label="Refund" iconName="return/16" />
               </DropdownMenu.Item>
             )}
 
             {isCardVoid && (
               <DropdownMenu.Item className={actionItem()} onClick={onVoidClick}>
-                <PaymentAttemptActionMenuItemContent label="Void" iconName="void/12" />
+                <PaymentAttemptActionMenuItemContent label="Void" iconName="void/16" />
               </DropdownMenu.Item>
             )}
           </motion.div>
