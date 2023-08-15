@@ -1,5 +1,6 @@
 import { Account as AccountModel } from '@nofrixion/moneymoov'
 
+import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader '
 
@@ -27,6 +28,8 @@ const CurrentAcountsList = ({
             ))}
         </div>
       )}
+
+      <Toaster positionY="top" positionX="right" duration={3000} />
     </div>
   )
 }
