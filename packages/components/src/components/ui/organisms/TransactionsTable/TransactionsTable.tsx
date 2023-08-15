@@ -14,6 +14,7 @@ import {
 } from '../../atoms/Table/Table'
 import ColumnHeader, { SortDirection } from '../../ColumnHeader/ColumnHeader'
 import { Status } from '../../molecules/Status/Status'
+import Pager from '../../Pager/Pager'
 
 export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -21,7 +22,7 @@ function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
 }
 
-const invoices = [
+const transactions = [
   {
     date: randomDate(),
     destinationAccount: {
@@ -68,11 +69,11 @@ const invoices = [
       iban: 'IE11MODR99035501927019',
     },
     amount: 450.0,
+    balanceAfterTx: 32345,
     moneyGoing: 'in',
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA',
-    status: 'pending',
   },
   {
     date: randomDate(),
@@ -81,11 +82,11 @@ const invoices = [
       iban: 'IE11MODR99035501927019',
     },
     amount: 550.0,
+    balanceAfterTx: 32345,
     moneyGoing: 'out',
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: undefined,
-    status: 'pending',
   },
   {
     date: randomDate(),
@@ -94,11 +95,11 @@ const invoices = [
       iban: 'IE11MODR99035501927019',
     },
     amount: 200.0,
+    balanceAfterTx: 32345,
     moneyGoing: 'in',
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA Instant',
-    status: 'pending',
   },
   {
     date: randomDate(),
@@ -107,11 +108,11 @@ const invoices = [
       iban: 'IE11MODR99035501927019',
     },
     amount: 300.0,
+    balanceAfterTx: 32345,
     moneyGoing: 'out',
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: undefined,
-    status: 'pending',
   },
 ]
 
@@ -123,7 +124,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ ...props }) => {
   const renderBasicInfoLayout = (upperText: string, lowerText: string, className?: string) => {
     return (
       <div className={className}>
-        <span className="block text-[13px]">{upperText}</span>
+        <span className="block">{upperText}</span>
         <span className="text-xs text-grey-text">{lowerText}</span>
       </div>
     )
@@ -133,7 +134,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ ...props }) => {
     <div {...props}>
       <Table {...props}>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-transparent cursor-auto">
             <TableHead className="w-[150px]">
               <ColumnHeader label={'Date'} onSort={(direction) => onSort('Date', direction)} />
             </TableHead>
@@ -166,58 +167,68 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ ...props }) => {
         </TableHeader>
         <TableBody>
           {/* Sort by date */}
-          {invoices
+          {transactions
             .sort((a, b) => a.date.getTime() - b.date.getTime())
-            .map((invoice) => (
-              <TableRow key={invoice.date.toString()}>
+            .map((transaction) => (
+              <TableRow key={transaction.date.toString()}>
                 <TableCell className="">
                   {renderBasicInfoLayout(
-                    format(invoice.date, 'MMM dd, yyyy'),
-                    format(invoice.date, 'hh:mm'),
+                    format(transaction.date, 'MMM dd, yyyy'),
+                    format(transaction.date, 'hh:mm'),
                     'w-[100px] truncate',
                   )}
                 </TableCell>
                 <TableCell>
                   {renderBasicInfoLayout(
-                    invoice.destinationAccount.name,
-                    invoice.destinationAccount.iban,
+                    transaction.destinationAccount.name,
+                    transaction.destinationAccount.iban,
                     'w-[200px] truncate',
                   )}
                 </TableCell>
                 <TableCell
                   className={cn({
-                    'text-positive-green': invoice.moneyGoing === 'in',
-                    'text-negative-red': invoice.moneyGoing === 'out',
+                    'text-positive-green': transaction.moneyGoing === 'in',
+                    'text-negative-red': transaction.moneyGoing === 'out',
                   })}
                 >
-                  <div className="flex items-center h-full justify-end mr-5">
-                    {invoice.moneyGoing == 'out' && '-'}
-                    {formatAmount(invoice.amount)}
-                    <div className="ml-1">
-                      {invoice.moneyGoing == 'out' ? (
-                        <Icon name="outgoing/8" />
-                      ) : (
-                        <Icon name="incoming/8" />
-                      )}
+                  <div className="flex flex-col justify-center h-full items-end mr-5">
+                    <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
+                      {transaction.moneyGoing == 'out' && '-'}
+                      {formatAmount(transaction.amount)}
+                      <div className="ml-1">
+                        {transaction.moneyGoing == 'out' ? (
+                          <Icon name="outgoing/8" />
+                        ) : (
+                          <Icon name="incoming/8" />
+                        )}
+                      </div>
                     </div>
+                    {transaction.balanceAfterTx && (
+                      <div className="text-[11px] leading-4 text-grey-text mr-3">
+                        {formatAmount(transaction.balanceAfterTx)}
+                      </div>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="truncate w-36">{invoice.reference}</div>
+                  <div className="truncate w-36">{transaction.reference}</div>
                 </TableCell>
                 <TableCell>
-                  <div className="truncate w-56">{invoice.description}</div>
+                  <div className="truncate w-56">{transaction.description}</div>
                 </TableCell>
                 <TableCell>
-                  <div className="truncate w-36">{invoice.type}</div>
+                  <div className="truncate w-36">{transaction.type}</div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {invoice.status && <Status variant="pending" />}
+                  {transaction.status && <Status variant="pending" />}
                 </TableCell>
               </TableRow>
             ))}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-end py-4">
+        <Pager onPageChange={() => {}} pageSize={10} totalRecords={100} />
+      </div>
     </div>
   )
 }
