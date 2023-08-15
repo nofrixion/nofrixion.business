@@ -28,7 +28,6 @@ export const hasRefundOrCaptureAttempts = (paymentAttempt: LocalPaymentAttempt):
  * @returns True if the payment attempt is refundable, false otherwise.
  */
 export const isRefundable = (paymentAttempt: LocalPaymentAttempt): boolean => {
-  console.log('max refundable amount: ', getMaxRefundableAmount(paymentAttempt))
   return getMaxRefundableAmount(paymentAttempt) > 0
 }
 

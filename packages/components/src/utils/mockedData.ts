@@ -82,6 +82,7 @@ export const mockRefundAttempts = [
     refundInitiatedAmount: 5,
     refundSettledAmount: 5,
     refundCancelledAmount: 0,
+    isCardVoid: false,
   },
   {
     refundPayoutID: '2',
@@ -90,6 +91,7 @@ export const mockRefundAttempts = [
     refundInitiatedAmount: 3,
     refundSettledAmount: 3,
     refundCancelledAmount: 0,
+    isCardVoid: false,
   },
 ]
 
