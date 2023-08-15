@@ -29,12 +29,14 @@ const handleClick = (e: React.MouseEvent<HTMLDivElement>, handler?: () => void) 
 
 export interface PaymentAttemptActionMenuProps {
   onRefund: () => void
+  onVoid?: () => void
   onBlur?: () => void
+  isCardVoid: boolean
 }
 
 interface PaymentAttemptActionMenuItemContentProps {
   label: string
-  iconName: 'return/12'
+  iconName: 'return/12' | 'void/12'
 }
 
 const PaymentAttemptActionMenuItemContent = ({
@@ -51,8 +53,14 @@ const PaymentAttemptActionMenuItemContent = ({
   )
 }
 
-const PaymentAttemptActionMenu = ({ onRefund, onBlur }: PaymentAttemptActionMenuProps) => {
+const PaymentAttemptActionMenu = ({
+  onRefund,
+  onVoid,
+  onBlur,
+  isCardVoid,
+}: PaymentAttemptActionMenuProps) => {
   const onRefundClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onRefund)
+  const onVoidClick = (e: React.MouseEvent<HTMLDivElement>) => handleClick(e, onVoid)
   const emptyClick = (e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()
 
   return (
@@ -79,9 +87,17 @@ const PaymentAttemptActionMenu = ({ onRefund, onBlur }: PaymentAttemptActionMenu
             initial={{ opacity: 0.5, y: -5, scaleX: 1, scaleY: 1 }}
             animate={{ opacity: 1, y: 0, scaleX: 1, scaleY: 1 }}
           >
-            <DropdownMenu.Item className={actionItem()} onClick={onRefundClick}>
-              <PaymentAttemptActionMenuItemContent label="Refund" iconName="return/12" />
-            </DropdownMenu.Item>
+            {!isCardVoid && (
+              <DropdownMenu.Item className={actionItem()} onClick={onRefundClick}>
+                <PaymentAttemptActionMenuItemContent label="Refund" iconName="return/12" />
+              </DropdownMenu.Item>
+            )}
+
+            {isCardVoid && (
+              <DropdownMenu.Item className={actionItem()} onClick={onVoidClick}>
+                <PaymentAttemptActionMenuItemContent label="Void" iconName="void/12" />
+              </DropdownMenu.Item>
+            )}
           </motion.div>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>

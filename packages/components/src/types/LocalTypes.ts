@@ -68,6 +68,7 @@ export interface LocalPaymentRequestRefundAttempt {
   refundInitiatedAmount: number
   refundSettledAmount: number
   refundCancelledAmount: number
+  isCardVoid: boolean
 }
 
 export interface LocalPaymentRequestCaptureAttempt {

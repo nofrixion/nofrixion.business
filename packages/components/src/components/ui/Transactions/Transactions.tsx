@@ -14,6 +14,7 @@ import {
   hasRefundOrCaptureAttempts,
   isCaptureable,
   isRefundable,
+  isVoid,
 } from '../../../utils/paymentAttemptsHelper'
 import { Icon } from '../atoms'
 import PaymentAttemptActionMenu from '../PaymentAttemptActionMenu/PaymentAttemptActionMenu'
@@ -22,6 +23,7 @@ export interface TransactionsProps {
   transactions: LocalPaymentAttempt[]
   cardAuthoriseOnly: boolean
   onRefund: (paymentAttempt: LocalPaymentAttempt) => void
+  onVoid: (paymentAttempt: LocalPaymentAttempt) => void
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void
 }
 
@@ -55,6 +57,7 @@ const Transactions = ({
   transactions,
   cardAuthoriseOnly,
   onRefund,
+  onVoid,
   onCapture,
 }: TransactionsProps) => {
   const formatter = new Intl.NumberFormat(navigator.language, {
@@ -149,10 +152,15 @@ const Transactions = ({
                           Authorized
                         </span>
                       )}
-                      {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
-                        isRefundable(transaction) && (
-                          <PaymentAttemptActionMenu onRefund={() => onRefund(transaction)} />
-                        )}
+                      {((transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
+                        isRefundable(transaction)) ||
+                        isVoid(transaction)) && (
+                        <PaymentAttemptActionMenu
+                          onRefund={() => onRefund(transaction)}
+                          onVoid={() => onVoid(transaction)}
+                          isCardVoid={isVoid(transaction)}
+                        />
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -203,7 +211,7 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="capture/12" className="text-control-grey-hover" />
+                                <Icon name="capture/16" className="text-control-grey-hover" />
                               </span>
                               <span>Captured</span>
                             </div>
@@ -213,9 +221,19 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="return/12" className="text-control-grey-hover" />
+                                <Icon name="return/16" className="text-control-grey-hover" />
                               </span>
                               <span>Refund</span>
+                            </div>
+                          </td>
+                        )}
+                        {subTransaction.type === SubTransactionType.Void && (
+                          <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
+                            <div className="flex flex-row items-center ml-1">
+                              <span className="mr-2 p-1.5">
+                                <Icon name="void/16" className="text-control-grey-hover" />
+                              </span>
+                              <span>Void</span>
                             </div>
                           </td>
                         )}

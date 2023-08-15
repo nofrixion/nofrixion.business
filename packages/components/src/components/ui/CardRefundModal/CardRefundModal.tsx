@@ -18,7 +18,7 @@ export interface CardRefundModalProps {
   processor?: string
   transactionDate: Date
   contactName?: string
-  isPartialRefundPossible: boolean
+  isVoid: boolean
 }
 
 const CardRefundModal: React.FC<CardRefundModalProps> = ({
@@ -32,7 +32,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
   processor,
   transactionDate,
   contactName,
-  isPartialRefundPossible: isPartialRefundPossible,
+  isVoid,
 }) => {
   const [isRefundButtonDisabled, setIsRefundButtonDisabled] = useState(false)
   const [validationErrorMessage, setValidationErrorMessage] = useState('')
@@ -74,18 +74,20 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
               <Icon name="back/24" />
             </button>
             <span className="block text-2xl font-semibold text-default-text mt-8">
-              Confirm card payment refund
+              Confirm card payment {!isVoid && <span>refund</span>}
+              {isVoid && <span>void</span>}
             </span>
             <p className="mt-12 text-default-text text-sm font-normal">
-              {!isPartialRefundPossible && (
+              {isVoid && (
                 <span>
-                  You are about to refund{' '}
-                  <span className="font-semibold">{formatter.format(Number(initialAmount))}</span>{' '}
-                  to {contactName && <span className="font-semibold">{contactName}</span>} for the
+                  You are about to void the{' '}
+                  <span className="font-semibold">
+                    {getCurrencySymbol(currency)} {formatter.format(Number(initialAmount))}
+                  </span>{' '}
                   card payment made
                 </span>
               )}
-              {isPartialRefundPossible && (
+              {!isVoid && (
                 <span>
                   You are about to refund the card payment made
                   {contactName && <span className="font-semibold">{` by ${contactName}`}</span>}
@@ -102,7 +104,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                 '.'
               )}
             </p>
-            {isPartialRefundPossible && (
+            {!isVoid && (
               <div className="mt-12 md:flex">
                 <div className="md:w-[152px]">
                   <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
@@ -139,13 +141,19 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                 </div>
               </div>
             )}
+            {isVoid && (
+              <p className="bg-[#FCF5CF] font-normal mt-6 p-3 text-default-text text-sm">
+                You won&apos;t be able to capture this payment later.
+              </p>
+            )}
             <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
               <button
                 className="justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]"
                 onClick={onRefundClick}
                 disabled={isRefundButtonDisabled}
               >
-                Confirm refund
+                Confirm {!isVoid && <span>refund</span>}
+                {isVoid && <span>void</span>}
               </button>
             </div>
           </div>
