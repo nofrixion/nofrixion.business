@@ -58,7 +58,7 @@ export const usePaymentRequestMetrics = (
     search,
     tags,
   ]
-
+  console.log('QUERY_KEY', QUERY_KEY)
   return useQuery<ApiResponse<PaymentRequestMetrics>, Error>(
     QUERY_KEY,
     () =>
