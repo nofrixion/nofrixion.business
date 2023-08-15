@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\nofrixion.common\src\NoFrixion.Common\NoFrixion.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
