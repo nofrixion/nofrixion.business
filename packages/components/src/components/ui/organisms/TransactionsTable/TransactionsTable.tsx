@@ -1,6 +1,8 @@
+import { Pagination } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
 import * as React from 'react'
 
+import { LocalTransaction } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
 import { formatAmount } from '../../../../utils/formatters'
 import { Icon } from '../../atoms'
@@ -13,110 +15,18 @@ import {
   TableRow,
 } from '../../atoms/Table/Table'
 import ColumnHeader, { SortDirection } from '../../ColumnHeader/ColumnHeader'
-import { Status } from '../../molecules/Status/Status'
 import Pager from '../../Pager/Pager'
 
-export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElement> {
+  transactions: LocalTransaction[]
+  pagination: Pagination
 }
 
-const transactions = [
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 250.0,
-    moneyGoing: 'out',
-    reference: 'Dinner Payment',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: 'SEPA',
-    status: 'pending',
-  },
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 1500000.99,
-    moneyGoing: 'in',
-    reference: 'Very very very long reference. As long as it can be. Or even longer.',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: 'SEPA Instant',
-    status: 'pending',
-  },
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 350.0,
-    moneyGoing: 'out',
-    reference: 'Dinner Payment',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: 'SEPA Instant',
-    status: 'pending',
-  },
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 450.0,
-    balanceAfterTx: 32345,
-    moneyGoing: 'in',
-    reference: 'Dinner Payment',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: 'SEPA',
-  },
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 550.0,
-    balanceAfterTx: 32345,
-    moneyGoing: 'out',
-    reference: 'Dinner Payment',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: undefined,
-  },
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 200.0,
-    balanceAfterTx: 32345,
-    moneyGoing: 'in',
-    reference: 'Dinner Payment',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: 'SEPA Instant',
-  },
-  {
-    date: randomDate(),
-    destinationAccount: {
-      name: 'Daniel Kowalski',
-      iban: 'IE11MODR99035501927019',
-    },
-    amount: 300.0,
-    balanceAfterTx: 32345,
-    moneyGoing: 'out',
-    reference: 'Dinner Payment',
-    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: undefined,
-  },
-]
-
-const TransactionsTable: React.FC<TransactionsTableProps> = ({ ...props }) => {
+const TransactionsTable: React.FC<TransactionsTableProps> = ({
+  transactions,
+  pagination,
+  ...props
+}) => {
   const onSort = (name: string, direction: SortDirection) => {
     console.log(name, direction)
   }
@@ -166,68 +76,65 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ ...props }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* Sort by date */}
-          {transactions
-            .sort((a, b) => a.date.getTime() - b.date.getTime())
-            .map((transaction) => (
-              <TableRow key={transaction.date.toString()}>
-                <TableCell className="">
-                  {renderBasicInfoLayout(
-                    format(transaction.date, 'MMM dd, yyyy'),
-                    format(transaction.date, 'hh:mm'),
-                    'w-[100px] truncate',
-                  )}
-                </TableCell>
-                <TableCell>
-                  {renderBasicInfoLayout(
-                    transaction.destinationAccount.name,
-                    transaction.destinationAccount.iban,
-                    'w-[200px] truncate',
-                  )}
-                </TableCell>
-                <TableCell
-                  className={cn({
-                    'text-positive-green': transaction.moneyGoing === 'in',
-                    'text-negative-red': transaction.moneyGoing === 'out',
-                  })}
-                >
-                  <div className="flex flex-col justify-center h-full items-end mr-5">
-                    <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
-                      {transaction.moneyGoing == 'out' && '-'}
-                      {formatAmount(transaction.amount)}
-                      <div className="ml-1">
-                        {transaction.moneyGoing == 'out' ? (
-                          <Icon name="outgoing/8" />
-                        ) : (
-                          <Icon name="incoming/8" />
-                        )}
-                      </div>
+          {transactions.map((transaction) => (
+            <TableRow key={transaction.date.toString()}>
+              <TableCell className="">
+                {renderBasicInfoLayout(
+                  format(transaction.date, 'MMM dd, yyyy'),
+                  format(transaction.date, 'hh:mm'),
+                  'w-[100px] truncate',
+                )}
+              </TableCell>
+              <TableCell>
+                {renderBasicInfoLayout(
+                  transaction.destinationAccount.name,
+                  transaction.destinationAccount.accountInfo,
+                  'w-[200px] truncate',
+                )}
+              </TableCell>
+              <TableCell
+                className={cn({
+                  'text-positive-green': transaction.amount > 0,
+                  'text-negative-red': transaction.amount < 0,
+                })}
+              >
+                <div className="flex flex-col justify-center h-full items-end mr-5">
+                  <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
+                    {formatAmount(transaction.amount)}
+                    <div className="ml-1">
+                      {transaction.amount < 0 ? (
+                        <Icon name="outgoing/8" />
+                      ) : (
+                        <Icon name="incoming/8" />
+                      )}
                     </div>
-                    {transaction.balanceAfterTx && (
-                      <div className="text-[11px] leading-4 text-grey-text mr-3">
-                        {formatAmount(transaction.balanceAfterTx)}
-                      </div>
-                    )}
                   </div>
-                </TableCell>
-                <TableCell>
-                  <div className="truncate w-36">{transaction.reference}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="truncate w-56">{transaction.description}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="truncate w-36">{transaction.type}</div>
-                </TableCell>
-                <TableCell className="text-right">
-                  {transaction.status && <Status variant="pending" />}
-                </TableCell>
-              </TableRow>
-            ))}
+                  {transaction.balanceAfterTx != undefined && (
+                    <div className="text-[11px] leading-4 text-grey-text mr-3">
+                      {formatAmount(transaction.balanceAfterTx)}
+                    </div>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="truncate w-36">{transaction.reference}</div>
+              </TableCell>
+              <TableCell>
+                <div className="truncate w-56">{transaction.description}</div>
+              </TableCell>
+              <TableCell>
+                <div className="truncate w-36">{transaction.type}</div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <div className="flex items-center justify-end py-4">
-        <Pager onPageChange={() => {}} pageSize={10} totalRecords={100} />
+        <Pager
+          onPageChange={() => {}}
+          pageSize={pagination.pageSize}
+          totalRecords={pagination.totalSize}
+        />
       </div>
     </div>
   )

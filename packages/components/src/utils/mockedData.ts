@@ -6,7 +6,7 @@ import {
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../types/LocalTypes'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTransaction } from '../types/LocalTypes'
 
 export const mockTags = [
   {
@@ -835,6 +835,94 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     paymentAttempts: [],
     productOrService: '',
     captureFunds: true,
+  },
+]
+
+function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+}
+
+export const mockedTransactions: LocalTransaction[] = [
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -250.0,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: 1500000.99,
+    reference: 'Very very very long reference. As long as it can be. Or even longer.',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA Instant',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -350.0,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA Instant',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: 450.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -550.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: '',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: 200.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA Instant',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -300.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'undefined',
   },
 ]
 

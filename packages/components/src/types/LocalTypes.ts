@@ -147,3 +147,16 @@ export interface LocalTag {
   colourHex?: string
   description?: string
 }
+
+export interface LocalTransaction {
+  date: Date
+  destinationAccount: {
+    name: string
+    accountInfo: string
+  }
+  amount: number
+  balanceAfterTx?: number
+  reference: string
+  description: string
+  type: string
+}
