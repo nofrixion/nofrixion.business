@@ -16,7 +16,7 @@ import {
   isRefundable,
   isVoid,
 } from '../../../utils/paymentAttemptsHelper'
-import { Icon } from '../atoms'
+import { Button, Icon } from '../atoms'
 
 export interface TransactionsProps {
   transactions: LocalPaymentAttempt[]
@@ -138,13 +138,14 @@ const Transactions = ({
                   >
                     <div className="flex justify-end gap-2">
                       {isCaptureable(transaction) && (
-                        <button
-                          type="button"
-                          className="text-white text-13px leading-4 bg-primary-green hover:bg-primary-green-hover rounded-full px-2 py-1 transition-colors"
+                        <Button
+                          variant="primary"
+                          size="x-small"
+                          className="px-2 w-min"
                           onClick={() => onCapture(transaction)}
                         >
                           Capture
-                        </button>
+                        </Button>
                       )}
                       {transaction.status === 'authorized' && (
                         <span className="text-grey-text text-[10px] leading-4 block px-1 border rounded border-solid border-border-grey-highlighted">
@@ -153,29 +154,31 @@ const Transactions = ({
                       )}
                       {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
                         isRefundable(transaction) && (
-                          <button
-                            type="button"
-                            className=" text-13px leading-4 bg-[#DEE5ED] hover:bg-[#BDCCDB] rounded-full px-2 py-1 transition-colors"
+                          <Button
+                            variant="secondary"
+                            size="x-small"
+                            className="px-2 w-min"
                             onClick={() => onRefund(transaction)}
                           >
                             <div className="flex flex-row gap-2 items-center">
                               <Icon name="return/12" />
                               <span>Refund</span>
                             </div>
-                          </button>
+                          </Button>
                         )}
                       {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
                         isVoid(transaction) && (
-                          <button
-                            type="button"
-                            className=" text-13px leading-4 bg-[#DEE5ED] hover:bg-[#BDCCDB] rounded-full px-2 py-1 transition-colors"
+                          <Button
+                            variant="secondary"
+                            size="x-small"
+                            className="px-2 w-min"
                             onClick={() => onVoid(transaction)}
                           >
                             <div className="flex flex-row gap-2 items-center">
                               <Icon name="void/12" />
                               <span>Void</span>
                             </div>
-                          </button>
+                          </Button>
                         )}
                     </div>
                   </td>
