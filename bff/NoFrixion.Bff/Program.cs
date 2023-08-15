@@ -1,7 +1,9 @@
 using Duende.Bff.Yarp;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Nofrixion.Bff;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -112,6 +114,15 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddStackExchangeRedisCache(options => options.ConfigurationOptions =
+    ConfigurationOptions.Parse(configuration[ConfigKeys.CONNECTION_STRING_REDIS]));
+
+// For ASP.NET data protection (managing the keys used to encrypt cookies etc) see:
+// https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview?view=aspnetcore-7.0 and
+// https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-7.0&tabs=visual-studio#redis
+var redis = ConnectionMultiplexer.Connect(configuration[ConfigKeys.CONNECTION_STRING_REDIS]);
+builder.Services.AddDataProtection().PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
 var app = builder.Build();
 
