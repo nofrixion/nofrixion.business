@@ -1,4 +1,4 @@
-import { PaymentRequestMetrics, useAccounts, usePaymentRequestMetrics } from '@nofrixion/moneymoov'
+import { PaymentRequestMetrics, useAccounts, usePaymentRequestMetrics } from '@nofrixion/clients'
 import { addDays, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

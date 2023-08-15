@@ -1,4 +1,4 @@
-﻿import { Currency } from '@nofrixion/moneymoov'
+﻿import { Currency } from '@nofrixion/clients'
 import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'

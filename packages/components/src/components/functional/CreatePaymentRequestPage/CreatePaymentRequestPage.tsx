@@ -10,7 +10,7 @@ import {
   useBanks,
   UserPaymentDefaults,
   useUserPaymentDefaults,
-} from '@nofrixion/moneymoov'
+} from '@nofrixion/clients'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 

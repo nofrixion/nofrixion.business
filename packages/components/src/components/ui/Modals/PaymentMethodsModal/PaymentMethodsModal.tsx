@@ -1,4 +1,4 @@
-import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
+import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/clients'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 

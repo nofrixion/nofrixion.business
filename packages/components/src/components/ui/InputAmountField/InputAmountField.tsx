@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/moneymoov'
+import { Currency } from '@nofrixion/clients'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { cva } from 'class-variance-authority'
 import { motion } from 'framer-motion'

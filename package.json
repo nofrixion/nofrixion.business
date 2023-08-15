@@ -19,9 +19,11 @@
   "packageManager": "npm@8.19.4",
   "workspaces": [
     "./apps/*",
-    "./packages/*"
+    "./packages/*",
+    "./npm/*"
   ],
   "dependencies": {
+    "@changesets/cli": "^2.26.2",
     "husky": "^8.0.3"
   }
 }

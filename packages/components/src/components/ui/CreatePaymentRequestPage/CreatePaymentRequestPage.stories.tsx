@@ -1,4 +1,4 @@
-import { ApiError, Currency, PaymentProcessor } from '@nofrixion/moneymoov'
+import { ApiError, Currency, PaymentProcessor } from '@nofrixion/clients'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
 

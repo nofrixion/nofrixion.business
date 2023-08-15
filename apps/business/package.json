@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "@nofrixion/components": "*",
-    "@nofrixion/moneymoov": "*",
+    "@nofrixion/clients": "*",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-scroll-area": "^1.0.4",

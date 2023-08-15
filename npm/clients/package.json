@@ -1,11 +1,11 @@
 {
-  "name": "@nofrixion/clients",
+  "name": "@nofrixion/moneymoov",
   "private": false,
   "version": "0.0.18",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
   "files": [
@@ -15,8 +15,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "build": "tsup src/index.ts --format esm,cjs --dts --external react",
-    "dev": "npm run build -- --watch"
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react"
   },
   "peerDependencies": {
     "@tanstack/react-query": "^4.32.0",
@@ -32,6 +31,7 @@
     "tsup": "^6.7.0"
   },
   "devDependencies": {
+    "@nofrixion/clients": "*",
     "@nofrixion/eslint-config": "*",
     "@nofrixion/tsconfig": "*",
     "@swc/core": "^1.3.74",

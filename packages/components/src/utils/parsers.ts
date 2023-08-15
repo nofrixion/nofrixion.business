@@ -9,7 +9,7 @@ import {
   PaymentResult,
   type Tag,
   Wallets,
-} from '@nofrixion/moneymoov'
+} from '@nofrixion/clients'
 
 import {
   LocalAddressType,
