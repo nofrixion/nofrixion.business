@@ -23,7 +23,7 @@
     "@changesets/cli": "^2.26.2",
     "@manypkg/cli": "latest",
     "husky": "^8.0.3",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.8",
     "turbo": "latest"
   },
   "packageManager": "npm@8.19.4"
