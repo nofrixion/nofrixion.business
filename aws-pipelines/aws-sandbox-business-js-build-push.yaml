@@ -16,8 +16,7 @@
 #-----------------------------------------------------------------------------
 
 pr: none # don't run on PR
-trigger:
-  - develop
+trigger: none
 
 variables:
   webComponentsBundleName: 'nofrixion-webcomponents.js'
@@ -79,7 +78,7 @@ steps:
 
   # Copy main .js file to the $web container.
   - task: AzureCLI@2
-    displayName: Copy dev bundle into $web blob container
+    displayName: Copy sandbox bundle into $web blob container
     inputs:
       azureSubscription: $(serviceConnection)
       scriptType: pscore
@@ -95,4 +94,4 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/*'
+        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/sandbox/*'
