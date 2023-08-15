@@ -123,18 +123,18 @@ app.UseBff();
 app.UseForwardedHeaders();
 
 app.Use(async (context, next) => 
-{ 
-    await next(); 
+{
     var path = context.Request.Path.Value;
 
-    if (path.StartsWith("/home"))
-    {
-        // Route to the Index page so as not to break React Router.
-        context.Request.Path = "/Index"; 
-        await next();
-    } 
+    if (!path.StartsWith("/api") && !path.StartsWith("/bff") && !Path.HasExtension(path)) 
+    { 
+        context.Request.Path = "/Index";
+    }
+    
+    await next();
 });
 
+app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
