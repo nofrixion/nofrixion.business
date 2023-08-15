@@ -1,8 +1,6 @@
 import { Account as AccountModel } from '@nofrixion/moneymoov'
-import { AnimatePresence, LayoutGroup } from 'framer-motion'
 
-import LayoutWrapper from '../../utils/LayoutWrapper'
-import Account from '../Account'
+import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader '
 
 export interface CurrentAccountsListProps {
@@ -22,15 +20,11 @@ const CurrentAcountsList = ({
 
       {accounts && (
         <div className="flex-row mb-8 md:mb-[68px]">
-          <LayoutGroup>
-            <AnimatePresence initial={false}>
-              <LayoutWrapper>
-                {accounts.map((account, index) => (
-                  <Account key={index} account={account} onAccountClick={onAccountClick} />
-                ))}
-              </LayoutWrapper>
-            </AnimatePresence>
-          </LayoutGroup>
+          {accounts
+            .sort((a, b) => a.accountName.localeCompare(b.accountName))
+            .map((account, index) => (
+              <AccountCard key={index} account={account} onAccountClick={onAccountClick} />
+            ))}
         </div>
       )}
     </div>

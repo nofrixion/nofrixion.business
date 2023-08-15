@@ -9,7 +9,6 @@ export interface DisplayAndCopyProps extends React.HTMLAttributes<HTMLDivElement
 const DisplayAndCopy: React.FC<DisplayAndCopyProps> = ({ name, value, className, ...props }) => {
   const onCopy = (accountInfo: string) => {
     navigator.clipboard.writeText(accountInfo)
-    console.log('works')
   }
 
   return (

@@ -8,11 +8,7 @@ const CurrentAccountsPage = () => {
   // const { data: session, status, update } = useSession()
   const merchant = useStore(useMerchantStore, (state) => state.merchant)
 
-  return (
-    <div className="md:-mx-4">
-      <Accounts merchantId={merchant ? merchant.id : ''} apiUrl={NOFRIXION_API_URL} />
-    </div>
-  )
+  return <div>{merchant && <Accounts merchantId={merchant.id} apiUrl={NOFRIXION_API_URL} />}</div>
 }
 
 export default CurrentAccountsPage

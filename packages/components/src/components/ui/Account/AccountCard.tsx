@@ -4,15 +4,15 @@ import { formatAmount } from '../../../utils/formatters'
 import { formatCurrency } from '../../../utils/uiFormaters'
 import { DisplayAndCopy } from '../atoms'
 
-export interface AccountProps {
+export interface AccountCardProps {
   account: AccountModel
   onAccountClick: () => void
 }
 
-const Account: React.FC<AccountProps> = ({ account, onAccountClick }) => {
+const AccountCard: React.FC<AccountCardProps> = ({ account, onAccountClick }) => {
   return (
     <div
-      className="flex h-[124px] p-8 mb-6 bg-white gap-8 justify-between"
+      className="flex flex-wrap sm:h-[124px] p-8 mb-6 bg-white gap-8 justify-between"
       onClick={() => onAccountClick()}
       aria-hidden="true"
     >
@@ -28,12 +28,12 @@ const Account: React.FC<AccountProps> = ({ account, onAccountClick }) => {
         )}
       </div>
       <div className="text-right">
-        <span className="text-4xl font-semibold leading-9">
+        <span className="text-4xl font-semibold leading-9 tabular-nums">
           {formatCurrency(account.currency)} {formatAmount(account.balance)}
         </span>
         <div className="text-sm font-normal leading-4 mt-2">
           <span className="pr-2">Available</span>
-          <span>
+          <span className="tabular-nums">
             {formatCurrency(account.currency)} {formatAmount(account.availableBalance)}
           </span>
         </div>
@@ -42,4 +42,4 @@ const Account: React.FC<AccountProps> = ({ account, onAccountClick }) => {
   )
 }
 
-export default Account
+export default AccountCard

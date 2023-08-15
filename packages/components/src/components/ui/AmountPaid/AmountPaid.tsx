@@ -2,6 +2,7 @@ import { Currency } from '@nofrixion/moneymoov'
 
 import { LocalPartialPaymentMethods } from '../../../types/LocalEnums'
 import { formatAmountAndDecimals } from '../../../utils/formatters'
+import { formatCurrency } from '../../../utils/uiFormaters'
 
 const AmountPaid = ({
   amountPaid,
@@ -22,7 +23,7 @@ const AmountPaid = ({
   return (
     <div className="flex flex-col">
       <span className="text-[2rem] font-semibold leading-8 mb-4 text-default-text">
-        {currency == Currency.GBP ? '£' : '€'}
+        {formatCurrency(currency)}
         {amountValueWithCommas}
         <sup className="ml-0.5 text-xl">.{amountDecimals}</sup>
       </span>
@@ -43,7 +44,7 @@ const AmountPaid = ({
 
       {partialPaymentMethod === LocalPartialPaymentMethods.Partial && (
         <span className="text-sm leading-[1.063rem] text-grey-text font-medium mt-2">
-          {currency == Currency.GBP ? '£' : '€'}
+          {formatCurrency(currency)}
           <span>
             {new Intl.NumberFormat(navigator.language, {
               minimumFractionDigits: 2,

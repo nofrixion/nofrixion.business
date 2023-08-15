@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/moneymoov'
+import { AccountIdentifierType, Currency } from '@nofrixion/moneymoov'
 
 import {
   LocalAddressType,
@@ -90,6 +90,75 @@ export const mockRefundAttempts = [
     refundInitiatedAmount: 3,
     refundSettledAmount: 3,
     refundCancelledAmount: 0,
+  },
+]
+
+export const mockAccounts = [
+  {
+    id: 'BE270F6F-04F1-4DE9-836C-035C5B7EC409',
+    merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
+    accountNumber: '',
+    accountName: 'NoFrixion EUR account',
+    availableBalance: 100000.0,
+    balance: 120000.0,
+    currency: Currency.EUR,
+    displayName: 'NoFrixion EUR account',
+    iban: 'GB93MOCK00000003290619',
+    sortCode: '',
+    summary: '',
+    identifier: {
+      type: AccountIdentifierType.IBAN,
+      currency: Currency.EUR,
+      bic: 'MOCKGB21',
+      iban: 'GB93MOCK00000003290619',
+      accountNumber: '',
+      sortCode: '',
+    },
+    isDefault: true,
+  },
+  {
+    id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
+    merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
+    accountName: 'NoFrixion GBP account',
+    accountNumber: '12345678',
+    availableBalance: 50022.6,
+    balance: 50022.6,
+    currency: Currency.GBP,
+    displayName: 'NoFrixion GBP account',
+    iban: '',
+    sortCode: '123456',
+    summary: '',
+    identifier: {
+      type: AccountIdentifierType.SCAN,
+      currency: Currency.GBP,
+      bic: 'MOCKGB21',
+      iban: '',
+      accountNumber: '12345678',
+      sortCode: '123456',
+    },
+    isDefault: false,
+  },
+  {
+    id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
+    merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
+    accountName: 'Test GBP account',
+    accountNumber: '12345678',
+    availableBalance: 50022.6,
+    balance: 50022.6,
+    currency: Currency.GBP,
+    displayName: 'NoFrixion GBP account display',
+    iban: '',
+    sortCode: '123456',
+    summary: '',
+    identifier: {
+      type: AccountIdentifierType.SCAN,
+      currency: Currency.GBP,
+      bic: 'MOCKGB21',
+      iban: '',
+      accountNumber: '12345678',
+      sortCode: '123456',
+    },
+    isDefault: false,
   },
 ]
 

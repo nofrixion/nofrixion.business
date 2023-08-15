@@ -11,13 +11,9 @@ export default {
   },
 } as Meta<typeof CurrentAccountsHeader>
 
-const Template: StoryFn<typeof CurrentAccountsHeader> = (args) => {
-  return (
-    <div className="font-inter bg-main-grey text-default-text h-full">
-      <CurrentAccountsHeader {...args} />
-    </div>
-  )
-}
+const Template: StoryFn<typeof CurrentAccountsHeader> = (args) => (
+  <CurrentAccountsHeader {...args} />
+)
 
 export const Default = Template.bind({})
 Default.args = {
