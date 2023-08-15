@@ -1,7 +1,7 @@
 {
   "name": "@nofrixion/webcomponents",
   "version": "0.0.20",
-  "private": false,
+  "private": true,
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

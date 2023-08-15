@@ -1,7 +1,7 @@
 {
   "name": "@nofrixion/clients",
   "version": "0.0.18",
-  "private": false,
+  "private": true,
   "keywords": [],
   "homepage": "https://github.com/nofrixion/nofrixion.clients#readme",
   "bugs": {
