@@ -19,7 +19,7 @@ trigger: none
 
 variables:
   dockerfilePath: 'nofrixion.business/bff/NoFrixion.Bff/Dockerfile-devops'
-  tag: $(Build.SourceBranchName)
+  tag: moov-1.1.153
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -30,17 +30,17 @@ resources:
     type: bitbucket
     endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.business.cicd
-    ref: $(Build.SourceBranch)
+    ref: develop
   - repository: moneymoov-dotnet-sdk
     type: github
     endpoint: github.com_sipsorcery
     name: nofrixion/moneymoov-dotnet
-    ref: $(Build.SourceBranch)
+    ref: develop
   - repository: nofrixion.common
     type: bitbucket
     endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.common
-    ref: $(Build.SourceBranch)
+    ref: develop
 
 
 pool:

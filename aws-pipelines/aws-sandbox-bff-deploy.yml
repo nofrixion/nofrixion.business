@@ -28,7 +28,8 @@ resources:
       type: bitbucket
       endpoint: Bitbucket-AaronAppPassword
       name: nofrixion/nofrixion.business.cicd
-      ref: $(Build.SourceBranch)
+      ref: develop
+
 
 pool:
   vmImage: $(vmImageName)
