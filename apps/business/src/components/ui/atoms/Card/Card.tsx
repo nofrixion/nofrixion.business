@@ -15,9 +15,14 @@ const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
-      className={cn('p-6 md:p-10 rounded-lg bg-white w-full text-default-text', className)}
+      className={cn(
+        'p-6 md:p-10 rounded-lg bg-white w-full text-default-text transition hover:shadow-[0px_0px_8px_rgba(4,_41,_49,_0.1)] cursor-pointer',
+        className,
+      )}
       {...props}
+      onClick={onShowViewAll && onShowViewAll}
     >
       <div className="flex justify-between">
         {(title || subtext) && (
