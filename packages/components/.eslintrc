@@ -1,0 +1,5 @@
+{
+  "root": true,
+  "extends": ["@nofrixion/eslint-config"],
+  "ignorePatterns": ["storybook-static/**/*"]
+}

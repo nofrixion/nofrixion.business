@@ -1,0 +1,62 @@
+#------------------------------------------------------------------------------
+#
+# Filename: aws-sandbox-bff-deploy.yml
+#
+# Description: Deploy sandbox Business BFF to AWS cluster
+#
+# Usage: run from devops pipeline
+#
+# Author: Axel Granillo (axel@nofrixion.com)
+#
+# History:    
+# 14 August     2023  Axel Granillo   Created, Mexico City, Mexico (from existing pipeline)
+#-----------------------------------------------------------------------------
+
+# Don't run pipeline on PR
+pr: none
+trigger: none
+
+variables:
+  kustomizeOverlayPath: 'kubernetes/bff/overlays-aws/sandbox/'
+  tag: $(Build.SourceBranchName)
+  
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: nofrixion.business.cicd
+      type: bitbucket
+      endpoint: Bitbucket-AaronAppPassword
+      name: nofrixion/nofrixion.business.cicd
+      ref: $(Build.SourceBranch)
+
+pool:
+  vmImage: $(vmImageName)
+
+steps:
+  - checkout: nofrixion.business.cicd
+    fetchDepth: 1
+    
+  - task: AWSShellScript@1
+    displayName: Run kubectl
+    inputs:
+      awsCredentials: $(k8sServiceConnection)
+      regionName: $(awsEksRegion)
+      scriptType: inline
+      failOnStandardError: true
+      inlineScript: |
+        # suggested 'error handling' as per https://sipb.mit.edu/doc/safe-shell/
+        set -euo pipefail      
+        aws sts get-caller-identity
+        aws eks update-kubeconfig --region $(awsEksRegion) --name $(clusterName) --role-arn "$(awsEksRoleArn)"
+        # Run kubectl command
+        kubectl get namespaces
+        echo
+        echo -e "Compiling k8s kustomize manifests...\n"
+        kubectl kustomize $(kustomizeOverlayPath)
+        echo
+        echo -e "Applying kustomized manifests...\n"
+        kubectl apply -k $(kustomizeOverlayPath) && echo "...OK"
+        echo "Restarting deployment ..."
+        kubectl rollout restart deployment/$(deploymentName) -n $(clusterNamespace)

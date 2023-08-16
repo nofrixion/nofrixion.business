@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "story": "turbo run story",
+    "build-storybook": "npm run build-storybook -w @nofrixion/components",
+    "format": "prettier --check --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "prepare": "husky install",
+    "pre-commit": "turbo run lint && npm run format"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "turbo": "latest"
+  },
+  "packageManager": "npm@8.19.4",
+  "workspaces": [
+    "./apps/*",
+    "./packages/*"
+  ],
+  "dependencies": {
+    "husky": "^8.0.3"
+  }
+}

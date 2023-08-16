@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
+WORKDIR /
+
+ARG buildId
+
+# Changing copy command to suit devops.
+COPY ["/", ""]
+
+# For troubleshooting
+# RUN pwd
+# RUN ls -al
+RUN echo "buildID is: $buildId"
+
+RUN dotnet restore "nofrixion.business/bff/NoFrixion.Bff/Nofrixion.Bff.csproj"
+RUN dotnet build "nofrixion.business/bff/NoFrixion.Bff/Nofrixion.Bff.csproj" --no-restore -c Release /p:SourceRevisionId=$buildId
+RUN dotnet publish "nofrixion.business/bff/NoFrixion.Bff/Nofrixion.Bff.csproj" --no-build -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 as final
+WORKDIR /app
+EXPOSE 5001
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "Nofrixion.Bff.dll"]
