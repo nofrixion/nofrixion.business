@@ -193,7 +193,12 @@ export const Icons = {
       />
     </SVG>
   ),
-
+  'back/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M6 11L0.999999 6L6 1" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M1 6L11 6" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
   'done/12': (className: string) => (
     <SVG className={className} size="12">
       <path d="M1.5 6.31579L4.34211 9.15789L10.5 3" strokeLinecap="round" strokeLinejoin="round" />
@@ -273,6 +278,17 @@ export const Icons = {
           <rect width="12" height="12" fill="white" />
         </clipPath>
       </defs>
+    </SVG>
+  ),
+  'download/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M6 9L6 1" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M4.125 7.49902L6 9.37402L7.875 7.49902"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M1 11H11" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
   'arrow-down/8': (className: string) => (
