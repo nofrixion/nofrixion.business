@@ -14,6 +14,7 @@
 //   Proprietary NoFrixion.
 //  -----------------------------------------------------------------------------
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Nofrixion.Bff;
@@ -29,8 +30,12 @@ public class Index : PageModel
 
     public string? BusinessJavascriptCdnSource { get; set; }
     
+    [BindProperty(SupportsGet = true)]
+    public string? PullRequestId { get; set; }
+    
     public void OnGet()
     {
+        var blah = PullRequestId;
         BusinessJavascriptCdnSource = _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION];
     }
 }

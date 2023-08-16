@@ -5,6 +5,7 @@ import IconDashboard from '../assets/icons/dashboard.svg'
 import IconPayouts from '../assets/icons/payouts.svg'
 import IconPricing from '../assets/icons/pricing.svg'
 import IconUsers from '../assets/icons/users.svg'
+import { getRoute } from './utils/utils'
 
 const NOFRIXION_API_URL = '/api'
 const NOFRIXION_BFF_URL = '/bff'
@@ -21,38 +22,38 @@ const navItems: INavItem[] = [
   {
     leftIcon: IconDashboard,
     label: 'Dashboard',
-    href: '/home',
+    href: getRoute('/home'),
   },
   {
     leftIcon: IconCurrentAccounts,
     label: 'Current Accounts',
-    href: '/home/current-accounts',
+    href: 'current-accounts',
   },
   {
     leftIcon: IconAccountsReceivable,
     label: 'Accounts Receivable',
-    href: '/home/accounts-receivable',
+    href: 'accounts-receivable',
   },
   {
     leftIcon: IconAccountsPayable,
     label: 'Accounts Payable (soon)',
-    href: '/home/accounts-payable',
+    href: 'accounts-payable',
   },
   {
     leftIcon: IconPayouts,
     label: 'Payouts',
-    href: '/home/payouts',
+    href: 'payouts',
   },
   {
     leftIcon: IconUsers,
     label: 'Users',
-    href: '/home/users',
+    href: 'users',
     isHidden: true,
   },
   {
     leftIcon: IconPricing,
     label: 'Pricing',
-    href: '/home/pricing',
+    href: 'pricing',
     isHidden: true,
   },
 ]

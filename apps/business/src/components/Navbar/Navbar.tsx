@@ -44,7 +44,7 @@ const Navbar = () => {
                       src: item.leftIcon,
                       alt: `${item.label} icon`,
                     }}
-                    disabled={item.href === currentRoute}
+                    disabled={currentRoute.indexOf(item.href) !== -1}
                   >
                     {item.label}
                   </DropdownMenuItem>
