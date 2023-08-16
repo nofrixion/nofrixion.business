@@ -47,7 +47,6 @@ steps:
       scriptType: inline
       failOnStandardError: true
       inlineScript: |
-        ls -l
         # suggested 'error handling' as per https://sipb.mit.edu/doc/safe-shell/
         set -euo pipefail      
         aws sts get-caller-identity
