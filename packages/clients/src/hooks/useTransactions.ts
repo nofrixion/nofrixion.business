@@ -2,8 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 
 import { TransactionsClient } from '../clients'
 import { formatSortExpression, SortDirection } from '../types'
-import { ApiResponse, TransactionPageResponse } from '../types/ApiResponses'
+import { ApiResponse, PageResponse, Transaction } from '../types/ApiResponses'
 import { ApiProps, useTransactionsProps } from '../types/props'
+
+type TransactionPageResponse = PageResponse<Transaction>
 
 const fetchTransactions = async (
   apiUrl: string,

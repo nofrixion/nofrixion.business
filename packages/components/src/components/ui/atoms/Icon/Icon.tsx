@@ -218,6 +218,16 @@ export const Icons = {
       />
     </SVG>
   ),
+  'pending/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2.46447 9.53553C1.52678 8.59785 1 7.32608 1 6C1 4.67392 1.52678 3.40215 2.46447 2.46447C3.40215 1.52678 4.67392 1 6 1C7.32608 1 8.59785 1.52678 9.53553 2.46447C10.4732 3.40215 11 4.67392 11 6C11 7.32608 10.4732 8.59785 9.53553 9.53553C8.59785 10.4732 7.32608 11 6 11C4.67392 11 3.40215 10.4732 2.46447 9.53553ZM6.75 4.06642C6.75 3.65221 6.41421 3.31642 6 3.31642C5.58579 3.31642 5.25 3.65221 5.25 4.06642V6.10246C5.25 6.26441 5.30242 6.422 5.39942 6.55169L6.76905 8.3828C7.01714 8.71449 7.48716 8.78226 7.81885 8.53416C8.15054 8.28606 8.21831 7.81605 7.97021 7.48435L6.75 5.853V4.06642Z"
+        fill="#454D54"
+      />
+    </SVG>
+  ),
   'capture/12': (className: string) => (
     <SVG className={className} size="12">
       <path
@@ -268,6 +278,20 @@ export const Icons = {
   'arrow-down/8': (className: string) => (
     <SVG className={className} size="8">
       <path d="M0.5 2L4 5.5L7.5 2" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'outgoing/8': (className: string) => (
+    <SVG className={className} size="8">
+      <path d="M4 0.5L4 7.5" strokeLinecap="round" />
+      <path d="M4 7.5L7.5 4" strokeLinecap="round" />
+      <path d="M4 7.5L0.5 4" strokeLinecap="round" />
+    </SVG>
+  ),
+  'incoming/8': (className: string) => (
+    <SVG className={className} size="8">
+      <path d="M4 7.5V0.5" strokeLinecap="round" />
+      <path d="M4 0.5L0.5 4" strokeLinecap="round" />
+      <path d="M4 0.5L7.5 4" strokeLinecap="round" />
     </SVG>
   ),
 } as const

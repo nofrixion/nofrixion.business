@@ -3,10 +3,15 @@ import { Button, Text } from '../../ui/atoms'
 
 interface EmptyStateProps {
   state: 'nothingFound' | 'empty'
+  description?: string
   onCreatePaymentRequest?: () => void
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }) => {
+const EmptyState: React.FC<EmptyStateProps> = ({
+  state,
+  description: customDesc,
+  onCreatePaymentRequest,
+}) => {
   const title = state === 'nothingFound' ? 'Nothing found here' : 'This list is empty'
   const description =
     state === 'nothingFound'
@@ -23,7 +28,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ state, onCreatePaymentRequest }
         />
       </div>
       <Text>{title}</Text>
-      <p className="text-sm/4 text-grey-text">{description}</p>
+      <p className="text-sm/4 text-grey-text">{customDesc ? customDesc : description}</p>
 
       {state === 'empty' && onCreatePaymentRequest && (
         <Button size="big" onClick={onCreatePaymentRequest} className="mt-[2.625rem] w-64">
