@@ -1,8 +1,9 @@
 import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
+import { builtClassesPrefix } from './constants'
+
 const isBuilt = import.meta.env.PROD
-const builtClassesPrefix = import.meta.env.builtClassesPrefix
 
 const customTwMerge = extendTailwindMerge({
   prefix: isBuilt ? builtClassesPrefix : '',
