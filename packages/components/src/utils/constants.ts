@@ -1,3 +1,5 @@
+export const builtClassesPrefix = 'nf-wc-'
+
 export const apiUrls = {
   local: 'https://localhost:44323/api/v1',
   dev: 'https://api-dev.nofrixion.com/api/v1',

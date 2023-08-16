@@ -36,7 +36,7 @@ const TabContent: React.FC<TabProps> = ({ value, selectedTab, children }) => {
 // Get type of classnames
 const underlineClasses = 'w-full h-px absolute bottom-0'
 
-interface DetailsTabsProps {
+export interface DetailsTabsProps {
   paymentRequest: LocalPaymentRequest
   onRefund: (paymentAttempt: LocalPaymentAttempt) => void
   onVoid: (paymentAttempt: LocalPaymentAttempt) => void
