@@ -15,6 +15,7 @@
 
 pr: 
   - develop
+trigger: none
 
 variables:
   webComponentsBundleName: 'nofrixion-webcomponents-pr$(System.PullRequest.PullRequestNumber).js'
