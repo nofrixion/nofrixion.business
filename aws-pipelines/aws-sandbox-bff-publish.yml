@@ -31,17 +31,6 @@ resources:
     endpoint: Bitbucket-AaronAppPassword
     name: nofrixion/nofrixion.business.cicd
     ref: $(Build.SourceBranch)
-  - repository: moneymoov-dotnet-sdk
-    type: github
-    endpoint: github.com_sipsorcery
-    name: nofrixion/moneymoov-dotnet
-    ref: $(Build.SourceBranch)
-  - repository: nofrixion.common
-    type: bitbucket
-    endpoint: Bitbucket-AaronAppPassword
-    name: nofrixion/nofrixion.common
-    ref: $(Build.SourceBranch)
-
 
 pool:
   vmImage: $(vmImageName)
@@ -51,12 +40,6 @@ steps:
   fetchDepth: 1
 
 - checkout: nofrixion.business.cicd
-  fetchDepth: 1
-
-- checkout: moneymoov-dotnet-sdk
-  fetchDepth: 1
-
-- checkout: nofrixion.common
   fetchDepth: 1
 
 - task: Docker@2

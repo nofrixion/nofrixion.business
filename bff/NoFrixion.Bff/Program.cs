@@ -1,6 +1,6 @@
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.HttpOverrides;
-using NoFrixion.Common;
+using Nofrixion.Bff;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,8 +38,8 @@ builder.Services.AddBff()
 // The maximum age a portal session can stay alive for before a manual authentication will be requested. This is a
 // fallback setting to prevent portal sessions being tricked into staying alive forever.
 // </summary>
-const string AUTHENTICATION_MAX_AGE_HOURS = "NoFrixion:AuthenticationMaxAgeHours";
-const string AUTHENTICATION_EXPIRY_MINUTES = "NoFrixion:AuthenticationExpiryMinutes";
+const string AUTHENTICATION_MAX_AGE_HOURS = ConfigKeys.AUTHENTICATION_MAX_AGE_HOURS;
+const string AUTHENTICATION_EXPIRY_MINUTES = ConfigKeys.AUTHENTICATION_EXPIRY_MINUTES;
 
 
 var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
@@ -111,30 +111,32 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseBff();
-app.UseAuthorization();
+
 app.UseForwardedHeaders();
 
 app.Use(async (context, next) => 
-{ 
-    await next(); 
+{
     var path = context.Request.Path.Value;
 
     if (!path.StartsWith("/api") && !path.StartsWith("/bff") && !Path.HasExtension(path)) 
     { 
-        context.Request.Path = "/"; 
-        await next(); 
-    } 
+        context.Request.Path = "/Index";
+    }
+    
+    await next();
 });
 
-app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new 
-    List<string> { "index.html" } });
 app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
 
@@ -149,5 +151,7 @@ app.UseEndpoints(endpoints =>
 });
 
 app.UseCors("cors-policy");
+
+app.MapRazorPages();
 
 await app.RunAsync();
