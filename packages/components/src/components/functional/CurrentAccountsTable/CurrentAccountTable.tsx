@@ -6,17 +6,17 @@ import { LocalTransaction } from '../../../types/LocalTypes'
 import { remoteTransactionsToLocal } from '../../../utils/parsers'
 import { TransactionsTable as UITransactionsTable } from '../../ui/organisms/TransactionsTable/TransactionsTable'
 
-export interface CurrentAccountsTableProps {
+export interface CurrentAccountTableProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   accountId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
 }
 
-const CurrentAccountsTable = ({
+const CurrentAccountTable = ({
   token,
   accountId,
   apiUrl = 'https://api.nofrixion.com/api/v1',
-}: CurrentAccountsTableProps) => {
+}: CurrentAccountTableProps) => {
   const queryClient = new QueryClient()
 
   return (
@@ -28,7 +28,7 @@ const CurrentAccountsTable = ({
 
 const pageSize = 10
 
-const CurrentAccountsTableMain = ({ token, accountId, apiUrl }: CurrentAccountsTableProps) => {
+const CurrentAccountsTableMain = ({ token, accountId, apiUrl }: CurrentAccountTableProps) => {
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [transactions, setTransactions] = useState<LocalTransaction[]>([])
@@ -87,4 +87,4 @@ const CurrentAccountsTableMain = ({ token, accountId, apiUrl }: CurrentAccountsT
   )
 }
 
-export default CurrentAccountsTable
+export default CurrentAccountTable
