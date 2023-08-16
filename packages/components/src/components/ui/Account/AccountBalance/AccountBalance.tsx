@@ -1,17 +1,24 @@
 import { Currency } from '@nofrixion/moneymoov'
 
+import { cn } from '../../../../utils'
 import { formatAmount } from '../../../../utils/formatters'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 
-export interface AccountBalanceProps {
+export interface AccountBalanceProps extends React.HTMLAttributes<HTMLDivElement> {
   currency: Currency
   balance: number
   availableBalance: number
 }
 
-const AccountBalance: React.FC<AccountBalanceProps> = ({ currency, balance, availableBalance }) => {
+const AccountBalance: React.FC<AccountBalanceProps> = ({
+  currency,
+  balance,
+  availableBalance,
+  className,
+  ...props
+}) => {
   return (
-    <div className="text-right">
+    <div className={cn('text-right', className)} {...props}>
       <span className="text-4xl font-semibold leading-9 tabular-nums font-inter-fontFeatureSettings">
         {formatCurrency(currency)} {formatAmount(balance)}
       </span>

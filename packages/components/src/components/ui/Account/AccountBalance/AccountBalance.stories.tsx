@@ -23,3 +23,11 @@ AccountGBP.args = {
   balance: 415234.56,
   availableBalance: 222567.45,
 }
+
+export const AccountWithStyles = Template.bind({})
+AccountWithStyles.args = {
+  currency: Currency.GBP,
+  balance: 41234.56,
+  availableBalance: 222567.45,
+  className: "m-10 p-2 text-left bg-slate-200",
+}
