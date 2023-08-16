@@ -297,6 +297,8 @@ export const TransactionTypeValue: { [key in TransactionType]: string } = {
   Reversal: 'Reversal',
 }
 
+export type TransactionPageResponse = PageResponse<Transaction>
+
 export interface Counterparty {
   accountID: string
   name: string

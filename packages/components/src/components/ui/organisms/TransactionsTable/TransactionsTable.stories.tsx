@@ -22,9 +22,16 @@ export const Showcase = Template.bind({})
 Showcase.args = {
   transactions: mockedTransactions,
   pagination: {
-    pageNumber: 1,
     pageSize: 10,
-    totalPages: 20,
-    totalSize: 200,
+    totalSize: 100,
+  },
+}
+
+export const Empty = Template.bind({})
+Empty.args = {
+  transactions: [],
+  pagination: {
+    pageSize: 0,
+    totalSize: 0,
   },
 }
