@@ -1,13 +1,9 @@
-import {
-  AccountIdentifierType,
-  Pagination,
-  Transaction,
-  TransactionTypeValue,
-  useTransactions,
-} from '@nofrixion/moneymoov'
+import { SortDirection, useTransactions } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 
 import { LocalTransaction } from '../../../types/LocalTypes'
+import { remoteTransactionsToLocal } from '../../../utils/parsers'
 import { TransactionsTable as UITransactionsTable } from '../../ui/organisms/TransactionsTable/TransactionsTable'
 
 export interface CurrentAccountsTableProps {
@@ -30,55 +26,65 @@ const CurrentAccountsTable = ({
   )
 }
 
-/**
- * This is the main component that will be rendered.
- */
+const pageSize = 10
+
 const CurrentAccountsTableMain = ({ token, accountId, apiUrl }: CurrentAccountsTableProps) => {
-  const { data: remoteTransactions } = useTransactions(
-    { accountId },
+  const [page, setPage] = useState(1)
+  const [totalRecords, setTotalRecords] = useState<number>(0)
+  const [transactions, setTransactions] = useState<LocalTransaction[]>([])
+
+  const [transactionDateSortDirection, setTransactionDateDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
+  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+
+  const { data: transactionsResponse } = useTransactions(
+    {
+      accountId,
+      pageNumber: page,
+      pageSize: pageSize,
+      dateSortDirection: transactionDateSortDirection,
+      amountSortDirection: amountSortDirection,
+    },
     { apiUrl: apiUrl, authToken: token },
   )
 
-  console.log(remoteTransactions?.status === 'success' ? remoteTransactions.data : 'error')
+  useEffect(() => {
+    if (transactionsResponse?.status === 'success') {
+      setTransactions(remoteTransactionsToLocal(transactionsResponse.data.content))
+      setTotalRecords(transactionsResponse.data.totalSize)
+    } else if (transactionsResponse?.status === 'error') {
+      // TODO: Handle error
+      console.error(transactionsResponse.error)
+    }
+  }, [transactionsResponse])
 
-  if (remoteTransactions?.status === 'error') {
-    return <div>TODO: REMOVE THIS</div>
+  const onPageChange = (page: number) => {
+    setPage(page)
   }
 
-  const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransaction[] => {
-    return transactions.map((transaction) => {
-      return {
-        date: new Date(transaction.transactionDate),
-        destinationAccount: {
-          name: transaction.counterparty.name,
-          accountInfo:
-            transaction.counterparty.identifier.type == AccountIdentifierType.IBAN
-              ? transaction.counterparty.identifier.iban
-              : transaction.counterparty.identifier.type == AccountIdentifierType.SCAN
-              ? `${transaction.counterparty.identifier.sortCode} - ${transaction.counterparty.identifier.accountNumber}`
-              : '',
-        },
-        amount: transaction.amount,
-        balanceAfterTx: transaction.balance,
-        reference: transaction.amount > 0 ? transaction.theirReference : transaction.yourReference,
-        description: transaction.description,
-        type: TransactionTypeValue[transaction.type],
-      }
-    })
+  const onSort = (column: 'date' | 'amount', direction: SortDirection) => {
+    switch (column) {
+      case 'date':
+        setTransactionDateDirection(direction)
+        break
+      case 'amount':
+        setAmountSortDirection(direction)
+        break
+    }
   }
 
-  const transactions = remoteTransactionsToLocal(
-    remoteTransactions?.status == 'success' ? remoteTransactions?.data.content : [],
+  return (
+    <UITransactionsTable
+      transactions={transactions}
+      pagination={{
+        pageSize: pageSize,
+        totalSize: totalRecords,
+      }}
+      onPageChange={onPageChange}
+      onSort={onSort}
+    />
   )
-
-  const pagination: Pagination = {
-    pageNumber: remoteTransactions?.data.pageNumber ?? 0,
-    pageSize: remoteTransactions?.data.pageSize ?? 0,
-    totalPages: remoteTransactions?.data.totalPages ?? 0,
-    totalSize: remoteTransactions?.data.totalSize ?? 0,
-  }
-
-  return <UITransactionsTable transactions={transactions} pagination={pagination} />
 }
 
 export default CurrentAccountsTable

@@ -19,18 +19,18 @@ import Pager from '../../Pager/Pager'
 
 export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElement> {
   transactions: LocalTransaction[]
-  pagination: Pagination
+  pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
+  onPageChange: (page: number) => void
+  onSort: (name: 'date' | 'amount', direction: SortDirection) => void
 }
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   transactions,
   pagination,
+  onPageChange,
+  onSort,
   ...props
 }) => {
-  const onSort = (name: string, direction: SortDirection) => {
-    console.log(name, direction)
-  }
-
   const renderBasicInfoLayout = (upperText: string, lowerText: string, className?: string) => {
     return (
       <div className={className}>
@@ -46,39 +46,30 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
         <TableHeader>
           <TableRow className="hover:bg-transparent cursor-auto">
             <TableHead className="w-[150px]">
-              <ColumnHeader label={'Date'} onSort={(direction) => onSort('Date', direction)} />
+              <ColumnHeader label={'Date'} onSort={(direction) => onSort('date', direction)} />
             </TableHead>
             <TableHead>
-              <ColumnHeader
-                label={'To/ From'}
-                onSort={(direction) => onSort('To/ From', direction)}
-              />
+              <ColumnHeader label={'To/ From'} />
             </TableHead>
             <TableHead className="text-right">
-              <ColumnHeader label={'Amount'} onSort={(direction) => onSort('Amount', direction)} />
+              <ColumnHeader label={'Amount'} onSort={(direction) => onSort('amount', direction)} />
             </TableHead>
             <TableHead>
-              <ColumnHeader
-                label={'Reference'}
-                onSort={(direction) => onSort('Reference', direction)}
-              />
+              <ColumnHeader label={'Reference'} />
             </TableHead>
             <TableHead className="w-[300px]">
-              <ColumnHeader
-                label={'Description'}
-                onSort={(direction) => onSort('Description', direction)}
-              />
+              <ColumnHeader label={'Description'} />
             </TableHead>
             <TableHead>
-              <ColumnHeader label={'Type'} onSort={(direction) => onSort('Type', direction)} />
+              <ColumnHeader label={'Type'} />
             </TableHead>
             <TableHead>{/* Export  Icon + Status */}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((transaction) => (
-            <TableRow key={transaction.date.toString()}>
-              <TableCell className="">
+          {transactions.map((transaction, index) => (
+            <TableRow key={`${transaction}-${index}`}>
+              <TableCell>
                 {renderBasicInfoLayout(
                   format(transaction.date, 'MMM dd, yyyy'),
                   format(transaction.date, 'hh:mm'),
@@ -125,13 +116,16 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
               <TableCell>
                 <div className="truncate w-36">{transaction.type}</div>
               </TableCell>
+
+              {/* Fill empty space */}
+              <TableCell className="p-0"></TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <div className="flex items-center justify-end py-4">
         <Pager
-          onPageChange={() => {}}
+          onPageChange={onPageChange}
           pageSize={pagination.pageSize}
           totalRecords={pagination.totalSize}
         />

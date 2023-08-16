@@ -1,4 +1,5 @@
 import {
+  AccountIdentifierType,
   PartialPaymentMethods,
   PaymentMethodTypes,
   type PaymentRequest,
@@ -8,6 +9,8 @@ import {
   type PaymentRequestRefundAttempt,
   PaymentResult,
   type Tag,
+  Transaction,
+  TransactionTypeValue,
   Wallets,
 } from '@nofrixion/moneymoov'
 
@@ -25,6 +28,7 @@ import {
   LocalPaymentRequestRefundAttempt,
   LocalPaymentStatus,
   LocalTag,
+  LocalTransaction,
 } from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
@@ -311,4 +315,31 @@ const remotePaymentRequestToLocalPaymentRequest = (
   }
 }
 
-export { parseApiTagToLocalTag, parseLocalTagToApiTag, remotePaymentRequestToLocalPaymentRequest }
+const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransaction[] => {
+  return transactions.map((transaction) => {
+    return {
+      date: new Date(transaction.transactionDate),
+      destinationAccount: {
+        name: transaction.counterparty.name,
+        accountInfo:
+          transaction.counterparty.identifier.type == AccountIdentifierType.IBAN
+            ? transaction.counterparty.identifier.iban
+            : transaction.counterparty.identifier.type == AccountIdentifierType.SCAN
+            ? `${transaction.counterparty.identifier.sortCode} - ${transaction.counterparty.identifier.accountNumber}`
+            : '',
+      },
+      amount: transaction.amount,
+      balanceAfterTx: transaction.balance,
+      reference: transaction.amount > 0 ? transaction.theirReference : transaction.yourReference,
+      description: transaction.description,
+      type: TransactionTypeValue[transaction.type],
+    }
+  })
+}
+
+export {
+  parseApiTagToLocalTag,
+  parseLocalTagToApiTag,
+  remotePaymentRequestToLocalPaymentRequest,
+  remoteTransactionsToLocal,
+}

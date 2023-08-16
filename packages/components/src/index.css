@@ -21,19 +21,6 @@
   }
 }
 
-.columnSort {
-  @apply inline-flex;
-  @apply text-sm;
-  @apply text-grey-text;
-  @apply cursor-pointer;
-  @apply transition;
-  @apply items-center;
-}
-
-.columnSort:hover {
-  @apply text-control-grey-hover;
-}
-
 .Toastify__toast {
   min-height: 16px !important;
   --toastify-color-info: #fff;
