@@ -14,14 +14,15 @@ import {
   hasRefundOrCaptureAttempts,
   isCaptureable,
   isRefundable,
+  isVoid,
 } from '../../../utils/paymentAttemptsHelper'
-import { Icon } from '../atoms'
-import PaymentAttemptActionMenu from '../PaymentAttemptActionMenu/PaymentAttemptActionMenu'
+import { Button, Icon } from '../atoms'
 
 export interface TransactionsProps {
   transactions: LocalPaymentAttempt[]
   cardAuthoriseOnly: boolean
   onRefund: (paymentAttempt: LocalPaymentAttempt) => void
+  onVoid: (paymentAttempt: LocalPaymentAttempt) => void
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void
 }
 
@@ -55,6 +56,7 @@ const Transactions = ({
   transactions,
   cardAuthoriseOnly,
   onRefund,
+  onVoid,
   onCapture,
 }: TransactionsProps) => {
   const formatter = new Intl.NumberFormat(navigator.language, {
@@ -134,15 +136,16 @@ const Transactions = ({
                       'pt-2': index !== 0,
                     })}
                   >
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
                       {isCaptureable(transaction) && (
-                        <button
-                          type="button"
-                          className="text-white text-13px leading-4 bg-primary-green hover:bg-primary-green-hover rounded-full px-2 py-1 transition-colors"
+                        <Button
+                          variant="primary"
+                          size="x-small"
+                          className="px-2 w-min"
                           onClick={() => onCapture(transaction)}
                         >
                           Capture
-                        </button>
+                        </Button>
                       )}
                       {transaction.status === 'authorized' && (
                         <span className="text-grey-text text-[10px] leading-4 block px-1 border rounded border-solid border-border-grey-highlighted">
@@ -151,7 +154,31 @@ const Transactions = ({
                       )}
                       {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
                         isRefundable(transaction) && (
-                          <PaymentAttemptActionMenu onRefund={() => onRefund(transaction)} />
+                          <Button
+                            variant="secondary"
+                            size="x-small"
+                            className="px-2 w-min"
+                            onClick={() => onRefund(transaction)}
+                          >
+                            <div className="flex flex-row gap-2 items-center">
+                              <Icon name="return/12" />
+                              <span>Refund</span>
+                            </div>
+                          </Button>
+                        )}
+                      {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
+                        isVoid(transaction) && (
+                          <Button
+                            variant="secondary"
+                            size="x-small"
+                            className="px-2 w-min"
+                            onClick={() => onVoid(transaction)}
+                          >
+                            <div className="flex flex-row gap-2 items-center">
+                              <Icon name="void/12" />
+                              <span>Void</span>
+                            </div>
+                          </Button>
                         )}
                     </div>
                   </td>
@@ -190,7 +217,8 @@ const Transactions = ({
                             <span className="lg:hidden">
                               {subTransaction.currency === Currency.EUR ? '€' : '£'}
                             </span>
-                            {subTransaction.type === SubTransactionType.Refund && <span>-</span>}
+                            {(subTransaction.type === SubTransactionType.Refund ||
+                              subTransaction.type === SubTransactionType.Void) && <span>-</span>}
                             {formatter.format(subTransaction.amount)}
                           </span>
                         </td>
@@ -216,6 +244,16 @@ const Transactions = ({
                                 <Icon name="return/12" className="text-control-grey-hover" />
                               </span>
                               <span>Refund</span>
+                            </div>
+                          </td>
+                        )}
+                        {subTransaction.type === SubTransactionType.Void && (
+                          <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
+                            <div className="flex flex-row items-center ml-1">
+                              <span className="mr-2 p-1.5">
+                                <Icon name="void/12" className="text-control-grey-hover" />
+                              </span>
+                              <span>Void</span>
                             </div>
                           </td>
                         )}

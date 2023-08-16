@@ -39,10 +39,16 @@ const underlineClasses = 'w-full h-px absolute bottom-0'
 interface DetailsTabsProps {
   paymentRequest: LocalPaymentRequest
   onRefund: (paymentAttempt: LocalPaymentAttempt) => void
+  onVoid: (paymentAttempt: LocalPaymentAttempt) => void
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void
 }
 
-const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onCapture }) => {
+const DetailsTabs: React.FC<DetailsTabsProps> = ({
+  paymentRequest,
+  onRefund,
+  onVoid,
+  onCapture,
+}) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0])
 
   return (
@@ -82,6 +88,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({ paymentRequest, onRefund, onC
               transactions={paymentRequest.paymentAttempts}
               cardAuthoriseOnly={!paymentRequest.captureFunds}
               onRefund={onRefund}
+              onVoid={onVoid}
               onCapture={onCapture}
             ></Transactions>
           </ScrollArea>
