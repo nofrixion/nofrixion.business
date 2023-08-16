@@ -78,3 +78,9 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/pr/$(businessBundleName)' '/dev/pr/$(webComponentsBundleName)'
+
+  - task: GitHubComment@0
+    inputs:
+      gitHubConnection: '$(githubConnection)'
+      repositoryName: '$(Build.Repository.Name)'
+      comment: 'Artifacts for this PR are available at https://cdn.nofrixion.com/dev/pr/nofrixion-business-pr$(System.PullRequest.PullRequestNumber).js and https://cdn.nofrixion.com/dev/pr/nofrixion-webcomponents-pr$(System.PullRequest.PullRequestNumber).js'
