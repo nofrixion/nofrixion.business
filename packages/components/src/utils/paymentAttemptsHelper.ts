@@ -10,17 +10,12 @@ export const getTotalAmountPaid = (paymentAttempts: LocalPaymentAttempt[]): numb
   return paymentAttempts.reduce((acc, curr) => acc + getAmountPaid(curr), 0)
 }
 
-/**
- * Calculates the maximum amount that can be refunded in a payment request. It is the sum of amount received minus amount captured.
- * @param paymentAttempts
- * @returns The maximum amount that can be refunded in a payment request.
- */
-export const getMaxRefundableAmount = (paymentAttempt: LocalPaymentAttempt): number => {
-  return getAmountPaid(paymentAttempt)
-}
-
 export const getMaxCapturableAmount = (paymentAttempt: LocalPaymentAttempt): number => {
-  return getAmountPaid(paymentAttempt) - getAmountCaptured(paymentAttempt)
+  return (
+    getAmountReceived(paymentAttempt) -
+    getAmountCaptured(paymentAttempt) -
+    getCardAmountVoided(paymentAttempt)
+  )
 }
 
 export const hasRefundOrCaptureAttempts = (paymentAttempt: LocalPaymentAttempt): boolean => {
@@ -37,6 +32,23 @@ export const isRefundable = (paymentAttempt: LocalPaymentAttempt): boolean => {
 }
 
 /**
+ * Determines if a card payment attempt is refundable or voidable.
+ * @param paymentAttempt
+ * @returns True if the payment attempt is voidable, false otherwise.
+ */
+export const isVoid = (paymentAttempt: LocalPaymentAttempt | undefined): boolean => {
+  if (paymentAttempt === undefined) {
+    return false
+  } else {
+    return (
+      getAmountReceived(paymentAttempt) > 0 &&
+      paymentAttempt.captureAttempts.length === 0 &&
+      paymentAttempt.refundAttempts.length === 0
+    )
+  }
+}
+
+/**
  * Checks if a payment attempt is captureable. A payment attempt is captureable if the payment method is card and the amount paid is greater than the amount captured.
  * @param paymentAttempt
  * @returns True if the payment attempt is captureable, false otherwise.
@@ -45,7 +57,7 @@ export const isCaptureable = (paymentAttempt: LocalPaymentAttempt): boolean => {
   if (paymentAttempt.paymentMethod !== LocalPaymentMethodTypes.Card) {
     return false
   }
-  return getAmountPaid(paymentAttempt) > getAmountCaptured(paymentAttempt)
+  return getMaxCapturableAmount(paymentAttempt) > 0
 }
 
 /**
@@ -61,12 +73,22 @@ export const getSubTransactions = (paymentAttempt: LocalPaymentAttempt): SubTran
       currency: paymentAttempt.currency,
       type: SubTransactionType.Capture,
     })),
-    ...paymentAttempt.refundAttempts.map(({ refundSettledAt, refundSettledAmount }) => ({
-      occurredAt: refundSettledAt,
-      amount: refundSettledAmount,
-      currency: paymentAttempt.currency,
-      type: SubTransactionType.Refund,
-    })),
+    ...paymentAttempt.refundAttempts
+      .filter((x) => x.isCardVoid === false)
+      .map(({ refundSettledAt, refundSettledAmount }) => ({
+        occurredAt: refundSettledAt,
+        amount: refundSettledAmount,
+        currency: paymentAttempt.currency,
+        type: SubTransactionType.Refund,
+      })),
+    ...paymentAttempt.refundAttempts
+      .filter((x) => x.isCardVoid)
+      .map(({ refundSettledAt, refundSettledAmount }) => ({
+        occurredAt: refundSettledAt,
+        amount: refundSettledAmount,
+        currency: paymentAttempt.currency,
+        type: SubTransactionType.Void,
+      })),
   ]
 
   return subtransactions.sort((a, b) => {
@@ -117,6 +139,34 @@ export const getAmountRefunded = (paymentAttempt: LocalPaymentAttempt): number =
   return paymentAttempt.refundAttempts.reduce((acc, curr) => acc + curr.refundSettledAmount, 0)
 }
 
+export const getCardAmountRefunded = (paymentAttempt: LocalPaymentAttempt): number => {
+  return paymentAttempt.refundAttempts
+    .filter((x) => x.isCardVoid === false)
+    .reduce((acc, curr) => acc + curr.refundSettledAmount, 0)
+}
+
+export const getCardAmountVoided = (paymentAttempt: LocalPaymentAttempt): number => {
+  return paymentAttempt.refundAttempts
+    .filter((x) => x.isCardVoid === true)
+    .reduce((acc, curr) => acc + curr.refundSettledAmount, 0)
+}
+
 export const getAmountCaptured = (paymentAttempt: LocalPaymentAttempt): number => {
   return paymentAttempt.captureAttempts.reduce((acc, curr) => acc + curr.capturedAmount, 0)
+}
+
+/**
+ * Calculates the maximum amount that can be refunded in a payment request. It is the sum of amount received minus amount captured.
+ * @param paymentAttempts
+ * @returns The maximum amount that can be refunded in a payment request.
+ */
+export const getMaxRefundableAmount = (paymentAttempt: LocalPaymentAttempt): number => {
+  switch (paymentAttempt.paymentMethod) {
+    case LocalPaymentMethodTypes.Card:
+      return getAmountCaptured(paymentAttempt) - getCardAmountRefunded(paymentAttempt)
+    case LocalPaymentMethodTypes.Pisp:
+      return getAmountPaid(paymentAttempt)
+    default:
+      return 0
+  }
 }

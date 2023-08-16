@@ -213,6 +213,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
           refundInitiatedAmount,
           refundSettledAmount,
           refundCancelledAmount,
+          isCardVoid,
         } = remoteRefundAttempt
         localRefundAttempts.push({
           refundPayoutID: refundPayoutID,
@@ -222,6 +223,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
           refundInitiatedAmount: refundInitiatedAmount,
           refundSettledAmount: refundSettledAmount,
           refundCancelledAmount: refundCancelledAmount,
+          isCardVoid: isCardVoid,
         })
       })
       return localRefundAttempts

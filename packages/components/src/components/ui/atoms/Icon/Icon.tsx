@@ -143,6 +143,57 @@ export const Icons = {
       <path d="M8 1L8 15" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'return/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M3.5 14.498L0.5 11.498L3.5 8.49805"
+        stroke="#454D54"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M0.5 11.498H10.5C11.8261 11.498 13.0979 10.9713 14.0355 10.0336C14.9732 9.0959 15.5 7.82413 15.5 6.49805C15.5 5.17196 14.9732 3.9002 14.0355 2.96251C13.0979 2.02483 11.8261 1.49805 10.5 1.49805H6.5"
+        stroke="#454D54"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
+  'void/16': (className: string) => (
+    <SVG className={className} size="16">
+      <g clipPath="url(#clip0_6629_30721)">
+        <path
+          d="M0.5 8C0.5 9.98912 1.29018 11.8968 2.6967 13.3033C4.10322 14.7098 6.01088 15.5 8 15.5C9.98912 15.5 11.8968 14.7098 13.3033 13.3033C14.7098 11.8968 15.5 9.98912 15.5 8C15.5 6.01088 14.7098 4.10322 13.3033 2.6967C11.8968 1.29018 9.98912 0.5 8 0.5C6.01088 0.5 4.10322 1.29018 2.6967 2.6967C1.29018 4.10322 0.5 6.01088 0.5 8Z"
+          stroke="#454D54"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M13 3L3 13" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip0_6629_30721">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </SVG>
+  ),
+  'capture/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M0.5 8C0.5 9.98912 1.29018 11.8968 2.6967 13.3033C4.10322 14.7098 6.01088 15.5 8 15.5C9.98912 15.5 11.8968 14.7098 13.3033 13.3033C14.7098 11.8968 15.5 9.98912 15.5 8C15.5 6.01088 14.7098 4.10322 13.3033 2.6967C11.8968 1.29018 9.98912 0.5 8 0.5C6.01088 0.5 4.10322 1.29018 2.6967 2.6967C1.29018 4.10322 0.5 6.01088 0.5 8Z"
+        stroke="#454D54"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.5 5L7.82611 10.5691C7.7445 10.6925 7.64058 10.7946 7.52134 10.8684C7.4021 10.9423 7.27032 10.9862 7.13488 10.9972C6.99945 11.0083 6.8635 10.9862 6.73622 10.9324C6.60893 10.8786 6.49327 10.7945 6.39702 10.6856L4.5 8.52867"
+        stroke="#454D54"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
+
   'copy/12px': (className: string) => (
     <SVG className={className} size="12">
       <path
@@ -202,6 +253,29 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </SVG>
+  ),
+  'void/12': (className: string) => (
+    <SVG className={className} size="12">
+      <g clipPath="url(#clip0_6629_30732)">
+        <path
+          d="M0.375 6C0.375 7.49184 0.967632 8.92258 2.02252 9.97748C3.07742 11.0324 4.50816 11.625 6 11.625C7.49184 11.625 8.92258 11.0324 9.97748 9.97748C11.0324 8.92258 11.625 7.49184 11.625 6C11.625 4.50816 11.0324 3.07742 9.97748 2.02252C8.92258 0.967632 7.49184 0.375 6 0.375C4.50816 0.375 3.07742 0.967632 2.02252 2.02252C0.967632 3.07742 0.375 4.50816 0.375 6Z"
+          stroke="#454D54"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9.75 2.25L2.25 9.75"
+          stroke="#454D54"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_6629_30732">
+          <rect width="12" height="12" fill="white" />
+        </clipPath>
+      </defs>
     </SVG>
   ),
   'arrow-down/8': (className: string) => (

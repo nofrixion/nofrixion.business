@@ -38,4 +38,5 @@ export enum LocalCardPaymentResponseStatus {
 export enum SubTransactionType {
   Refund = 'Refund',
   Capture = 'Capture',
+  Void = 'Void',
 }

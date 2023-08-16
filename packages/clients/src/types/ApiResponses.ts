@@ -120,6 +120,7 @@ export type PaymentRequestRefundAttempt = {
   refundInitiatedAmount: number
   refundSettledAmount: number
   refundCancelledAmount: number
+  isCardVoid: boolean
 }
 
 export type PaymentRequestCaptureAttempt = {
