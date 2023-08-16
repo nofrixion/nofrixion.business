@@ -57,4 +57,9 @@ public class ConfigKeys
     /// The location of the nofrixion-business.js file.
     /// </summary>
     public const string NOFRIXION_BUSINESS_CDN_LOCATION = "NoFrixion:BusinessCdnLocation";
+
+    /// <summary>
+    /// Redis connection string.
+    /// </summary>
+    public const string CONNECTION_STRING_REDIS = "ConnectionStrings:BFFRedis";
 }
