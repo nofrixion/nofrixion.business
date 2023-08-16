@@ -1,9 +1,14 @@
-import UnderConstructionUI from '../../components/UnderConstructionUI'
+import { Accounts } from '@nofrixion/components'
 
-const url = `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Merchant/Accounts`
+import { NOFRIXION_API_URL } from '../../lib/constants'
+import useMerchantStore from '../../lib/stores/useMerchantStore'
+import useStore from '../../lib/stores/useStore'
 
 const CurrentAccountsPage = () => {
-  return <UnderConstructionUI title="Current Accounts" link={url} />
+  // const { data: session, status, update } = useSession()
+  const merchant = useStore(useMerchantStore, (state) => state.merchant)
+
+  return <div>{merchant && <Accounts merchantId={merchant.id} apiUrl={NOFRIXION_API_URL} />}</div>
 }
 
 export default CurrentAccountsPage

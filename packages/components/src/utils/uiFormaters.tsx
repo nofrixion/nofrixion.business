@@ -1,3 +1,4 @@
+import { Currency } from '@nofrixion/moneymoov'
 import { Fragment } from 'react'
 
 const parseHighlightedText = (text: string) => {
@@ -47,7 +48,19 @@ const formatSentenceFromList = (list: string[]) => {
   return `${list.join(', ')}, and ${lastItem}`
 }
 
+const formatCurrency = (currency: Currency) => {
+  if (!currency) {
+    return
+  }
+  if (Currency.EUR === currency) {
+    return '€'
+  } else if (Currency.GBP === currency) {
+    return '£'
+  }
+}
+
 export {
+  formatCurrency,
   formatEmailAddressesForSummary,
   formatSentenceFromList,
   parseHighlightedText as parseBoldText,
