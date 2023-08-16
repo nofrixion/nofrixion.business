@@ -22,7 +22,7 @@ const CurrentAcountsList = ({
       {accounts && (
         <div className="flex-row mb-8 md:mb-[68px]">
           {accounts
-            .sort((a, b) => a.accountName.localeCompare(b.accountName))
+            .sort((a, b) => a.accountName?.localeCompare(b.accountName))
             .map((account, index) => (
               <AccountCard key={index} account={account} onAccountClick={onAccountClick} />
             ))}
