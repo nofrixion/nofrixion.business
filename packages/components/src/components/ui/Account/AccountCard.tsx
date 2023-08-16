@@ -36,7 +36,8 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, onAccountClick }) =>
         <AccountBalance
           currency={account.currency}
           balance={account.balance}
-          availableBalance={account.availableBalance} />
+          availableBalance={account.availableBalance}
+        />
       </div>
     </div>
   )
