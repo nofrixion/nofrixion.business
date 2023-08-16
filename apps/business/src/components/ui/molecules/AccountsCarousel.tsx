@@ -87,7 +87,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
 
       <div className="flex space-x-4">
         {accounts
-          .sort((a, b) => a.accountName.localeCompare(b.accountName))
+          .sort((a, b) => a.accountName?.localeCompare(b.accountName))
           .map((account: Account) => {
             return (
               <AccountSummaryCard

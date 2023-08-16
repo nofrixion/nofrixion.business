@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import LogoNofrixion from './assets/graphics/nofrixion-logo.svg'
 import HomeUI from './components/HomeUI'
@@ -46,19 +46,25 @@ function NotFound() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  return (
-    <>
-      <main className="flex flex-col items-center justify-center p-24 min-h-screen">
-        <div className="flex justify-center items-center text-gray-text mb-8">
-          <img src={LogoNofrixion} alt="Nofrixion Logo" width={200} height={200} />
-        </div>
-        <h3>
-          No route exists for <code>{location.pathname}</code>
-        </h3>
-        <Button className="flex mx-auto py-3 px-[24px] mt-8" onClick={() => navigate('/home')}>
-          {'Return to home page'}
-        </Button>
-      </main>
-    </>
-  )
+  if (location.pathname.startsWith('/home')) {
+    // No route exists
+    return (
+      <>
+        <main className="flex flex-col items-center justify-center p-24 min-h-screen">
+          <div className="flex justify-center items-center text-gray-text mb-8">
+            <img src={LogoNofrixion} alt="Nofrixion Logo" width={200} height={200} />
+          </div>
+          <h3>
+            No route exists for <code>{location.pathname}</code>
+          </h3>
+          <Button className="flex mx-auto py-3 px-[24px] mt-8" onClick={() => navigate('/home')}>
+            {'Return to home page'}
+          </Button>
+        </main>
+      </>
+    )
+  } else {
+    // Try to redirect to the new location
+    return <Navigate to={`/home${location.pathname}`} replace state={{ from: location }} />
+  }
 }
