@@ -17,7 +17,7 @@ pr: none
 trigger: none
 
 variables:
-  kustomizeOverlayPath: 'nofrixion.business.cicd/kubernetes/bff/overlays-aws/sandbox/'
+  kustomizeOverlayPath: 'kubernetes/bff/overlays-aws/sandbox/'
   tag: $(Build.SourceBranchName)
   
   # Agent VM image name
