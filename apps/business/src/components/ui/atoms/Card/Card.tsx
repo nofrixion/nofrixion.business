@@ -22,7 +22,6 @@ const Card: React.FC<CardProps> = ({
         className,
       )}
       {...props}
-      onClick={onShowViewAll && onShowViewAll}
     >
       <div className="flex justify-between">
         {(title || subtext) && (

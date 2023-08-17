@@ -1,10 +1,10 @@
 import { cva, VariantProps } from 'class-variance-authority'
 
 import { cn } from '../../../../utils'
-import { Icon } from '../Icon/Icon'
+import { Icon, IconNames } from '../Icon/Icon'
 
 const buttonVariants = cva(
-  'rounded-full inline-flex items-center justify-center whitespace-nowrap align-middle cursor-pointer transition w-full disabled:opacity-20 disabled:cursor-not-allowed',
+  'rounded-full inline-flex items-center justify-center whitespace-nowrap align-middle cursor-pointer transition w-full disabled:opacity-20 disabled:cursor-not-allowed select-none',
   {
     variants: {
       variant: {
@@ -17,7 +17,9 @@ const buttonVariants = cva(
           'hover:border-border-grey-highlighted',
           'text-default-text',
         ],
-        text: ['text-grey-text', 'hover:text-grey-text-hover'],
+        text: [
+          'text-grey-text underline underline-offset-2 hover:text-grey-text-hover hover:no-underline',
+        ],
       },
       size: {
         big: ['text-base', 'px-3', 'py-3', 'md:px-6', 'font-normal', 'leading-6'],
@@ -33,7 +35,7 @@ const buttonVariants = cva(
   },
 )
 
-const arrow = cva('w-full h-full', {
+const icon = cva('w-full h-full', {
   variants: {
     variant: {
       primary: ['text-white'],
@@ -48,7 +50,7 @@ const arrow = cva('w-full h-full', {
   },
 })
 
-const arrowContainer = cva('', {
+const iconContainer = cva('', {
   variants: {
     size: {
       big: ['w-4', 'h-4'],
@@ -67,12 +69,14 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   previousArrow?: boolean
   nextArrow?: boolean
+  previousIcon?: IconNames
 }
 
 const Button: React.FC<ButtonProps> = ({
   variant,
   size,
   previousArrow,
+  previousIcon,
   nextArrow,
   className,
   children,
@@ -80,17 +84,23 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button className={cn(buttonVariants({ variant, size }), className)} {...props}>
-      {previousArrow && (
-        <div className={cn(arrowContainer({ size }), 'mr-2')}>
-          <Icon name="back/16" className={arrow({ variant })} />
+      {previousArrow && !previousIcon && (
+        <div className={cn(iconContainer({ size }), 'mr-2')}>
+          <Icon name="back/16" className={icon({ variant })} />
+        </div>
+      )}
+
+      {previousIcon && !previousArrow && (
+        <div className={cn(iconContainer({ size }), 'mr-2')}>
+          <Icon name={previousIcon} className={icon({ variant })} />
         </div>
       )}
 
       {children}
 
       {nextArrow && (
-        <div className={cn(arrowContainer({ size }), 'ml-2')}>
-          <Icon name="next/16" className={arrow({ variant })} />
+        <div className={cn(iconContainer({ size }), 'ml-2')}>
+          <Icon name="next/16" className={icon({ variant })} />
         </div>
       )}
     </button>

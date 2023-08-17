@@ -5,7 +5,7 @@ import { apiUrls } from '../../../utils/constants'
 import CurrentAcountsList from './CurrentAccountsList'
 
 const meta: Meta<typeof CurrentAcountsList> = {
-  title: 'Functional/Current Acounts',
+  title: 'Functional/Current Acounts List',
   component: CurrentAcountsList,
   argTypes: {
     token: {
@@ -31,7 +31,7 @@ export const Showcase = Template.bind({})
 Showcase.args = {
   token: 'eyJhbGciOiJIUz...',
   merchantId: 'bf9e1828-c6a1-4cc5-a012-...',
-  apiUrl: apiUrls.sandbox,
+  apiUrl: apiUrls.dev,
   onUnauthorized: action('onCreatePaymentAccount'),
 }
 

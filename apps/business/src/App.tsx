@@ -6,8 +6,10 @@ import Button from './components/ui/Button'
 import AppLogout from './lib/auth/AppLogout'
 import { AuthProvider } from './lib/auth/AuthProvider'
 import { ProtectedRoutes } from './lib/auth/ProtectedRoutes'
+import { getRoute } from './lib/utils/utils'
 import AccountPayablePage from './pages/accounts-payable/page'
 import AccountReceivablePage from './pages/accounts-receivable/page'
+import AccountDashboardPage from './pages/current-accounts/account-dashboard'
 import CurrentAccountsPage from './pages/current-accounts/page'
 import DashboardPage from './pages/dashboard/page'
 import Layout from './pages/layout'
@@ -23,13 +25,14 @@ export const App = () => {
         <Routes>
           <Route element={<Root />}>
             <Route path="*" element={<NotFound />} />
-            <Route path="/" element={<HomeUI />} />
+            <Route path={getRoute('/')} element={<HomeUI />} />
             <Route element={<ProtectedRoutes />}>
-              <Route path="/home" element={<Layout />}>
+              <Route path={getRoute('/home')} element={<Layout />}>
                 <Route index element={<DashboardPage />} />
                 <Route path="accounts-payable" element={<AccountPayablePage />} />
                 <Route path="accounts-receivable" element={<AccountReceivablePage />} />
                 <Route path="current-accounts" element={<CurrentAccountsPage />} />
+                <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 <Route path="payouts" element={<PayoutsPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="pricing" element={<PricingPage />} />
@@ -46,7 +49,7 @@ function NotFound() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  if (location.pathname.startsWith('/home')) {
+  if (location.pathname.startsWith(getRoute('/home'))) {
     // No route exists
     return (
       <>
@@ -57,7 +60,10 @@ function NotFound() {
           <h3>
             No route exists for <code>{location.pathname}</code>
           </h3>
-          <Button className="flex mx-auto py-3 px-[24px] mt-8" onClick={() => navigate('/home')}>
+          <Button
+            className="flex mx-auto py-3 px-[24px] mt-8"
+            onClick={() => navigate(getRoute('/home'))}
+          >
             {'Return to home page'}
           </Button>
         </main>
@@ -65,6 +71,12 @@ function NotFound() {
     )
   } else {
     // Try to redirect to the new location
-    return <Navigate to={`/home${location.pathname}`} replace state={{ from: location }} />
+    return (
+      <Navigate
+        to={`${getRoute('/home')}${location.pathname}`}
+        replace
+        state={{ from: location }}
+      />
+    )
   }
 }
