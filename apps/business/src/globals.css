@@ -5,3 +5,7 @@
 html {
   scrollbar-gutter: auto !important;
 }
+
+html, body, div#root {
+  height: 100%;
+}

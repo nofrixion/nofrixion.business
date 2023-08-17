@@ -50,7 +50,7 @@ function NotFound() {
     // No route exists
     return (
       <>
-        <main className="flex flex-col items-center justify-center p-24 min-h-screen">
+        <main className="flex flex-col items-center justify-center p-24 min-h-full">
           <div className="flex justify-center items-center text-gray-text mb-8">
             <img src={LogoNofrixion} alt="Nofrixion Logo" width={200} height={200} />
           </div>
