@@ -5,17 +5,17 @@ import { NOFRIXION_API_URL } from '../../lib/constants'
 
 const AccountDashboardPage = () => {
   const navigate = useNavigate()
-  const { id } = useParams()
+  const { accountId } = useParams()
 
   const onAllCurrentAccountsClick = () => {
-    navigate(`/home/current-accounts`)
+    navigate('../current-accounts')
   }
 
   return (
     <div>
-      {id && (
+      {accountId && (
         <AccountDashboard
-          accountId={id}
+          accountId={accountId}
           apiUrl={NOFRIXION_API_URL}
           onAllCurrentAccountsClick={onAllCurrentAccountsClick}
         />

@@ -11,8 +11,7 @@ const CurrentAccountsPage = () => {
   const navigate = useNavigate()
 
   const onAccountClick = (account: Account) => {
-    console.log(account)
-    navigate(`/home/current-accounts/${account.id}`)
+    navigate(account.id)
   }
 
   return (

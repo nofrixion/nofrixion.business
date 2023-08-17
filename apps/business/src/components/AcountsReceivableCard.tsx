@@ -52,7 +52,12 @@ const AcountsReceivableCard: React.FC<AcountsReceivableCardProps> = ({
   partiallyPaid,
   onShowViewAll,
 }) => (
-  <Card onShowViewAll={onShowViewAll} title="Accounts receivable" subtext="Last 30 days">
+  <Card
+    onClick={onShowViewAll}
+    onShowViewAll={onShowViewAll}
+    title="Accounts receivable"
+    subtext="Last 30 days"
+  >
     <div className="mt-16 w-full flex flex-col md:flex-row justify-between">
       <MetricInfo type="unpaid" value={unpaid} />
       <MetricInfo type="partiallyPaid" value={partiallyPaid} />

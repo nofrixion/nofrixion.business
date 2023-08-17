@@ -13,6 +13,7 @@ import { DisplayAndCopy, Icon } from '../../atoms'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
 import SearchBar from '../../SearchBar/SearchBar'
+import { Toaster } from '../../Toast/Toast'
 
 export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
   transactions: LocalTransaction[]
@@ -107,6 +108,8 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           onSort={onSort}
         />
       </div>
+
+      <Toaster positionY="top" positionX="right" duration={3000} />
     </>
   )
 }

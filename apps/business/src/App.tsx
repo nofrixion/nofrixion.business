@@ -8,7 +8,7 @@ import { AuthProvider } from './lib/auth/AuthProvider'
 import { ProtectedRoutes } from './lib/auth/ProtectedRoutes'
 import AccountPayablePage from './pages/accounts-payable/page'
 import AccountReceivablePage from './pages/accounts-receivable/page'
-import AccountDashboardPage from './pages/current-accounts/[id]'
+import AccountDashboardPage from './pages/current-accounts/account-dashboard'
 import CurrentAccountsPage from './pages/current-accounts/page'
 import DashboardPage from './pages/dashboard/page'
 import Layout from './pages/layout'
@@ -31,7 +31,7 @@ export const App = () => {
                 <Route path="accounts-payable" element={<AccountPayablePage />} />
                 <Route path="accounts-receivable" element={<AccountReceivablePage />} />
                 <Route path="current-accounts" element={<CurrentAccountsPage />} />
-                <Route path="current-accounts/:id" element={<AccountDashboardPage />} />
+                <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 <Route path="payouts" element={<PayoutsPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="pricing" element={<PricingPage />} />
