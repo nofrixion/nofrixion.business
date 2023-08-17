@@ -1,4 +1,4 @@
-import { useAccounts } from '@nofrixion/moneymoov'
+import { Account, useAccounts } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
@@ -8,6 +8,7 @@ export interface CurrentAccountsListProps {
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   token?: string // Example: "eyJhbGciOiJIUz..."
   onUnauthorized?: () => void
+  onAccountClick?: (account: Account) => void
 }
 
 const queryClient = new QueryClient()
@@ -17,6 +18,7 @@ const CurrentAccountsList = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
+  onAccountClick,
 }: CurrentAccountsListProps) => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -25,6 +27,7 @@ const CurrentAccountsList = ({
         merchantId={merchantId}
         apiUrl={apiUrl}
         onUnauthorized={onUnauthorized}
+        onAccountClick={onAccountClick}
       />
     </QueryClientProvider>
   )
@@ -35,6 +38,7 @@ const CurrentAccountsMain = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
+  onAccountClick,
 }: CurrentAccountsListProps) => {
   const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
 
@@ -44,22 +48,10 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const onCreatePaymentAccount = () => {
-    console.log('It works!')
-  }
-
-  const onAccountClick = () => {
-    console.log('Account click works')
-  }
-
   return (
     <>
       {accounts?.status === 'success' && accounts.data && (
-        <CurrentAcountsList
-          accounts={accounts.data}
-          onAccountClick={onAccountClick}
-          onCreatePaymentAccount={onCreatePaymentAccount}
-        />
+        <CurrentAcountsList accounts={accounts.data} onAccountClick={onAccountClick} />
       )}
     </>
   )

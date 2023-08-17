@@ -1,7 +1,7 @@
 import { Button, Icon } from '../../atoms'
 
 export interface CurrentAccountsHeaderProps {
-  onCreatePaymentAccount: () => void
+  onCreatePaymentAccount?: () => void
 }
 
 const CurrentAccountsHeader = ({ onCreatePaymentAccount }: CurrentAccountsHeaderProps) => {
@@ -11,10 +11,12 @@ const CurrentAccountsHeader = ({ onCreatePaymentAccount }: CurrentAccountsHeader
         Currents accounts
       </span>
       <div className="w-[172px]">
-        <Button size="big" onClick={onCreatePaymentAccount} variant="secondary">
-          <Icon name="add/16" className="text-default-text" />
-          <span className="pl-2 md:inline-block">New Account</span>
-        </Button>
+        {onCreatePaymentAccount && (
+          <Button size="big" onClick={onCreatePaymentAccount} variant="secondary">
+            <Icon name="add/16" className="text-default-text" />
+            <span className="pl-2 md:inline-block">New Account</span>
+          </Button>
+        )}
       </div>
     </div>
   )

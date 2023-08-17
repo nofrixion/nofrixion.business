@@ -993,7 +993,7 @@ export const mockedTransactions: LocalTransaction[] = [
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
-    type: 'undefined',
+    type: '',
   },
 ]
 
