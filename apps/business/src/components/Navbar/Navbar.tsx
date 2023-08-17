@@ -56,7 +56,16 @@ const Navbar = () => {
 
       {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID && (
         <span className="flex m-auto bg-white text-negative-red py-1 px-2 rounded-md font-semibold">
-          You are currently reviewing PR #{import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID}
+          You are currently reviewing PR #
+          <a
+            href={`https://github.com/nofrixion/nofrixion.business/pull/${
+              import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID
+            }`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID}
+          </a>
         </span>
       )}
 
