@@ -39,8 +39,5 @@ export const sendSlackMessage = async (message?: any) => {
 export const getRoute = (route: string) => {
   const pullRequestId = import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID
 
-  const newRoute = pullRequestId ? `/${pullRequestId}${route}` : route
-
-  console.log('newRoute', newRoute)
-  return newRoute
+  return pullRequestId ? `/${pullRequestId}${route}` : route
 }

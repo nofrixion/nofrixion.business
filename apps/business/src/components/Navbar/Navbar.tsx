@@ -17,8 +17,6 @@ const Navbar = () => {
   const currentRoute = useLocation().pathname
   const navigate = useNavigate()
 
-  console.log('currentRoute', currentRoute)
-  console.log('navItems', navItems)
   return (
     <nav className="flex text-white bg-dark-bg h-20 pl-8 md:pl-14 w-full">
       <DropdownMenu>
