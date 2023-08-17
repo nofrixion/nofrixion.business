@@ -18,7 +18,6 @@ pr:
 trigger: none
 
 variables:
-  webComponentsBundleName: 'nofrixion-webcomponents.pr$(System.PullRequest.PullRequestNumber).js'
   businessBundleName: 'nofrixion-business.pr$(System.PullRequest.PullRequestNumber).js'
 
 # A windows agent is required here as the AzureFileCopy@4 task is windows only.
@@ -36,7 +35,7 @@ steps:
     displayName: 'npm install'
 
   - script: |
-      npm run build
+      npm run build -w nofrixion-business
     displayName: 'npm build'
     env:
       VITE_PUBLIC_PORTAL_URL: $(portalUrl)
@@ -49,7 +48,6 @@ steps:
       mkdir js
       cd ..
       mv apps/business/dist/*.js "dist/js/$(businessBundleName)"
-      mv packages/web-components/dist/*.js "dist/js/$(webComponentsBundleName)"
     displayName: 'Rename bundles'
 
   # Creates folder structure for blob container
@@ -78,7 +76,7 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/$(businessBundleName)' '/dev/$(webComponentsBundleName)'
+        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/$(businessBundleName)'
 
   - task: GitHubComment@0
     inputs:
