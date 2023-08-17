@@ -1,11 +1,11 @@
 import { Meta, StoryFn } from '@storybook/react'
 
 import { apiUrls } from '../../../utils/constants'
-import CurrentAccountTable from './CurrentAccountTable'
+import AccountDashboard from './AccountDashboard'
 
-const meta: Meta<typeof CurrentAccountTable> = {
+const meta: Meta<typeof AccountDashboard> = {
   title: 'Functional/Current Account Table',
-  component: CurrentAccountTable,
+  component: AccountDashboard,
   argTypes: {
     token: {
       control: {
@@ -17,9 +17,15 @@ const meta: Meta<typeof CurrentAccountTable> = {
       options: Object.values(apiUrls),
     },
   },
-} as Meta<typeof CurrentAccountTable>
+} as Meta<typeof AccountDashboard>
 
-const Template: StoryFn<typeof CurrentAccountTable> = (args) => <CurrentAccountTable {...args} />
+const Template: StoryFn<typeof AccountDashboard> = (args) => {
+  return (
+    <div className="px-14 py-10 bg-main-grey">
+      <AccountDashboard {...args} />
+    </div>
+  )
+}
 
 export const Showcase = Template.bind({})
 Showcase.args = {

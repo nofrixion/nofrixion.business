@@ -19,7 +19,7 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({
 }) => {
   return (
     <div className={cn('text-right', className)} {...props}>
-      <span className="text-4xl font-semibold leading-9 tabular-nums font-inter-fontFeatureSettings">
+      <span className="text-[32px] font-semibold leading-9 tabular-nums font-inter-fontFeatureSettings">
         {formatCurrency(currency)} {formatAmount(balance)}
       </span>
       <div className="text-sm font-normal leading-4 mt-2">

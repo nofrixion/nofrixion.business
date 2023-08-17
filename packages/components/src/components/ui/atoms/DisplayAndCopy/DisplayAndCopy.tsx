@@ -8,7 +8,13 @@ export interface DisplayAndCopyProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 const DisplayAndCopy: React.FC<DisplayAndCopyProps> = ({ name, value, className, ...props }) => {
-  const onCopy = (value: string, name: string) => {
+  const onCopy = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    value: string,
+    name: string,
+  ) => {
+    e.preventDefault()
+    e.stopPropagation()
     navigator.clipboard.writeText(value)
     makeToast('info', `${getNameOfValueCopied(name)} copied`)
   }
@@ -31,12 +37,12 @@ const DisplayAndCopy: React.FC<DisplayAndCopyProps> = ({ name, value, className,
       className={cn('flex leading-4 gap-2 text-[13px] font-normal items-center', className)}
       {...props}
     >
-      <span className="text-grey-text">{name}</span>
+      <span className="text-grey-text select-none">{name}</span>
       <span>{value}</span>
-      <span onClick={() => onCopy(value, name)} aria-hidden="true">
+      <span onClick={(e) => onCopy(e, value, name)} aria-hidden="true">
         <Icon
           name="copy/12px"
-          className="text-control-grey-hover cursor-pointer hover:text-border-grey-highlighted"
+          className="text-control-grey-hover cursor-pointer transition hover:text-border-grey-highlighted"
         />
       </span>
     </div>

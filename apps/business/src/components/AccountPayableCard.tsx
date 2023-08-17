@@ -7,7 +7,13 @@ interface AccountPayableCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const AccountPayableCard: React.FC<AccountPayableCardProps> = ({ onShowViewAll, ...props }) => (
-  <Card title="Accounts payable" subtext="Coming soon" onShowViewAll={onShowViewAll} {...props}>
+  <Card
+    title="Accounts payable"
+    subtext="Coming soon"
+    onClick={onShowViewAll}
+    onShowViewAll={onShowViewAll}
+    {...props}
+  >
     <img
       src={WavesGraphic}
       alt="MoneyMoov for Business Graphic"

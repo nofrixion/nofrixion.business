@@ -134,7 +134,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             </TableBody>
           </Table>
 
-          <div className="flex items-center justify-end py-4">
+          <div className="flex items-center justify-end mt-8">
             <Pager
               onPageChange={onPageChange}
               pageSize={pagination.pageSize}

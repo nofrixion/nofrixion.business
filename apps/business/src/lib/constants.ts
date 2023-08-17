@@ -5,9 +5,12 @@ import IconDashboard from '../assets/icons/dashboard.svg'
 import IconPayouts from '../assets/icons/payouts.svg'
 import IconPricing from '../assets/icons/pricing.svg'
 import IconUsers from '../assets/icons/users.svg'
+import { getRoute } from './utils/utils'
 
 const NOFRIXION_API_URL = '/api'
 const NOFRIXION_BFF_URL = '/bff'
+
+const NOFRIXION_BUSINESS_GITHUB_URL = 'https://github.com/nofrixion/nofrixion.business/pull/'
 
 interface INavItem {
   leftIcon: any
@@ -15,46 +18,48 @@ interface INavItem {
   href: string
   isActive?: boolean
   isHidden?: boolean
+  isHome?: boolean
 }
 
 const navItems: INavItem[] = [
   {
     leftIcon: IconDashboard,
     label: 'Dashboard',
-    href: '/home',
+    href: getRoute('/home'),
+    isHome: true,
   },
   {
     leftIcon: IconCurrentAccounts,
     label: 'Current Accounts',
-    href: '/home/current-accounts',
+    href: 'current-accounts',
   },
   {
     leftIcon: IconAccountsReceivable,
     label: 'Accounts Receivable',
-    href: '/home/accounts-receivable',
+    href: 'accounts-receivable',
   },
   {
     leftIcon: IconAccountsPayable,
     label: 'Accounts Payable (soon)',
-    href: '/home/accounts-payable',
+    href: 'accounts-payable',
   },
   {
     leftIcon: IconPayouts,
     label: 'Payouts',
-    href: '/home/payouts',
+    href: 'payouts',
   },
   {
     leftIcon: IconUsers,
     label: 'Users',
-    href: '/home/users',
+    href: 'users',
     isHidden: true,
   },
   {
     leftIcon: IconPricing,
     label: 'Pricing',
-    href: '/home/pricing',
+    href: 'pricing',
     isHidden: true,
   },
 ]
 
-export { navItems, NOFRIXION_API_URL, NOFRIXION_BFF_URL }
+export { navItems, NOFRIXION_API_URL, NOFRIXION_BFF_URL, NOFRIXION_BUSINESS_GITHUB_URL }
