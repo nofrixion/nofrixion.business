@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
 
-import { mockedTransactions } from '../../../../utils/mockedData'
+import { mockAccounts, mockedTransactions } from '../../../../utils/mockedData'
 import { AccountDashboard } from './AccountDashboard'
 
 export default {
@@ -26,6 +26,7 @@ const Template: StoryFn<typeof AccountDashboard> = (args) => {
 export const Showcase = Template.bind({})
 Showcase.args = {
   transactions: mockedTransactions,
+  account: mockAccounts[0],
   pagination: {
     pageSize: 10,
     totalSize: 100,

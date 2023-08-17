@@ -1,4 +1,4 @@
-import { SortDirection, useTransactions } from '@nofrixion/moneymoov'
+import { SortDirection, useAccount, useTransactions } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -10,6 +10,7 @@ import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDa
 
 export interface AccountDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
+  onAllCurrentAccountsClick?: () => void
   accountId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
 }
@@ -30,7 +31,12 @@ const AccountDashboard = ({
 
 const pageSize = 10
 
-const AccountDashboardMain = ({ token, accountId, apiUrl }: AccountDashboardProps) => {
+const AccountDashboardMain = ({
+  token,
+  accountId,
+  apiUrl,
+  onAllCurrentAccountsClick,
+}: AccountDashboardProps) => {
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [transactions, setTransactions] = useState<LocalTransaction[]>([])
@@ -56,6 +62,13 @@ const AccountDashboardMain = ({ token, accountId, apiUrl }: AccountDashboardProp
       fromDateMS: dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate.getTime(),
       search: searchFilter,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const { data: accountResponse } = useAccount(
+    {
+      accountId,
     },
     { apiUrl: apiUrl, authToken: token },
   )
@@ -92,6 +105,7 @@ const AccountDashboardMain = ({ token, accountId, apiUrl }: AccountDashboardProp
   return (
     <UIAccountDashboard
       transactions={transactions}
+      account={accountResponse?.status == 'success' ? accountResponse?.data : undefined}
       pagination={{
         pageSize: pageSize,
         totalSize: totalRecords,
@@ -101,6 +115,7 @@ const AccountDashboardMain = ({ token, accountId, apiUrl }: AccountDashboardProp
       onDateChange={onDateChange}
       onSearch={setSearchFilter}
       searchFilter={searchFilter}
+      onAllCurrentAccountsClick={onAllCurrentAccountsClick}
     />
   )
 }

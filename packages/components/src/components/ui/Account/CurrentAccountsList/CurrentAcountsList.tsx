@@ -24,7 +24,7 @@ const CurrentAcountsList = ({
           {accounts
             .sort((a, b) => a.accountName?.localeCompare(b.accountName))
             .map((account, index) => (
-              <AccountCard key={index} account={account} onAccountClick={onAccountClick} />
+              <AccountCard key={index} account={account} onClick={onAccountClick} />
             ))}
         </div>
       )}

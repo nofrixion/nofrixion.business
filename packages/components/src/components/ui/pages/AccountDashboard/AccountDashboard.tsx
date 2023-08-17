@@ -1,36 +1,47 @@
-import { Pagination, SortDirection } from '@nofrixion/moneymoov'
+import {
+  Account,
+  AccountIdentifierType,
+  Currency,
+  Pagination,
+  SortDirection,
+} from '@nofrixion/moneymoov'
 import * as React from 'react'
 
 import { LocalTransaction } from '../../../../types/LocalTypes'
-import { Icon } from '../../atoms'
+import AccountBalance from '../../Account/AccountBalance/AccountBalance'
+import { DisplayAndCopy, Icon } from '../../atoms'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
 import SearchBar from '../../SearchBar/SearchBar'
 
 export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
   transactions: LocalTransaction[]
+  account?: Account
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount', direction: SortDirection) => void
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
+  onAllCurrentAccountsClick?: () => void
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
   transactions,
+  account,
   pagination,
   searchFilter,
   onDateChange,
   onSearch,
   onPageChange,
   onSort,
+  onAllCurrentAccountsClick,
 }) => {
   return (
     <>
       <div className="mb-12">
         <div className="flex justify-between">
-          <button onClick={() => {}} className="flex items-center space-x-3">
+          <button onClick={onAllCurrentAccountsClick} className="flex items-center space-x-3">
             <Icon name="back/12" />
             <span>All current accounts</span>
           </button>
@@ -51,14 +62,28 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
         {/*  TODO: Use account info from hook */}
         <div className="flex justify-between mt-6">
           <div className="text-[28px]/8 font-semibold">
-            <h2>Main account Euros</h2>
-            {/* TODO: Use Display and copy component (Arif's component) */}
+            <h2>{account?.accountName}</h2>
+            <div className="flex gap-6 mt-2">
+              {account?.identifier.type === AccountIdentifierType.IBAN ? (
+                <DisplayAndCopy name="IBAN" value={account.identifier.iban} />
+              ) : account?.identifier.type === AccountIdentifierType.SCAN ? (
+                <>
+                  <DisplayAndCopy name="SC" value={account?.identifier.sortCode} />
+                  <DisplayAndCopy name="AN" value={account?.identifier.accountNumber} />
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col items-end">
             {/* TODO: Use Arif's component instead*/}
-            <h2 className="text-[32px]/9 font-semibold">€ 34,197.00</h2>
-            <span className="text-sm/5">Available € 32,845.00</span>
+            <AccountBalance
+              availableBalance={account?.availableBalance ?? 0}
+              balance={account?.balance ?? 0}
+              currency={account?.currency ?? Currency.None}
+            />
 
             {/* TODO: Add expand component */}
           </div>
