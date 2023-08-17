@@ -1,4 +1,4 @@
-import { Account as AccountModel } from '@nofrixion/moneymoov'
+import { Account, Account as AccountModel } from '@nofrixion/moneymoov'
 
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
@@ -6,8 +6,8 @@ import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeade
 
 export interface CurrentAccountsListProps {
   accounts: AccountModel[] | undefined
-  onCreatePaymentAccount: () => void
-  onAccountClick: () => void
+  onCreatePaymentAccount?: () => void
+  onAccountClick?: (account: Account) => void
 }
 
 const CurrentAcountsList = ({
@@ -24,7 +24,13 @@ const CurrentAcountsList = ({
           {accounts
             .sort((a, b) => a.accountName?.localeCompare(b.accountName))
             .map((account, index) => (
-              <AccountCard key={index} account={account} onAccountClick={onAccountClick} />
+              <AccountCard
+                key={index}
+                account={account}
+                onClick={() => {
+                  onAccountClick && onAccountClick(account)
+                }}
+              />
             ))}
         </div>
       )}
