@@ -7,6 +7,7 @@ import IconArrowRight from '../assets/icons/arrow-right.svg'
 import { AuthContextType } from '../lib/auth/AuthProvider'
 import { useAuth } from '../lib/auth/useAuth'
 import { NOFRIXION_BFF_URL } from '../lib/constants'
+import { getRoute } from '../lib/utils/utils'
 import { Loader } from './ui/Loader/Loader'
 
 const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
@@ -70,7 +71,7 @@ const HomeUI = () => {
   }
 
   if (authState?.isLoggedIn) {
-    return <Navigate to={origin ?? '/home'} />
+    return <Navigate to={origin ?? getRoute('/home')} />
   }
 
   return (
@@ -79,7 +80,7 @@ const HomeUI = () => {
         <CardHome
           onEnterPressed={() => {
             window.location.href = `${NOFRIXION_BFF_URL}/login?returnUrl=${
-              callbackUrl ?? origin ?? '/home'
+              callbackUrl ?? origin ?? getRoute('/home')
             }`
           }}
         />
