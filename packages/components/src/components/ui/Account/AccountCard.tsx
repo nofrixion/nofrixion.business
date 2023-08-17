@@ -1,8 +1,7 @@
 import { Account as AccountModel, AccountIdentifierType } from '@nofrixion/moneymoov'
 
-import { formatAmount } from '../../../utils/formatters'
-import { formatCurrency } from '../../../utils/uiFormaters'
 import { DisplayAndCopy } from '../atoms'
+import AccountBalance from './AccountBalance/AccountBalance'
 
 export interface AccountCardProps {
   account: AccountModel
@@ -33,16 +32,12 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, onAccountClick }) =>
           )}
         </div>
       </div>
-      <div className="text-right">
-        <span className="text-4xl font-semibold leading-9 tabular-nums font-inter-fontFeatureSettings">
-          {formatCurrency(account.currency)} {formatAmount(account.balance)}
-        </span>
-        <div className="text-sm font-normal leading-4 mt-2">
-          <span className="pr-2">Available</span>
-          <span className="tabular-nums font-inter-fontFeatureSettings">
-            {formatCurrency(account.currency)} {formatAmount(account.availableBalance)}
-          </span>
-        </div>
+      <div>
+        <AccountBalance
+          currency={account.currency}
+          balance={account.balance}
+          availableBalance={account.availableBalance}
+        />
       </div>
     </div>
   )
