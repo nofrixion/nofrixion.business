@@ -74,6 +74,7 @@ export type PaymentRequestPaymentAttempt = {
   paymentProcessor: PaymentProcessor
   status: PaymentResult
   walletName?: Wallets
+  reconciledTransactionID?: string
 }
 
 export type PaymentRequestMinimal = {
@@ -231,8 +232,8 @@ export interface Account {
   balance: number
   currency: Currency
   displayName: string
-  iban: string
-  sortCode: string
+  iban?: string
+  sortCode?: string
   summary: string
   identifier: AccountIdentifier
   isDefault: boolean
@@ -241,10 +242,10 @@ export interface Account {
 export interface AccountIdentifier {
   type: AccountIdentifierType
   currency: string
-  bic: string
-  iban: string
-  accountNumber: string
-  sortCode: string
+  bic?: string
+  iban?: string
+  accountNumber?: string
+  sortCode?: string
 }
 
 export interface Merchant {
@@ -301,11 +302,11 @@ export const TransactionTypeValue: { [key in TransactionType]: string } = {
 export type TransactionPageResponse = PageResponse<Transaction>
 
 export interface Counterparty {
-  accountID: string
+  accountID?: string
   name: string
-  emailAddress: string
-  phoneNumber: string
-  identifier: AccountIdentifier
+  emailAddress?: string
+  phoneNumber?: string
+  identifier?: AccountIdentifier
 }
 
 export interface User {

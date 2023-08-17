@@ -1,5 +1,8 @@
 import {
+  Account,
+  AccountIdentifier,
   AccountIdentifierType,
+  Counterparty,
   PartialPaymentMethods,
   PaymentMethodTypes,
   type PaymentRequest,
@@ -15,13 +18,17 @@ import {
 } from '@nofrixion/moneymoov'
 
 import {
+  LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
 import {
+  LocalAccount,
+  LocalAccountIdentifier,
   LocalAddress,
+  LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
   LocalPaymentRequestCaptureAttempt,
@@ -183,41 +190,6 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
-  // const parseApiTransactionToLocalTransaction = (
-  //   remoteTransaction: Transaction,
-  // ): LocalTransaction => {
-  //   const {
-  //     id,
-  //     merchantID,
-  //     accountID,
-  //     amount,
-  //     currency,
-  //     description,
-  //     transactionDate,
-  //     yourReference,
-  //     theirReference,
-  //     balance,
-  //     counterparty,
-  //   } = remoteTransaction
-  //   return {
-  //   }
-  // }
-
-  // const parseApiAccountIdentifierTypeToLocalAccountIdentifierType = (
-  //   accountIdentifierType: AccountIdentifierType,
-  // ): LocalAccountIdentifierType => {
-  //   switch (accountIdentifierType) {
-  //     case AccountIdentifierType.IBAN:
-  //       return LocalAccountIdentifierType.IBAN
-  //     case AccountIdentifierType.DD:
-  //       return LocalAccountIdentifierType.DD
-  //     case AccountIdentifierType.SCAN:
-  //       return LocalAccountIdentifierType.SCAN
-  //     default:
-  //       return LocalAccountIdentifierType.Unknown
-  //   }
-  // }
-
   const parseApiCaptureAttemptsToLocalCaptureAttempts = (
     remoteCaptureAttempts: PaymentRequestCaptureAttempt[],
   ): LocalPaymentRequestCaptureAttempt[] => {
@@ -256,9 +228,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
         } = remoteRefundAttempt
         localRefundAttempts.push({
           refundPayoutID: refundPayoutID,
-          refundInitiatedAt: new Date(refundInitiatedAt ?? 0),
-          refundSettledAt: new Date(refundSettledAt ?? 0),
-          refundCancelledAt: new Date(refundCancelledAt ?? 0),
+          refundInitiatedAt: refundInitiatedAt ? new Date(refundInitiatedAt) : undefined,
+          refundSettledAt: refundSettledAt ? new Date(refundSettledAt) : undefined,
+          refundCancelledAt: refundCancelledAt ? new Date(refundCancelledAt) : undefined,
           refundInitiatedAmount: refundInitiatedAmount,
           refundSettledAmount: refundSettledAmount,
           refundCancelledAmount: refundCancelledAmount,
@@ -297,6 +269,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             authorisedAmount,
             cardAuthorisedAmount,
             cardAuthorisedAt,
+            reconciledTransactionID,
           } = remotePaymentAttempt
 
           localPaymentAttempts.push({
@@ -313,6 +286,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             cardAuthorisedAmount: cardAuthorisedAmount,
             wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
             status: parseApiStatusToLocalStatus(status),
+            reconciledTransactionID: reconciledTransactionID,
           })
         }
       })
@@ -349,25 +323,95 @@ const remotePaymentRequestToLocalPaymentRequest = (
     priorityBankID: remotePaymentRequest.priorityBankID,
     notificationEmailAddresses: remotePaymentRequest.notificationEmailAddresses,
     captureFunds: !remotePaymentRequest.cardAuthorizeOnly,
-    // transactions: remotePaymentRequest.transactions.map((transaction) =>
-    //   parseApiTransactionToLocalTransaction(transaction),
-    // ),
+    transactions: remoteTransactionsToLocal(remotePaymentRequest.transactions),
+    pispAccountID: remotePaymentRequest.pispAccountID,
+  }
+}
+
+const parseApiAccountIdentifierTypeToLocalAccountIdentifierType = (
+  accountIdentifierType: AccountIdentifierType,
+): LocalAccountIdentifierType => {
+  switch (accountIdentifierType) {
+    case AccountIdentifierType.IBAN:
+      return LocalAccountIdentifierType.IBAN
+    case AccountIdentifierType.SCAN:
+      return LocalAccountIdentifierType.SCAN
+    default:
+      return LocalAccountIdentifierType.IBAN
+  }
+}
+
+const localAccountIdentifierTypeToRemoteAccountIdentifierType = (
+  accountIdentifierType: LocalAccountIdentifierType,
+): AccountIdentifierType => {
+  switch (accountIdentifierType) {
+    case LocalAccountIdentifierType.IBAN:
+      return AccountIdentifierType.IBAN
+    case LocalAccountIdentifierType.SCAN:
+      return AccountIdentifierType.SCAN
+    default:
+      return AccountIdentifierType.IBAN
+  }
+}
+
+const parseApiAccountIdentifierToLocalAccountIdentifier = (
+  accountIdentifier: AccountIdentifier | undefined,
+): LocalAccountIdentifier | undefined => {
+  if (accountIdentifier) {
+    return {
+      type: parseApiAccountIdentifierTypeToLocalAccountIdentifierType(accountIdentifier.type),
+      iban: accountIdentifier.iban ?? '',
+      sortCode: accountIdentifier.sortCode,
+      accountNumber: accountIdentifier.accountNumber,
+      currency: accountIdentifier.currency,
+    }
+  } else {
+    return undefined
+  }
+}
+
+const localAccountIdentifierToRemoteAccountIdentifier = (
+  accountIdentifier: LocalAccountIdentifier | undefined,
+): AccountIdentifier | undefined => {
+  if (accountIdentifier) {
+    return {
+      type: localAccountIdentifierTypeToRemoteAccountIdentifierType(accountIdentifier.type),
+      iban: accountIdentifier.iban,
+      sortCode: accountIdentifier.sortCode,
+      accountNumber: accountIdentifier.accountNumber,
+      currency: accountIdentifier.currency,
+    }
+  } else {
+    return undefined
+  }
+}
+
+const parseApiCounterPartyToLocalCounterParty = (counterParty: Counterparty): LocalCounterparty => {
+  return {
+    name: counterParty.name,
+    identifier: parseApiAccountIdentifierToLocalAccountIdentifier(counterParty.identifier),
+    accountInfo:
+      counterParty.identifier?.type == AccountIdentifierType.IBAN
+        ? counterParty.identifier.iban
+        : counterParty.identifier?.type == AccountIdentifierType.SCAN
+        ? `${counterParty.identifier.sortCode} - ${counterParty.identifier.accountNumber}`
+        : '',
+  }
+}
+
+const localCounterPartyToRemoteCounterParty = (counterParty: LocalCounterparty): Counterparty => {
+  return {
+    name: counterParty.name,
+    identifier: localAccountIdentifierToRemoteAccountIdentifier(counterParty.identifier),
   }
 }
 
 const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransaction[] => {
   return transactions.map((transaction) => {
     return {
+      id: transaction.id,
       date: new Date(transaction.transactionDate),
-      destinationAccount: {
-        name: transaction.counterparty.name,
-        accountInfo:
-          transaction.counterparty.identifier.type == AccountIdentifierType.IBAN
-            ? transaction.counterparty.identifier.iban
-            : transaction.counterparty.identifier.type == AccountIdentifierType.SCAN
-            ? `${transaction.counterparty.identifier.sortCode} - ${transaction.counterparty.identifier.accountNumber}`
-            : '',
-      },
+      counterParty: parseApiCounterPartyToLocalCounterParty(transaction.counterparty),
       amount: transaction.amount,
       balanceAfterTx: transaction.balance,
       reference: transaction.amount > 0 ? transaction.theirReference : transaction.yourReference,
@@ -377,9 +421,52 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
   })
 }
 
+const remoteAccountToLocalAccount = (remoteAccount: Account): LocalAccount => {
+  const {
+    id,
+    merchantID,
+    accountName,
+    accountNumber,
+    availableBalance,
+    balance,
+    currency,
+    displayName,
+    iban,
+    sortCode,
+    summary,
+    identifier,
+    isDefault,
+  } = remoteAccount
+
+  return {
+    id: id,
+    merchantID: merchantID,
+    accountName: accountName,
+    accountNumber: accountNumber,
+    availableBalance: availableBalance,
+    balance: balance,
+    currency: currency,
+    displayName: displayName,
+    iban: iban,
+    sortCode: sortCode,
+    summary: summary,
+    identifier: parseApiAccountIdentifierToLocalAccountIdentifier(identifier)!,
+    isDefault: isDefault,
+  }
+}
+
+const remoteAccountsToLocalAccounts = (remoteAccounts: Account[]): LocalAccount[] => {
+  return remoteAccounts.map((remoteAccount) => {
+    return remoteAccountToLocalAccount(remoteAccount)
+  })
+}
+
 export {
+  localAccountIdentifierTypeToRemoteAccountIdentifierType,
+  localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
+  remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
   remoteTransactionsToLocal,
 }

@@ -923,8 +923,9 @@ function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
 
 export const mockedTransactions: LocalTransaction[] = [
   {
+    id: '1',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -934,8 +935,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA',
   },
   {
+    id: '2',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -945,8 +947,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA Instant',
   },
   {
+    id: '3',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -956,8 +959,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA Instant',
   },
   {
+    id: '4',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -968,8 +972,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA',
   },
   {
+    id: '5',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -980,8 +985,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: '',
   },
   {
+    id: '6',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -992,8 +998,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA Instant',
   },
   {
+    id: '7',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },

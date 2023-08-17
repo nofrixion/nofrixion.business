@@ -36,14 +36,16 @@ export interface LocalPaymentRequest {
   notificationEmailAddresses?: string
   captureFunds: boolean
   transactions?: LocalTransaction[]
+  pispAccountID?: string
 }
 
 export interface LocalCounterparty {
   accountID?: string
-  name?: string
+  name: string
   emailAddress?: string
   phoneNumber?: string
   identifier?: LocalAccountIdentifier
+  accountInfo?: string
 }
 
 export interface LocalAccountIdentifier {
@@ -78,6 +80,7 @@ export interface SubTransaction {
   amount: number
   currency: Currency.EUR | Currency.GBP
   type: SubTransactionType
+  awaitingApproval?: boolean
 }
 
 export interface LocalPaymentRequestRefundAttempt {
@@ -170,11 +173,9 @@ export interface LocalTag {
 }
 
 export interface LocalTransaction {
+  id: string
   date: Date
-  destinationAccount: {
-    name: string
-    accountInfo: string
-  }
+  counterParty: LocalCounterparty
   amount: number
   balanceAfterTx?: number
   reference: string

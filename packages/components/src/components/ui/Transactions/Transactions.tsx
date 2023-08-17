@@ -242,7 +242,12 @@ const Transactions = ({
                               <span className="mr-2 p-1.5">
                                 <Icon name="return/12" className="text-control-grey-hover" />
                               </span>
-                              <span>Refund</span>
+                              <span>{subTransaction.awaitingApproval}</span>
+                              {subTransaction.awaitingApproval === true ? (
+                                <span>Refund awaiting approval</span>
+                              ) : (
+                                <span>Refunded</span>
+                              )}
                             </div>
                           </td>
                         )}

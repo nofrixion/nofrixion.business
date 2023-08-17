@@ -40,8 +40,7 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
               {value != undefined ? (
                 <>
                   <span className="break-keep">
-                    {accounts.find((x) => x.id === value)!.displayName ??
-                      accounts.find((x) => x.id === value)!.accountName}
+                    {accounts.find((x) => x.id === value)!.accountName}
                   </span>
                   <span className="text-[#73888C] font-normal">
                     {formatCurrency(accounts.find((x) => x.id === value)!.currency)}{' '}
@@ -62,7 +61,7 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
           <SelectItem key={account.id} value={account.id} isText={false}>
             <div className="w-full flex justify-between">
               <>
-                <span className="break-keep">{account.displayName ?? account.accountName}</span>
+                <span className="break-keep">{account.accountName}</span>
                 <span className="text-[#73888C] font-normal">
                   {formatCurrency(account.currency)} {formatAmount(account.availableBalance)}
                 </span>

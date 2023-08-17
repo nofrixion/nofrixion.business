@@ -1,5 +1,5 @@
-import { Tag } from './ApiResponses'
-import { SortDirection } from './Enums'
+import { Counterparty, Tag } from './ApiResponses'
+import { AccountIdentifierType, Currency, SortDirection } from './Enums'
 
 export interface PagedResponseProps extends FilterResponseProps, MerchantProps, AccountProps {
   pageNumber?: number
@@ -123,4 +123,18 @@ export interface CreateTagProps {
   paymentRequestId: string
   tag: Tag
   existingTagsIds: string[]
+}
+
+export interface CreatePayoutProps {
+  accountID: string
+  type: AccountIdentifierType
+  description?: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
+  destination: Counterparty
+  invoiceID?: string
+  allowIncomplete: boolean
+  paymentRequestId?: string
 }

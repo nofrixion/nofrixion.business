@@ -5,6 +5,7 @@ import { Sheet, SheetContent } from '../../../components/ui/atoms'
 import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import {
   LocalAccount,
+  LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
   LocalTag,
@@ -14,6 +15,7 @@ import {
   getMaxRefundableAmount,
   isVoid,
 } from '../../../utils/paymentAttemptsHelper'
+import BankRefundModal from '../BankRefundModal/BankRefundModal'
 import CaptureModal from '../CaptureModal/CaptureModal'
 import CardRefundModal from '../CardRefundModal/CardRefundModal'
 import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails'
@@ -23,6 +25,12 @@ export interface PaymentRequestDetailsModalProps {
   merchantTags: LocalTag[]
   hostedPaymentLink: string
   onRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<void>
+  onBankRefund: (
+    sourAccount: LocalAccount,
+    counterParty: LocalCounterparty,
+    amount: number,
+    paymentInitiationID: string,
+  ) => Promise<void>
   onCapture: (authorizationID: string, amount: number) => Promise<void>
   onTagAdded: (tag: LocalTag) => void
   onTagDeleted: (id: string) => void
@@ -37,19 +45,26 @@ const PaymentRequestDetailsModal = ({
   merchantTags,
   hostedPaymentLink,
   onRefund,
+  onBankRefund,
   onCapture,
   onTagAdded,
   onTagDeleted,
   onTagCreated,
   open,
   onDismiss,
+  accounts,
 }: PaymentRequestDetailsModalProps) => {
   const [selectedTransactionForCardRefund, setSelectedTransactionForCardRefund] =
     useState<LocalPaymentAttempt>()
 
   const [selectedTransactionForBankRefund, setSelectedTransactionForBankRefund] =
     useState<LocalPaymentAttempt>()
-  const [maxRefundableAmount, setMaxRefundableAmount] = useState<number>(0)
+
+  // const [bankRefundCounterParty, setBankRefundCounterParty] = useState<LocalCounterparty>()
+  // const [bankRefundDefaultSourceAccount, setBankRefundDefaultSourceAccount] =
+  //   useState<LocalAccount>()
+  const [maxCardRefundableAmount, setCardMaxRefundableAmount] = useState<number>(0)
+  //const [maxBankRefundableAmount, setBankMaxRefundableAmount] = useState<number>(0)
   const [amountToRefund, setAmountToRefund] = useState<string | undefined>()
   const [selectedTransactionForCapture, setSelectedTransactionForCapture] = useState<
     LocalPaymentAttempt | undefined
@@ -73,10 +88,17 @@ const PaymentRequestDetailsModal = ({
       setAmountToRefund(selectedTransactionForCardRefund.amount.toString())
     } else {
       const maxRefundableAmount = getMaxRefundableAmount(selectedTransactionForCardRefund)
-      setMaxRefundableAmount(maxRefundableAmount)
+      setCardMaxRefundableAmount(maxRefundableAmount)
       setAmountToRefund(maxRefundableAmount.toString())
     }
   }, [selectedTransactionForCardRefund])
+
+  // useEffect(() => {
+  //   if (!selectedTransactionForBankRefund) return
+  //   const maxRefundableAmount = getMaxRefundableAmount(selectedTransactionForBankRefund)
+  //   setBankMaxRefundableAmount(maxRefundableAmount)
+  //   setAmountToRefund(maxRefundableAmount.toString())
+  // }, [selectedTransactionForBankRefund])
 
   const onCaptureClick = (paymentAttempt: LocalPaymentAttempt) => {
     setSelectedTransactionForCapture(paymentAttempt)
@@ -104,6 +126,15 @@ const PaymentRequestDetailsModal = ({
         setSelectedTransactionForCardRefund(paymentAttempt)
         break
       case LocalPaymentMethodTypes.Pisp:
+        // console.log('transaction', paymentRequest.transactions)
+        // console.log('reconciledTransactionID', paymentAttempt.reconciledTransactionID)
+        // setBankRefundCounterParty(
+        //   paymentRequest.transactions?.find((t) => t.id === paymentAttempt.reconciledTransactionID)
+        //     ?.counterParty,
+        // )
+        // setBankRefundDefaultSourceAccount(
+        //   accounts.find((a) => a.id === paymentRequest.pispAccountID),
+        // )
         setSelectedTransactionForBankRefund(paymentAttempt)
         break
       default:
@@ -116,7 +147,7 @@ const PaymentRequestDetailsModal = ({
       let parsedAmount = Number(amountToRefund)
       if (!isCardVoid) {
         parsedAmount =
-          (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount!
+          (parsedAmount ?? 0) > maxCardRefundableAmount ? maxCardRefundableAmount : parsedAmount!
       }
       await onRefund(selectedTransactionForCardRefund.attemptKey, parsedAmount, isCardVoid)
       onRefundDismiss()
@@ -204,7 +235,7 @@ const PaymentRequestDetailsModal = ({
                 onRefund={onRefundConfirm}
                 onDismiss={onRefundDismiss}
                 initialAmount={amountToRefund ?? '0'}
-                maxRefundableAmount={maxRefundableAmount}
+                maxRefundableAmount={maxCardRefundableAmount}
                 currency={selectedTransactionForCardRefund?.currency ?? Currency.EUR}
                 setAmountToRefund={setAmountToRefund}
                 transactionDate={selectedTransactionForCardRefund?.occurredAt ?? new Date()}
@@ -218,23 +249,28 @@ const PaymentRequestDetailsModal = ({
         </SheetContent>
       </Sheet>
 
-      <Sheet open={!!selectedTransactionForBankRefund} onOpenChange={handleOnRefundFormOpenChange}>
+      {/* <Sheet open={!!selectedTransactionForBankRefund} onOpenChange={handleOnRefundFormOpenChange}>
         <SheetContent className="w-full lg:w-[37.5rem]">
           <div className="bg-white max-h-screen overflow-auto">
-            <div className="max-h-full h-screen">
-              {/* <BankRefundModal
-                onRefund={onRefundConfirm}
-                onDismiss={onRefundDismiss}
-                initialAmount={amountToRefund ?? '0'}
-                maxRefundableAmount={maxRefundableAmount}
-                currency={selectedTransactionForBankRefund?.currency ?? Currency.EUR}
-                contactName={paymentRequest.contact.name}
-                accounts={accounts}
-              /> */}
-            </div>
+            <div className="max-h-full h-screen"> */}
+      {selectedTransactionForBankRefund && (
+        <BankRefundModal
+          onRefund={onBankRefund}
+          onDismiss={onRefundDismiss}
+          // initialAmount={maxBankRefundableAmount.toString() ?? '0'}
+          // maxRefundableAmount={maxBankRefundableAmount}
+          //currency={selectedTransactionForBankRefund?.currency ?? Currency.EUR}
+          accounts={accounts}
+          paymentRequest={paymentRequest}
+          bankPaymentAttempt={selectedTransactionForBankRefund}
+          // counterParty={bankRefundCounterParty}
+          // defaultSourceAccount={bankRefundDefaultSourceAccount}
+        />
+      )}
+      {/* </div>
           </div>
         </SheetContent>
-      </Sheet>
+      </Sheet> */}
     </>
   )
 }

@@ -6,7 +6,9 @@ import {
   PaymentRequestClient,
   PaymentRequestMetrics,
   PaymentRequestStatus,
+  useAccounts,
   useCapture,
+  useCreatePayout,
   useMerchantTags,
   usePaymentRequestMetrics,
   usePaymentRequests,
@@ -21,9 +23,18 @@ import { useEffect, useState } from 'react'
 
 import { Button, Icon } from '../../../components/ui/atoms'
 import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
-import { LocalPaymentRequest, LocalPaymentRequestCreate, LocalTag } from '../../../types/LocalTypes'
 import {
+  LocalAccount,
+  LocalCounterparty,
+  LocalPaymentRequest,
+  LocalPaymentRequestCreate,
+  LocalTag,
+} from '../../../types/LocalTypes'
+import {
+  localAccountIdentifierTypeToRemoteAccountIdentifierType,
+  localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
+  remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
 } from '../../../utils/parsers'
 import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage'
@@ -215,6 +226,30 @@ const PaymentRequestDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { createPayout } = useCreatePayout(
+    {
+      amountSortDirection: amountSortDirection,
+      statusSortDirection: statusSortDirection,
+      createdSortDirection: createdSortDirection,
+      contactSortDirection: contactSortDirection,
+      merchantId: merchantId,
+      pageNumber: page,
+      pageSize: pageSize,
+      status: status,
+      fromDateMS: dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate.getTime(),
+      search: searchFilter?.length >= 3 ? searchFilter : undefined,
+      currency: currencyFilter,
+      minAmount: minAmountFilter,
+      maxAmount: maxAmountFilter,
+      tags: tagsFilter,
+    },
+    { apiUrl: apiUrl, authToken: token },
+    true,
+  )
+
+  const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
 
   const [localPaymentRequests, setLocalPaymentRequests] = useState<LocalPaymentRequest[]>([])
 
@@ -439,6 +474,41 @@ const PaymentRequestDashboardMain = ({
         } else {
           makeToast('success', 'Payment successfully refunded.')
         }
+      }
+    }
+  }
+
+  const onBankRefundClick = async (
+    sourceAccount: LocalAccount,
+    counterParty: LocalCounterparty,
+    amount: number,
+    paymentInitiationID: string,
+  ) => {
+    console.log('paymentInitiationID', paymentInitiationID)
+    const yourReference = `REFUND-${paymentInitiationID}`
+    console.log('yourReference', yourReference)
+    if (selectedPaymentRequestID) {
+      console.log('Bank refund', sourceAccount, counterParty, amount)
+      const result = await createPayout({
+        accountID: sourceAccount.id,
+        type: localAccountIdentifierTypeToRemoteAccountIdentifierType(
+          sourceAccount.identifier.type,
+        ),
+        description: `Refund for ${selectedPaymentRequestID}`,
+        currency: sourceAccount.currency,
+        amount: amount,
+        yourReference: yourReference,
+        theirReference: 'Refund',
+        destination: localCounterPartyToRemoteCounterParty(counterParty),
+        allowIncomplete: false,
+        paymentRequestId: selectedPaymentRequestID,
+      })
+
+      if (result.error) {
+        makeToast('error', 'Error processing refund.')
+        handleApiError(result.error)
+      } else {
+        makeToast('success', 'Payment successfully refunded.')
       }
     }
   }
@@ -694,6 +764,7 @@ const PaymentRequestDashboardMain = ({
         setMerchantTags={setLocalMerchantTags}
         setPaymentRequests={setLocalPaymentRequests}
         onRefund={onRefundClick}
+        onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
@@ -709,6 +780,11 @@ const PaymentRequestDashboardMain = ({
         minAmount={minAmountFilter}
         maxAmount={maxAmountFilter}
         tags={tagsFilter}
+        accounts={
+          accounts?.status === 'success' && accounts.data
+            ? remoteAccountsToLocalAccounts(accounts.data)
+            : []
+        }
       ></PaymentRequestDetailsModal>
     </div>
   )
