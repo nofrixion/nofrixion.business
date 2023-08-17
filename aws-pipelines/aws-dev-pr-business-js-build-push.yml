@@ -1,0 +1,85 @@
+---
+#------------------------------------------------------------------------------
+#
+# Filename: aws-dev-pr-business-js-build-push.yml
+#
+# Description: Deploy a short-lived PR-specific Business & WebComponents build to DEV path on PROD CDN.
+#
+# Usage:  Run from devops pipeline.
+#
+# Author: Axel Granillo (axel@nofrixion.com)
+#
+# History:
+# 16 August     2023  Axel Granillo   Created, Mexico City, Mexico (from existing pipeline)
+#-----------------------------------------------------------------------------
+
+pr: 
+  - develop
+trigger: none
+
+variables:
+  businessBundleName: 'nofrixion-business.pr$(System.PullRequest.PullRequestNumber).js'
+
+# A windows agent is required here as the AzureFileCopy@4 task is windows only.
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install
+    displayName: 'npm install'
+
+  - script: |
+      npm run build -w nofrixion-business
+    displayName: 'npm build'
+    env:
+      VITE_PUBLIC_PORTAL_URL: $(portalUrl)
+      VITE_PUBLIC_SLACK_WEBHOOK_URL: $(slackWebhookUrl)
+      VITE_NOFRIXION_PULL_REQUEST_ID: $(System.PullRequest.PullRequestNumber)
+
+  - script: |
+      mkdir dist
+      cd dist
+      mkdir js
+      cd ..
+      mv apps/business/dist/*.js "dist/js/$(businessBundleName)"
+    displayName: 'Rename bundles'
+
+  # Creates folder structure for blob container
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/dist/js'
+      contents: '**'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/dev'
+    displayName: 'Copy js files'
+
+  # Copy main .js file to the $web container.
+  - task: AzureCLI@2
+    displayName: Copy dev bundle into $web blob container
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az storage blob upload-batch -s "$(Build.ArtifactStagingDirectory)" -d '$web' --account-name "$(storageAccountName)" --overwrite
+
+  # Purge CDN endpoint to remove old version
+  - task: AzureCLI@2
+    displayName: Purge CDN endpoint
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/$(businessBundleName)'
+
+  - task: GitHubComment@0
+    inputs:
+      gitHubConnection: '$(githubConnection)'
+      repositoryName: '$(Build.Repository.Name)'
+      comment: 'Latest changes for this PR can be tested at https://business-dev.nofrixion.com/$(System.PullRequest.PullRequestNumber).'
