@@ -42,6 +42,9 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    builtClassesPrefix: `"${builtClassesPrefix}"`,
+  },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },

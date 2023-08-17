@@ -46,6 +46,7 @@ export default defineConfig({
   define: {
     'import.meta.env.version': JSON.stringify(packageJson.version),
     'process.env': `"${process.env}"`,
+    builtClassesPrefix: `""`,
   },
   server: {
     port: 3001,
