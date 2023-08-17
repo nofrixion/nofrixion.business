@@ -20,6 +20,8 @@ namespace Nofrixion.Bff.Controllers;
 
 public class HomeController : Controller
 {
+    const string NOFRIXION_NOFRIXION_BUSINESS_FILENAME = "nofrixion-business";
+    
     private readonly IConfiguration _configuration;
 
     public HomeController(IConfiguration configuration)
@@ -27,18 +29,17 @@ public class HomeController : Controller
         _configuration = configuration;
     }
 
-    private string? BusinessJavascriptCdnSource { get; set; }
-    
     [Route("/")]
     [Route("/home/{**catchAll}")]
     [Route("/{pullRequestId}")]
     [Route("/{pullRequestId}/{**catchAll}")]
     public IActionResult Index(string? pullRequestId)
     {
-        BusinessJavascriptCdnSource = !string.IsNullOrEmpty(pullRequestId) 
-            ? string.Format(_configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION], $".{pullRequestId}" ) 
-            : string.Format(_configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION], string.Empty);
+        var businessJavascriptCdnSource = !string.IsNullOrEmpty(pullRequestId) 
+            ? _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION]
+                .Replace(NOFRIXION_NOFRIXION_BUSINESS_FILENAME, $"{NOFRIXION_NOFRIXION_BUSINESS_FILENAME}.{pullRequestId}")
+            : _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION];
         
-        return View(model: BusinessJavascriptCdnSource);
+        return View(model: businessJavascriptCdnSource);
     }
 }
