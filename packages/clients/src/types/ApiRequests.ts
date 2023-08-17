@@ -1,4 +1,10 @@
-import { CardTokenCreateModes, Currency, PartialPaymentMethods } from './Enums'
+import { Counterparty } from './ApiResponses'
+import {
+  AccountIdentifierType,
+  CardTokenCreateModes,
+  Currency,
+  PartialPaymentMethods,
+} from './Enums'
 
 export type PaymentRequestCreate = {
   merchantID: string
@@ -65,4 +71,17 @@ export type PaymentRequestUpdate = {
   title?: string
   partialPaymentSteps?: string
   tagIds?: string[]
+}
+
+export type PayoutCreate = {
+  accountID: string
+  type: AccountIdentifierType
+  description?: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
+  destination: Counterparty
+  invoiceID?: string
+  allowIncomplete: boolean
 }

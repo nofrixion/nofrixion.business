@@ -183,6 +183,41 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
+  // const parseApiTransactionToLocalTransaction = (
+  //   remoteTransaction: Transaction,
+  // ): LocalTransaction => {
+  //   const {
+  //     id,
+  //     merchantID,
+  //     accountID,
+  //     amount,
+  //     currency,
+  //     description,
+  //     transactionDate,
+  //     yourReference,
+  //     theirReference,
+  //     balance,
+  //     counterparty,
+  //   } = remoteTransaction
+  //   return {
+  //   }
+  // }
+
+  // const parseApiAccountIdentifierTypeToLocalAccountIdentifierType = (
+  //   accountIdentifierType: AccountIdentifierType,
+  // ): LocalAccountIdentifierType => {
+  //   switch (accountIdentifierType) {
+  //     case AccountIdentifierType.IBAN:
+  //       return LocalAccountIdentifierType.IBAN
+  //     case AccountIdentifierType.DD:
+  //       return LocalAccountIdentifierType.DD
+  //     case AccountIdentifierType.SCAN:
+  //       return LocalAccountIdentifierType.SCAN
+  //     default:
+  //       return LocalAccountIdentifierType.Unknown
+  //   }
+  // }
+
   const parseApiCaptureAttemptsToLocalCaptureAttempts = (
     remoteCaptureAttempts: PaymentRequestCaptureAttempt[],
   ): LocalPaymentRequestCaptureAttempt[] => {
@@ -314,6 +349,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
     priorityBankID: remotePaymentRequest.priorityBankID,
     notificationEmailAddresses: remotePaymentRequest.notificationEmailAddresses,
     captureFunds: !remotePaymentRequest.cardAuthorizeOnly,
+    // transactions: remotePaymentRequest.transactions.map((transaction) =>
+    //   parseApiTransactionToLocalTransaction(transaction),
+    // ),
   }
 }
 

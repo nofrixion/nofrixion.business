@@ -51,6 +51,7 @@ export type PaymentRequest = {
   title?: string
   paymentAttempts: PaymentRequestPaymentAttempt[]
   notificationEmailAddresses?: string
+  transactions: Transaction[]
 }
 
 export type PaymentRequestPaymentAttempt = {
@@ -312,4 +313,26 @@ export interface User {
   emailAddress: string
   firstName: string
   lastName: string
+}
+
+export interface Payout {
+  id: string
+  accountID: string
+  merchantID: string
+  userID?: string
+  approverID?: string
+  type: AccountIdentifierType
+  description: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
+  status: string
+  currentUserID?: string
+  approvePayoutUrl?: string
+  createdBy?: string
+  inserted: Date
+  sourceAccountName: string
+  destination?: Counterparty
+  invoiceID: string
 }

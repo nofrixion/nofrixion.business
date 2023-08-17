@@ -1,12 +1,20 @@
 import { AccountIdentifierType, Currency } from '@nofrixion/moneymoov'
 
 import {
+  LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTransaction } from '../types/LocalTypes'
+import {
+  LocalAccount,
+  LocalAccountIdentifier,
+  LocalCounterparty,
+  LocalPaymentAttempt,
+  LocalPaymentRequest,
+  LocalTransaction,
+} from '../types/LocalTypes'
 
 export const mockTags = [
   {
@@ -997,6 +1005,67 @@ export const mockedTransactions: LocalTransaction[] = [
   },
 ]
 
+const accountIdentifier: LocalAccountIdentifier = {
+  type: LocalAccountIdentifierType.IBAN,
+  currency: Currency.EUR,
+  iban: 'GB12345678901234567890',
+}
+
+const accounts: LocalAccount[] = [
+  {
+    id: '1',
+    accountName: 'EURO Account',
+    currency: Currency.GBP,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    iban: 'GB12345678901234567890',
+    displayName: 'EURO Account',
+    identifier: accountIdentifier,
+    summary: 'Account',
+    isDefault: true,
+    availableBalance: 100000,
+  },
+  {
+    id: '2',
+    accountName: 'GBP Account',
+    currency: Currency.GBP,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    iban: 'GB12345678901234567890',
+    displayName: 'GBP Account',
+    identifier: accountIdentifier,
+    summary: 'Account',
+    isDefault: false,
+    availableBalance: 100000,
+  },
+  {
+    id: '3',
+    accountName: 'EUR Account 2',
+    currency: Currency.EUR,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    iban: 'GB12345678901234567890',
+    displayName: 'EUR Account 2',
+    identifier: accountIdentifier,
+    summary: 'Account',
+    isDefault: false,
+    availableBalance: 100000,
+  },
+]
+
+const counterparty: LocalCounterparty = {
+  name: 'John Doe',
+  emailAddress: 'email@email.com',
+  phoneNumber: '01234567890',
+  identifier: accountIdentifier,
+}
+
 export default {
   fewPaymentRequests,
   paymentRequest: {
@@ -1007,4 +1076,6 @@ export default {
     overpaidPaymentRequest,
   },
   merchantTags: mockMerchantTags,
+  accounts,
+  counterparty,
 }

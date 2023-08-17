@@ -152,20 +152,19 @@ const Transactions = ({
                           Authorized
                         </span>
                       )}
-                      {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
-                        isRefundable(transaction) && (
-                          <Button
-                            variant="secondary"
-                            size="x-small"
-                            className="px-2 w-min"
-                            onClick={() => onRefund(transaction)}
-                          >
-                            <div className="flex flex-row gap-2 items-center">
-                              <Icon name="return/12" />
-                              <span>Refund</span>
-                            </div>
-                          </Button>
-                        )}
+                      {isRefundable(transaction) && (
+                        <Button
+                          variant="secondary"
+                          size="x-small"
+                          className="px-2 w-min"
+                          onClick={() => onRefund(transaction)}
+                        >
+                          <div className="flex flex-row gap-2 items-center">
+                            <Icon name="return/12" />
+                            <span>Refund</span>
+                          </div>
+                        </Button>
+                      )}
                       {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
                         isVoid(transaction) && (
                           <Button

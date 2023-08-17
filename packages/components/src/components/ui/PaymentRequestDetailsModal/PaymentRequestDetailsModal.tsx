@@ -2,7 +2,13 @@ import { Currency } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { Sheet, SheetContent } from '../../../components/ui/atoms'
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
+import {
+  LocalAccount,
+  LocalPaymentAttempt,
+  LocalPaymentRequest,
+  LocalTag,
+} from '../../../types/LocalTypes'
 import {
   getMaxCapturableAmount,
   getMaxRefundableAmount,
@@ -23,6 +29,7 @@ export interface PaymentRequestDetailsModalProps {
   onTagCreated: (tag: LocalTag) => void
   open: boolean
   onDismiss: () => void
+  accounts: LocalAccount[]
 }
 
 const PaymentRequestDetailsModal = ({
@@ -37,7 +44,10 @@ const PaymentRequestDetailsModal = ({
   open,
   onDismiss,
 }: PaymentRequestDetailsModalProps) => {
-  const [selectedTransactionForRefund, setSelectedTransactionForRefund] =
+  const [selectedTransactionForCardRefund, setSelectedTransactionForCardRefund] =
+    useState<LocalPaymentAttempt>()
+
+  const [selectedTransactionForBankRefund, setSelectedTransactionForBankRefund] =
     useState<LocalPaymentAttempt>()
   const [maxRefundableAmount, setMaxRefundableAmount] = useState<number>(0)
   const [amountToRefund, setAmountToRefund] = useState<string | undefined>()
@@ -57,16 +67,16 @@ const PaymentRequestDetailsModal = ({
   }, [selectedTransactionForCapture])
 
   useEffect(() => {
-    if (!selectedTransactionForRefund) return
+    if (!selectedTransactionForCardRefund) return
 
-    if (isVoid(selectedTransactionForRefund)) {
-      setAmountToRefund(selectedTransactionForRefund.amount.toString())
+    if (isVoid(selectedTransactionForCardRefund)) {
+      setAmountToRefund(selectedTransactionForCardRefund.amount.toString())
     } else {
-      const maxRefundableAmount = getMaxRefundableAmount(selectedTransactionForRefund)
+      const maxRefundableAmount = getMaxRefundableAmount(selectedTransactionForCardRefund)
       setMaxRefundableAmount(maxRefundableAmount)
       setAmountToRefund(maxRefundableAmount.toString())
     }
-  }, [selectedTransactionForRefund])
+  }, [selectedTransactionForCardRefund])
 
   const onCaptureClick = (paymentAttempt: LocalPaymentAttempt) => {
     setSelectedTransactionForCapture(paymentAttempt)
@@ -89,23 +99,33 @@ const PaymentRequestDetailsModal = ({
   // This method is called when the user clicks on the refund button
   const onRefundClick = (paymentAttempt: LocalPaymentAttempt, isVoid: boolean) => {
     setIsCardVoid(isVoid)
-    setSelectedTransactionForRefund(paymentAttempt)
+    switch (paymentAttempt.paymentMethod) {
+      case LocalPaymentMethodTypes.Card:
+        setSelectedTransactionForCardRefund(paymentAttempt)
+        break
+      case LocalPaymentMethodTypes.Pisp:
+        setSelectedTransactionForBankRefund(paymentAttempt)
+        break
+      default:
+        break
+    }
   }
   // This method is called when the user confirms the refund
   const onRefundConfirm = async () => {
-    if (selectedTransactionForRefund) {
+    if (selectedTransactionForCardRefund) {
       let parsedAmount = Number(amountToRefund)
       if (!isCardVoid) {
         parsedAmount =
           (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount!
       }
-      await onRefund(selectedTransactionForRefund.attemptKey, parsedAmount, isCardVoid)
+      await onRefund(selectedTransactionForCardRefund.attemptKey, parsedAmount, isCardVoid)
       onRefundDismiss()
     }
   }
 
   const onRefundDismiss = () => {
-    setSelectedTransactionForRefund(undefined)
+    setSelectedTransactionForCardRefund(undefined)
+    setSelectedTransactionForBankRefund(undefined)
     setAmountToRefund(undefined)
   }
 
@@ -176,7 +196,7 @@ const PaymentRequestDetailsModal = ({
         </SheetContent>
       </Sheet>
 
-      <Sheet open={!!selectedTransactionForRefund} onOpenChange={handleOnRefundFormOpenChange}>
+      <Sheet open={!!selectedTransactionForCardRefund} onOpenChange={handleOnRefundFormOpenChange}>
         <SheetContent className="w-full lg:w-[37.5rem]">
           <div className="bg-white max-h-screen overflow-auto">
             <div className="max-h-full h-screen">
@@ -185,14 +205,32 @@ const PaymentRequestDetailsModal = ({
                 onDismiss={onRefundDismiss}
                 initialAmount={amountToRefund ?? '0'}
                 maxRefundableAmount={maxRefundableAmount}
-                currency={selectedTransactionForRefund?.currency ?? Currency.EUR}
+                currency={selectedTransactionForCardRefund?.currency ?? Currency.EUR}
                 setAmountToRefund={setAmountToRefund}
-                transactionDate={selectedTransactionForRefund?.occurredAt ?? new Date()}
+                transactionDate={selectedTransactionForCardRefund?.occurredAt ?? new Date()}
                 contactName={paymentRequest.contact.name}
-                lastFourDigitsOnCard={selectedTransactionForRefund?.last4DigitsOfCardNumber}
-                processor={selectedTransactionForRefund?.processor}
+                lastFourDigitsOnCard={selectedTransactionForCardRefund?.last4DigitsOfCardNumber}
+                processor={selectedTransactionForCardRefund?.processor}
                 isVoid={isCardVoid}
               />
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={!!selectedTransactionForBankRefund} onOpenChange={handleOnRefundFormOpenChange}>
+        <SheetContent className="w-full lg:w-[37.5rem]">
+          <div className="bg-white max-h-screen overflow-auto">
+            <div className="max-h-full h-screen">
+              {/* <BankRefundModal
+                onRefund={onRefundConfirm}
+                onDismiss={onRefundDismiss}
+                initialAmount={amountToRefund ?? '0'}
+                maxRefundableAmount={maxRefundableAmount}
+                currency={selectedTransactionForBankRefund?.currency ?? Currency.EUR}
+                contactName={paymentRequest.contact.name}
+                accounts={accounts}
+              /> */}
             </div>
           </div>
         </SheetContent>

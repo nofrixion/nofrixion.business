@@ -1,6 +1,7 @@
 import { Currency } from '@nofrixion/moneymoov'
 
 import {
+  LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
@@ -34,6 +35,24 @@ export interface LocalPaymentRequest {
   priorityBankName?: string
   notificationEmailAddresses?: string
   captureFunds: boolean
+  transactions?: LocalTransaction[]
+}
+
+export interface LocalCounterparty {
+  accountID?: string
+  name?: string
+  emailAddress?: string
+  phoneNumber?: string
+  identifier?: LocalAccountIdentifier
+}
+
+export interface LocalAccountIdentifier {
+  type: LocalAccountIdentifierType
+  currency: string
+  bic?: string
+  iban?: string
+  accountNumber?: string
+  sortCode?: string
 }
 
 export interface LocalPaymentAttempt {
@@ -51,6 +70,7 @@ export interface LocalPaymentAttempt {
   refundAttempts: LocalPaymentRequestRefundAttempt[]
   wallet?: LocalWallets | undefined
   status: LocalPaymentStatus
+  reconciledTransactionID?: string
 }
 
 export interface SubTransaction {
@@ -160,4 +180,20 @@ export interface LocalTransaction {
   reference: string
   description: string
   type: string
+}
+
+export interface LocalAccount {
+  id: string
+  merchantID: string
+  accountName: string
+  accountNumber?: string
+  availableBalance: number
+  balance: number
+  currency: Currency
+  displayName: string
+  iban?: string
+  sortCode?: string
+  summary: string
+  identifier: LocalAccountIdentifier
+  isDefault: boolean
 }
