@@ -18,13 +18,19 @@ export interface AccountDashboardProps {
 const AccountDashboard = ({
   token,
   accountId,
+  onAllCurrentAccountsClick,
   apiUrl = 'https://api.nofrixion.com/api/v1',
 }: AccountDashboardProps) => {
   const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AccountDashboardMain token={token} accountId={accountId} apiUrl={apiUrl} />
+      <AccountDashboardMain
+        token={token}
+        accountId={accountId}
+        apiUrl={apiUrl}
+        onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+      />
     </QueryClientProvider>
   )
 }
