@@ -37,7 +37,7 @@ public class HomeController : Controller
     {
         var businessJavascriptCdnSource = !string.IsNullOrEmpty(pullRequestId) 
             ? _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION]
-                .Replace(NOFRIXION_NOFRIXION_BUSINESS_FILENAME, $"{NOFRIXION_NOFRIXION_BUSINESS_FILENAME}.{pullRequestId}")
+                .Replace(NOFRIXION_NOFRIXION_BUSINESS_FILENAME, $"{NOFRIXION_NOFRIXION_BUSINESS_FILENAME}.pr{pullRequestId}")
             : _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION];
         
         return View(model: businessJavascriptCdnSource);

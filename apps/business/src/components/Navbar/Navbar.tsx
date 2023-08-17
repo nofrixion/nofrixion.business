@@ -10,8 +10,9 @@ import {
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from '../../components/ui/DropDown'
-import { navItems, NOFRIXION_BUSINESS_GITHUB_URL } from '../../lib/constants'
+import { navItems } from '../../lib/constants'
 import { cn } from '../../lib/utils/utils'
+import { PRReview } from '../ui/PRReview'
 
 const Navbar = () => {
   const currentRoute = useLocation().pathname
@@ -57,19 +58,7 @@ const Navbar = () => {
         </DropdownMenuPortal>
       </DropdownMenu>
 
-      {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID && (
-        <span className="flex m-auto bg-white text-negative-red py-1 px-2 rounded-md font-semibold">
-          <a
-            href={`${NOFRIXION_BUSINESS_GITHUB_URL}${
-              import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID
-            }`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            You are currently reviewing PR #{import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID}
-          </a>
-        </span>
-      )}
+      {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID && <PRReview />}
 
       <UserNav />
     </nav>

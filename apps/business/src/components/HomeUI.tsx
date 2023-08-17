@@ -9,6 +9,7 @@ import { useAuth } from '../lib/auth/useAuth'
 import { NOFRIXION_BFF_URL } from '../lib/constants'
 import { getRoute } from '../lib/utils/utils'
 import { Loader } from './ui/Loader/Loader'
+import { PRReview } from './ui/PRReview'
 
 const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
   return (
@@ -90,6 +91,11 @@ const HomeUI = () => {
 
           <img src={LogoNofrixion} alt="Nofrixion Logo" />
         </div>
+        {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID && (
+          <div className="flex justify-center items-center">
+            <PRReview />
+          </div>
+        )}
       </div>
     </main>
   )
