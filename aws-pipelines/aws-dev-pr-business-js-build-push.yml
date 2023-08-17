@@ -18,8 +18,8 @@ pr:
 trigger: none
 
 variables:
-  webComponentsBundleName: 'nofrixion-webcomponents-pr$(System.PullRequest.PullRequestNumber).js'
-  businessBundleName: 'nofrixion-business-pr$(System.PullRequest.PullRequestNumber).js'
+  webComponentsBundleName: 'nofrixion-webcomponents.pr$(System.PullRequest.PullRequestNumber).js'
+  businessBundleName: 'nofrixion-business.pr$(System.PullRequest.PullRequestNumber).js'
 
 # A windows agent is required here as the AzureFileCopy@4 task is windows only.
 pool:
@@ -41,6 +41,7 @@ steps:
     env:
       VITE_PUBLIC_PORTAL_URL: $(portalUrl)
       VITE_PUBLIC_SLACK_WEBHOOK_URL: $(slackWebhookUrl)
+      VITE_NOFRIXION_PULL_REQUEST_ID: $(System.PullRequest.PullRequestNumber)
 
   - script: |
       mkdir dist
@@ -56,7 +57,7 @@ steps:
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)/dist/js'
       contents: '**'
-      targetFolder: '$(Build.ArtifactStagingDirectory)/dev/pr'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/dev'
     displayName: 'Copy js files'
 
   # Copy main .js file to the $web container.
@@ -77,10 +78,10 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/pr/$(businessBundleName)' '/dev/pr/$(webComponentsBundleName)'
+        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/$(businessBundleName)' '/dev/$(webComponentsBundleName)'
 
   - task: GitHubComment@0
     inputs:
       gitHubConnection: '$(githubConnection)'
       repositoryName: '$(Build.Repository.Name)'
-      comment: 'Artifacts for this PR are available at https://cdn.nofrixion.com/dev/pr/nofrixion-business-pr$(System.PullRequest.PullRequestNumber).js and https://cdn.nofrixion.com/dev/pr/nofrixion-webcomponents-pr$(System.PullRequest.PullRequestNumber).js'
+      comment: 'Latest changes for this PR can be tested at https://business-dev.nofrixion.com/$(System.PullRequest.PullRequestNumber).'
