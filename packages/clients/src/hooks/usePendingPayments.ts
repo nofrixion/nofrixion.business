@@ -1,28 +1,71 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { AccountsClient } from '../clients'
-import { Account, ApiResponse } from '../types'
-import { ApiProps, MerchantProps } from '../types/props'
+import { ApiResponse, PayoutPageResponse, PayoutStatus } from '../types'
+import { ApiProps, usePendingPaymentsProps } from '../types/props'
 
-const fetchAccounts = async (
+const fetchPendingPayments = async (
   apiUrl: string,
-  merchantId?: string,
+  accountId?: string,
   authToken?: string,
-): Promise<ApiResponse<Account[]>> => {
+  pageNumber?: number,
+  pageSize?: number,
+  statuses?: PayoutStatus[],
+  fromDateMS?: number,
+  toDateMS?: number,
+): Promise<ApiResponse<PayoutPageResponse>> => {
   const client = new AccountsClient({ apiUrl, authToken })
-  const response = await client.getAccounts({ merchantId: merchantId })
+
+  const response = await client.getPendingPayments({
+    accountId,
+    pageNumber,
+    pageSize,
+    payoutStatuses: statuses,
+    fromDate: fromDateMS ? new Date(fromDateMS) : undefined,
+    toDate: toDateMS ? new Date(toDateMS) : undefined,
+  })
 
   return response
 }
 
-export const useAccounts = ({ merchantId }: MerchantProps, { apiUrl, authToken }: ApiProps) => {
-  const QUERY_KEY = ['Accounts', merchantId, apiUrl, authToken]
+export const usePendingPayments = (
+  {
+    accountId,
+    pageNumber,
+    pageSize,
+    payoutStatuses,
+    fromDateMS,
+    toDateMS,
+  }: usePendingPaymentsProps,
+  { apiUrl, authToken }: ApiProps,
+) => {
+  const QUERY_KEY = [
+    'Pending Payments',
+    accountId,
+    apiUrl,
+    authToken,
+    pageNumber,
+    pageSize,
+    fromDateMS,
+    toDateMS,
+    payoutStatuses,
+  ]
 
-  return useQuery<ApiResponse<Account[]>, Error>(
+  return useQuery<ApiResponse<PayoutPageResponse>, Error>(
     QUERY_KEY,
-    () => fetchAccounts(apiUrl, merchantId, authToken),
+    () =>
+      fetchPendingPayments(
+        apiUrl,
+        accountId,
+        authToken,
+        pageNumber,
+        pageSize,
+        payoutStatuses,
+        fromDateMS,
+        toDateMS,
+      ),
     {
-      enabled: !!merchantId,
+      enabled: !!accountId,
     },
   )
 }

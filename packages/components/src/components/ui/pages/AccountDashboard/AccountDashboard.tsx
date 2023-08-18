@@ -7,17 +7,19 @@ import {
 } from '@nofrixion/moneymoov'
 import * as React from 'react'
 
-import { LocalTransaction } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
+import { PendingPayments } from '../../PendingPayments/PendingPayments'
 import SearchBar from '../../SearchBar/SearchBar'
 import { Toaster } from '../../Toast/Toast'
 
 export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
   transactions: LocalTransaction[]
   account?: Account
+  pendingPayments?: LocalPayout[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
   onPageChange: (page: number) => void
@@ -25,11 +27,13 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
+  onSeeMore: () => void
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
   transactions,
   account,
+  pendingPayments,
   pagination,
   searchFilter,
   onDateChange,
@@ -37,6 +41,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   onPageChange,
   onSort,
   onAllCurrentAccountsClick,
+  onSeeMore,
 }) => {
   return (
     <>
@@ -87,6 +92,9 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
             />
 
             {/* TODO: Add expand component */}
+            {pendingPayments && (
+              <PendingPayments pendingPayments={pendingPayments} onSeeMore={onSeeMore} className='w-[400px]' />
+            )}
           </div>
         </div>
       </div>
