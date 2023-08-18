@@ -68,7 +68,7 @@ const HomeUI = () => {
   // Note: added `finishedFirstLoading` to prevent the page from flashing the loader
   // as react-query is fetching the user data every time the page is focused
   if (authState?.isLoading && !finishedFirstLoading) {
-    return <Loader className="flex items-center justify-center p-24 min-h-screen" />
+    return <Loader className="flex items-center justify-center p-24 min-h-full" />
   }
 
   if (authState?.isLoggedIn) {
@@ -76,7 +76,7 @@ const HomeUI = () => {
   }
 
   return (
-    <main className="flex items-center justify-center p-24 min-h-screen">
+    <main className="flex items-center justify-center p-24 min-h-full">
       <div>
         <CardHome
           onEnterPressed={() => {

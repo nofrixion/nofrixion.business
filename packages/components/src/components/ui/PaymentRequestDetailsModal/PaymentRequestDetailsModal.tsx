@@ -131,8 +131,8 @@ const PaymentRequestDetailsModal = ({
     <>
       <Sheet open={open} onOpenChange={handleOnOpenChange}>
         <SheetContent className="w-full lg:w-[37.5rem]">
-          <div className="bg-white max-h-screen overflow-auto">
-            <div className="max-h-full h-screen">
+          <div className="bg-white max-h-full h-full overflow-auto">
+            <div className="max-h-full h-full">
               <div className="h-fit pb-16 lg:pb-0">
                 <PaymentRequestDetails
                   paymentRequest={paymentRequest}
@@ -157,8 +157,8 @@ const PaymentRequestDetailsModal = ({
 
       <Sheet open={!!selectedTransactionForCapture} onOpenChange={handleOnCaptureFormOpenChange}>
         <SheetContent className="w-full lg:w-[37.5rem]">
-          <div className="bg-white max-h-screen overflow-auto">
-            <div className="max-h-full h-screen">
+          <div className="bg-white max-h-full h-full overflow-auto">
+            <div className="max-h-full h-full">
               <CaptureModal
                 onCapture={onCaptureConfirm}
                 onDismiss={onCaptureDismiss}
@@ -178,8 +178,8 @@ const PaymentRequestDetailsModal = ({
 
       <Sheet open={!!selectedTransactionForRefund} onOpenChange={handleOnRefundFormOpenChange}>
         <SheetContent className="w-full lg:w-[37.5rem]">
-          <div className="bg-white max-h-screen overflow-auto">
-            <div className="max-h-full h-screen">
+          <div className="bg-white max-h-full h-full overflow-auto">
+            <div className="max-h-full h-full">
               <CardRefundModal
                 onRefund={onRefundConfirm}
                 onDismiss={onRefundDismiss}
