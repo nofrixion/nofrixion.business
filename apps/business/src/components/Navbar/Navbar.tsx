@@ -12,6 +12,7 @@ import {
 } from '../../components/ui/DropDown'
 import { navItems } from '../../lib/constants'
 import { cn } from '../../lib/utils/utils'
+import { PRReview } from '../ui/PRReview'
 
 const Navbar = () => {
   const currentRoute = useLocation().pathname
@@ -44,7 +45,10 @@ const Navbar = () => {
                       src: item.leftIcon,
                       alt: `${item.label} icon`,
                     }}
-                    disabled={item.href === currentRoute}
+                    disabled={
+                      (currentRoute.endsWith('/home') && item.isHome) ||
+                      (currentRoute.indexOf(item.href) !== -1 && !item.isHome)
+                    }
                   >
                     {item.label}
                   </DropdownMenuItem>
@@ -53,6 +57,8 @@ const Navbar = () => {
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenu>
+
+      {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID && <PRReview />}
 
       <UserNav />
     </nav>

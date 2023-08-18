@@ -104,7 +104,7 @@ const UserNav = () => {
           )}
           <DropdownMenuItem
             onSelect={() => navigate('users')}
-            disabled={currentRoute === '/home/users'}
+            disabled={currentRoute.indexOf('/home/users') !== -1}
             icon={{
               src: UsersIcon,
               alt: 'Users',
@@ -114,7 +114,7 @@ const UserNav = () => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => navigate('pricing')}
-            disabled={currentRoute === '/home/pricing'}
+            disabled={currentRoute.indexOf('/home/pricing') !== -1}
             icon={{
               src: PricingIcon,
               alt: 'Pricing',
