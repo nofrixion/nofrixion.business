@@ -22,6 +22,7 @@ module.exports = {
         'green-text': '#05C786',
         'primary-green': '#40BFBF',
         'primary-green-hover': '#00807F',
+        'positive-green': '#29A37A',
         'border-grey': '#D5DBDD',
         'border-grey-highlighted': '#ABB2BA',
         'error-bg': '#FEE7EB',
@@ -32,7 +33,7 @@ module.exports = {
         'disabled-icon': '#ABB3BA',
         'dark-bg': '#002233',
         'nav-accent': '#3DD7F5',
-        'information-bg': '#CEF',
+        'information-bg': '#CCEEFF',
         'warning-yellow': '#FCF5CF',
       },
       fontSize: {

@@ -1,6 +1,6 @@
 import { NotificationEmailsDefaults } from '@nofrixion/clients'
 import { AnimatePresence } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { LocalPaymentNotificationsFormValue } from '../../../../types/LocalTypes'
 import { validateEmail } from '../../../../utils/validation'
@@ -23,11 +23,6 @@ const PaymentNotificationsModal = ({
   const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : '')
   const [hasEmailError, setHasEmailError] = useState(false)
   const [currentState, setCurrentState] = useState<LocalPaymentNotificationsFormValue>()
-  const [enableUseAsDefault, setEnableUseAsDefault] = useState<boolean>(false)
-
-  useEffect(() => {
-    setEnableUseAsDefault(!userDefaults || (userDefaults?.emailAddresses ?? '') !== (email ?? ''))
-  }, [email])
 
   // When the user clicks on the Apply button, we need to send the data to the parent component
   const onApplyClicked = (data: any) => {
@@ -80,7 +75,6 @@ const PaymentNotificationsModal = ({
     <CustomModal
       title="Payment notifications"
       open={open}
-      enableUseAsDefault={enableUseAsDefault}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
       onApplyEnabled={!hasEmailError}

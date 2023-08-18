@@ -702,9 +702,7 @@ const CreatePaymentRequestPage = ({
                           size="big"
                           onClick={onConfirmClicked}
                           disabled={isSubmitting}
-                          className={cn({
-                            '!bg-grey-text disabled:!opacity-100': isSubmitting,
-                          })}
+                          className="disabled:!opacity-100 disabled:!bg-grey-text"
                         >
                           {isSubmitting ? (
                             <Loader className="h-6 w-6 ml-0.5" />

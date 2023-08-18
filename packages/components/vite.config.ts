@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import dts from 'vite-plugin-dts'
 
-const builtClassesPrefix = 'nf-wc-'
+import { builtClassesPrefix } from './src/utils/constants'
 
 export default defineConfig({
   plugins: [
@@ -41,6 +41,9 @@ export default defineConfig({
         },
       },
     },
+  },
+  define: {
+    builtClassesPrefix: `"${builtClassesPrefix}"`,
   },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],

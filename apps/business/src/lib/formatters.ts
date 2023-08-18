@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { formatCurrency } from '@nofrixion/components/src/utils/uiFormaters'
 import { formatDistanceToNowStrict, isToday, isYesterday } from 'date-fns'
 
 // Get "Avatar" string form of Merchant name
@@ -42,7 +43,7 @@ const formatAmount = (amount: number): string => {
 }
 
 const displayAmount = (amount: number, currency: Currency): string => {
-  return `${currency == Currency.EUR ? '€' : '£'} ${formatAmount(amount)}`
+  return `${formatCurrency(currency)} ${formatAmount(amount)}`
 }
 
 // This function formats a date as a string, returning a human-readable

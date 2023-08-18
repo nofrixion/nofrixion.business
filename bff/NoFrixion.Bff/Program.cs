@@ -1,7 +1,9 @@
 using Duende.Bff.Yarp;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
-using NoFrixion.Common;
+using Nofrixion.Bff;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,8 +40,8 @@ builder.Services.AddBff()
 // The maximum age a portal session can stay alive for before a manual authentication will be requested. This is a
 // fallback setting to prevent portal sessions being tricked into staying alive forever.
 // </summary>
-const string AUTHENTICATION_MAX_AGE_HOURS = "NoFrixion:AuthenticationMaxAgeHours";
-const string AUTHENTICATION_EXPIRY_MINUTES = "NoFrixion:AuthenticationExpiryMinutes";
+const string AUTHENTICATION_MAX_AGE_HOURS = ConfigKeys.AUTHENTICATION_MAX_AGE_HOURS;
+const string AUTHENTICATION_EXPIRY_MINUTES = ConfigKeys.AUTHENTICATION_EXPIRY_MINUTES;
 
 
 var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
@@ -111,43 +113,38 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-var app = builder.Build();
+builder.Services.AddRazorPages();
 
-app.UseRouting();
+builder.Services.AddStackExchangeRedisCache(options => options.ConfigurationOptions =
+    ConfigurationOptions.Parse(configuration[ConfigKeys.CONNECTION_STRING_REDIS]));
+
+// For ASP.NET data protection (managing the keys used to encrypt cookies etc) see:
+// https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview?view=aspnetcore-7.0 and
+// https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-7.0&tabs=visual-studio#redis
+var redis = ConnectionMultiplexer.Connect(configuration[ConfigKeys.CONNECTION_STRING_REDIS]);
+builder.Services.AddDataProtection().PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+
+var app = builder.Build();
 
 app.UseAuthentication();
 app.UseBff();
-app.UseAuthorization();
+
 app.UseForwardedHeaders();
 
-app.Use(async (context, next) => 
-{ 
-    await next(); 
-    var path = context.Request.Path.Value;
-
-    if (!path.StartsWith("/api") && !path.StartsWith("/bff") && !Path.HasExtension(path)) 
-    { 
-        context.Request.Path = "/"; 
-        await next(); 
-    } 
-});
-
-app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new 
-    List<string> { "index.html" } });
-app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
 
-app.MapControllers()
-    .RequireAuthorization()
-    .AsBffApiEndpoint();
+app.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl"])
+    .RequireAccessToken();
 
-app.UseEndpoints(endpoints =>
-{
-    _ = endpoints.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl"])
-        .RequireAccessToken();
-});
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.UseCors("cors-policy");
+
+app.MapRazorPages();
 
 await app.RunAsync();

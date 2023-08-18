@@ -1,27 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<AssemblyVersion>0.1.13.0</AssemblyVersion>
+	<FileVersion>0.1.13.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Duende.BFF" Version="2.1.0-preview.1" />
     <PackageReference Include="Duende.BFF.Yarp" Version="2.1.0-preview.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.0.0-preview.7.23375.9" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.0-preview.7.23375.9" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0-preview.7.23375.9" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.1-dev-00910" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.3-dev-00262" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.0-preview" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\nofrixion.common\src\NoFrixion.Common\NoFrixion.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

@@ -10,7 +10,8 @@ const statusVariants = cva('rounded-full space-x-1 inline-flex items-center text
     variant: {
       paid: ['bg-[#D8F2EA]', 'text-[#004D33]'],
       partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
-      unpaid: ['bg-[#F1F3F4]', 'text-default-text'],
+      unpaid: ['bg-[#F1F3F4]'],
+      pending: ['bg-information-bg'],
     },
     size: {
       small: ['text-xs', 'font-normal', 'py-1', 'px-2'],
@@ -29,14 +30,11 @@ const iconVariants = cva('w-auto', {
       paid: ['text-[#29A37A]'],
       partial: ['text-[#B25900]'],
       unpaid: ['text-[#C8D0D0]'],
-    },
-    size: {
-      small: ['h-2'],
-      large: ['h-3'],
+      pending: ['text-control-grey-hover'],
     },
   },
   defaultVariants: {
-    size: 'small',
+    variant: 'unpaid',
   },
 })
 
@@ -62,6 +60,10 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     small: 'not-started/12',
     large: 'not-started/12',
   },
+  pending: {
+    small: 'pending/12',
+    large: 'pending/12',
+  },
 }
 
 const Status: React.FC<StatusProps> = ({
@@ -72,10 +74,7 @@ const Status: React.FC<StatusProps> = ({
 }) => (
   <div className={cn(statusVariants({ variant, size }), className)} {...props}>
     {variant && (
-      <Icon
-        name={iconName[variant][size ?? 'small']}
-        className={cn(iconVariants({ size, variant }))}
-      />
+      <Icon name={iconName[variant][size ?? 'small']} className={cn(iconVariants({ variant }))} />
     )}
     <span className="uppercase">
       {size === 'large' && variant === 'partial' ? 'partially paid' : variant}

@@ -15,6 +15,7 @@ export interface PaymentRequestDetailsProps {
   merchantTags: LocalTag[]
   hostedPaymentLink: string
   onRefund: (paymentAttempt: LocalPaymentAttempt) => void
+  onVoid: (paymentAttempt: LocalPaymentAttempt) => void
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void
   onTagAdded: (tag: LocalTag) => void
   onTagDeleted: (id: string) => void
@@ -26,6 +27,7 @@ const PaymentRequestDetails = ({
   merchantTags,
   hostedPaymentLink,
   onRefund,
+  onVoid,
   onCapture,
   onTagAdded,
   onTagDeleted,
@@ -89,6 +91,7 @@ const PaymentRequestDetails = ({
           <DetailsTabs
             paymentRequest={paymentRequest}
             onRefund={onRefund}
+            onVoid={onVoid}
             onCapture={onCapture}
           ></DetailsTabs>
         </div>

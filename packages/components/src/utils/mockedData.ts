@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/clients'
+import { AccountIdentifierType, Currency } from '@nofrixion/clients'
 
 import {
   LocalAddressType,
@@ -6,7 +6,7 @@ import {
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../types/LocalTypes'
+import { LocalPaymentAttempt, LocalPaymentRequest, LocalTransaction } from '../types/LocalTypes'
 
 export const mockTags = [
   {
@@ -82,6 +82,7 @@ export const mockRefundAttempts = [
     refundInitiatedAmount: 5,
     refundSettledAmount: 5,
     refundCancelledAmount: 0,
+    isCardVoid: false,
   },
   {
     refundPayoutID: '2',
@@ -90,6 +91,76 @@ export const mockRefundAttempts = [
     refundInitiatedAmount: 3,
     refundSettledAmount: 3,
     refundCancelledAmount: 0,
+    isCardVoid: false,
+  },
+]
+
+export const mockAccounts = [
+  {
+    id: 'BE270F6F-04F1-4DE9-836C-035C5B7EC409',
+    merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
+    accountNumber: '',
+    accountName: 'NoFrixion EUR account',
+    availableBalance: 100000.0,
+    balance: 120000.0,
+    currency: Currency.EUR,
+    displayName: 'NoFrixion EUR account',
+    iban: 'GB93MOCK00000003290619',
+    sortCode: '',
+    summary: '',
+    identifier: {
+      type: AccountIdentifierType.IBAN,
+      currency: Currency.EUR,
+      bic: 'MOCKGB21',
+      iban: 'GB93MOCK00000003290619',
+      accountNumber: '',
+      sortCode: '',
+    },
+    isDefault: true,
+  },
+  {
+    id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
+    merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
+    accountName: 'NoFrixion GBP account',
+    accountNumber: '12345678',
+    availableBalance: 50022.6,
+    balance: 50022.6,
+    currency: Currency.GBP,
+    displayName: 'NoFrixion GBP account',
+    iban: '',
+    sortCode: '123456',
+    summary: '',
+    identifier: {
+      type: AccountIdentifierType.SCAN,
+      currency: Currency.GBP,
+      bic: 'MOCKGB21',
+      iban: '',
+      accountNumber: '12345678',
+      sortCode: '123456',
+    },
+    isDefault: false,
+  },
+  {
+    id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
+    merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
+    accountName: 'Test GBP account',
+    accountNumber: '12345678',
+    availableBalance: 50022.6,
+    balance: 50022.6,
+    currency: Currency.GBP,
+    displayName: 'NoFrixion GBP account display',
+    iban: '',
+    sortCode: '123456',
+    summary: '',
+    identifier: {
+      type: AccountIdentifierType.SCAN,
+      currency: Currency.GBP,
+      bic: 'MOCKGB21',
+      iban: '',
+      accountNumber: '12345678',
+      sortCode: '123456',
+    },
+    isDefault: false,
   },
 ]
 
@@ -835,6 +906,94 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     paymentAttempts: [],
     productOrService: '',
     captureFunds: true,
+  },
+]
+
+function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+}
+
+export const mockedTransactions: LocalTransaction[] = [
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -250.0,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: 1500000.99,
+    reference: 'Very very very long reference. As long as it can be. Or even longer.',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA Instant',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -350.0,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA Instant',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: 450.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -550.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: '',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: 200.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: 'SEPA Instant',
+  },
+  {
+    date: randomDate(),
+    destinationAccount: {
+      name: 'Daniel Kowalski',
+      accountInfo: 'IE11MODR99035501927019',
+    },
+    amount: -300.0,
+    balanceAfterTx: 32345,
+    reference: 'Dinner Payment',
+    description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
+    type: '',
   },
 ]
 

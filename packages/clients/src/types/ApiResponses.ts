@@ -120,6 +120,7 @@ export type PaymentRequestRefundAttempt = {
   refundInitiatedAmount: number
   refundSettledAmount: number
   refundCancelledAmount: number
+  isCardVoid: boolean
 }
 
 export type PaymentRequestCaptureAttempt = {
@@ -127,11 +128,14 @@ export type PaymentRequestCaptureAttempt = {
   capturedAmount: number
 }
 
-export interface PageResponse<T> {
+export interface Pagination {
   pageNumber: number
   pageSize: number
   totalPages: number
   totalSize: number
+}
+
+export interface PageResponse<T> extends Pagination {
   content: T[]
 }
 
@@ -273,7 +277,27 @@ export interface Transaction {
   theirReference: string
   balance: number
   counterparty: Counterparty
+  type: TransactionType
 }
+
+export type TransactionType =
+  | 'Internal'
+  | 'SEPA_CT'
+  | 'SEPA_INST'
+  | 'UK_FAST'
+  | 'UK_BACS'
+  | 'Reversal'
+
+export const TransactionTypeValue: { [key in TransactionType]: string } = {
+  Internal: 'Internal',
+  SEPA_CT: 'SEPA Credit Transfer',
+  SEPA_INST: 'SEPA Instant',
+  UK_FAST: 'Faster Payments',
+  UK_BACS: 'Bankers Automated Clearing House',
+  Reversal: 'Reversal',
+}
+
+export type TransactionPageResponse = PageResponse<Transaction>
 
 export interface Counterparty {
   accountID: string
@@ -281,14 +305,6 @@ export interface Counterparty {
   emailAddress: string
   phoneNumber: string
   identifier: AccountIdentifier
-}
-
-export interface TransactionPageResponse {
-  content: Transaction[]
-  pageNumber: number
-  pageSize: number
-  totalPages: number
-  totalSize: number
 }
 
 export interface User {

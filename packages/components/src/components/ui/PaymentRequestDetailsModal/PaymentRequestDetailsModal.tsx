@@ -6,7 +6,7 @@ import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../typ
 import {
   getMaxCapturableAmount,
   getMaxRefundableAmount,
-  isPartialCardRefundPossible,
+  isVoid,
 } from '../../../utils/paymentAttemptsHelper'
 import CaptureModal from '../CaptureModal/CaptureModal'
 import CardRefundModal from '../CardRefundModal/CardRefundModal'
@@ -16,7 +16,7 @@ export interface PaymentRequestDetailsModalProps {
   paymentRequest: LocalPaymentRequest
   merchantTags: LocalTag[]
   hostedPaymentLink: string
-  onRefund: (authorizationID: string, amount: number) => Promise<void>
+  onRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<void>
   onCapture: (authorizationID: string, amount: number) => Promise<void>
   onTagAdded: (tag: LocalTag) => void
   onTagDeleted: (id: string) => void
@@ -46,6 +46,7 @@ const PaymentRequestDetailsModal = ({
   >()
   const [amountToCapture, setAmountToCapture] = useState<string | undefined>()
   const [maxCapturableAmount, setMaxCapturableAmount] = useState<number>(0)
+  const [isCardVoid, setIsCardVoid] = useState<boolean>(false)
 
   useEffect(() => {
     if (!selectedTransactionForCapture) return
@@ -58,9 +59,13 @@ const PaymentRequestDetailsModal = ({
   useEffect(() => {
     if (!selectedTransactionForRefund) return
 
-    const maxRefundableAmount = getMaxRefundableAmount(selectedTransactionForRefund)
-    setMaxRefundableAmount(maxRefundableAmount)
-    setAmountToRefund(maxRefundableAmount.toString())
+    if (isVoid(selectedTransactionForRefund)) {
+      setAmountToRefund(selectedTransactionForRefund.amount.toString())
+    } else {
+      const maxRefundableAmount = getMaxRefundableAmount(selectedTransactionForRefund)
+      setMaxRefundableAmount(maxRefundableAmount)
+      setAmountToRefund(maxRefundableAmount.toString())
+    }
   }, [selectedTransactionForRefund])
 
   const onCaptureClick = (paymentAttempt: LocalPaymentAttempt) => {
@@ -82,15 +87,19 @@ const PaymentRequestDetailsModal = ({
   }
 
   // This method is called when the user clicks on the refund button
-  const onRefundClick = (paymentAttempt: LocalPaymentAttempt) => {
+  const onRefundClick = (paymentAttempt: LocalPaymentAttempt, isVoid: boolean) => {
+    setIsCardVoid(isVoid)
     setSelectedTransactionForRefund(paymentAttempt)
   }
   // This method is called when the user confirms the refund
   const onRefundConfirm = async () => {
     if (selectedTransactionForRefund) {
       let parsedAmount = Number(amountToRefund)
-      parsedAmount = (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount!
-      await onRefund(selectedTransactionForRefund.attemptKey, parsedAmount)
+      if (!isCardVoid) {
+        parsedAmount =
+          (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount!
+      }
+      await onRefund(selectedTransactionForRefund.attemptKey, parsedAmount, isCardVoid)
       onRefundDismiss()
     }
   }
@@ -129,7 +138,12 @@ const PaymentRequestDetailsModal = ({
                   paymentRequest={paymentRequest}
                   merchantTags={merchantTags}
                   hostedPaymentLink={hostedPaymentLink}
-                  onRefund={onRefundClick}
+                  onRefund={(paymentAttempt: LocalPaymentAttempt) =>
+                    onRefundClick(paymentAttempt, false)
+                  }
+                  onVoid={(paymentAttempt: LocalPaymentAttempt) =>
+                    onRefundClick(paymentAttempt, true)
+                  }
                   onCapture={onCaptureClick}
                   onTagAdded={onTagAdded}
                   onTagDeleted={onTagDeleted}
@@ -177,7 +191,7 @@ const PaymentRequestDetailsModal = ({
                 contactName={paymentRequest.contact.name}
                 lastFourDigitsOnCard={selectedTransactionForRefund?.last4DigitsOfCardNumber}
                 processor={selectedTransactionForRefund?.processor}
-                isPartialRefundPossible={isPartialCardRefundPossible(selectedTransactionForRefund)}
+                isVoid={isCardVoid}
               />
             </div>
           </div>

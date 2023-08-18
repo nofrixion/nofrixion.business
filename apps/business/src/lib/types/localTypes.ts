@@ -91,11 +91,3 @@ export interface Counterparty {
   phoneNumber: string
   identifier: AccountIdentifier
 }
-
-export interface TransactionPageResponse {
-  content: Transaction[]
-  pageNumber: number
-  pageSize: number
-  totalPages: number
-  totalSize: number
-}

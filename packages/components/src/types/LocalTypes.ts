@@ -68,6 +68,7 @@ export interface LocalPaymentRequestRefundAttempt {
   refundInitiatedAmount: number
   refundSettledAmount: number
   refundCancelledAmount: number
+  isCardVoid: boolean
 }
 
 export interface LocalPaymentRequestCaptureAttempt {
@@ -146,4 +147,17 @@ export interface LocalTag {
   name: string
   colourHex?: string
   description?: string
+}
+
+export interface LocalTransaction {
+  date: Date
+  destinationAccount: {
+    name: string
+    accountInfo: string
+  }
+  amount: number
+  balanceAfterTx?: number
+  reference: string
+  description: string
+  type: string
 }

@@ -11,7 +11,8 @@ import {
   usePaymentRequestMetrics,
   usePaymentRequests,
   useRefund,
-} from '@nofrixion/clients'
+  useVoid,
+} from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
@@ -153,6 +154,27 @@ const PaymentRequestDashboardMain = ({
   )
 
   const { processRefund } = useRefund(
+    {
+      amountSortDirection: amountSortDirection,
+      statusSortDirection: statusSortDirection,
+      createdSortDirection: createdSortDirection,
+      contactSortDirection: contactSortDirection,
+      merchantId: merchantId,
+      pageNumber: page,
+      pageSize: pageSize,
+      status: status,
+      fromDateMS: dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate.getTime(),
+      search: searchFilter?.length >= 3 ? searchFilter : undefined,
+      currency: currencyFilter,
+      minAmount: minAmountFilter,
+      maxAmount: maxAmountFilter,
+      tags: tagsFilter,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const { processVoid } = useVoid(
     {
       amountSortDirection: amountSortDirection,
       statusSortDirection: statusSortDirection,
@@ -390,19 +412,33 @@ const PaymentRequestDashboardMain = ({
     setSelectedPaymentRequestID(paymentRequest.id)
   }
 
-  const onRefundClick = async (authorizationID: string, amount: number) => {
+  const onRefundClick = async (authorizationID: string, amount: number, isVoid: boolean) => {
     if (selectedPaymentRequestID) {
-      const result = await processRefund({
-        paymentRequestId: selectedPaymentRequestID,
-        authorizationId: authorizationID,
-        amount: amount,
-      })
+      if (isVoid) {
+        const voidResult = await processVoid({
+          paymentRequestId: selectedPaymentRequestID,
+          authorizationId: authorizationID,
+        })
 
-      if (result.error) {
-        makeToast('error', 'Error processing refund.')
-        handleApiError(result.error)
+        if (voidResult.error) {
+          makeToast('error', 'Error processing void.')
+          handleApiError(voidResult.error)
+        } else {
+          makeToast('success', 'Payment successfully voided.')
+        }
       } else {
-        makeToast('success', 'Payment successfully refunded.')
+        const refundResult = await processRefund({
+          paymentRequestId: selectedPaymentRequestID,
+          authorizationId: authorizationID,
+          amount: amount,
+        })
+
+        if (refundResult.error) {
+          makeToast('error', 'Error processing refund.')
+          handleApiError(refundResult.error)
+        } else {
+          makeToast('success', 'Payment successfully refunded.')
+        }
       }
     }
   }

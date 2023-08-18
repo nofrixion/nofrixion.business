@@ -1,9 +1,30 @@
-import UnderConstructionUI from '../../components/UnderConstructionUI'
+import { AccountsList } from '@nofrixion/components'
+import { Account } from '@nofrixion/moneymoov'
+import { useNavigate } from 'react-router-dom'
 
-const url = `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Merchant/Accounts`
+import { NOFRIXION_API_URL } from '../../lib/constants'
+import useMerchantStore from '../../lib/stores/useMerchantStore'
+import useStore from '../../lib/stores/useStore'
 
 const CurrentAccountsPage = () => {
-  return <UnderConstructionUI title="Current Accounts" link={url} />
+  const merchant = useStore(useMerchantStore, (state) => state.merchant)
+  const navigate = useNavigate()
+
+  const onAccountClick = (account: Account) => {
+    navigate(account.id)
+  }
+
+  return (
+    <div>
+      {merchant && (
+        <AccountsList
+          merchantId={merchant.id}
+          apiUrl={NOFRIXION_API_URL}
+          onAccountClick={onAccountClick}
+        />
+      )}
+    </div>
+  )
 }
 
 export default CurrentAccountsPage
