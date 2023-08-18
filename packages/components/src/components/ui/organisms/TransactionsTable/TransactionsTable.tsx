@@ -1,4 +1,4 @@
-import { Pagination } from '@nofrixion/moneymoov'
+import { Pagination } from '@nofrixion/clients'
 import { format } from 'date-fns'
 import * as React from 'react'
 

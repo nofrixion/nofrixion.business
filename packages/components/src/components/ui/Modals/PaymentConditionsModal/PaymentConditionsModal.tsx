@@ -1,4 +1,4 @@
-import { PaymentConditionsDefaults } from '@nofrixion/moneymoov'
+import { PaymentConditionsDefaults } from '@nofrixion/clients'
 import { useState } from 'react'
 
 import { LocalPaymentConditionsFormValue } from '../../../../types/LocalTypes'

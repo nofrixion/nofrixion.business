@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/moneymoov'
+import { Currency } from '@nofrixion/clients'
 import { Meta, StoryFn } from '@storybook/react'
 
 import AccountBalance from './AccountBalance'

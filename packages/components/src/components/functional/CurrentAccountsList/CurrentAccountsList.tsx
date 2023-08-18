@@ -1,4 +1,4 @@
-import { Account, useAccounts } from '@nofrixion/moneymoov'
+import { Account, useAccounts } from '@nofrixion/clients'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'

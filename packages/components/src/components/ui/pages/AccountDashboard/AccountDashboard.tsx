@@ -4,7 +4,7 @@ import {
   Currency,
   Pagination,
   SortDirection,
-} from '@nofrixion/moneymoov'
+} from '@nofrixion/clients'
 import * as React from 'react'
 
 import { LocalTransaction } from '../../../../types/LocalTypes'

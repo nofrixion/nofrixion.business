@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/moneymoov'
+import { Currency } from '@nofrixion/clients'
 import { Fragment } from 'react'
 
 const parseHighlightedText = (text: string) => {

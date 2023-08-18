@@ -1,5 +1,5 @@
+import { Account } from '@nofrixion/clients'
 import { AccountsList } from '@nofrixion/components'
-import { Account } from '@nofrixion/moneymoov'
 import { useNavigate } from 'react-router-dom'
 
 import { NOFRIXION_API_URL } from '../../lib/constants'

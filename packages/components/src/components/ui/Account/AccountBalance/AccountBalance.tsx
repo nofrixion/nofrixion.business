@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/moneymoov'
+import { Currency } from '@nofrixion/clients'
 
 import { cn } from '../../../../utils'
 import { formatAmount } from '../../../../utils/formatters'
