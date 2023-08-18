@@ -93,7 +93,11 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
 
             {/* TODO: Add expand component */}
             {pendingPayments && (
-              <PendingPayments pendingPayments={pendingPayments} onSeeMore={onSeeMore} className='w-[400px]' />
+              <PendingPayments
+                pendingPayments={pendingPayments}
+                onSeeMore={onSeeMore}
+                className="w-[400px]"
+              />
             )}
           </div>
         </div>

@@ -1,4 +1,9 @@
-import { SortDirection, useAccount, usePendingPayments, useTransactions } from '@nofrixion/moneymoov'
+import {
+  SortDirection,
+  useAccount,
+  usePendingPayments,
+  useTransactions,
+} from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -82,7 +87,7 @@ const AccountDashboardMain = ({
 
   const { data: payoutPageResponse } = usePendingPayments(
     { accountId, pageNumber: 1, pageSize: 3 },
-    { apiUrl, authToken: token }
+    { apiUrl, authToken: token },
   )
 
   useEffect(() => {
@@ -103,8 +108,6 @@ const AccountDashboardMain = ({
       console.error(payoutPageResponse.error)
     }
   }, [payoutPageResponse])
-
-
 
   const onPageChange = (page: number) => {
     setPage(page)
