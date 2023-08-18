@@ -185,8 +185,8 @@ const Transactions = ({
                 {getSubTransactions(transaction).map(
                   (subTransaction, evIndex) =>
                     (cardAuthoriseOnly ||
-                      (!cardAuthoriseOnly &&
-                        subTransaction.type !== SubTransactionType.Capture)) && (
+                      (!cardAuthoriseOnly && subTransaction.type !== SubTransactionType.Capture)) &&
+                    !subTransaction.cancelled && (
                       <tr
                         key={`ev_${evIndex}`}
                         className={cn('text-xs leading-6 group whitespace-nowrap', {
@@ -240,11 +240,15 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="return/12" className="text-control-grey-hover" />
+                                {subTransaction.awaitingApproval === true ? (
+                                  <Icon name="pending/12" className="text-control-grey-hover" />
+                                ) : (
+                                  <Icon name="return/12" className="text-control-grey-hover" />
+                                )}
                               </span>
                               <span>{subTransaction.awaitingApproval}</span>
                               {subTransaction.awaitingApproval === true ? (
-                                <span>Refund awaiting approval</span>
+                                <span>Refund pending approval</span>
                               ) : (
                                 <span>Refunded</span>
                               )}
@@ -257,7 +261,7 @@ const Transactions = ({
                               <span className="mr-2 p-1.5">
                                 <Icon name="void/12" className="text-control-grey-hover" />
                               </span>
-                              <span>Void</span>
+                              <span>Voided</span>
                             </div>
                           </td>
                         )}

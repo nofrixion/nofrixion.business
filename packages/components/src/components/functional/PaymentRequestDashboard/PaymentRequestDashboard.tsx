@@ -447,7 +447,7 @@ const PaymentRequestDashboardMain = ({
     setSelectedPaymentRequestID(paymentRequest.id)
   }
 
-  const onRefundClick = async (authorizationID: string, amount: number, isVoid: boolean) => {
+  const onCardRefundClick = async (authorizationID: string, amount: number, isVoid: boolean) => {
     if (selectedPaymentRequestID) {
       if (isVoid) {
         const voidResult = await processVoid({
@@ -484,11 +484,8 @@ const PaymentRequestDashboardMain = ({
     amount: number,
     paymentInitiationID: string,
   ) => {
-    console.log('paymentInitiationID', paymentInitiationID)
     const yourReference = `REFUND-${paymentInitiationID}`
-    console.log('yourReference', yourReference)
     if (selectedPaymentRequestID) {
-      console.log('Bank refund', sourceAccount, counterParty, amount)
       const result = await createPayout({
         accountID: sourceAccount.id,
         type: localAccountIdentifierTypeToRemoteAccountIdentifierType(
@@ -505,10 +502,10 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error processing refund.')
+        makeToast('error', 'Error creating refund.')
         handleApiError(result.error)
       } else {
-        makeToast('success', 'Payment successfully refunded.')
+        makeToast('success', 'Refund successfully submitted for approval.')
       }
     }
   }
@@ -763,7 +760,7 @@ const PaymentRequestDashboardMain = ({
         onDismiss={onPaymentRequestDetailsModalDismiss}
         setMerchantTags={setLocalMerchantTags}
         setPaymentRequests={setLocalPaymentRequests}
-        onRefund={onRefundClick}
+        onCardRefund={onCardRefundClick}
         onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
         statusSortDirection={statusSortDirection}

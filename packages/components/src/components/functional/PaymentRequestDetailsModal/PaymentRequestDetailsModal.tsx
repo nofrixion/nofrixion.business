@@ -33,7 +33,7 @@ interface PaymentRequestDetailsModalProps extends usePaymentRequestsProps {
   onDismiss: () => void
   setMerchantTags: (merchantTags: LocalTag[]) => void
   setPaymentRequests: (paymentRequests: LocalPaymentRequest[]) => void
-  onRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
+  onCardRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
   onBankRefund: (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
@@ -50,7 +50,7 @@ const PaymentRequestDetailsModal = ({
   merchantTags,
   open,
   onDismiss,
-  onRefund,
+  onCardRefund,
   onBankRefund,
   onCapture,
   statusSortDirection,
@@ -225,7 +225,7 @@ const PaymentRequestDetailsModal = ({
           hostedPaymentLink={`${paymentRequest.hostedPayCheckoutUrl}`}
           open={open}
           accounts={accounts}
-          onRefund={onRefund}
+          onCardRefund={onCardRefund}
           onBankRefund={onBankRefund}
           onCapture={onCapture}
           onTagAdded={onTagAdded}

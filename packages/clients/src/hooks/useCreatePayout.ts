@@ -67,7 +67,6 @@ export const useCreatePayout = (
 ): {
   createPayout: (createPayoutProps: CreatePayoutProps) => Promise<{ error: ApiError | undefined }>
 } => {
-  console.log(authToken)
   const queryClient = useQueryClient()
 
   const [paymentRequestID, setPaymentRequestID] = useState<string>()
@@ -136,7 +135,7 @@ export const useCreatePayout = (
       ),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
       if (data.success && isForRefund) {
-        // After refund is successful, invalidate the payment requests cache, the single payment request cache,
+        // After create payout for refund is successful, invalidate the payment requests cache, the single payment request cache,
         // and the metrics cache because the status of the payment request has changed
         queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: SINGLE_PAYMENT_REQUEST_QUERY_KEY })

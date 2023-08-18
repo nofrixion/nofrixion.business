@@ -81,6 +81,7 @@ export interface SubTransaction {
   currency: Currency.EUR | Currency.GBP
   type: SubTransactionType
   awaitingApproval?: boolean
+  cancelled?: boolean
 }
 
 export interface LocalPaymentRequestRefundAttempt {

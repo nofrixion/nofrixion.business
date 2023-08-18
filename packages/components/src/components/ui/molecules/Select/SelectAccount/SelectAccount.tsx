@@ -56,7 +56,7 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
           </SelectValue>
         </SelectTrigger>
       }
-      <SelectContent className="w-full md:w-[375px]">
+      <SelectContent className="w-full md:w-[375px] z-[200]">
         {accounts.map((account) => (
           <SelectItem key={account.id} value={account.id} isText={false}>
             <div className="w-full flex justify-between">

@@ -76,12 +76,19 @@ export const getSubTransactions = (paymentAttempt: LocalPaymentAttempt): SubTran
     ...paymentAttempt.refundAttempts
       .filter((x) => x.isCardVoid === false)
       .map(
-        ({ refundSettledAt, refundSettledAmount, refundInitiatedAmount, refundInitiatedAt }) => ({
+        ({
+          refundSettledAt,
+          refundSettledAmount,
+          refundInitiatedAmount,
+          refundInitiatedAt,
+          refundCancelledAt,
+        }) => ({
           occurredAt: refundSettledAt ?? refundInitiatedAt,
           amount: refundSettledAmount > 0 ? refundSettledAmount : refundInitiatedAmount,
           currency: paymentAttempt.currency,
           type: SubTransactionType.Refund,
           awaitingApproval: refundSettledAt === undefined && refundInitiatedAt !== undefined,
+          cancelled: refundCancelledAt !== undefined && refundSettledAt === undefined,
         }),
       ),
     ...paymentAttempt.refundAttempts
