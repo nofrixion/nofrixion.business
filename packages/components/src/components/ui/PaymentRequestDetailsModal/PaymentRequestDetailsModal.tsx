@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/clients'
+import { Currency } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { Sheet, SheetContent } from '../../../components/ui/atoms'

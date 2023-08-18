@@ -1,4 +1,4 @@
-import { SortDirection, useAccount, useTransactions } from '@nofrixion/clients'
+import { SortDirection, useAccount, useTransactions } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'

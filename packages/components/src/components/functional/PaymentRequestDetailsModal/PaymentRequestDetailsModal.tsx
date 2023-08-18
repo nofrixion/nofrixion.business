@@ -5,7 +5,7 @@ import {
   useDeleteTag,
   usePaymentRequest,
   usePaymentRequestsProps,
-} from '@nofrixion/clients'
+} from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { makeToast } from '../../../components/ui/Toast/Toast'

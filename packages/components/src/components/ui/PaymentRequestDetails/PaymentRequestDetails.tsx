@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/clients'
+import { Currency } from '@nofrixion/moneymoov'
 
 import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
 import { getTotalAmountPaid } from '../../../utils/paymentAttemptsHelper'

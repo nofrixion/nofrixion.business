@@ -12,7 +12,7 @@ import {
   Transaction,
   TransactionTypeValue,
   Wallets,
-} from '@nofrixion/clients'
+} from '@nofrixion/moneymoov'
 
 import {
   LocalAddressType,

@@ -1,6 +1,6 @@
 import '../index.css'
 
-import { useMerchants, useUser } from '@nofrixion/clients'
+import { useMerchants, useUser } from '@nofrixion/moneymoov'
 import { useEffect } from 'react'
 import { useOutlet } from 'react-router-dom'
 

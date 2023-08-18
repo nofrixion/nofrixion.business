@@ -1,4 +1,4 @@
-import { Account, Account as AccountModel } from '@nofrixion/clients'
+import { Account, Account as AccountModel } from '@nofrixion/moneymoov'
 
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'

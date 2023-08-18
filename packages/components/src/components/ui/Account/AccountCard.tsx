@@ -1,4 +1,4 @@
-import { Account as AccountModel, AccountIdentifierType } from '@nofrixion/clients'
+import { Account as AccountModel, AccountIdentifierType } from '@nofrixion/moneymoov'
 
 import { cn } from '../../../utils'
 import { DisplayAndCopy } from '../atoms'

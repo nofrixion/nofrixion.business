@@ -7,7 +7,7 @@ import {
   PaymentConditionsDefaults,
   PaymentMethodsDefaults,
   UserPaymentDefaults,
-} from '@nofrixion/clients'
+} from '@nofrixion/moneymoov'
 import { AnimatePresence, motion } from 'framer-motion'
 import _ from 'lodash'
 import { Fragment, useEffect, useState } from 'react'

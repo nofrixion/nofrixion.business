@@ -12,7 +12,7 @@ import {
   usePaymentRequests,
   useRefund,
   useVoid,
-} from '@nofrixion/clients'
+} from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'

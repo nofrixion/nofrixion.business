@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/clients'
+import { Currency } from '@nofrixion/moneymoov'
 
 import {
   LocalAddressType,

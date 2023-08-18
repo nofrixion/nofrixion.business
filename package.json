@@ -17,7 +17,8 @@
     "pre-commit": "turbo run lint && npm run format",
     "prepare": "husky install",
     "story": "turbo run story",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "publish-packages": "turbo run build lint && changeset version && changeset publish"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.2",

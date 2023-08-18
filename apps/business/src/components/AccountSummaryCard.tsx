@@ -1,4 +1,4 @@
-import { Transaction, useTransactions } from '@nofrixion/clients'
+import { Transaction, useTransactions } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import Card from '../components/ui/atoms/Card/Card'

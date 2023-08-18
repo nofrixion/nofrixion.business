@@ -43,7 +43,7 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           axios: 'axios',
           '@tanstack/react-query': '@tanstack/react-query',
-          '@nofrixion/clients': '@nofrixion/clients',
+          '@nofrixion/moneymoov': '@nofrixion/moneymoov',
           '@nofrixion/components': '@nofrixion/components',
         },
       },

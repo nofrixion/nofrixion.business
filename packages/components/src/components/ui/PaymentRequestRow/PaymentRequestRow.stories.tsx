@@ -1,4 +1,4 @@
-import { Currency } from '@nofrixion/clients'
+import { Currency } from '@nofrixion/moneymoov'
 import { Meta, StoryFn } from '@storybook/react'
 
 import PaymentRequestRow from './PaymentRequestRow'

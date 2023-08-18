@@ -1,4 +1,4 @@
-﻿import { Currency } from '@nofrixion/clients'
+﻿import { Currency } from '@nofrixion/moneymoov'
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
 

@@ -1,4 +1,4 @@
-import { PaymentRequestStatus } from '@nofrixion/clients'
+import { PaymentRequestStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import classNames from 'classnames'
 

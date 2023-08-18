@@ -1,4 +1,4 @@
-import { NotificationEmailsDefaults } from '@nofrixion/clients'
+import { NotificationEmailsDefaults } from '@nofrixion/moneymoov'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
