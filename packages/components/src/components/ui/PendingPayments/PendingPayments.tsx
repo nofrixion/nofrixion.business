@@ -45,8 +45,12 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
                   </div>
                 ))}
               </div>
-              <div>
-                <span onClick={() => onSeeMore()} aria-hidden="true">
+              <div className="flex justify-end py-2">
+                <span
+                  onClick={() => onSeeMore()}
+                  aria-hidden="true"
+                  className="text-right text-xs font-normal underline text-default-text cursor-pointer"
+                >
                   See more
                 </span>
               </div>

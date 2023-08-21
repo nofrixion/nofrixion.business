@@ -1,4 +1,5 @@
 import {
+  PayoutStatus,
   SortDirection,
   useAccount,
   usePendingPayments,
@@ -86,7 +87,12 @@ const AccountDashboardMain = ({
   )
 
   const { data: payoutPageResponse } = usePendingPayments(
-    { accountId, pageNumber: 1, pageSize: 3 },
+    {
+      accountId,
+      pageNumber: 1,
+      pageSize: 3,
+      payoutStatuses: [PayoutStatus.PENDING, PayoutStatus.QUEUED, PayoutStatus.QUEUED_UPSTREAM],
+    },
     { apiUrl, authToken: token },
   )
 
@@ -129,6 +135,7 @@ const AccountDashboardMain = ({
   }
 
   const onSeeMore = () => {
+    // TODO: Go to payouts
     return
   }
 
