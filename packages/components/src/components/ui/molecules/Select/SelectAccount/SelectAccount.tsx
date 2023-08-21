@@ -26,7 +26,6 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
   defaultValue,
   value,
   onValueChange,
-  // subText,
   className,
   accounts,
   ...props
@@ -60,14 +59,11 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
         {accounts.map((account) => (
           <SelectItem key={account.id} value={account.id} isText={false}>
             <div className="w-full flex justify-between">
-              <>
-                <span className="break-keep">{account.accountName}</span>
-                <span className="text-[#73888C] font-normal">
-                  {formatCurrency(account.currency)} {formatAmount(account.availableBalance)}
-                </span>
-              </>
+              <span className="break-keep">{account.accountName}</span>
+              <span className="text-[#73888C] font-normal">
+                {formatCurrency(account.currency)} {formatAmount(account.availableBalance)}
+              </span>
             </div>
-            {/* {account.displayName} */}
           </SelectItem>
         ))}
       </SelectContent>

@@ -12,8 +12,9 @@ import { localCurrency } from '../../../utils/constants'
 import { formatAmount } from '../../../utils/formatters'
 import { getMaxRefundableAmount } from '../../../utils/paymentAttemptsHelper'
 import { formatCurrency } from '../../../utils/uiFormaters'
-import { Icon, Sheet, SheetContent } from '../atoms'
+import { Button, Icon, Sheet, SheetContent } from '../atoms'
 import InputAmountField from '../InputAmountField/InputAmountField'
+import { Loader } from '../Loader/Loader'
 import { SelectAccount } from '../molecules/Select/SelectAccount/SelectAccount'
 
 export interface BankRefundModalProps {
@@ -63,8 +64,6 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
   }
 
   const onRefundClick = async () => {
-    setIsRefundButtonDisabled(true)
-
     setValidationErrorMessage('')
     const parsedAmount = Number(amountToRefund)
     if (parsedAmount < 0) {
@@ -74,7 +73,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
     } else if (maxRefundableAmount && parsedAmount > maxRefundableAmount) {
       setValidationErrorMessage("You can't refund more than the remaining amount.")
     } else if (counterParty && amountToRefund && selectedAccount) {
-      setIsRefundButtonDisabled(false)
+      setIsRefundButtonDisabled(true)
       let parsedAmount = Number(amountToRefund)
       parsedAmount = (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount
 
@@ -99,129 +98,125 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
       {bankPaymentAttempt && paymentRequest && (
         <Sheet open={!!bankPaymentAttempt} onOpenChange={handleOnOpenChange}>
           <SheetContent className="w-full lg:w-[37.5rem]">
-            <div className="bg-white max-h-screen overflow-auto">
-              <div className="max-h-full h-screen">
-                <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8">
-                  <div className="max-h-full">
-                    <div className="h-fit">
-                      <button
-                        type="button"
-                        className="hover:cursor-pointer block"
-                        onClick={onDismiss}
-                      >
-                        <Icon name="back/24" />
-                      </button>
-                      <span className="block text-2xl font-semibold text-default-text mt-8">
-                        Refund payment
-                      </span>
+            <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8">
+              <div className="h-fit mb-[7.5rem] lg:mb-0">
+                <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
+                  <Icon name="back/24" />
+                </button>
+                <span className="block text-2xl font-semibold text-default-text mt-8">
+                  Refund payment
+                </span>
 
-                      <div className="mt-12 md:flex">
-                        <div className="md:w-[152px]">
-                          <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
-                            Refund
-                          </span>
-                        </div>
-
-                        <div className="text-left">
-                          <div className="md:w-40">
-                            <InputAmountField
-                              currency={bankPaymentAttempt.currency}
-                              onCurrencyChange={() => {}}
-                              allowCurrencyChange={false}
-                              value={formatter.format(Number(amountToRefund))}
-                              onChange={(e) => setAmountToRefund(e.target.value)}
-                            ></InputAmountField>
-                          </div>
-                          <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
-                            There are {getCurrencySymbol(bankPaymentAttempt.currency)}{' '}
-                            {formatter.format(getMaxRefundableAmount(bankPaymentAttempt))} available
-                            to refund.
-                          </span>
-                          <AnimatePresence>
-                            {validationErrorMessage && (
-                              <motion.div
-                                className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                              >
-                                {validationErrorMessage}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      </div>
-                      <div className="mt-10 md:flex items-baseline">
-                        <div className="md:w-[152px]">
-                          <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
-                            From account
-                          </span>
-                        </div>
-                        <div className="text-left">
-                          {accounts.length > 1 ? (
-                            <SelectAccount
-                              className="text-right border border-border-grey "
-                              value={selectedAccount.id}
-                              onValueChange={(value) => {
-                                setSelectedAccount(
-                                  accounts.find((account) => account.id === value) ?? accounts[0],
-                                )
-                              }}
-                              accounts={accounts}
-                            />
-                          ) : (
-                            <div className="flex gap-5">
-                              <span className="font-semibold w-full break-words text-sm/5 break-keep">
-                                {accounts[0].accountName}
-                              </span>{' '}
-                              <div className="text-[#73888C] font-normal flex flex-row gap-1 items-center">
-                                <span>{formatCurrency(accounts[0].currency)}</span>
-                                <span>{formatAmount(accounts[0].availableBalance)}</span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="mt-11 md:flex items-baseline">
-                        <div className="md:w-[152px]">
-                          <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
-                            To account
-                          </span>
-                        </div>
-                        <div className="text-left">
-                          <p className="font-semibold w-full break-words text-sm/5 mb-0.5 md:mb-2">
-                            {counterParty?.name}
-                          </p>
-                          {counterParty && counterParty.accountInfo && (
-                            <p className="text-xs/5 w-full text-ellipsis break-words">
-                              {counterParty.accountInfo}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="mt-8 md:flex items-baseline">
-                        <div className="md:w-[152px]">
-                          <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
-                            Reference
-                          </span>
-                        </div>
-                        <div className="text-left">
-                          <p className="font-semibold w-full break-words text-sm/5">Refund</p>
-                        </div>
-                      </div>
-                      <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
-                        <button
-                          className="justify-center rounded-full bg-[#006A80] h-12 lg:h-11 px-16 text-sm text-white font-semibold transition w-full cursor-pointer hover:bg-[#144752]"
-                          onClick={onRefundClick}
-                          disabled={isRefundButtonDisabled}
-                        >
-                          Submit for approval
-                        </button>
-                      </div>
-                    </div>
+                <div className="mt-12 md:flex">
+                  <div className="md:w-[152px]">
+                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
+                      Refund
+                    </span>
                   </div>
+
+                  <div className="text-left">
+                    <div className="md:w-40">
+                      <InputAmountField
+                        currency={bankPaymentAttempt.currency}
+                        onCurrencyChange={() => {}}
+                        allowCurrencyChange={false}
+                        value={formatter.format(Number(amountToRefund))}
+                        onChange={(e) => setAmountToRefund(e.target.value)}
+                      ></InputAmountField>
+                    </div>
+                    <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
+                      There are {getCurrencySymbol(bankPaymentAttempt.currency)}{' '}
+                      {formatter.format(getMaxRefundableAmount(bankPaymentAttempt))} available to
+                      refund.
+                    </span>
+                    <AnimatePresence>
+                      {validationErrorMessage && (
+                        <motion.div
+                          className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          {validationErrorMessage}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+                <div className="mt-10 md:flex items-baseline">
+                  <div className="md:w-[152px]">
+                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
+                      From account
+                    </span>
+                  </div>
+                  <div className="text-left">
+                    {accounts.length > 1 ? (
+                      <SelectAccount
+                        className="text-right border border-border-grey "
+                        value={selectedAccount.id}
+                        onValueChange={(value) => {
+                          setSelectedAccount(
+                            accounts.find((account) => account.id === value) ?? accounts[0],
+                          )
+                        }}
+                        accounts={accounts}
+                      />
+                    ) : (
+                      <div className="flex gap-5">
+                        <span className="font-semibold w-full break-words text-sm/5 break-keep">
+                          {accounts[0].accountName}
+                        </span>{' '}
+                        <div className="text-[#73888C] font-normal flex flex-row gap-1 items-center">
+                          <span>{formatCurrency(accounts[0].currency)}</span>
+                          <span>{formatAmount(accounts[0].availableBalance)}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-11 md:flex items-baseline">
+                  <div className="md:w-[152px]">
+                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
+                      To account
+                    </span>
+                  </div>
+                  <div className="text-left">
+                    <p className="font-semibold w-full break-words text-sm/5 mb-0.5 md:mb-2">
+                      {counterParty?.name}
+                    </p>
+                    {counterParty && counterParty.accountInfo && (
+                      <p className="text-xs/5 w-full text-ellipsis break-words">
+                        {counterParty.accountInfo}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-8 md:flex items-baseline">
+                  <div className="md:w-[152px]">
+                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
+                      Reference
+                    </span>
+                  </div>
+                  <div className="text-left">
+                    <p className="font-semibold w-full break-words text-sm/5">Refund</p>
+                  </div>
+                </div>
+                <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
+                  <Button
+                    variant="primaryDark"
+                    size="big"
+                    className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                    onClick={onRefundClick}
+                    disabled={isRefundButtonDisabled}
+                  >
+                    {isRefundButtonDisabled ? (
+                      <Loader className="h-6 w-6 mx-auto" />
+                    ) : (
+                      <span>Submit for approval</span>
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
