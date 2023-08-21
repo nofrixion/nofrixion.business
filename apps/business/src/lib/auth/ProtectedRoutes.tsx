@@ -2,6 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 import { Loader } from '../../components/ui/Loader/Loader'
 import { useAuth } from '../../lib/auth/useAuth'
+import { getRoute } from '../utils/utils'
 import { AuthContextType } from './AuthProvider'
 
 export const ProtectedRoutes = () => {
@@ -14,7 +15,7 @@ export const ProtectedRoutes = () => {
 
   if (!authContext || !authContext.authState?.isLoggedIn || authContext.authState?.isError) {
     // user is not authenticated, redirect to login page with the return url
-    return <Navigate to="/" replace state={{ from: location }} />
+    return <Navigate to={getRoute('/')} replace state={{ from: location }} />
   } else {
     return <Outlet />
   }

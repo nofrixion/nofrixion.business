@@ -1,24 +1,25 @@
 import { Account as AccountModel, AccountIdentifierType } from '@nofrixion/moneymoov'
 
-import { formatAmount } from '../../../utils/formatters'
-import { formatCurrency } from '../../../utils/uiFormaters'
+import { cn } from '../../../utils'
 import { DisplayAndCopy } from '../atoms'
+import AccountBalance from './AccountBalance/AccountBalance'
 
-export interface AccountCardProps {
+export interface AccountCardProps extends React.HTMLAttributes<HTMLButtonElement> {
   account: AccountModel
-  onAccountClick: () => void
 }
 
-const AccountCard: React.FC<AccountCardProps> = ({ account, onAccountClick }) => {
+const AccountCard: React.FC<AccountCardProps> = ({ account, className, ...props }) => {
   return (
-    <div className="flex flex-wrap sm:h-[124px] p-8 mb-6 bg-white gap-8 justify-between rounded-lg hover:shadow-[0px_2px_8px_0px_rgba(4,_41,_49,_0.1)]">
-      <div>
+    <button
+      {...props}
+      className={cn(
+        'flex flex-wrap sm:h-[124px] p-8 mb-6 bg-white gap-8 justify-between rounded-lg hover:shadow-[0px_2px_8px_0px_rgba(4,_41,_49,_0.1)] w-full',
+        className,
+      )}
+    >
+      <div className="text-left">
         <div className="mt-2">
-          <span
-            className="font-semibold text-xl leading-5"
-            onClick={() => onAccountClick()}
-            aria-hidden="true"
-          >
+          <span className="font-semibold text-xl leading-5" aria-hidden="true">
             {account.accountName}
           </span>
         </div>
@@ -33,18 +34,14 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, onAccountClick }) =>
           )}
         </div>
       </div>
-      <div className="text-right">
-        <span className="text-4xl font-semibold leading-9 tabular-nums font-inter-fontFeatureSettings">
-          {formatCurrency(account.currency)} {formatAmount(account.balance)}
-        </span>
-        <div className="text-sm font-normal leading-4 mt-2">
-          <span className="pr-2">Available</span>
-          <span className="tabular-nums font-inter-fontFeatureSettings">
-            {formatCurrency(account.currency)} {formatAmount(account.availableBalance)}
-          </span>
-        </div>
+      <div>
+        <AccountBalance
+          currency={account.currency}
+          balance={account.balance}
+          availableBalance={account.availableBalance}
+        />
       </div>
-    </div>
+    </button>
   )
 }
 

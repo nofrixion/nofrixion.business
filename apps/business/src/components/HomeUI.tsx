@@ -7,7 +7,9 @@ import IconArrowRight from '../assets/icons/arrow-right.svg'
 import { AuthContextType } from '../lib/auth/AuthProvider'
 import { useAuth } from '../lib/auth/useAuth'
 import { NOFRIXION_BFF_URL } from '../lib/constants'
+import { getRoute } from '../lib/utils/utils'
 import { Loader } from './ui/Loader/Loader'
+import { PRReview } from './ui/PRReview'
 
 const CardHome = ({ onEnterPressed }: { onEnterPressed: () => void }) => {
   return (
@@ -66,20 +68,20 @@ const HomeUI = () => {
   // Note: added `finishedFirstLoading` to prevent the page from flashing the loader
   // as react-query is fetching the user data every time the page is focused
   if (authState?.isLoading && !finishedFirstLoading) {
-    return <Loader className="flex items-center justify-center p-24 min-h-screen" />
+    return <Loader className="flex items-center justify-center p-24 min-h-full" />
   }
 
   if (authState?.isLoggedIn) {
-    return <Navigate to={origin ?? '/home'} />
+    return <Navigate to={origin ?? getRoute('/home')} />
   }
 
   return (
-    <main className="flex items-center justify-center p-24 min-h-screen">
+    <main className="flex items-center justify-center p-24 min-h-full">
       <div>
         <CardHome
           onEnterPressed={() => {
             window.location.href = `${NOFRIXION_BFF_URL}/login?returnUrl=${
-              callbackUrl ?? origin ?? '/home'
+              callbackUrl ?? origin ?? getRoute('/home')
             }`
           }}
         />
@@ -89,6 +91,11 @@ const HomeUI = () => {
 
           <img src={LogoNofrixion} alt="Nofrixion Logo" />
         </div>
+        {import.meta.env.VITE_NOFRIXION_PULL_REQUEST_ID && (
+          <div className="flex justify-center items-center">
+            <PRReview />
+          </div>
+        )}
       </div>
     </main>
   )

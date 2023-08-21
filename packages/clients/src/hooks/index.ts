@@ -1,3 +1,4 @@
+export { useAccount } from './useAccount'
 export { useAccounts } from './useAccounts'
 export { useAddTag } from './useAddTag'
 export { useBanks } from './useBanks'

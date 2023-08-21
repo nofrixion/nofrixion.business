@@ -126,40 +126,22 @@ builder.Services.AddDataProtection().PersistKeysToStackExchangeRedis(redis, "Dat
 
 var app = builder.Build();
 
-app.UseRouting();
-
 app.UseAuthentication();
 app.UseBff();
 
 app.UseForwardedHeaders();
 
-app.Use(async (context, next) => 
-{
-    var path = context.Request.Path.Value;
-
-    if (!path.StartsWith("/api") && !path.StartsWith("/bff") && !Path.HasExtension(path)) 
-    { 
-        context.Request.Path = "/Index";
-    }
-    
-    await next();
-});
-
-app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
 
-app.MapControllers()
-    .RequireAuthorization()
-    .AsBffApiEndpoint();
+app.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl"])
+    .RequireAccessToken();
 
-app.UseEndpoints(endpoints =>
-{
-    _ = endpoints.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl"])
-        .RequireAccessToken();
-});
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.UseCors("cors-policy");
 

@@ -1,5 +1,5 @@
 import { Account, ApiResponse, HttpMethod } from '../types'
-import { ApiProps, MerchantProps } from '../types/props'
+import { AccountProps, ApiProps, MerchantProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -18,6 +18,17 @@ export class AccountsClient extends BaseApiClient {
   constructor({ ...props }: ApiProps) {
     super(props.authToken)
     this.url = `${props.apiUrl}/accounts`
+  }
+
+  /**
+   * Gets a single account.
+   * @param accountId The account id to get.
+   * @returns All info of a specific account if successful. An ApiError if not successful.
+   */
+  async getAccount({ accountId }: AccountProps): Promise<ApiResponse<Account>> {
+    const response = await this.httpRequest<Account>(`${this.url}/${accountId}`, HttpMethod.GET)
+
+    return response
   }
 
   /**

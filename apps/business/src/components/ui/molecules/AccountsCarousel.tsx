@@ -95,7 +95,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
                 account={account}
                 className="md:snap-center lg:snap-start" // Snap to center when scrolling (only for tablet resolution)
                 onClick={() => {
-                  navigate('current-accounts')
+                  navigate(`current-accounts/${account.id}`)
                 }}
               />
             )
