@@ -191,7 +191,7 @@ const PaymentMethodsModal = ({
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
     >
-      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey">
+      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey text-sm">
         <Switch
           icon={ApplePayIcon}
           label="Apple Pay / Google Pay"
@@ -279,7 +279,7 @@ const PaymentMethodsModal = ({
         </div>
         <div className="py-6 md:py-4 w-full select-none">
           <img src={BitcoinIcon} alt="Bitcoin Lightning" className="w-6 h-6 mr-4 inline-block" />
-          <span className="align-middle pr-2 text-grey-text">Bitcoin Lightning (coming soon)</span>
+          <span className="align-middle pr-2 text-grey-text text-sm">Bitcoin Lightning (coming soon)</span>
         </div>
       </div>
 
