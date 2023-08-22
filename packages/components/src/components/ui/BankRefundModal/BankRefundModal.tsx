@@ -184,7 +184,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                       {counterParty?.name}
                     </p>
                     {counterParty && counterParty.accountInfo && (
-                      <p className="text-xs/5 w-full text-ellipsis break-words">
+                      <p className="text-xs/5 w-full text-ellipsis break-words text-grey-text">
                         {counterParty.accountInfo}
                       </p>
                     )}
