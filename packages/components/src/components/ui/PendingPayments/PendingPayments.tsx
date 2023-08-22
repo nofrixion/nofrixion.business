@@ -59,7 +59,7 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
                     aria-hidden="true"
                     className="text-right text-xs font-normal underline text-default-text cursor-pointer hover:no-underline"
                   >
-                    See more
+                    See all
                   </span>
                 )}
               </div>
