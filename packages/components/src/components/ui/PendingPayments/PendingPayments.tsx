@@ -26,7 +26,8 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
         <div
           className="flex justify-end text-xs font-normal leading-4 items-center gap-2 text-grey-text"
           onClick={() => setIsOpen(!isOpen)}
-          aria-hidden="true">
+          aria-hidden="true"
+        >
           <span>{pendingPayments.length} pending payments</span>
           <span>
             <Icon name={isOpen ? 'arrow-up/8' : 'arrow-down/8'} />
@@ -38,7 +39,7 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
           {isOpen && pendingPayments && (
             <AnimateHeightWrapper layoutId="pendingPayments">
               <div className="flex-row mt-4">
-                {pendingPayments.map((payment) => (
+                {pendingPayments.slice(0, 3).map((payment) => (
                   <div
                     key={payment.id}
                     className="flex justify-between py-2 text-xs items-center text-default-text flex-shrink-0 border-t font-normal"
