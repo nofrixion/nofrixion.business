@@ -145,7 +145,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                 </div>
                 <div className="mt-10 md:flex items-baseline">
                   <div className="md:w-[152px]">
-                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
+                    <span className="text-sm leading-6 font-normal text-grey-text ">
                       From account
                     </span>
                   </div>
@@ -166,7 +166,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                         <span className="font-semibold w-full break-words text-sm/5 break-keep">
                           {accounts[0].accountName}
                         </span>{' '}
-                        <div className="text-[#73888C] font-normal flex flex-row gap-1 items-center">
+                        <div className="text-[#73888C] text-sm font-normal flex flex-row gap-1 items-center">
                           <span>{formatCurrency(accounts[0].currency)}</span>
                           <span>{formatAmount(accounts[0].availableBalance)}</span>
                         </div>
@@ -175,11 +175,9 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                   </div>
                 </div>
 
-                <div className="mt-11 md:flex items-baseline">
+                <div className="mt-8 md:flex items-baseline">
                   <div className="md:w-[152px]">
-                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
-                      To account
-                    </span>
+                    <span className="text-sm font-normal text-grey-text">To account</span>
                   </div>
                   <div className="text-left">
                     <p className="font-semibold w-full break-words text-sm/5 mb-0.5 md:mb-2">
@@ -195,9 +193,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
 
                 <div className="mt-8 md:flex items-baseline">
                   <div className="md:w-[152px]">
-                    <span className="text-sm leading-8 font-normal text-grey-text md:leading-[48px]">
-                      Reference
-                    </span>
+                    <span className="text-sm font-normal text-grey-text">Reference</span>
                   </div>
                   <div className="text-left">
                     <p className="font-semibold w-full break-words text-sm/5">Refund</p>
