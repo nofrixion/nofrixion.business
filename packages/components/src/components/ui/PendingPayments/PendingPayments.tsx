@@ -1,5 +1,6 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@radix-ui/react-collapsible'
 import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 
 import { LocalPayout } from '../../../types/LocalTypes'
 import { formatAmount } from '../../../utils/formatters'
@@ -17,13 +18,20 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
   onSeeMore,
   ...props
 }) => {
+
+  const [isOpen, setIsOpen] = useState(false)
+
+
   return (
     <Collapsible {...props}>
       <CollapsibleTrigger className="w-full">
-        <div className="flex justify-end text-xs font-normal leading-4 items-center gap-2 text-grey-text">
+        <div
+          className="flex justify-end text-xs font-normal leading-4 items-center gap-2 text-grey-text"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-hidden="true">
           <span>{pendingPayments.length} pending payments</span>
           <span>
-            <Icon name="arrow-up/8" />
+            <Icon name={isOpen ? "arrow-down/8" : "arrow-up/8"} />
           </span>
         </div>
       </CollapsibleTrigger>
@@ -45,14 +53,16 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
                   </div>
                 ))}
               </div>
-              <div className="flex justify-end py-2">
-                <span
-                  onClick={() => onSeeMore()}
-                  aria-hidden="true"
-                  className="text-right text-xs font-normal underline text-default-text cursor-pointer"
-                >
-                  See more
-                </span>
+              <div className="flex justify-end py-2 border-t">
+                {pendingPayments.length > 3 && (
+                  <span
+                    onClick={() => onSeeMore()}
+                    aria-hidden="true"
+                    className="text-right text-xs font-normal underline text-default-text cursor-pointer hover:no-underline"
+                  >
+                    See more
+                  </span>
+                )}
               </div>
             </AnimateHeightWrapper>
           )}

@@ -316,27 +316,26 @@ export interface User {
 }
 
 export interface Payout {
-  accountID: string
-  amount: number
-  createdBy: string
-  currency: Currency
-  description: string
-  destination: Counterparty
-  destinationAccount: Counterparty
-  destinationAccountName: string
-  destinationIBAN: string
   id: string
-  inserted: Date
+  accountID: string
   merchantID: string
-  sourceAccountName: string
-  status: PayoutStatus
-  theirReference: string
+  userID?: string
+  approverID?: string
   type: AccountIdentifierType
-  userID: string
-  yourReference: string
-  destinationAccountNumber: string
-  destinationSortCode: string
+  description: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
   merchantTokenDescription: string
+  status: PayoutStatus
+  currentUserID?: string
+  currentUserRole?: string // TODO: Add type
+  approvePayoutUrl?: string
+  createdBy?: string
+  inserted: Date
+  sourceAccountName: string
+  destination?: Counterparty
 }
 
 export type PayoutPageResponse = PageResponse<Payout>

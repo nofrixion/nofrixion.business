@@ -344,22 +344,20 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
 const remotePayoutsToLocal = (payouts: Payout[]): LocalPayout[] => {
   return payouts.map((payout) => {
     return {
-      accountID: payout.accountID,
-      amount: payout.amount,
-      createdBy: payout.createdBy,
-      currency: payout.currency,
-      description: payout.description,
-      destinationAccountName: payout.destinationAccountName,
-      destinationIBAN: payout.destinationIBAN,
       id: payout.id,
-      inserted: payout.inserted,
+      accountID: payout.accountID,
       merchantID: payout.merchantID,
-      sourceAccountName: payout.sourceAccountName,
-      status: payout.status,
-      theirReference: payout.theirReference,
+      type: payout.type,
+      description: payout.description,
+      currency: payout.currency,
+      amount: payout.amount,
       yourReference: payout.yourReference,
-      destinationAccountNumber: payout.destinationAccountNumber,
-      destinationSortCode: payout.destinationSortCode,
+      theirReference: payout.theirReference,
+      status: payout.status,
+      createdBy: payout.createdBy,
+      inserted: payout.inserted,
+      sourceAccountName: payout.sourceAccountName,
+      destination: payout.destination,
     }
   })
 }

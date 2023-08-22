@@ -90,7 +90,7 @@ const AccountDashboardMain = ({
     {
       accountId,
       pageNumber: 1,
-      pageSize: 3,
+      pageSize: 5,
       payoutStatuses: [PayoutStatus.PENDING, PayoutStatus.QUEUED, PayoutStatus.QUEUED_UPSTREAM],
     },
     { apiUrl, authToken: token },

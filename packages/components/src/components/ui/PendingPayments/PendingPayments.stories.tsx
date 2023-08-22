@@ -16,7 +16,7 @@ export default {
 const Template: StoryFn<typeof PendingPayments> = (args) => {
   return (
     <div>
-      <PendingPayments {...args} />
+      <PendingPayments {...args} className='w-[400px]' />
     </div>
   )
 }
