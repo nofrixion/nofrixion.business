@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 
 import { LocalAddressType, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
-import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { LocalAddress, LocalPaymentRequest } from '../../../types/LocalTypes'
 import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 
 interface PaymentInfoRowProps {
@@ -53,6 +53,17 @@ const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentIn
 
   const shippingAddress = shippingAddresses?.length > 0 ? shippingAddresses[0] : undefined
 
+  const isShippingAddressPopulated = (address: LocalAddress) => {
+    return (
+      address.addressCity ||
+      address.addressCountryCode ||
+      address.addressCounty ||
+      address.addressLine1 ||
+      address.addressLine2 ||
+      address.addressPostCode
+    )
+  }
+
   return (
     <div className="space-y-5 lg:space-y-6">
       <PaymentInfoRow label="Payment request ID" content={[id]} />
@@ -66,7 +77,7 @@ const PaymentInfo = ({ id, createdAt, paymentMethodTypes, addresses }: PaymentIn
         </div>
       </PaymentInfoRow>
 
-      {shippingAddress && (
+      {shippingAddress && isShippingAddressPopulated(shippingAddress) && (
         <PaymentInfoRow
           label="Shipping address"
           content={[
