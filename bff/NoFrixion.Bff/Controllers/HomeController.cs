@@ -31,11 +31,11 @@ public class HomeController : Controller
 
     [Route("/")]
     [Route("/home/{**catchAll}")]
-    [Route("/{pullRequestId}")]
-    [Route("/{pullRequestId}/{**catchAll}")]
-    public IActionResult Index(string? pullRequestId)
+    [Route("/{pullRequestId:int}")]
+    [Route("/{pullRequestId:int}/{**catchAll}")]
+    public IActionResult Index(int? pullRequestId)
     {
-        var businessJavascriptCdnSource = !string.IsNullOrEmpty(pullRequestId) 
+        var businessJavascriptCdnSource = pullRequestId != null 
             ? _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION]
                 .Replace(NOFRIXION_NOFRIXION_BUSINESS_FILENAME, $"{NOFRIXION_NOFRIXION_BUSINESS_FILENAME}.pr{pullRequestId}")
             : _configuration[ConfigKeys.NOFRIXION_BUSINESS_CDN_LOCATION];
