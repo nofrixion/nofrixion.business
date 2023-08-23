@@ -72,7 +72,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
         {scrollState !== 'left' && scrollState !== 'not-needed' && (
           <button
             onClick={scrollLeft}
-            className="hidden lg:flex absolute top-0 -left-0.5 h-full w-[104px] bg-gradient-to-l from-transparent to-main-grey items-center justify-start pl-4"
+            className="hidden lg:flex absolute top-0 left-0 h-full w-[104px] bg-gradient-to-l from-transparent to-main-grey items-center justify-start pl-4"
           >
             <div className="w-12 h-8 bg-white rounded-full flex justify-center items-center shadow-small">
               <svg
@@ -114,7 +114,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
         {scrollState !== 'right' && scrollState !== 'not-needed' && (
           <button
             onClick={scrollRight}
-            className="hidden lg:flex absolute top-0 -right-0.5 h-full w-[104px] bg-gradient-to-r from-transparent to-main-grey items-center justify-end pr-4"
+            className="hidden lg:flex absolute top-0 right-0 h-full w-[104px] bg-gradient-to-r from-transparent to-main-grey items-center justify-end pr-4"
           >
             <div className="w-12 h-8 bg-white rounded-full flex justify-center items-center shadow-small">
               <svg
