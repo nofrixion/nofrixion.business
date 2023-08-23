@@ -67,7 +67,7 @@ const DashboardPage = () => {
     <>
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16">Your current status</h1>
       <div className="md:-mx-4">
-        <div className="-mx-8 md:-mx-14 px-8 md:px-14">
+        <div className="-mx-8 md:-mx-14">
           {!isAccountsLoading && accounts && <AccountsCarousel accounts={accounts} />}
         </div>
 
