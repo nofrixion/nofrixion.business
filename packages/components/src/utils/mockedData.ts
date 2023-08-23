@@ -1,4 +1,4 @@
-import { AccountIdentifierType, Currency } from '@nofrixion/moneymoov'
+import { AccountIdentifierType, Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
   LocalAddressType,
@@ -6,7 +6,12 @@ import {
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
-import { LocalPaymentAttempt, LocalPaymentRequest, LocalTransaction } from '../types/LocalTypes'
+import {
+  LocalPaymentAttempt,
+  LocalPaymentRequest,
+  LocalPayout,
+  LocalTransaction,
+} from '../types/LocalTypes'
 
 export const mockTags = [
   {
@@ -994,6 +999,125 @@ export const mockedTransactions: LocalTransaction[] = [
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: '',
+  },
+]
+
+export const mockPayouts: LocalPayout[] = [
+  {
+    accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+    amount: 1.33,
+    createdBy: 'Arif Matin',
+    currency: Currency.EUR,
+    description: 'webhooks',
+    destination: {
+      name: 'test account 1',
+      accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+      emailAddress: '',
+      phoneNumber: 'dfsd',
+      identifier: {
+        type: AccountIdentifierType.IBAN,
+        currency: 'EUR',
+        iban: 'IE29AIBK93115212345678',
+        accountNumber: '',
+        sortCode: '',
+        bic: '',
+      },
+    },
+    id: 'a1e02254-e605-467a-487c-08db97ef5455',
+    inserted: randomDate(),
+    merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+    type: AccountIdentifierType.IBAN,
+    sourceAccountName: 'EUR Payment',
+    status: PayoutStatus.PENDING,
+    theirReference: 'refe&12',
+    yourReference: 'internal reference ',
+  },
+  {
+    accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+    amount: 1.33,
+    createdBy: 'Arif Matin',
+    currency: Currency.EUR,
+    description: 'webhooks',
+    destination: {
+      name: 'test account 1',
+      accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+      emailAddress: '',
+      phoneNumber: 'dfsd',
+      identifier: {
+        type: AccountIdentifierType.IBAN,
+        currency: 'EUR',
+        iban: 'IE29AIBK93115212345678',
+        accountNumber: '',
+        sortCode: '',
+        bic: '',
+      },
+    },
+    id: 'a1e02254-e605-467a-487c-08db97ef5455',
+    inserted: randomDate(),
+    merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+    type: AccountIdentifierType.IBAN,
+    sourceAccountName: 'EUR Payment',
+    status: PayoutStatus.PENDING,
+    theirReference: 'refe&12',
+    yourReference: 'internal reference ',
+  },
+  {
+    accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+    amount: 1.33,
+    createdBy: 'Arif Matin',
+    currency: Currency.EUR,
+    description: 'webhooks',
+    destination: {
+      name: 'test account 1',
+      accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+      emailAddress: '',
+      phoneNumber: 'dfsd',
+      identifier: {
+        type: AccountIdentifierType.IBAN,
+        currency: 'EUR',
+        iban: 'IE29AIBK93115212345678',
+        accountNumber: '',
+        sortCode: '',
+        bic: '',
+      },
+    },
+    id: 'a1e02254-e605-467a-487c-08db97ef5455',
+    inserted: randomDate(),
+    merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+    type: AccountIdentifierType.IBAN,
+    sourceAccountName: 'EUR Payment',
+    status: PayoutStatus.PENDING,
+    theirReference: 'refe&12',
+    yourReference: 'internal reference ',
+  },
+  {
+    accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+    amount: 1.33,
+    createdBy: 'Arif Matin',
+    currency: Currency.EUR,
+    description: 'webhooks',
+    destination: {
+      name: 'test account 1',
+      accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
+      emailAddress: '',
+      phoneNumber: 'dfsd',
+      identifier: {
+        type: AccountIdentifierType.IBAN,
+        currency: 'EUR',
+        iban: 'IE29AIBK93115212345678',
+        accountNumber: '',
+        sortCode: '',
+        bic: '',
+      },
+    },
+    id: 'a1e02254-e605-467a-487c-08db97ef5455',
+    inserted: randomDate(),
+    merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+    type: AccountIdentifierType.IBAN,
+    sourceAccountName: 'EUR Payment',
+    status: PayoutStatus.PENDING,
+    theirReference: 'refe&12',
+    yourReference: 'internal reference ',
   },
 ]
 
