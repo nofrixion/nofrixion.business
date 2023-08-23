@@ -74,7 +74,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             </TableHeader>
             <TableBody>
               {transactions.map((transaction, index) => (
-                <TableRow key={`${transaction}-${index}`}>
+                <TableRow
+                  className="cursor-auto hover:bg-inherit hover:border-inherit"
+                  key={`${transaction}-${index}`}
+                >
                   <TableCell>
                     {renderBasicInfoLayout(
                       format(transaction.date, 'MMM dd, yyyy'),
