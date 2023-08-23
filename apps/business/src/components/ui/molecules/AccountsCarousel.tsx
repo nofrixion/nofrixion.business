@@ -22,49 +22,56 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
     if (ref.current) {
       if (ref.current.offsetWidth >= ref.current.scrollWidth) {
         setScrollState('not-needed')
+      } else {
+        checkScroll(ref)
       }
 
       ref.current.addEventListener('scroll', () => {
-        const isFullyScrolled =
-          (ref.current?.scrollLeft ?? 0) + (ref.current?.offsetWidth ?? 0) >=
-          (ref.current?.scrollWidth ?? 0)
-        const isScrolledToStart = ref.current?.scrollLeft === 0
-
-        if (isFullyScrolled) {
-          setScrollState('right')
-        }
-
-        if (isScrolledToStart) {
-          setScrollState('left')
-        }
-
-        if (!isFullyScrolled && !isScrolledToStart) {
-          setScrollState('none')
-        }
+        checkScroll(ref)
       })
     }
-  }, [ref])
+  }, [ref.current?.offsetWidth, ref.current?.scrollWidth, ref.current?.scrollLeft])
+
+  const checkScroll = (ref: React.RefObject<HTMLDivElement>) => {
+    const isFullyScrolled =
+      (ref.current?.scrollLeft ?? 0) + (ref.current?.offsetWidth ?? 0) >=
+      (ref.current?.scrollWidth ?? 0)
+    const isScrolledToStart = ref.current?.scrollLeft === 0
+
+    if (isFullyScrolled) {
+      setScrollState('right')
+    }
+
+    if (isScrolledToStart) {
+      setScrollState('left')
+    }
+
+    if (!isFullyScrolled && !isScrolledToStart) {
+      setScrollState('none')
+    }
+  }
 
   const scrollRight = () => {
     ref.current?.scrollTo({
-      left: ref.current?.scrollLeft + ref.current?.offsetWidth,
+      left: ref.current?.scrollLeft + ref.current?.offsetWidth / 2,
       behavior: 'smooth',
     })
   }
 
   const scrollLeft = () => {
     ref.current?.scrollTo({
-      left: ref.current?.scrollLeft - ref.current?.offsetWidth,
+      left: ref.current?.scrollLeft - ref.current?.offsetWidth / 2,
       behavior: 'smooth',
     })
   }
+
   return (
     <ScrollArea ref={ref} className="relative" enableCustomScrollbar>
       {/* Previous arrow */}
       {scrollState !== 'left' && scrollState !== 'not-needed' && (
         <button
           onClick={scrollLeft}
-          className="hidden lg:flex absolute top-0 -left-0.5 h-full w-[104px] bg-gradient-to-l from-transparent to-main-gray  items-center justify-start pr-4"
+          className="hidden lg:flex absolute top-0 -left-0.5 h-full w-[104px] bg-gradient-to-l from-transparent to-main-grey  items-center justify-start pr-4"
         >
           <div className="w-12 h-8 bg-white rounded-full flex justify-center items-center shadow-small">
             <svg
@@ -106,7 +113,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
       {scrollState !== 'right' && scrollState !== 'not-needed' && (
         <button
           onClick={scrollRight}
-          className="hidden lg:flex absolute top-0 -right-0.5 h-full w-[104px] bg-gradient-to-r from-transparent to-main-gray items-center justify-end pl-4"
+          className="hidden lg:flex absolute top-0 -right-0.5 h-full w-[104px] bg-gradient-to-r from-transparent to-main-grey items-center justify-end pl-4"
         >
           <div className="w-12 h-8 bg-white rounded-full flex justify-center items-center shadow-small">
             <svg
