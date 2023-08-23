@@ -1,10 +1,16 @@
-import { SortDirection, useAccount, useTransactions } from '@nofrixion/moneymoov'
+import {
+  PayoutStatus,
+  SortDirection,
+  useAccount,
+  usePendingPayments,
+  useTransactions,
+} from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
-import { LocalTransaction } from '../../../types/LocalTypes'
-import { remoteTransactionsToLocal } from '../../../utils/parsers'
+import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
+import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
 
@@ -46,6 +52,7 @@ const AccountDashboardMain = ({
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [transactions, setTransactions] = useState<LocalTransaction[]>([])
+  const [payouts, setPayouts] = useState<LocalPayout[]>([])
   const [dateRange, setDateRange] = useState<DateRange>({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
     toDate: endOfDay(new Date()),
@@ -79,6 +86,16 @@ const AccountDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  const { data: payoutPageResponse } = usePendingPayments(
+    {
+      accountId,
+      pageNumber: 1,
+      pageSize: 5,
+      payoutStatuses: [PayoutStatus.PENDING, PayoutStatus.QUEUED, PayoutStatus.QUEUED_UPSTREAM],
+    },
+    { apiUrl, authToken: token },
+  )
+
   useEffect(() => {
     if (transactionsResponse?.status === 'success') {
       setTransactions(remoteTransactionsToLocal(transactionsResponse.data.content))
@@ -88,6 +105,15 @@ const AccountDashboardMain = ({
       console.error(transactionsResponse.error)
     }
   }, [transactionsResponse])
+
+  useEffect(() => {
+    if (payoutPageResponse?.status === 'success') {
+      setPayouts(remotePayoutsToLocal(payoutPageResponse.data.content))
+    } else if (payoutPageResponse?.status === 'error') {
+      // TODO: Handle error
+      console.error(payoutPageResponse.error)
+    }
+  }, [payoutPageResponse])
 
   const onPageChange = (page: number) => {
     setPage(page)
@@ -108,9 +134,15 @@ const AccountDashboardMain = ({
     setDateRange(dateRange)
   }
 
+  const onSeeMore = () => {
+    // TODO: Go to payouts
+    return
+  }
+
   return (
     <UIAccountDashboard
       transactions={transactions}
+      pendingPayments={payouts}
       account={accountResponse?.status == 'success' ? accountResponse?.data : undefined}
       pagination={{
         pageSize: pageSize,
@@ -122,6 +154,7 @@ const AccountDashboardMain = ({
       onSearch={setSearchFilter}
       searchFilter={searchFilter}
       onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+      onSeeMore={onSeeMore}
     />
   )
 }
