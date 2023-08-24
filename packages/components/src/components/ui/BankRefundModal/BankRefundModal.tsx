@@ -180,7 +180,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <span className="text-sm font-normal text-grey-text">To account</span>
                   </div>
                   <div className="text-left">
-                    <p className="font-semibold w-full break-words text-sm/5 mb-0.5 md:mb-2">
+                    <p className="font-semibold w-full break-words text-sm/5">
                       {counterParty?.name}
                     </p>
                     {counterParty && counterParty.accountInfo && (
