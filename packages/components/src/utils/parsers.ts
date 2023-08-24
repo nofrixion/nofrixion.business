@@ -439,7 +439,9 @@ const remotePayoutsToLocal = (payouts: Payout[]): LocalPayout[] => {
       createdBy: payout.createdBy,
       inserted: payout.inserted,
       sourceAccountName: payout.sourceAccountName,
-      destination: payout.destination,
+      destination: payout.destination
+        ? parseApiCounterPartyToLocalCounterParty(payout.destination)
+        : undefined,
     }
   })
 }
