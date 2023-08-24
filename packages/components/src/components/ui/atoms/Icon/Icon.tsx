@@ -295,6 +295,11 @@ export const Icons = {
       <path d="M0.5 2L4 5.5L7.5 2" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'arrow-up/8': (className: string) => (
+    <SVG className={className} size="8">
+      <path d="M7.5 5.5L4 2L0.5 5.5" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
   'outgoing/8': (className: string) => (
     <SVG className={className} size="8">
       <path d="M4 0.5L4 7.5" strokeLinecap="round" />

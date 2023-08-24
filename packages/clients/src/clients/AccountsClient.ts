@@ -1,5 +1,5 @@
-import { Account, ApiResponse, HttpMethod } from '../types'
-import { AccountProps, ApiProps, MerchantProps } from '../types/props'
+import { Account, ApiResponse, HttpMethod, PayoutPageResponse } from '../types'
+import { AccountProps, ApiProps, MerchantProps, PayoutsProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -43,5 +43,37 @@ export class AccountsClient extends BaseApiClient {
     )
 
     return response
+  }
+
+  /**
+   * Get a list of payouts for this account.
+   * @param accountId The account id to get the payouts for
+   * @param pageNumber The first page to fetch for the paged response. Default is 1
+   * @param pageSize The page size. Default is 20
+   * @param fromDate Optional. The date filter to apply to retrieve payoutss created after this date.
+   * @param toDate Optional. The date filter to apply to retrieve payouts created up until this date.
+   * @param payoutStatuses Optional. The status list filter only retrieves payouts with those statuses. Default all statuses.
+   * @returns A list of payouts by accountId. An ApiError if not successful.
+   */
+  async getPendingPayments({
+    accountId,
+    pageNumber,
+    pageSize,
+    fromDate,
+    toDate,
+    payoutStatuses,
+  }: PayoutsProps): Promise<ApiResponse<PayoutPageResponse>> {
+    const url = `${this.url}/${accountId}/payouts`
+
+    return await this.getPagedResponse<PayoutPageResponse>(
+      {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        fromDate: fromDate,
+        toDate: toDate,
+        payoutStatuses,
+      },
+      url,
+    )
   }
 }

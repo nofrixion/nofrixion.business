@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { NOFRIXION_BFF_URL } from '../constants'
+import { getRoute } from '../utils/utils'
 
 const config = {
   headers: {
@@ -62,7 +63,8 @@ const useAuthUser = () => {
 
   const logOut = useCallback(
     (callback?: string) => {
-      const url = `${logoutUrl}&returnUrl=/?callbackUrl=${callback ?? '/'}`
+      const returnUrl = getRoute('/')
+      const url = `${logoutUrl}&returnUrl=${returnUrl}?callbackUrl=${callback ?? '/'}`
 
       setIsLoggedIn(false)
       window.location.href = url ?? '/'

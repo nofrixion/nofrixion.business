@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 import BankIcon from '../../../../assets/icons/bank-icon.svg'
-import BitcoinIcon from '../../../../assets/icons/bitcoin-icon.svg'
+import BitcoinIcon from '../../../../assets/icons/bitcoin-icon-unavailable.svg'
 import CardIcon from '../../../../assets/icons/card-icon.svg'
 import ApplePayIcon from '../../../../assets/icons/wallet-icon.svg'
 import { LocalPaymentMethodsFormValue } from '../../../../types/LocalTypes'
@@ -191,7 +191,7 @@ const PaymentMethodsModal = ({
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
     >
-      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey">
+      <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey text-sm">
         <Switch
           icon={ApplePayIcon}
           label="Apple Pay / Google Pay"
@@ -277,13 +277,12 @@ const PaymentMethodsModal = ({
             )}
           </AnimatePresence>
         </div>
-        <Switch
-          icon={BitcoinIcon}
-          label="Bitcoin Lightning"
-          value={isLightningEnabled}
-          onChange={setIsLightningEnabled}
-          className="py-6 md:py-4"
-        />
+        <div className="py-6 md:py-4 w-full select-none">
+          <img src={BitcoinIcon} alt="Bitcoin Lightning" className="w-6 h-6 mr-4 inline-block" />
+          <span className="align-middle pr-2 text-grey-text text-sm">
+            Bitcoin Lightning (coming soon)
+          </span>
+        </div>
       </div>
 
       <div className="flex flex-col space-y-4">

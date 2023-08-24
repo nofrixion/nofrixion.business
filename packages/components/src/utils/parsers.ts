@@ -11,6 +11,7 @@ import {
   type PaymentRequestPaymentAttempt,
   type PaymentRequestRefundAttempt,
   PaymentResult,
+  Payout,
   type Tag,
   Transaction,
   TransactionTypeValue,
@@ -34,6 +35,7 @@ import {
   LocalPaymentRequestCaptureAttempt,
   LocalPaymentRequestRefundAttempt,
   LocalPaymentStatus,
+  LocalPayout,
   LocalTag,
   LocalTransaction,
 } from '../types/LocalTypes'
@@ -421,6 +423,27 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
   })
 }
 
+const remotePayoutsToLocal = (payouts: Payout[]): LocalPayout[] => {
+  return payouts.map((payout) => {
+    return {
+      id: payout.id,
+      accountID: payout.accountID,
+      merchantID: payout.merchantID,
+      type: payout.type,
+      description: payout.description,
+      currency: payout.currency,
+      amount: payout.amount,
+      yourReference: payout.yourReference,
+      theirReference: payout.theirReference,
+      status: payout.status,
+      createdBy: payout.createdBy,
+      inserted: payout.inserted,
+      sourceAccountName: payout.sourceAccountName,
+      destination: payout.destination,
+    }
+  })
+}
+
 const remoteAccountToLocalAccount = (remoteAccount: Account): LocalAccount => {
   const {
     id,
@@ -468,5 +491,6 @@ export {
   parseLocalTagToApiTag,
   remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
+  remotePayoutsToLocal,
   remoteTransactionsToLocal,
 }

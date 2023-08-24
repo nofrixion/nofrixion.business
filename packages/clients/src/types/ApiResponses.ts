@@ -7,6 +7,7 @@ import {
   PaymentMethodTypes,
   PaymentProcessor,
   PaymentResult,
+  PayoutStatus,
   Wallets,
 } from './Enums'
 
@@ -328,12 +329,15 @@ export interface Payout {
   amount: number
   yourReference?: string
   theirReference: string
-  status: string
+  merchantTokenDescription: string
+  status: PayoutStatus
   currentUserID?: string
+  currentUserRole?: string // TODO: Add type
   approvePayoutUrl?: string
   createdBy?: string
   inserted: Date
   sourceAccountName: string
   destination?: Counterparty
-  invoiceID: string
 }
+
+export type PayoutPageResponse = PageResponse<Payout>

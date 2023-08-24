@@ -1,6 +1,7 @@
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Nofrixion.Bff;
 using Serilog;
 using StackExchange.Redis;
@@ -139,12 +140,11 @@ app.MapBffManagementEndpoints();
 app.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl"])
     .RequireAccessToken();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
+
+// After all the required routes are matched then redirect every other path back to home.
+app.MapGet("{**catchAll}", () => Results.Redirect("/"));
 
 app.UseCors("cors-policy");
-
-app.MapRazorPages();
 
 await app.RunAsync();

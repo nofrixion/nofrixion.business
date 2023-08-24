@@ -1,7 +1,11 @@
 import { Counterparty, Tag } from './ApiResponses'
-import { AccountIdentifierType, Currency, SortDirection } from './Enums'
+import { AccountIdentifierType, Currency, PayoutStatus, SortDirection } from './Enums'
 
-export interface PagedResponseProps extends FilterResponseProps, MerchantProps, AccountProps {
+export interface PagedResponseProps
+  extends FilterResponseProps,
+    MerchantProps,
+    AccountProps,
+    PayoutsProps {
   pageNumber?: number
   pageSize?: number
   status?: string
@@ -123,6 +127,22 @@ export interface CreateTagProps {
   paymentRequestId: string
   tag: Tag
   existingTagsIds: string[]
+}
+
+export interface PayoutsProps extends AccountProps {
+  pageNumber?: number
+  pageSize?: number
+  fromDate?: Date
+  toDate?: Date
+  payoutStatuses?: PayoutStatus[]
+}
+
+export interface usePendingPaymentsProps extends AccountProps {
+  pageNumber?: number
+  pageSize?: number
+  fromDateMS?: number
+  toDateMS?: number
+  payoutStatuses?: PayoutStatus[]
 }
 
 export interface CreatePayoutProps {
