@@ -66,8 +66,8 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
   }
 
   return (
-    <RadixScrollArea.Root className="">
-      <RadixScrollArea.Viewport ref={ref} className="">
+    <RadixScrollArea.Root className="-mt-4">
+      <RadixScrollArea.Viewport ref={ref}>
         {/* Previous arrow */}
         {scrollState !== 'left' && scrollState !== 'not-needed' && (
           <button
@@ -93,7 +93,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
           </button>
         )}
 
-        <div className="flex space-x-4 px-8 md:px-14">
+        <div className="flex space-x-4 px-8 md:px-14 py-4">
           {accounts
             .sort((a, b) => a.accountName?.localeCompare(b.accountName))
             .map((account: Account) => {
@@ -138,7 +138,7 @@ const AccountsCarousel: React.FC<AccountsCarouselProps> = ({ accounts }) => {
 
       <RadixScrollArea.Scrollbar
         forceMount
-        className="select-none md:flex  !relative mx-auto mt-4 overflow-hidden hidden touch-none rounded-lg  h-0.5 w-40 bg-[#E0E7EA] transition-colors duration-[160ms] ease-out hover:bg-gray-200 flex-col"
+        className="select-none md:flex !relative mx-auto overflow-hidden hidden touch-none rounded-lg  h-0.5 w-40 bg-[#E0E7EA] transition-colors duration-[160ms] ease-out hover:bg-gray-200 flex-col"
         orientation="horizontal"
       >
         <RadixScrollArea.Thumb className="flex-1 rounded-lg bg-[#477085]" />
