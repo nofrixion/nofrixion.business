@@ -109,12 +109,10 @@ const AccountDashboardMain = ({
   )
 
   useEffect(() => {
-    console.log(merchantId, accountId, "this works");
+    console.log(merchantId, accountId, accountsResponse, 'this works')
 
-    //get all merchant accounts 
+    //get all merchant accounts
     //filter to match id and curreny
-
-
   }, [merchantId])
 
   useEffect(() => {
