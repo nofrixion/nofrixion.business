@@ -17,8 +17,6 @@ const ScrollArea = forwardRef<
     </RadixScrollArea.Viewport>
     <RadixScrollArea.Scrollbar
       forceMount
-      // forceMount={enableCustomScrollbar}
-      // flex-col
       className={cn(
         'flex select-none overflow-hidden touch-none rounded-lg bg-gray-100 transition-colors duration-[160ms] ease-out hover:bg-gray-200 flex-col h-2',
         {
