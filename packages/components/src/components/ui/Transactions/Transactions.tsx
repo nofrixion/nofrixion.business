@@ -243,7 +243,7 @@ const Transactions = ({
                               <span className="mr-2 p-1.5">
                                 <Icon name="return/12" className="text-control-grey-hover" />
                               </span>
-                              <span>Refund</span>
+                              <span>Refunded</span>
                             </div>
                           </td>
                         )}
@@ -253,7 +253,7 @@ const Transactions = ({
                               <span className="mr-2 p-1.5">
                                 <Icon name="void/12" className="text-control-grey-hover" />
                               </span>
-                              <span>Void</span>
+                              <span>Voided</span>
                             </div>
                           </td>
                         )}
