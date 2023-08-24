@@ -49,7 +49,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
         <div className="flex justify-between">
           <button onClick={onAllCurrentAccountsClick} className="flex items-center space-x-3">
             <Icon name="back/12" />
-            <span className="hover:underline">All current accounts</span>
+            <span className="hover:underline text-sm">All current accounts</span>
           </button>
           {/* TODO: Implement download statement feature*/}
           {/* <div>
