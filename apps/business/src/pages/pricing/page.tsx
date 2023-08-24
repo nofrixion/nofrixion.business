@@ -124,12 +124,13 @@ const PricingPage: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-[1.75rem]/8 font-medium mb-[10px]">MoneyMoov for Business Packages</h1>
-      <span className="flex text-[#00264D] text-base mb-12">
-        Pricing for up to 5 users. Contact us for Larger / Enterprise pricing.
-      </span>
-
-      <div className="-mx-8 md:-mx-[72px]">
+      <div className="md:px-4">
+        <h1 className="text-[1.75rem]/8 font-medium mb-[10px]">MoneyMoov for Business Packages</h1>
+        <span className="flex text-[#00264D] text-base mb-12">
+          Pricing for up to 5 users. Contact us for Larger / Enterprise pricing.
+        </span>
+      </div>
+      <div className="-mx-8 md:-mx-[56px]">
         <ScrollArea>
           <div className="flex gap-4 px-8 md:px-14">
             {pricingCards.map((card, index) => (
@@ -145,7 +146,7 @@ const PricingPage: React.FC = () => {
         </ScrollArea>
       </div>
 
-      <div className="mb-8 pl-6">
+      <div className="mb-8 pl-4">
         <span className="flex text-[#00264D] text-sm leading-6">
           + Additional SEPA transactions: €0.25 / transaction.
         </span>
@@ -191,7 +192,7 @@ const PricingPage: React.FC = () => {
         </div>
           </div>*/}
 
-      <div className="mb-4 mt-12">
+      <div className="mb-4 mt-12 md:px-4">
         <h1 className="text-[1.75rem]/8 font-medium mb-[10px]">Addtional Fees</h1>
       </div>
 
