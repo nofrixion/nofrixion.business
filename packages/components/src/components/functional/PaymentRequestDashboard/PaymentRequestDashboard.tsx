@@ -142,8 +142,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -163,8 +163,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -184,8 +184,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -205,8 +205,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -223,8 +223,8 @@ const PaymentRequestDashboardMain = ({
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePaymentRequestMetrics(
     {
       merchantId: merchantId,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -701,8 +701,8 @@ const PaymentRequestDashboardMain = ({
         amountSortDirection={amountSortDirection}
         pageNumber={page}
         pageSize={pageSize}
-        fromDateMS={dateRange.fromDate.getTime()}
-        toDateMS={dateRange.toDate.getTime()}
+        fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}
+        toDateMS={dateRange.toDate && dateRange.toDate.getTime()}
         status={status}
         search={searchFilter?.length >= 3 ? searchFilter : undefined}
         currency={currencyFilter}

@@ -72,8 +72,8 @@ const AccountDashboardMain = ({
       pageSize: pageSize,
       dateSortDirection: transactionDateSortDirection,
       amountSortDirection: amountSortDirection,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter,
     },
     { apiUrl: apiUrl, authToken: token },
@@ -131,6 +131,8 @@ const AccountDashboardMain = ({
   }
 
   const onDateChange = (dateRange: DateRange) => {
+    console.log('onDateChange', dateRange)
+
     setDateRange(dateRange)
   }
 

@@ -1,6 +1,6 @@
 import './DateRangePicker.css'
 
-import { add, endOfDay, format, isSameDay, startOfDay } from 'date-fns'
+import { add, endOfDay, startOfDay } from 'date-fns'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
 
@@ -14,18 +14,16 @@ const pillClasses =
   'text-default-text leading-6 hover:text-grey-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-default-text hover:stroke-control-grey'
 
 export type DateRange = {
-  fromDate: Date
-  toDate: Date
+  fromDate?: Date
+  toDate?: Date
 }
 
 export interface DateRangeFilterProps {
   onDateChange: (dateRange: DateRange) => void
 }
 
-const dateFormat = 'MMM do'
-
 const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
-  const [dates, setDates] = useState<DateObject[]>([])
+  const [dates, setDates] = useState<DateObject[] | undefined>([])
   const [selectRangeText, setSelectRangeText] = useState<TDateRangeOptions | undefined>(
     'last90Days',
   )
@@ -34,7 +32,16 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
   const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
   const onDateChangeHandler = () => {
-    if (dates.length === 2 && isClosed) {
+    if (!dates && isClosed) {
+      setSelectRangeText('all')
+      onDateChange &&
+        onDateChange({
+          fromDate: undefined,
+          toDate: undefined,
+        })
+    }
+
+    if (dates && dates.length === 2 && isClosed) {
       setSelectRangeText(getSelectRangeText(dates[0].toDate(), dates[1].toDate()))
       onDateChange &&
         onDateChange({
@@ -53,8 +60,8 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
   }, [isClosed])
 
   useEffect(() => {
-    let fromDate = new Date()
-    let toDate = new Date()
+    let fromDate
+    let toDate
 
     switch (selectRangeText) {
       case 'today':
@@ -78,6 +85,11 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         fromDate = startOfDay(add(new Date(), { days: -90 }))
         setDates([new DateObject(fromDate), new DateObject(new Date())])
         break
+      case 'all':
+        fromDate = undefined
+        toDate = undefined
+        setDates(undefined)
+        break
       default:
         break
     }
@@ -89,16 +101,6 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         className="mr-1 text-left"
         value={selectRangeText}
         onValueChange={setSelectRangeText}
-        subText={
-          dates[0] != undefined && dates[1] != undefined
-            ? isSameDay(dates[0].toDate(), dates[1].toDate())
-              ? format(dates[0].toDate(), dateFormat)
-              : `${format(dates[0].toDate(), dateFormat)} - ${format(
-                  dates[1].toDate(),
-                  dateFormat,
-                )}`
-            : ''
-        }
       />
 
       <div className={cn(pillClasses, 'hidden md:flex py-2 pr-4 border-border-grey border-l')}>
