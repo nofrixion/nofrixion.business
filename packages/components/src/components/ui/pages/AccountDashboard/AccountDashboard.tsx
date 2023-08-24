@@ -45,11 +45,11 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
 }) => {
   return (
     <>
-      <div className="mb-12">
+      <div className="mb-12 md:px-4">
         <div className="flex justify-between">
           <button onClick={onAllCurrentAccountsClick} className="flex items-center space-x-3">
             <Icon name="back/12" />
-            <span>All current accounts</span>
+            <span className="hover:underline text-sm">All current accounts</span>
           </button>
           {/* TODO: Implement download statement feature*/}
           {/* <div>

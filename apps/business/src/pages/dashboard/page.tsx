@@ -65,8 +65,8 @@ const DashboardPage = () => {
 
   return (
     <>
-      <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16">Your current status</h1>
-      <div className="md:-mx-4">
+      <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
+      <div>
         <div className="-mx-8 md:-mx-14">
           {!isAccountsLoading && accounts && <AccountsCarousel accounts={accounts} />}
         </div>

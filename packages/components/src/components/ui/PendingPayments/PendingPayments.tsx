@@ -44,9 +44,11 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
                     key={payment.id}
                     className="flex justify-between py-2 text-xs items-center text-default-text flex-shrink-0 border-t font-normal"
                   >
-                    <span className="mr-4 w-[128px] text-default-text">{payment.createdBy}</span>
-                    <span className="">{payment.description}</span>
-                    <span className="text-right font-medium tabular-nums font-inter-fontFeatureSettings">
+                    <div className="flex text-default-text text-left">
+                      <span className="mr-4 w-[128px] ">{payment.createdBy}</span>
+                      <span className="w-[144px]">{payment.description}</span>
+                    </div>
+                    <span className="text-right font-medium tabular-nums font-inter-fontFeatureSettings whitespace-nowrap ml-4">
                       - {formatCurrency(payment.currency)} {formatAmount(payment.amount)}
                     </span>
                   </div>
