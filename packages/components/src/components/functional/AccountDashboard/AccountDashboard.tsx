@@ -2,6 +2,7 @@ import {
   PayoutStatus,
   SortDirection,
   useAccount,
+  useAccounts,
   usePendingPayments,
   useTransactions,
 } from '@nofrixion/moneymoov'
@@ -19,6 +20,7 @@ export interface AccountDashboardProps {
   onAllCurrentAccountsClick?: () => void
   accountId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
+  merchantId: string
 }
 
 const AccountDashboard = ({
@@ -26,6 +28,7 @@ const AccountDashboard = ({
   accountId,
   onAllCurrentAccountsClick,
   apiUrl = 'https://api.nofrixion.com/api/v1',
+  merchantId,
 }: AccountDashboardProps) => {
   const queryClient = new QueryClient()
 
@@ -36,6 +39,7 @@ const AccountDashboard = ({
         accountId={accountId}
         apiUrl={apiUrl}
         onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+        merchantId={merchantId}
       />
     </QueryClientProvider>
   )
@@ -47,6 +51,7 @@ const AccountDashboardMain = ({
   token,
   accountId,
   apiUrl,
+  merchantId,
   onAllCurrentAccountsClick,
 }: AccountDashboardProps) => {
   const [page, setPage] = useState(1)
@@ -95,6 +100,22 @@ const AccountDashboardMain = ({
     },
     { apiUrl, authToken: token },
   )
+
+  const { data: accountsResponse } = useAccounts(
+    {
+      merchantId,
+    },
+    { apiUrl, authToken: token },
+  )
+
+  useEffect(() => {
+    console.log(merchantId, accountId, "this works");
+
+    //get all merchant accounts 
+    //filter to match id and curreny
+
+
+  }, [merchantId])
 
   useEffect(() => {
     if (transactionsResponse?.status === 'success') {
