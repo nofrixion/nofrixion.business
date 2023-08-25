@@ -243,46 +243,50 @@ const remotePaymentRequestToLocalPaymentRequest = (
       return []
     } else {
       const localPaymentAttempts: LocalPaymentAttempt[] = []
-      remotePaymentAttempts.map((remotePaymentAttempt) => {
-        if (
-          remotePaymentAttempt.settledAt ||
-          remotePaymentAttempt.authorisedAt ||
-          remotePaymentAttempt.cardAuthorisedAt
-        ) {
-          const {
-            attemptKey,
-            authorisedAt,
-            settledAt,
-            attemptedAmount,
-            paymentMethod,
-            settledAmount,
-            captureAttempts,
-            refundAttempts,
-            currency,
-            walletName,
-            status,
-            authorisedAmount,
-            cardAuthorisedAmount,
-            cardAuthorisedAt,
-          } = remotePaymentAttempt
+      remotePaymentAttempts
+        .sort((a, b) => {
+          return new Date(b.initiatedAt ?? 0).getTime() - new Date(a.initiatedAt ?? 0).getTime()
+        })
+        .map((remotePaymentAttempt) => {
+          if (
+            remotePaymentAttempt.settledAt ||
+            remotePaymentAttempt.authorisedAt ||
+            remotePaymentAttempt.cardAuthorisedAt
+          ) {
+            const {
+              attemptKey,
+              authorisedAt,
+              settledAt,
+              attemptedAmount,
+              paymentMethod,
+              settledAmount,
+              captureAttempts,
+              refundAttempts,
+              currency,
+              walletName,
+              status,
+              authorisedAmount,
+              cardAuthorisedAmount,
+              cardAuthorisedAt,
+            } = remotePaymentAttempt
 
-          localPaymentAttempts.push({
-            attemptKey: attemptKey,
-            occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
-            paymentMethod: parseApiPaymentMethodTypeToLocalMethodType(paymentMethod),
-            amount: attemptedAmount,
-            currency: currency,
-            processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
-            settledAmount: settledAmount,
-            captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
-            refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
-            authorisedAmount: authorisedAmount,
-            cardAuthorisedAmount: cardAuthorisedAmount,
-            wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
-            status: parseApiStatusToLocalStatus(status),
-          })
-        }
-      })
+            localPaymentAttempts.push({
+              attemptKey: attemptKey,
+              occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
+              paymentMethod: parseApiPaymentMethodTypeToLocalMethodType(paymentMethod),
+              amount: attemptedAmount,
+              currency: currency,
+              processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
+              settledAmount: settledAmount,
+              captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
+              refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
+              authorisedAmount: authorisedAmount,
+              cardAuthorisedAmount: cardAuthorisedAmount,
+              wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
+              status: parseApiStatusToLocalStatus(status),
+            })
+          }
+        })
       return localPaymentAttempts
     }
   }
