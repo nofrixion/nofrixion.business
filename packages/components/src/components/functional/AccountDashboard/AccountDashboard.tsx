@@ -2,7 +2,6 @@ import {
   PayoutStatus,
   SortDirection,
   useAccount,
-  useAccounts,
   usePendingPayments,
   useTransactions,
 } from '@nofrixion/moneymoov'
@@ -54,6 +53,7 @@ const AccountDashboardMain = ({
   merchantId,
   onAllCurrentAccountsClick,
 }: AccountDashboardProps) => {
+  const [currentMercahntID, setCurrentMercahntID] = useState<string | undefined>()
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [transactions, setTransactions] = useState<LocalTransaction[]>([])
@@ -101,19 +101,20 @@ const AccountDashboardMain = ({
     { apiUrl, authToken: token },
   )
 
-  const { data: accountsResponse } = useAccounts(
-    {
-      merchantId,
-    },
-    { apiUrl, authToken: token },
-  )
+  //When switching merchants, go back to current accounts page
+  useEffect(() => {
+    if (merchantId) {
+      setCurrentMercahntID(merchantId)
+    }
+  }, [])
 
   useEffect(() => {
-    console.log(merchantId, accountId, accountsResponse, 'this works')
-
-    //get all merchant accounts
-    //filter to match id and curreny
-  }, [merchantId])
+    if (onAllCurrentAccountsClick && merchantId && currentMercahntID) {
+      if (merchantId != currentMercahntID) {
+        onAllCurrentAccountsClick()
+      }
+    }
+  }, [merchantId, currentMercahntID])
 
   useEffect(() => {
     if (transactionsResponse?.status === 'success') {
