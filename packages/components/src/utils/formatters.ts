@@ -109,7 +109,13 @@ const getDateFormat = (date: Date): string => {
   return 'MMM do'
 }
 
-const getSelectRangeText = (fromDate: Date, toDate: Date): TDateRangeOptions | undefined => {
+const getSelectRangeText = (
+  fromDate: Date,
+  toDate: Date,
+  firstDate?: Date,
+): TDateRangeOptions | undefined => {
+  console.log('fromDate', fromDate, 'toDate', toDate, 'firstDate', firstDate)
+
   if (isToday(fromDate) && isToday(toDate)) {
     return 'today'
   } else if (isYesterday(fromDate) && isYesterday(toDate)) {
@@ -120,6 +126,8 @@ const getSelectRangeText = (fromDate: Date, toDate: Date): TDateRangeOptions | u
     return 'last30Days'
   } else if (isToday(toDate) && isEqual(fromDate, startOfDay(add(new Date(), { days: -90 })))) {
     return 'last90Days'
+  } else if (firstDate && isEqual(fromDate, firstDate) && isToday(toDate)) {
+    return 'all'
   } else {
     return undefined
   }

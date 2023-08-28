@@ -30,6 +30,15 @@ export class MerchantClient extends BaseApiClient {
   }
 
   /**
+   * Gets a single merchant.
+   * @param merchantId The merchant id to get
+   * @returns All info of a specific merchant if successful. An ApiError if not successful.
+   */
+  async getMerchant({ merchantId }: MerchantProps): Promise<ApiResponse<Merchant>> {
+    return await this.httpRequest<Merchant>(`${this.apiUrl}/${merchantId}`, HttpMethod.GET)
+  }
+
+  /**
    * Gets the bank settings of the merchant
    * @param merchantId The merchant id to get the bank settings for
    * @returns A MerchantBankSettings if successful. An ApiError if not successful.

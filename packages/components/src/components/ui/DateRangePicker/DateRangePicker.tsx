@@ -19,11 +19,12 @@ export type DateRange = {
 }
 
 export interface DateRangeFilterProps {
+  firstDate?: Date
   onDateChange: (dateRange: DateRange) => void
 }
 
-const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
-  const [dates, setDates] = useState<DateObject[] | undefined>([])
+const DateRangePicker = ({ onDateChange, firstDate }: DateRangeFilterProps) => {
+  const [dates, setDates] = useState<DateObject[]>([])
   const [selectRangeText, setSelectRangeText] = useState<TDateRangeOptions | undefined>(
     'last90Days',
   )
@@ -32,17 +33,9 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
   const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
   const onDateChangeHandler = () => {
-    if (!dates && isClosed) {
-      setSelectRangeText('all')
-      onDateChange &&
-        onDateChange({
-          fromDate: undefined,
-          toDate: undefined,
-        })
-    }
+    if (dates && dates.length == 2 && isClosed) {
+      setSelectRangeText(getSelectRangeText(dates[0].toDate(), dates[1].toDate(), firstDate))
 
-    if (dates && dates.length === 2 && isClosed) {
-      setSelectRangeText(getSelectRangeText(dates[0].toDate(), dates[1].toDate()))
       onDateChange &&
         onDateChange({
           fromDate: new Date(dates[0].toDate()),
@@ -86,9 +79,8 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         setDates([new DateObject(fromDate), new DateObject(new Date())])
         break
       case 'all':
-        fromDate = undefined
-        toDate = undefined
-        setDates(undefined)
+        fromDate = firstDate ?? new Date(0)
+        setDates([new DateObject(fromDate), new DateObject(new Date())])
         break
       default:
         break
@@ -103,7 +95,7 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         onValueChange={setSelectRangeText}
       />
 
-      <div className={cn(pillClasses, 'hidden md:flex py-2 pr-4 border-border-grey border-l')}>
+      <div className={cn(pillClasses, 'hidden md:flex border-border-grey border-l')}>
         <DatePicker
           value={dates}
           onChange={(changes: DateObject[]) => {

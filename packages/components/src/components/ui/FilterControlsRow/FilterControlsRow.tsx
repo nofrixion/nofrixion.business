@@ -21,6 +21,7 @@ export interface FilterControlsRowProps {
   setCreatedSortDirection?: (direction: SortDirection) => void
   amountSortDirection: SortDirection
   setAmountSortDirection?: (direction: SortDirection) => void
+  firstDate?: Date
 }
 
 const FilterControlsRow = ({
@@ -39,6 +40,7 @@ const FilterControlsRow = ({
   setCreatedSortDirection,
   amountSortDirection,
   setAmountSortDirection,
+  firstDate,
 }: FilterControlsRowProps) => {
   const onValueChanged = (value: TSorterOptions) => {
     switch (value) {
@@ -77,7 +79,10 @@ const FilterControlsRow = ({
 
   return (
     <div className="flex md:w-auto md:flex justify-between md:p-3 bg-white rounded-lg">
-      <DateRangePicker onDateChange={(dateRange) => setDateRange(dateRange)}></DateRangePicker>
+      <DateRangePicker
+        firstDate={firstDate}
+        onDateChange={(dateRange) => setDateRange(dateRange)}
+      />
 
       <div className="md:hidden">
         <SelectSorter

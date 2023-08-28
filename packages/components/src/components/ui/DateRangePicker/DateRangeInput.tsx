@@ -39,7 +39,7 @@ const DateRangeInput = (props: DateRangeInputProps) => {
   return (
     <div className="flex">
       <ResizableComponent>
-        <button className="pl-4" onClick={props.openCalendar}>
+        <button className="py-2 px-4" onClick={props.openCalendar}>
           {formattedDate}
         </button>
       </ResizableComponent>

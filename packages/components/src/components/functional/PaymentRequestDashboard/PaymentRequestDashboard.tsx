@@ -7,6 +7,7 @@ import {
   PaymentRequestMetrics,
   PaymentRequestStatus,
   useCapture,
+  useMerchant,
   useMerchantTags,
   usePaymentRequestMetrics,
   usePaymentRequests,
@@ -15,7 +16,7 @@ import {
 } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { add, endOfDay, startOfDay } from 'date-fns'
+import { add, endOfDay, set, startOfDay } from 'date-fns'
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -131,6 +132,8 @@ const PaymentRequestDashboardMain = ({
       onUnauthorized()
     }
   }
+
+  const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
 
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
@@ -571,6 +574,12 @@ const PaymentRequestDashboardMain = ({
               setCreatedSortDirection={setCreatedSortDirection}
               amountSortDirection={amountSortDirection}
               setAmountSortDirection={setAmountSortDirection}
+              firstDate={
+                // Set first date to the first day of the year the merchant was created
+                merchant?.status == 'success'
+                  ? set(new Date(merchant?.data.inserted), { month: 0, date: 1 })
+                  : undefined
+              }
             />
           </div>
         )}
