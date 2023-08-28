@@ -19,6 +19,7 @@ export interface AccountDashboardProps {
   onAllCurrentAccountsClick?: () => void
   accountId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
+  merchantId: string
 }
 
 const AccountDashboard = ({
@@ -26,6 +27,7 @@ const AccountDashboard = ({
   accountId,
   onAllCurrentAccountsClick,
   apiUrl = 'https://api.nofrixion.com/api/v1',
+  merchantId,
 }: AccountDashboardProps) => {
   const queryClient = new QueryClient()
 
@@ -36,6 +38,7 @@ const AccountDashboard = ({
         accountId={accountId}
         apiUrl={apiUrl}
         onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+        merchantId={merchantId}
       />
     </QueryClientProvider>
   )
@@ -47,8 +50,10 @@ const AccountDashboardMain = ({
   token,
   accountId,
   apiUrl,
+  merchantId,
   onAllCurrentAccountsClick,
 }: AccountDashboardProps) => {
+  const [currentMercahntID, setCurrentMercahntID] = useState<string | undefined>()
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [transactions, setTransactions] = useState<LocalTransaction[]>([])
@@ -95,6 +100,21 @@ const AccountDashboardMain = ({
     },
     { apiUrl, authToken: token },
   )
+
+  //When switching merchants, go back to current accounts page
+  useEffect(() => {
+    if (merchantId) {
+      setCurrentMercahntID(merchantId)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (onAllCurrentAccountsClick && merchantId && currentMercahntID) {
+      if (merchantId != currentMercahntID) {
+        onAllCurrentAccountsClick()
+      }
+    }
+  }, [merchantId, currentMercahntID])
 
   useEffect(() => {
     if (transactionsResponse?.status === 'success') {
