@@ -73,12 +73,17 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           <div className="text-[28px]/8 font-semibold">
             <h2>{account?.accountName}</h2>
             <div className="flex gap-6 mt-2">
-              {account?.identifier.type === AccountIdentifierType.IBAN ? (
+              {account?.identifier.type === AccountIdentifierType.IBAN &&
+              account.identifier.iban ? (
                 <DisplayAndCopy name="IBAN" value={account.identifier.iban} />
               ) : account?.identifier.type === AccountIdentifierType.SCAN ? (
                 <>
-                  <DisplayAndCopy name="SC" value={account?.identifier.sortCode} />
-                  <DisplayAndCopy name="AN" value={account?.identifier.accountNumber} />
+                  {account?.identifier.sortCode && (
+                    <DisplayAndCopy name="SC" value={account?.identifier.sortCode} />
+                  )}
+                  {account?.identifier.accountNumber && (
+                    <DisplayAndCopy name="AN" value={account?.identifier.accountNumber} />
+                  )}
                 </>
               ) : (
                 <></>

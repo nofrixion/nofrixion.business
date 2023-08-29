@@ -75,12 +75,22 @@ export const getSubTransactions = (paymentAttempt: LocalPaymentAttempt): SubTran
     })),
     ...paymentAttempt.refundAttempts
       .filter((x) => x.isCardVoid === false)
-      .map(({ refundSettledAt, refundSettledAmount }) => ({
-        occurredAt: refundSettledAt,
-        amount: refundSettledAmount,
-        currency: paymentAttempt.currency,
-        type: SubTransactionType.Refund,
-      })),
+      .map(
+        ({
+          refundSettledAt,
+          refundSettledAmount,
+          refundInitiatedAmount,
+          refundInitiatedAt,
+          refundCancelledAt,
+        }) => ({
+          occurredAt: refundSettledAt ?? refundInitiatedAt,
+          amount: refundSettledAmount > 0 ? refundSettledAmount : refundInitiatedAmount,
+          currency: paymentAttempt.currency,
+          type: SubTransactionType.Refund,
+          awaitingApproval: refundSettledAt === undefined && refundInitiatedAt !== undefined,
+          cancelled: refundCancelledAt !== undefined && refundSettledAt === undefined,
+        }),
+      ),
     ...paymentAttempt.refundAttempts
       .filter((x) => x.isCardVoid)
       .map(({ refundSettledAt, refundSettledAmount }) => ({
@@ -155,6 +165,12 @@ export const getAmountCaptured = (paymentAttempt: LocalPaymentAttempt): number =
   return paymentAttempt.captureAttempts.reduce((acc, curr) => acc + curr.capturedAmount, 0)
 }
 
+export const getPispRefundInitiatedAmount = (paymentAttempt: LocalPaymentAttempt): number => {
+  return paymentAttempt.refundAttempts
+    .filter((x) => x.refundSettledAt === undefined)
+    .reduce((acc, curr) => acc + curr.refundInitiatedAmount, 0)
+}
+
 /**
  * Calculates the maximum amount that can be refunded in a payment request. It is the sum of amount received minus amount captured.
  * @param paymentAttempts
@@ -165,7 +181,7 @@ export const getMaxRefundableAmount = (paymentAttempt: LocalPaymentAttempt): num
     case LocalPaymentMethodTypes.Card:
       return getAmountCaptured(paymentAttempt) - getCardAmountRefunded(paymentAttempt)
     case LocalPaymentMethodTypes.Pisp:
-      return getAmountPaid(paymentAttempt)
+      return getAmountPaid(paymentAttempt) - getPispRefundInitiatedAmount(paymentAttempt)
     default:
       return 0
   }

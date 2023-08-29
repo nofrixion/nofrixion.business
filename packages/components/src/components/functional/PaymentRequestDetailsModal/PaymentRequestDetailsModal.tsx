@@ -9,7 +9,12 @@ import {
 import { useEffect, useState } from 'react'
 
 import { makeToast } from '../../../components/ui/Toast/Toast'
-import { LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
+import {
+  LocalAccount,
+  LocalCounterparty,
+  LocalPaymentRequest,
+  LocalTag,
+} from '../../../types/LocalTypes'
 import {
   parseLocalTagToApiTag,
   remotePaymentRequestToLocalPaymentRequest,
@@ -24,10 +29,17 @@ interface PaymentRequestDetailsModalProps extends usePaymentRequestsProps {
   merchantTags: LocalTag[]
   paymentRequests: LocalPaymentRequest[]
   open: boolean
+  accounts: LocalAccount[]
   onDismiss: () => void
   setMerchantTags: (merchantTags: LocalTag[]) => void
   setPaymentRequests: (paymentRequests: LocalPaymentRequest[]) => void
-  onRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
+  onCardRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
+  onBankRefund: (
+    sourceAccount: LocalAccount,
+    counterParty: LocalCounterparty,
+    amount: number,
+    paymentInitiationID: string,
+  ) => Promise<void>
   onCapture: (authorizationID: string, amount: number) => Promise<void>
 }
 const PaymentRequestDetailsModal = ({
@@ -38,7 +50,8 @@ const PaymentRequestDetailsModal = ({
   merchantTags,
   open,
   onDismiss,
-  onRefund,
+  onCardRefund,
+  onBankRefund,
   onCapture,
   statusSortDirection,
   createdSortDirection,
@@ -54,6 +67,7 @@ const PaymentRequestDetailsModal = ({
   minAmount,
   maxAmount,
   tags,
+  accounts,
 }: PaymentRequestDetailsModalProps) => {
   const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined)
 
@@ -210,7 +224,9 @@ const PaymentRequestDetailsModal = ({
           paymentRequest={paymentRequest}
           hostedPaymentLink={`${paymentRequest.hostedPayCheckoutUrl}`}
           open={open}
-          onRefund={onRefund}
+          accounts={accounts}
+          onCardRefund={onCardRefund}
+          onBankRefund={onBankRefund}
           onCapture={onCapture}
           onTagAdded={onTagAdded}
           onTagCreated={onTagCreated}
