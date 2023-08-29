@@ -1,6 +1,7 @@
 import { AccountIdentifierType, Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
+  LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
@@ -34,6 +35,26 @@ export interface LocalPaymentRequest {
   priorityBankName?: string
   notificationEmailAddresses?: string
   captureFunds: boolean
+  transactions?: LocalTransaction[]
+  pispAccountID?: string
+}
+
+export interface LocalCounterparty {
+  accountID?: string
+  name: string
+  emailAddress?: string
+  phoneNumber?: string
+  identifier?: LocalAccountIdentifier
+  accountInfo?: string
+}
+
+export interface LocalAccountIdentifier {
+  type: LocalAccountIdentifierType
+  currency: string
+  bic?: string
+  iban?: string
+  accountNumber?: string
+  sortCode?: string
 }
 
 export interface LocalPaymentAttempt {
@@ -51,6 +72,7 @@ export interface LocalPaymentAttempt {
   refundAttempts: LocalPaymentRequestRefundAttempt[]
   wallet?: LocalWallets | undefined
   status: LocalPaymentStatus
+  reconciledTransactionID?: string
 }
 
 export interface SubTransaction {
@@ -58,6 +80,8 @@ export interface SubTransaction {
   amount: number
   currency: Currency.EUR | Currency.GBP
   type: SubTransactionType
+  awaitingApproval?: boolean
+  cancelled?: boolean
 }
 
 export interface LocalPaymentRequestRefundAttempt {
@@ -150,33 +174,14 @@ export interface LocalTag {
 }
 
 export interface LocalTransaction {
+  id: string
   date: Date
-  destinationAccount: {
-    name: string
-    accountInfo: string
-  }
+  counterParty: LocalCounterparty
   amount: number
   balanceAfterTx?: number
   reference: string
   description: string
   type: string
-}
-
-export interface LocalAccountIdentifier {
-  type: AccountIdentifierType
-  currency: string
-  bic: string
-  iban: string
-  accountNumber: string
-  sortCode: string
-}
-
-export interface LocalCounterparty {
-  accountID: string
-  name: string
-  emailAddress: string
-  phoneNumber: string
-  identifier: LocalAccountIdentifier
 }
 
 export interface LocalPayout {
@@ -194,4 +199,20 @@ export interface LocalPayout {
   inserted: Date
   sourceAccountName: string
   destination?: LocalCounterparty
+}
+
+export interface LocalAccount {
+  id: string
+  merchantID: string
+  accountName: string
+  accountNumber?: string
+  availableBalance: number
+  balance: number
+  currency: Currency
+  displayName: string
+  iban?: string
+  sortCode?: string
+  summary: string
+  identifier: LocalAccountIdentifier
+  isDefault: boolean
 }

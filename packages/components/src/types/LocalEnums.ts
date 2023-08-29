@@ -40,3 +40,10 @@ export enum SubTransactionType {
   Capture = 'Capture',
   Void = 'Void',
 }
+
+export enum LocalAccountIdentifierType {
+  Unknown = 'Unknown',
+  SCAN = 'SCAN',
+  IBAN = 'IBAN',
+  DD = 'DD',
+}

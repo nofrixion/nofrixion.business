@@ -48,8 +48,8 @@ export interface Account {
   balance: number
   currency: Currency
   displayName: string
-  iban: string
-  sortCode: string
+  iban?: string
+  sortCode?: string
   summary: string
   identifier: AccountIdentifier
   isDefault: boolean
@@ -58,10 +58,10 @@ export interface Account {
 export interface AccountIdentifier {
   type: AccountIdentifierType
   currency: string
-  bic: string
-  iban: string
-  accountNumber: string
-  sortCode: string
+  bic?: string
+  iban?: string
+  accountNumber?: string
+  sortCode?: string
 }
 export interface PaymentRequestMetrics {
   all: number

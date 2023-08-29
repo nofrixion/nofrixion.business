@@ -1,5 +1,5 @@
-import { Tag } from './ApiResponses'
-import { PayoutStatus, SortDirection } from './Enums'
+import { Counterparty, Tag } from './ApiResponses'
+import { AccountIdentifierType, Currency, PayoutStatus, SortDirection } from './Enums'
 
 export interface PagedResponseProps
   extends FilterResponseProps,
@@ -143,4 +143,18 @@ export interface usePendingPaymentsProps extends AccountProps {
   fromDateMS?: number
   toDateMS?: number
   payoutStatuses?: PayoutStatus[]
+}
+
+export interface CreatePayoutProps {
+  accountID: string
+  type: AccountIdentifierType
+  description?: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
+  destination: Counterparty
+  invoiceID?: string
+  allowIncomplete: boolean
+  paymentRequestId?: string
 }

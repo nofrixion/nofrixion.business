@@ -1,15 +1,18 @@
 import { AccountIdentifierType, Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
+  LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
 import {
+  LocalAccount,
+  LocalAccountIdentifier,
+  LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
-  LocalPayout,
   LocalTransaction,
 } from '../types/LocalTypes'
 
@@ -920,8 +923,9 @@ function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
 
 export const mockedTransactions: LocalTransaction[] = [
   {
+    id: '1',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -931,8 +935,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA',
   },
   {
+    id: '2',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -942,8 +947,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA Instant',
   },
   {
+    id: '3',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -953,8 +959,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA Instant',
   },
   {
+    id: '4',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -965,8 +972,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA',
   },
   {
+    id: '5',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -977,8 +985,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: '',
   },
   {
+    id: '6',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -989,8 +998,9 @@ export const mockedTransactions: LocalTransaction[] = [
     type: 'SEPA Instant',
   },
   {
+    id: '7',
     date: randomDate(),
-    destinationAccount: {
+    counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
@@ -1121,6 +1131,67 @@ export const mockPayouts: LocalPayout[] = [
   },
 ]
 
+const accountIdentifier: LocalAccountIdentifier = {
+  type: LocalAccountIdentifierType.IBAN,
+  currency: Currency.EUR,
+  iban: 'GB12345678901234567890',
+}
+
+const accounts: LocalAccount[] = [
+  {
+    id: '1',
+    accountName: 'EURO Account',
+    currency: Currency.GBP,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    iban: 'GB12345678901234567890',
+    displayName: 'EURO Account',
+    identifier: accountIdentifier,
+    summary: 'Account',
+    isDefault: true,
+    availableBalance: 100000,
+  },
+  {
+    id: '2',
+    accountName: 'GBP Account',
+    currency: Currency.GBP,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    iban: 'GB12345678901234567890',
+    displayName: 'GBP Account',
+    identifier: accountIdentifier,
+    summary: 'Account',
+    isDefault: false,
+    availableBalance: 100000,
+  },
+  {
+    id: '3',
+    accountName: 'EUR Account 2',
+    currency: Currency.EUR,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    iban: 'GB12345678901234567890',
+    displayName: 'EUR Account 2',
+    identifier: accountIdentifier,
+    summary: 'Account',
+    isDefault: false,
+    availableBalance: 100000,
+  },
+]
+
+const counterparty: LocalCounterparty = {
+  name: 'John Doe',
+  emailAddress: 'email@email.com',
+  phoneNumber: '01234567890',
+  identifier: accountIdentifier,
+}
+
 export default {
   fewPaymentRequests,
   paymentRequest: {
@@ -1131,4 +1202,6 @@ export default {
     overpaidPaymentRequest,
   },
   merchantTags: mockMerchantTags,
+  accounts,
+  counterparty,
 }
