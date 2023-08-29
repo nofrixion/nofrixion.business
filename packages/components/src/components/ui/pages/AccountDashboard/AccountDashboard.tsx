@@ -5,6 +5,7 @@ import {
   Pagination,
   SortDirection,
 } from '@nofrixion/moneymoov'
+import { set } from 'date-fns'
 import * as React from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
@@ -22,6 +23,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   pendingPayments?: LocalPayout[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
+  merchantCreatedAt?: Date
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount', direction: SortDirection) => void
   onDateChange: (dateRange: DateRange) => void
@@ -36,6 +38,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   pendingPayments,
   pagination,
   searchFilter,
+  merchantCreatedAt,
   onDateChange,
   onSearch,
   onPageChange,
@@ -109,7 +112,11 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
       </div>
 
       <div className="bg-white rounded-[10px] h-16 flex justify-between items-center px-3 mb-4">
-        <DateRangePicker onDateChange={onDateChange} />
+        <DateRangePicker
+          onDateChange={onDateChange}
+          // Set first date to the first day of the year the merchant was created
+          firstDate={merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined}
+        />
 
         <SearchBar value={searchFilter} setValue={onSearch} />
       </div>

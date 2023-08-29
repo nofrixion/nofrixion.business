@@ -2,6 +2,7 @@ import {
   PayoutStatus,
   SortDirection,
   useAccount,
+  useMerchant,
   usePendingPayments,
   useTransactions,
 } from '@nofrixion/moneymoov'
@@ -77,8 +78,8 @@ const AccountDashboardMain = ({
       pageSize: pageSize,
       dateSortDirection: transactionDateSortDirection,
       amountSortDirection: amountSortDirection,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter,
     },
     { apiUrl: apiUrl, authToken: token },
@@ -100,6 +101,8 @@ const AccountDashboardMain = ({
     },
     { apiUrl, authToken: token },
   )
+
+  const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
 
   //When switching merchants, go back to current accounts page
   useEffect(() => {
@@ -168,6 +171,9 @@ const AccountDashboardMain = ({
         pageSize: pageSize,
         totalSize: totalRecords,
       }}
+      merchantCreatedAt={
+        merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
+      }
       onPageChange={onPageChange}
       onSort={onSort}
       onDateChange={onDateChange}

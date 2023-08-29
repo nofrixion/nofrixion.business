@@ -9,6 +9,7 @@ import {
   useAccounts,
   useCapture,
   useCreatePayout,
+  useMerchant,
   useMerchantTags,
   usePaymentRequestMetrics,
   usePaymentRequests,
@@ -17,7 +18,7 @@ import {
 } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { add, endOfDay, startOfDay } from 'date-fns'
+import { add, endOfDay, set, startOfDay } from 'date-fns'
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -143,6 +144,8 @@ const PaymentRequestDashboardMain = ({
     }
   }
 
+  const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
+
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
       amountSortDirection: amountSortDirection,
@@ -153,8 +156,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -174,8 +177,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -195,8 +198,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -216,8 +219,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -237,8 +240,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange?.fromDate?.getTime(),
+      toDateMS: dateRange?.toDate?.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -258,8 +261,8 @@ const PaymentRequestDashboardMain = ({
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePaymentRequestMetrics(
     {
       merchantId: merchantId,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -638,6 +641,12 @@ const PaymentRequestDashboardMain = ({
               setCreatedSortDirection={setCreatedSortDirection}
               amountSortDirection={amountSortDirection}
               setAmountSortDirection={setAmountSortDirection}
+              firstDate={
+                // Set first date to the first day of the year the merchant was created
+                merchant?.status == 'success'
+                  ? set(new Date(merchant?.data.inserted), { month: 0, date: 1 })
+                  : undefined
+              }
             />
           </div>
         )}
@@ -769,8 +778,8 @@ const PaymentRequestDashboardMain = ({
         amountSortDirection={amountSortDirection}
         pageNumber={page}
         pageSize={pageSize}
-        fromDateMS={dateRange.fromDate.getTime()}
-        toDateMS={dateRange.toDate.getTime()}
+        fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}
+        toDateMS={dateRange.toDate && dateRange.toDate.getTime()}
         status={status}
         search={searchFilter?.length >= 3 ? searchFilter : undefined}
         currency={currencyFilter}

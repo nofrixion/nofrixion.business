@@ -18,11 +18,13 @@ const AccountReceivablePage = () => {
     // Div is needed to prevent the dashboard from being
     // rendered as two separate components
     <div>
-      <AccountsReceivableDashboard
-        merchantId={merchant ? merchant.id : ''}
-        apiUrl={NOFRIXION_API_URL}
-        onUnauthorized={onUnauthorized}
-      />
+      {merchant && (
+        <AccountsReceivableDashboard
+          merchantId={merchant.id}
+          apiUrl={NOFRIXION_API_URL}
+          onUnauthorized={onUnauthorized}
+        />
+      )}
     </div>
   )
 }
