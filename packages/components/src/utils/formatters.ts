@@ -114,8 +114,6 @@ const getSelectRangeText = (
   toDate: Date,
   firstDate?: Date,
 ): TDateRangeOptions | undefined => {
-  console.log('fromDate', fromDate, 'toDate', toDate, 'firstDate', firstDate)
-
   if (isToday(fromDate) && isToday(toDate)) {
     return 'today'
   } else if (isYesterday(fromDate) && isYesterday(toDate)) {

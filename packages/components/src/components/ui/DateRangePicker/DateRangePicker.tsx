@@ -1,6 +1,6 @@
 import './DateRangePicker.css'
 
-import { add, endOfDay, startOfDay } from 'date-fns'
+import { add, endOfDay, format, isSameDay, startOfDay } from 'date-fns'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
 
@@ -22,6 +22,8 @@ export interface DateRangeFilterProps {
   firstDate?: Date
   onDateChange: (dateRange: DateRange) => void
 }
+
+const dateFormat = 'MMM do'
 
 const DateRangePicker = ({ onDateChange, firstDate }: DateRangeFilterProps) => {
   const [dates, setDates] = useState<DateObject[]>([])
@@ -93,6 +95,16 @@ const DateRangePicker = ({ onDateChange, firstDate }: DateRangeFilterProps) => {
         className="mr-1 text-left"
         value={selectRangeText}
         onValueChange={setSelectRangeText}
+        subText={
+          dates[0] != undefined && dates[1] != undefined
+            ? isSameDay(dates[0].toDate(), dates[1].toDate())
+              ? format(dates[0].toDate(), dateFormat)
+              : `${format(dates[0].toDate(), dateFormat)} - ${format(
+                  dates[1].toDate(),
+                  dateFormat,
+                )}`
+            : ''
+        }
       />
 
       <div className={cn(pillClasses, 'hidden md:flex border-border-grey border-l')}>

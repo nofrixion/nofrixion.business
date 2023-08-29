@@ -6,8 +6,8 @@ import { ApiProps, MerchantProps } from '../types/props'
 
 const fetchMerchant = async (
   apiUrl: string,
+  merchantId: string,
   authToken?: string,
-  merchantId?: string,
 ): Promise<ApiResponse<Merchant>> => {
   const client = new MerchantClient({ apiUrl, authToken })
 
@@ -16,10 +16,13 @@ const fetchMerchant = async (
   return response
 }
 
-export const useMerchant = ({ apiUrl, authToken }: ApiProps, { merchantId }: MerchantProps) => {
+export const useMerchant = (
+  { apiUrl, authToken }: ApiProps,
+  { merchantId }: Required<MerchantProps>,
+) => {
   const QUERY_KEY = ['Merchant', apiUrl, authToken]
 
   return useQuery<ApiResponse<Merchant>, Error>(QUERY_KEY, () =>
-    fetchMerchant(apiUrl, authToken, merchantId),
+    fetchMerchant(apiUrl, merchantId, authToken),
   )
 }

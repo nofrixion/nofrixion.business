@@ -10,15 +10,15 @@ import {
 } from '../../../atoms/Select/Select'
 
 const options = {
-  moreRecentFirst: 'Most recent first',
-  olderFirst: 'Oldest first',
+  mostRecentFirst: 'Most recent first',
+  oldestFirst: 'Oldest first',
   amountHighToLow: 'Most expensive first',
   amountLowToHigh: 'Cheapest first',
 }
 
 const displayValue = {
-  moreRecentFirst: 'Creation date',
-  olderFirst: 'Creation date',
+  mostRecentFirst: 'Creation date',
+  oldestFirst: 'Creation date',
   amountHighToLow: 'Amount',
   amountLowToHigh: 'Amount',
 }

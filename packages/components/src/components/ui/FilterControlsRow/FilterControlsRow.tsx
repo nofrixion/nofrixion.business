@@ -44,11 +44,11 @@ const FilterControlsRow = ({
 }: FilterControlsRowProps) => {
   const onValueChanged = (value: TSorterOptions) => {
     switch (value) {
-      case 'moreRecentFirst':
+      case 'mostRecentFirst':
         setCreatedSortDirection && setCreatedSortDirection(SortDirection.DESC)
         setAmountSortDirection && setAmountSortDirection(SortDirection.NONE)
         break
-      case 'olderFirst':
+      case 'oldestFirst':
         setCreatedSortDirection && setCreatedSortDirection(SortDirection.ASC)
         setAmountSortDirection && setAmountSortDirection(SortDirection.NONE)
         break
@@ -65,15 +65,15 @@ const FilterControlsRow = ({
 
   const getSorterValue = () => {
     if (createdSortDirection === SortDirection.DESC) {
-      return 'moreRecentFirst'
+      return 'mostRecentFirst'
     } else if (createdSortDirection === SortDirection.ASC) {
-      return 'olderFirst'
+      return 'oldestFirst'
     } else if (amountSortDirection === SortDirection.DESC) {
       return 'amountHighToLow'
     } else if (amountSortDirection === SortDirection.ASC) {
       return 'amountLowToHigh'
     } else {
-      return 'moreRecentFirst'
+      return 'mostRecentFirst'
     }
   }
 
