@@ -2,3 +2,4 @@
 // need to be imported here
 import './AccountsReceivableDashboard'
 import './CurrentAccountsList'
+import './AccountDashboard'
