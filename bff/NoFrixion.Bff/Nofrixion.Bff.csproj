@@ -27,4 +27,9 @@
     <ProjectReference Include="..\..\..\nofrixion.common\src\NoFrixion.Common\NoFrixion.Common.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Approve\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

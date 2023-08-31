@@ -36,7 +36,7 @@ export const App = () => {
                 <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 <Route path="payouts" element={<PayoutsPage />} />
                 <Route path="payouts/:payoutId" element={<PayoutPage />} />
-                <Route path="payouts/:payoutId/:result" element={<PayoutPage />} />
+                <Route path="payouts/:payoutId/:result/:message" element={<PayoutPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="pricing" element={<PricingPage />} />
               </Route>

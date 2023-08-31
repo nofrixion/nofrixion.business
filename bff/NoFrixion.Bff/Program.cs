@@ -35,7 +35,7 @@ builder.Host.UseSerilog((ctx, lc) =>
     }
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddBff()
     .AddRemoteApis();
 
@@ -116,7 +116,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddCookieTempDataProvider();
 
 builder.Services.AddStackExchangeRedisCache(options => options.ConfigurationOptions =
     ConfigurationOptions.Parse(configuration[ConfigKeys.CONNECTION_STRING_REDIS]));
@@ -159,6 +159,8 @@ app.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl
     .RequireAccessToken();
 
 app.MapControllers();
+
+app.MapRazorPages();
 
 // After all the required routes are matched then redirect every other path back to home.
 app.MapGet("{**catchAll}", () => Results.Redirect("/"));

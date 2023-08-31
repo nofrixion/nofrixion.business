@@ -18,6 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using NoFrixion;
 using NoFrixion.MoneyMoov;
 using NoFrixion.MoneyMoov.Claims;
@@ -32,50 +33,50 @@ namespace Nofrixion.Bff.Controllers;
 [Route("/approve")]
 public class ApproveController : Controller
 {
+    private const string CallerBaseUrl = "CallerBaseUrl";
     private string _payoutBaseUrl;
     private string _callbackUrl;
-    private bool _isDevelopment = false;
     
     private readonly IConfiguration _config;
     private readonly ILogger<ApproveController> _logger;
     private readonly IAntiforgery _antiforgery;
     private readonly IMoneyMoovClient _moneyMoovClient;
     private readonly ITokenAcquirer _tokenAcquirer;
+    private readonly IDistributedCache _cache;
 
     public ApproveController(IConfiguration config, 
         ILogger<ApproveController> logger, 
         IAntiforgery antiforgery,
         IMoneyMoovClient moneyMoovClient,
-        ITokenAcquirer tokenAcquirer)
+        ITokenAcquirer tokenAcquirer,
+        IDistributedCache cache)
     {
         _config = config;
         _logger = logger;
         _antiforgery = antiforgery;
         _moneyMoovClient = moneyMoovClient;
         _tokenAcquirer = tokenAcquirer;
-        
+        _cache = cache;
+
         var developmentBaseUrl = _config[ConfigKeys.NOFRIXION_DEVELOPMENT_BASE_URL];
         
         if (!string.IsNullOrEmpty(developmentBaseUrl))
         {
-            _isDevelopment = true;
-            _payoutBaseUrl = developmentBaseUrl + "/home/payouts/";
+            _payoutBaseUrl = developmentBaseUrl;
         }
         
         _callbackUrl = _config[ConfigKeys.NOFRIXION_MONEYMOOV_BUSINESS_BASE_URL] + "/approve/callback";
     }
     
-    // GET
-    public IActionResult Index()
-    {
-        return View();
-    }
-    
     [Route("/approve/initiate")]
-    public IActionResult Initiate(ApproveTypesEnum approveType, Guid id)
+    public async Task<IActionResult> Initiate(ApproveTypesEnum approveType, Guid id, string callerBaseUrl)
     {
         _logger.LogInformation($"Approve {nameof(Initiate)} requested for {approveType} and ID {id}.");
 
+        _payoutBaseUrl += callerBaseUrl;
+        
+        await _cache.SetStringAsync($"{id}.{CallerBaseUrl}", _payoutBaseUrl);
+        
         var approvalUrl = _config[ConfigKeys.NOFRIXION_IDENTITY_DOMAIN] + "/approve";
 
         var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
@@ -111,36 +112,31 @@ public class ApproveController : Controller
     [Route("/approve/callback")]
     public async Task<IActionResult> Callback(string code, string state, Guid id, ApproveTypesEnum approveType, bool cancelled = false)
     {
+        var baseUrl = await _cache.GetStringAsync($"{id}.{CallerBaseUrl}");
+        
         if (cancelled)
         {
             _logger.LogInformation($"Approval callback, cancellation for id {id}, approval type {approveType}.");
             
-            return Redirect( $"{_payoutBaseUrl}{id}/cancel");
+            return Redirect( $"{baseUrl}{id}/cancel");
         }
         else if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(state))
         {
             _logger.LogWarning($"Approval callback, the code or state fields were missing in the approve callback.");
             
-            return Redirect( $"{_payoutBaseUrl}{id}/error");
+            return RedirectResultError(baseUrl, id, "The code or state fields were missing in the approve callback.");
         }
         else
         {
             _logger.LogInformation($"Approval callback received with code and state set.");
 
-            // Skip the anti-forgery token validation in development mode.
-            if (!_isDevelopment)
+            Request.Headers.Add("RequestVerificationToken", state);
+
+            if (!await _antiforgery.IsRequestValidAsync(HttpContext))
             {
-                try
-                {
-                    Request.Headers.Add("RequestVerificationToken", state);
-                    await _antiforgery.ValidateRequestAsync(HttpContext);
-                }
-                catch
-                {
-                    _logger.LogError($"Approval callback validation of the state anti-forgery token failed.");
-            
-                    return Redirect( $"{_payoutBaseUrl}{id}/error");
-                }    
+                _logger.LogError($"Approval callback validation of the state anti-forgery token failed.");
+    
+                return RedirectResultError(baseUrl, id, "The state field could not be validated, please refresh the page and try again.");
             }
             
             var tokenResponse = await _tokenAcquirer.GetToken(code, _callbackUrl);
@@ -149,7 +145,7 @@ public class ApproveController : Controller
             {
                 _logger.LogWarning($"Approval callback failed to get access token from the identity server.");
             
-                return Redirect( $"{_payoutBaseUrl}{id}/error");
+                return RedirectResultError(baseUrl, id, "Failed to get access token from the identity server.");
             }
             else
             {
@@ -161,6 +157,8 @@ public class ApproveController : Controller
 
                     var approveResult = new ApproveResultModel(token.Claims);
 
+                    baseUrl = await _cache.GetStringAsync($"{approveResult.ID}.{CallerBaseUrl}");
+                    
                     _logger.LogInformation($"Approval callback access token successfully acquired and parsed for approval type {approveResult.ApproveType} and ID {approveResult.ID}.");
 
                     switch (approveResult.ApproveType)
@@ -173,13 +171,13 @@ public class ApproveController : Controller
                             {
                                 _logger.LogInformation($"{approveResult.ApproveType} {approveResult.ID} successfully approved by user ID {User.WhoAmI()}.");
                                 
-                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/success");
+                                return Redirect( $"{baseUrl}{approveResult.ID}/success");
                             }
                             else
                             {
                                 _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {batchPayoutApproveResponse.Problem.ToTextErrorMessage()}");
                                 
-                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/error");
+                                return RedirectResultError(baseUrl, approveResult.ID, batchPayoutApproveResponse.Problem.ToHtmlErrorMessage());
                             }
 
                         case ApproveTypesEnum.Payout:
@@ -190,29 +188,34 @@ public class ApproveController : Controller
                             {
                                 _logger.LogInformation($"{approveResult.ApproveType} {approveResult.ID} successfully approved by user ID {User.WhoAmI()}.");
                                 
-                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/success");
+                                return Redirect( $"{baseUrl}{approveResult.ID}/success");
                             }
                             else
                             {
                                 _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {payoutApproveResponse.Problem.ToTextErrorMessage()}");
                                 
-                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/error");
+                                return RedirectResultError(baseUrl, approveResult.ID, payoutApproveResponse.Problem.ToHtmlErrorMessage());
                             }
 
                         default:
 
                             _logger.LogWarning($"Approval callback no post approval action for {approveResult.ApproveType}.");
                             
-                            return Redirect( $"{_payoutBaseUrl}{id}/error");
+                            return RedirectResultError(baseUrl, approveResult.ID, $"The approve type of {approveResult.ApproveType} was not recognised. Please try again and if the problem persists contact support.");
                     }
                 }
                 else
                 {
                     _logger.LogWarning($"Approval callback failed to parse JWT access token after successful approval.");
                     
-                    return Redirect( $"{_payoutBaseUrl}{id}/error");
+                    return RedirectResultError(baseUrl, id, "Failed to acquire access token required to approve the operation. Please try again and if the problem persists contact support.");
                 }
             }
         }
+    }
+
+    private RedirectResult RedirectResultError(string? baseUrl, Guid id, string message)
+    {
+        return Redirect( $"{baseUrl}{id}/error/{message}");
     }
 }
