@@ -3,7 +3,7 @@ import { AccountDashboard } from '@nofrixion/components'
 import r2wc from 'react-to-webcomponent'
 import React from 'react'
 
-const DashBoard = r2wc(AccountDashboard, React, ReactDOM, {
+const AccountDashboardWebComponent = r2wc(AccountDashboard, React, ReactDOM, {
   props: {
     token: 'string',
     apiUrl: 'string',
@@ -13,4 +13,4 @@ const DashBoard = r2wc(AccountDashboard, React, ReactDOM, {
   },
 })
 
-customElements.define('account-dashboard', DashBoard)
+customElements.define('account-dashboard', AccountDashboardWebComponent)
