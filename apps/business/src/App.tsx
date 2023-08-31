@@ -14,6 +14,7 @@ import CurrentAccountsPage from './pages/current-accounts/page'
 import DashboardPage from './pages/dashboard/page'
 import Layout from './pages/layout'
 import PayoutsPage from './pages/payouts/page'
+import PayoutPage from './pages/payouts/payout'
 import PricingPage from './pages/pricing/page'
 import UsersPage from './pages/users/page'
 import Root from './root'
@@ -34,6 +35,8 @@ export const App = () => {
                 <Route path="current-accounts" element={<CurrentAccountsPage />} />
                 <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 <Route path="payouts" element={<PayoutsPage />} />
+                <Route path="payouts/:payoutId" element={<PayoutPage />} />
+                <Route path="payouts/:payoutId/:result" element={<PayoutPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="pricing" element={<PricingPage />} />
               </Route>

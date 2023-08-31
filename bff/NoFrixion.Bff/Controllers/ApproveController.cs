@@ -32,6 +32,10 @@ namespace Nofrixion.Bff.Controllers;
 [Route("/approve")]
 public class ApproveController : Controller
 {
+    private string _payoutBaseUrl;
+    private string _callbackUrl;
+    private bool _isDevelopment = false;
+    
     private readonly IConfiguration _config;
     private readonly ILogger<ApproveController> _logger;
     private readonly IAntiforgery _antiforgery;
@@ -49,6 +53,16 @@ public class ApproveController : Controller
         _antiforgery = antiforgery;
         _moneyMoovClient = moneyMoovClient;
         _tokenAcquirer = tokenAcquirer;
+        
+        var developmentBaseUrl = _config[ConfigKeys.NOFRIXION_DEVELOPMENT_BASE_URL];
+        
+        if (!string.IsNullOrEmpty(developmentBaseUrl))
+        {
+            _isDevelopment = true;
+            _payoutBaseUrl = developmentBaseUrl + "/home/payouts/";
+        }
+        
+        _callbackUrl = _config[ConfigKeys.NOFRIXION_MONEYMOOV_BUSINESS_BASE_URL] + "/approve/callback";
     }
     
     // GET
@@ -62,18 +76,16 @@ public class ApproveController : Controller
     {
         _logger.LogInformation($"Approve {nameof(Initiate)} requested for {approveType} and ID {id}.");
 
-        string approvalUrl = _config[ConfigKeys.NOFRIXION_IDENTITY_DOMAIN] + "/approve";
+        var approvalUrl = _config[ConfigKeys.NOFRIXION_IDENTITY_DOMAIN] + "/approve";
 
         var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
         var state = tokens.RequestToken;
-
-        string returnUrl = "/Approve/Callback";
 
         var approveModel = new ApproveModel
         {
             ApproveType = approveType,
             ID = id,
-            ReturnUrl = returnUrl,
+            ReturnUrl = _callbackUrl,
             ClientID = _config[ConfigKeys.NOFRIXION_IDENTITY_CLIENTID],
             State = state
         };
@@ -101,56 +113,43 @@ public class ApproveController : Controller
     {
         if (cancelled)
         {
-            // _logger.LogInformation($"Approval callback, cancellation for id {id}, approval type {approveType}.");
-            // TempData[TempDataKeys.ERROR_MESSAGE] = $"The {approveType} approve operation was cancelled.";
-            //
-            // var redirectAction = approveType switch
-            // {
-            //     var at when at == ApproveTypesEnum.Payout && id != Guid.Empty => RedirectToAction("Display", "Payout", new { id = id }),
-            //     ApproveTypesEnum.BatchPayout => RedirectToAction("All", "Payout"),
-            //     ApproveTypesEnum.Payout => RedirectToAction("All", "Payout"),
-            //     // ApproveTypesEnum.Rule => RedirectToAction("All", "Rule"),
-            //     // ApproveTypesEnum.Message => RedirectToAction(nameof(Result)),
-            //     // ApproveTypesEnum.UserToken => RedirectToAction("CreateApiTokenResult", "Account"),
-            //     _ => RedirectToAction(nameof(Result)),
-            // };
-            //
-            // return redirectAction;
-            return Redirect("Payout?id=" + id);
+            _logger.LogInformation($"Approval callback, cancellation for id {id}, approval type {approveType}.");
+            
+            return Redirect( $"{_payoutBaseUrl}{id}/cancel");
         }
         else if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(state))
         {
-            // _logger.LogWarning($"Approval callback, the code or state fields were missing in the approve callback.");
-            // TempData[TempDataKeys.ERROR_MESSAGE] = "The code or state fields were missing in the approve callback.";
-            // return RedirectToAction(nameof(Result));
-            return Redirect("Payout?id=" + id);
+            _logger.LogWarning($"Approval callback, the code or state fields were missing in the approve callback.");
+            
+            return Redirect( $"{_payoutBaseUrl}{id}/error");
         }
         else
         {
             _logger.LogInformation($"Approval callback received with code and state set.");
 
-            try
+            // Skip the anti-forgery token validation in development mode.
+            if (!_isDevelopment)
             {
-                Request.Headers.Add("RequestVerificationToken", state);
-                await _antiforgery.ValidateRequestAsync(HttpContext);
+                try
+                {
+                    Request.Headers.Add("RequestVerificationToken", state);
+                    await _antiforgery.ValidateRequestAsync(HttpContext);
+                }
+                catch
+                {
+                    _logger.LogError($"Approval callback validation of the state anti-forgery token failed.");
+            
+                    return Redirect( $"{_payoutBaseUrl}{id}/error");
+                }    
             }
-            catch
-            {
-                _logger.LogError($"Approval callback validation of the state anti-forgery token failed.");
-                // TempData[TempDataKeys.ERROR_MESSAGE] = "The state field could not be validated, please refresh the page and try again.";
-                // return RedirectToAction(nameof(Result));
-                return Redirect("Payout?id=" + id);
-            }
-
-            string redirectUri = "/Approve/Callback";
-            var tokenResponse = await _tokenAcquirer.GetToken(code, redirectUri);
+            
+            var tokenResponse = await _tokenAcquirer.GetToken(code, _callbackUrl);
 
             if (string.IsNullOrEmpty(tokenResponse?.AccessToken))
             {
                 _logger.LogWarning($"Approval callback failed to get access token from the identity server.");
-                // TempData[TempDataKeys.ERROR_MESSAGE] = "Failed to get access token from the identity server.";
-                // return RedirectToAction(nameof(Result));
-                return Redirect("Payout?id=" + id);
+            
+                return Redirect( $"{_payoutBaseUrl}{id}/error");
             }
             else
             {
@@ -158,7 +157,7 @@ public class ApproveController : Controller
 
                 if (tokenHandler.CanReadToken(tokenResponse?.AccessToken))
                 {
-                    JwtSecurityToken token = tokenHandler.ReadJwtToken(tokenResponse?.AccessToken);
+                    var token = tokenHandler.ReadJwtToken(tokenResponse?.AccessToken);
 
                     var approveResult = new ApproveResultModel(token.Claims);
 
@@ -173,15 +172,15 @@ public class ApproveController : Controller
                             if (batchPayoutApproveResponse.Problem.IsEmpty)
                             {
                                 _logger.LogInformation($"{approveResult.ApproveType} {approveResult.ID} successfully approved by user ID {User.WhoAmI()}.");
-                                // TempData[TempDataKeys.SUCCESS_MESSAGE] = $"{approveResult.ApproveType} successfully approved and submitted.";
+                                
+                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/success");
                             }
                             else
                             {
                                 _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {batchPayoutApproveResponse.Problem.ToTextErrorMessage()}");
-                                // TempData[TempDataKeys.ERROR_MESSAGE] = batchPayoutApproveResponse.Problem.ToHtmlErrorMessage();
+                                
+                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/error");
                             }
-
-                            return Redirect("Payout?id=" + id);
 
                         case ApproveTypesEnum.Payout:
 
@@ -190,78 +189,28 @@ public class ApproveController : Controller
                             if (payoutApproveResponse.Problem.IsEmpty)
                             {
                                 _logger.LogInformation($"{approveResult.ApproveType} {approveResult.ID} successfully approved by user ID {User.WhoAmI()}.");
-                                // TempData[TempDataKeys.SUCCESS_MESSAGE] = $"{approveResult.ApproveType} successfully approved and submitted.";
+                                
+                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/success");
                             }
                             else
                             {
                                 _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {payoutApproveResponse.Problem.ToTextErrorMessage()}");
-                                // TempData[TempDataKeys.ERROR_MESSAGE] = payoutApproveResponse.Problem.ToHtmlErrorMessage();
+                                
+                                return Redirect( $"{_payoutBaseUrl}{approveResult.ID}/error");
                             }
-
-                            return Redirect("Payout?id=" + id);
-
-                        // case ApproveTypesEnum.Rule:
-                        //
-                        //     var ruleApproveResponse = await _moneyMoovClient.RuleClient().ApproveRuleAsync(tokenResponse.AccessToken, approveResult.ID);
-                        //
-                        //     if (ruleApproveResponse.Problem.IsEmpty)
-                        //     {
-                        //         _logger.LogInformation($"Rule {approveResult.ID} successfully approved by user ID {User.WhoAmI()}.");
-                        //         TempData[TempDataKeys.SUCCESS_MESSAGE] = "Rule successfully approved.";
-                        //     }
-                        //     else
-                        //     {
-                        //         _logger.LogWarning($"Failed to approve rule {approveResult.ID} for user ID {User.WhoAmI()}. {ruleApproveResponse.Problem.ToTextErrorMessage()}");
-                        //         TempData[TempDataKeys.ERROR_MESSAGE] = ruleApproveResponse.Problem.ToHtmlErrorMessage();
-                        //     }
-                        //
-                        //     return RedirectToAction("All", "Rule");
-
-                        // case ApproveTypesEnum.Message:
-                        //
-                        //     var result = "<table><tr><th>Claim Type</th><th>Claim Value</th></tr>";
-                        //
-                        //     //result += $"<tr><td>Approve Type</td><td>{approveResult.ApproveType}</td></tr>";
-                        //     //result += $"<tr><td>Approve ID</td><td>{approveResult.ApproveID}</td></tr>";
-                        //     //result += $"<tr><td>Approve Hash</td><td>{approveResult.ApproveHash}</td></tr>";
-                        //
-                        //     foreach (var claim in token.Claims)
-                        //     {
-                        //         result += $"<tr><td>{claim.Type}</td><td>{claim.Value}</td></tr>";
-                        //     }
-                        //
-                        //     result += "</table>";
-                        //
-                        //     TempData[TempDataKeys.SUCCESS_MESSAGE] = result;
-                        //
-                        //     return RedirectToAction(nameof(Result));
-                        //
-                        // case ApproveTypesEnum.UserToken:
-                        //
-                        //     var expiresAt = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn.GetValueOrDefault());
-                        //
-                        //     _logger.LogInformation($"Approve user token callback successfully minted token for user {User.WhoAmI()}, " +
-                        //                             $"token ID {approveResult.ID}, expires at {expiresAt}.");
-                        //
-                        //     TempData[TempDataKeys.SUCCESS_MESSAGE] = $"User token successfully minted, expires at {expiresAt}.";
-                        //     TempData[TempDataKeys.API_ACCESS_TOKEN] = tokenResponse.AccessToken;
-                        //
-                        //     return RedirectToAction("CreateApiTokenResult", "Account");
 
                         default:
 
                             _logger.LogWarning($"Approval callback no post approval action for {approveResult.ApproveType}.");
-                            // TempData[TempDataKeys.ERROR_MESSAGE] = $"The approve type of {approveResult.ApproveType} was not recognised. Please try again and if the problem persists contact support.";
-                            // return RedirectToAction(nameof(Result));
-                            return Redirect("Payout?id=" + id);
+                            
+                            return Redirect( $"{_payoutBaseUrl}{id}/error");
                     }
                 }
                 else
                 {
                     _logger.LogWarning($"Approval callback failed to parse JWT access token after successful approval.");
-                    // TempData[TempDataKeys.ERROR_MESSAGE] = "Failed to acquire access token required to approve the operation. Please try again and if the problem persists contact support.";
-                    // return RedirectToAction(nameof(Result));
-                    return Redirect("Payout?id=" + id);
+                    
+                    return Redirect( $"{_payoutBaseUrl}{id}/error");
                 }
             }
         }
