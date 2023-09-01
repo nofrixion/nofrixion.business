@@ -113,7 +113,3 @@ Here's a breakdown of the apps and packages contained within this monorepo:
 ---
 
 We hope you find this monorepo setup efficient for the development and maintenance of projects. If you have any feedback or encounter issues, please open a ticket, and we'll address it promptly. Happy coding! 🚀👩‍💻👨‍💻
-
-```
-
-```
