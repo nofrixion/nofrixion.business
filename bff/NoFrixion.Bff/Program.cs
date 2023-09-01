@@ -1,8 +1,10 @@
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Nofrixion.Bff;
+using NoFrixion.MoneyMoov;
+using NoFrixion.MoneyMoov.Constants;
+using NoFrixion.MoneyMoov.TokenAcquirers;
 using Serilog;
 using StackExchange.Redis;
 
@@ -33,7 +35,7 @@ builder.Host.UseSerilog((ctx, lc) =>
     }
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddBff()
     .AddRemoteApis();
 
@@ -114,7 +116,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddCookieTempDataProvider();
 
 builder.Services.AddStackExchangeRedisCache(options => options.ConfigurationOptions =
     ConfigurationOptions.Parse(configuration[ConfigKeys.CONNECTION_STRING_REDIS]));
@@ -124,6 +126,22 @@ builder.Services.AddStackExchangeRedisCache(options => options.ConfigurationOpti
 // https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-7.0&tabs=visual-studio#redis
 var redis = ConnectionMultiplexer.Connect(configuration[ConfigKeys.CONNECTION_STRING_REDIS]);
 builder.Services.AddDataProtection().PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+
+builder.Services.AddTransient<IMoneyMoovClient, MoneyMoovClient>();
+builder.Services.AddTransient<ITokenAcquirer, NoFrixionTokenAcquirer>();
+
+// MoneyMoov client http client
+builder.Services.AddHttpClient(MoneyMoovClient.MONEYMOOV_HTTP_CLIENT_NAME, httpClient =>
+{
+    var apiBaseUrl = configuration["NoFrixion:MoneyMoovApiBaseUrl"];
+    if (!string.IsNullOrEmpty(apiBaseUrl))
+    {
+        httpClient.BaseAddress = new Uri(apiBaseUrl);
+    }
+});
+
+// HttpClient used for calls to NoFrixion Identity.
+builder.Services.AddHttpClient(HttpClientConstants.HTTP_NOFRIXION_IDENTITY_CLIENT_NAME);
 
 var app = builder.Build();
 
@@ -141,6 +159,8 @@ app.MapRemoteBffApiEndpoint("/api", configuration["NoFrixion:MoneyMoovApiBaseUrl
     .RequireAccessToken();
 
 app.MapControllers();
+
+app.MapRazorPages();
 
 // After all the required routes are matched then redirect every other path back to home.
 app.MapGet("{**catchAll}", () => Results.Redirect("/"));

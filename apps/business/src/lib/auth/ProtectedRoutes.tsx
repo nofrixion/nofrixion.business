@@ -1,13 +1,29 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate, Outlet, useLocation, useParams } from 'react-router-dom'
 
 import { Loader } from '../../components/ui/Loader/Loader'
 import { useAuth } from '../../lib/auth/useAuth'
+import { useErrorsStore } from '../stores/useErrorsStore'
+import { tryParseApiError } from '../utils/errorUtils'
 import { getRoute } from '../utils/utils'
 import { AuthContextType } from './AuthProvider'
 
 export const ProtectedRoutes = () => {
   const authContext = useAuth() as AuthContextType
   const location = useLocation()
+  const { addError } = useErrorsStore()
+  const { payoutId, result } = useParams()
+
+  // React router won't pass the search params to the child routes
+  // so we need to parse them here and add them to the errors store
+  // so they are available in the child routes
+  useEffect(() => {
+    const apiError = tryParseApiError(payoutId, result, location.search)
+
+    if (apiError) {
+      addError(apiError)
+    }
+  }, [location])
 
   if (authContext && authContext.authState?.isLoading) {
     return <Loader className="flex items-center justify-center p-24 min-h-screen" />

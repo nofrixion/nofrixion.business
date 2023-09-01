@@ -62,4 +62,14 @@ public class ConfigKeys
     /// Redis connection string.
     /// </summary>
     public const string CONNECTION_STRING_REDIS = "ConnectionStrings:BFFRedis";
+    
+    /// <summary>
+    /// The development base url. E.g. https://localhost:3001. If certain requests will be redirected here.
+    /// </summary>
+    public const string NOFRIXION_DEVELOPMENT_BASE_URL = "NoFrixion:DevelopmentBaseUrl";
+
+    /// <summary>
+    /// MoneyMoov 4 Business base url
+    /// </summary>
+    public const string NOFRIXION_MONEYMOOV_BUSINESS_BASE_URL = "NoFrixion:MoneyMoovBusinessBaseUrl";
 }
