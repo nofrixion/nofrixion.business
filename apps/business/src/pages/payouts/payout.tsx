@@ -1,25 +1,35 @@
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '../../components/ui/Button'
+import { ErrorType, useErrorsStore } from '../../lib/stores/useErrorsStore'
 import { getRoute } from '../../lib/utils/utils'
 
+/**
+ * This is just a dummy page for testing purposes
+ */
+
 const PayoutPage = () => {
-  const { payoutId, result, message } = useParams()
+  const { errors } = useErrorsStore()
+  const { payoutId, result } = useParams()
   const navigate = useNavigate()
 
   const resultMessage = result && result === 'success' ? 'Payout approved' : 'Payout not approved'
+
+  const error = errors.find(
+    (payoutError) => payoutError.type === ErrorType.PAYOUT && payoutError.id === payoutId,
+  )?.error
 
   return (
     <div className="flex flex-col">
       {result && (
         <>
           <span className="flex">{resultMessage}</span>
-          <span className="flex">{message && decodeURIComponent(message)}</span>
+          <span className="flex mt-2 text-red-500 font-semibold">{error && error.detail}</span>
         </>
       )}
       {result && result !== 'success' && (
         <Button
-          onClick={() => navigate(getRoute(`/payouts/${payoutId}`))}
+          onClick={() => navigate(getRoute(`/home/payouts/${payoutId}`))}
           className="mt-4 ml-2 w-fit"
         >
           Try again

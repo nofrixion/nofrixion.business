@@ -15,6 +15,7 @@
 //  -----------------------------------------------------------------------------
 
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -124,7 +125,7 @@ public class ApproveController : Controller
         {
             _logger.LogWarning($"Approval callback, the code or state fields were missing in the approve callback.");
             
-            return RedirectResultError(baseUrl, id, "The code or state fields were missing in the approve callback.");
+            return RedirectResultError(baseUrl, id, new NoFrixionProblem("The code or state fields were missing in the approve callback."));
         }
         else
         {
@@ -136,7 +137,7 @@ public class ApproveController : Controller
             {
                 _logger.LogError($"Approval callback validation of the state anti-forgery token failed.");
     
-                return RedirectResultError(baseUrl, id, "The state field could not be validated, please refresh the page and try again.");
+                return RedirectResultError(baseUrl, id, new NoFrixionProblem("The state field could not be validated, please refresh the page and try again."));
             }
             
             var tokenResponse = await _tokenAcquirer.GetToken(code, _callbackUrl);
@@ -145,7 +146,7 @@ public class ApproveController : Controller
             {
                 _logger.LogWarning($"Approval callback failed to get access token from the identity server.");
             
-                return RedirectResultError(baseUrl, id, "Failed to get access token from the identity server.");
+                return RedirectResultError(baseUrl, id, new NoFrixionProblem("Failed to get access token from the identity server."));
             }
             else
             {
@@ -177,7 +178,7 @@ public class ApproveController : Controller
                             {
                                 _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {batchPayoutApproveResponse.Problem.ToTextErrorMessage()}");
                                 
-                                return RedirectResultError(baseUrl, approveResult.ID, batchPayoutApproveResponse.Problem.ToHtmlErrorMessage());
+                                return RedirectResultError(baseUrl, approveResult.ID, batchPayoutApproveResponse.Problem);
                             }
 
                         case ApproveTypesEnum.Payout:
@@ -194,28 +195,30 @@ public class ApproveController : Controller
                             {
                                 _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {payoutApproveResponse.Problem.ToTextErrorMessage()}");
                                 
-                                return RedirectResultError(baseUrl, approveResult.ID, payoutApproveResponse.Problem.ToHtmlErrorMessage());
+                                return RedirectResultError(baseUrl, approveResult.ID, payoutApproveResponse.Problem);
                             }
 
                         default:
 
                             _logger.LogWarning($"Approval callback no post approval action for {approveResult.ApproveType}.");
                             
-                            return RedirectResultError(baseUrl, approveResult.ID, $"The approve type of {approveResult.ApproveType} was not recognised. Please try again and if the problem persists contact support.");
+                            return RedirectResultError(baseUrl, approveResult.ID, new NoFrixionProblem($"The approve type of {approveResult.ApproveType} was not recognised. Please try again and if the problem persists contact support."));
                     }
                 }
                 else
                 {
                     _logger.LogWarning($"Approval callback failed to parse JWT access token after successful approval.");
                     
-                    return RedirectResultError(baseUrl, id, "Failed to acquire access token required to approve the operation. Please try again and if the problem persists contact support.");
+                    return RedirectResultError(baseUrl, id, new NoFrixionProblem("Failed to acquire access token required to approve the operation. Please try again and if the problem persists contact support."));
                 }
             }
         }
     }
 
-    private RedirectResult RedirectResultError(string? baseUrl, Guid id, string message)
+    private RedirectResult RedirectResultError(string? baseUrl, Guid id, NoFrixionProblem problem)
     {
-        return Redirect( $"{baseUrl}{id}/error/{message}");
+        var error = JsonSerializer.Serialize(problem);
+        
+        return Redirect( $"{baseUrl}{id}/error?apiError={Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(error))}");
     }
 }
