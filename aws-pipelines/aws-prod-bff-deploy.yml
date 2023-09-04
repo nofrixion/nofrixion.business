@@ -1,3 +1,4 @@
+---
 #------------------------------------------------------------------------------
 #
 # Filename: aws-prod-bff-deploy.yml
@@ -8,7 +9,7 @@
 #
 # Author: Axel Granillo (axel@nofrixion.com)
 #
-# History:    
+# History:
 # 21 August     2023  Axel Granillo   Created, Mexico City, Mexico (from existing pipeline)
 #-----------------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ trigger: none
 variables:
   kustomizeOverlayPath: 'kubernetes/bff/overlays-aws/prod/'
   tag: $(Build.SourceBranchName)
-  
+
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
@@ -31,11 +32,20 @@ resources:
       name: nofrixion/nofrixion.business.cicd
       ref: $(Build.SourceBranch)
 
+    - repository: moneymoov-dotnet-sdk
+      type: github
+      endpoint: github.com_sipsorcery
+      name: nofrixion/moneymoov-dotnet
+      ref: $(Build.SourceBranch)
+
 pool:
   vmImage: $(vmImageName)
 
 steps:
   - checkout: nofrixion.business.cicd
+    fetchDepth: 1
+
+  - checkout: moneymoov-dotnet-sdk
     fetchDepth: 1
 
   - task: AWSShellScript@1
