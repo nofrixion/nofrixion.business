@@ -218,22 +218,22 @@ const PaymentRequestDetailsModal = ({
 
   return (
     <div>
-      {paymentRequest && (
-        <UIPaymentRequestDetailsModal
-          merchantTags={merchantTags}
-          paymentRequest={paymentRequest}
-          hostedPaymentLink={`${paymentRequest.hostedPayCheckoutUrl}`}
-          open={open}
-          accounts={accounts}
-          onCardRefund={onCardRefund}
-          onBankRefund={onBankRefund}
-          onCapture={onCapture}
-          onTagAdded={onTagAdded}
-          onTagCreated={onTagCreated}
-          onTagDeleted={onTagDeleted}
-          onDismiss={onModalDismiss}
-        ></UIPaymentRequestDetailsModal>
-      )}
+      {/* {paymentRequest && ( */}
+      <UIPaymentRequestDetailsModal
+        merchantTags={merchantTags}
+        paymentRequest={paymentRequest}
+        hostedPaymentLink={`${paymentRequest?.hostedPayCheckoutUrl}`}
+        open={open}
+        accounts={accounts}
+        onCardRefund={onCardRefund}
+        onBankRefund={onBankRefund}
+        onCapture={onCapture}
+        onTagAdded={onTagAdded}
+        onTagCreated={onTagCreated}
+        onTagDeleted={onTagDeleted}
+        onDismiss={onModalDismiss}
+      />
+      {/* )} */}
     </div>
   )
 }
