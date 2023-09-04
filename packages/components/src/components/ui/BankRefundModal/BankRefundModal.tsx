@@ -47,7 +47,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
     (t) => t.id === bankPaymentAttempt?.reconciledTransactionID,
   )?.counterParty
 
-  const defaultSourceAccount = accounts.find((a) => a.id === paymentRequest?.pispAccountID)
+  const defaultSourceAccount = accounts?.find((a) => a.id === paymentRequest?.pispAccountID)
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

@@ -50,6 +50,24 @@ module.exports = {
           },
         ],
       },
+      keyframes: {
+        'dialog-show': {
+          from: {
+            opacity: 0,
+          },
+          to: {
+            opacity: 1,
+          },
+        },
+        'dialog-hide': {
+          from: {
+            opacity: 1,
+          },
+          to: {
+            opacity: 0,
+          },
+        },
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

@@ -21,7 +21,7 @@ import CardRefundModal from '../CardRefundModal/CardRefundModal'
 import PaymentRequestDetails from '../PaymentRequestDetails/PaymentRequestDetails'
 
 export interface PaymentRequestDetailsModalProps {
-  paymentRequest: LocalPaymentRequest
+  paymentRequest?: LocalPaymentRequest
   merchantTags: LocalTag[]
   hostedPaymentLink: string
   onCardRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<void>
@@ -162,10 +162,15 @@ const PaymentRequestDetailsModal = ({
   return (
     <>
       <Sheet open={open} onOpenChange={handleOnOpenChange}>
-        <SheetContent className="w-full lg:w-[37.5rem]">
+        <SheetContent
+          onOpenAutoFocus={(event) => {
+            event.preventDefault()
+          }}
+          className="w-full lg:w-[37.5rem]"
+        >
           <div className="bg-white max-h-full h-full overflow-auto">
             <div className="max-h-full h-full">
-              <div className="h-fit pb-16 lg:pb-0">
+              {paymentRequest && (
                 <PaymentRequestDetails
                   paymentRequest={paymentRequest}
                   merchantTags={merchantTags}
@@ -181,7 +186,7 @@ const PaymentRequestDetailsModal = ({
                   onTagDeleted={onTagDeleted}
                   onTagCreated={onTagCreated}
                 ></PaymentRequestDetails>
-              </div>
+              )}
             </div>
           </div>
         </SheetContent>
@@ -191,18 +196,20 @@ const PaymentRequestDetailsModal = ({
         <SheetContent className="w-full lg:w-[37.5rem]">
           <div className="bg-white max-h-full h-full overflow-auto">
             <div className="max-h-full h-full">
-              <CaptureModal
-                onCapture={onCaptureConfirm}
-                onDismiss={onCaptureDismiss}
-                initialAmount={amountToCapture ?? '0'}
-                maxCapturableAmount={maxCapturableAmount}
-                currency={selectedTransactionForCapture?.currency ?? Currency.EUR}
-                setAmountToCapture={setAmountToCapture}
-                transactionDate={selectedTransactionForCapture?.occurredAt ?? new Date()}
-                contactName={paymentRequest.contact.name}
-                lastFourDigitsOnCard={selectedTransactionForCapture?.last4DigitsOfCardNumber}
-                processor={selectedTransactionForCapture?.processor}
-              />
+              {paymentRequest && (
+                <CaptureModal
+                  onCapture={onCaptureConfirm}
+                  onDismiss={onCaptureDismiss}
+                  initialAmount={amountToCapture ?? '0'}
+                  maxCapturableAmount={maxCapturableAmount}
+                  currency={selectedTransactionForCapture?.currency ?? Currency.EUR}
+                  setAmountToCapture={setAmountToCapture}
+                  transactionDate={selectedTransactionForCapture?.occurredAt ?? new Date()}
+                  contactName={paymentRequest.contact.name}
+                  lastFourDigitsOnCard={selectedTransactionForCapture?.last4DigitsOfCardNumber}
+                  processor={selectedTransactionForCapture?.processor}
+                />
+              )}
             </div>
           </div>
         </SheetContent>
@@ -212,29 +219,31 @@ const PaymentRequestDetailsModal = ({
         <SheetContent className="w-full lg:w-[37.5rem]">
           <div className="bg-white max-h-full h-full overflow-auto">
             <div className="max-h-full h-full">
-              <CardRefundModal
-                onRefund={onCardRefundConfirm}
-                onDismiss={onRefundDismiss}
-                initialAmount={amountToRefund ?? '0'}
-                maxRefundableAmount={maxCardRefundableAmount}
-                currency={selectedTransactionForCardRefund?.currency ?? Currency.EUR}
-                setAmountToRefund={setAmountToRefund}
-                transactionDate={selectedTransactionForCardRefund?.occurredAt ?? new Date()}
-                contactName={paymentRequest.contact.name}
-                lastFourDigitsOnCard={selectedTransactionForCardRefund?.last4DigitsOfCardNumber}
-                processor={selectedTransactionForCardRefund?.processor}
-                isVoid={isCardVoid}
-              />
+              {paymentRequest && (
+                <CardRefundModal
+                  onRefund={onCardRefundConfirm}
+                  onDismiss={onRefundDismiss}
+                  initialAmount={amountToRefund ?? '0'}
+                  maxRefundableAmount={maxCardRefundableAmount}
+                  currency={selectedTransactionForCardRefund?.currency ?? Currency.EUR}
+                  setAmountToRefund={setAmountToRefund}
+                  transactionDate={selectedTransactionForCardRefund?.occurredAt ?? new Date()}
+                  contactName={paymentRequest.contact.name}
+                  lastFourDigitsOnCard={selectedTransactionForCardRefund?.last4DigitsOfCardNumber}
+                  processor={selectedTransactionForCardRefund?.processor}
+                  isVoid={isCardVoid}
+                />
+              )}
             </div>
           </div>
         </SheetContent>
       </Sheet>
 
-      {selectedTransactionForBankRefund && (
+      {selectedTransactionForBankRefund && accounts && accounts?.length > 0 && paymentRequest && (
         <BankRefundModal
           onRefund={onBankRefund}
           onDismiss={onRefundDismiss}
-          accounts={accounts.filter((account) => account.currency === paymentRequest.currency)}
+          accounts={accounts?.filter((account) => account.currency === paymentRequest.currency)}
           paymentRequest={paymentRequest}
           bankPaymentAttempt={selectedTransactionForBankRefund}
         />

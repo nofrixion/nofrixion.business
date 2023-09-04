@@ -15,7 +15,7 @@
     "prepare": "tw-patch install"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.16",
+    "@headlessui/react": "^1.7.17",
     "@nofrixion/moneymoov": "*",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-collapsible": "^1.0.3",
