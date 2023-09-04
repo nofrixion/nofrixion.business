@@ -314,6 +314,7 @@ export const Icons = {
       <path d="M4 0.5L7.5 4" strokeLinecap="round" />
     </SVG>
   ),
+  '': () => '',
 } as const
 
 export type IconNames = keyof typeof Icons

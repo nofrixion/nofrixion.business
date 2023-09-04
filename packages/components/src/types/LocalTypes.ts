@@ -1,4 +1,4 @@
-import { AccountIdentifierType, Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
   LocalAccountIdentifierType,
@@ -188,7 +188,7 @@ export interface LocalPayout {
   id: string
   accountID: string
   merchantID: string
-  type: AccountIdentifierType
+  type: LocalAccountIdentifierType
   description: string
   currency: Currency
   amount: number

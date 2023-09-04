@@ -433,7 +433,7 @@ const remotePayoutsToLocal = (payouts: Payout[]): LocalPayout[] => {
       id: payout.id,
       accountID: payout.accountID,
       merchantID: payout.merchantID,
-      type: payout.type,
+      type: parseApiAccountIdentifierTypeToLocalAccountIdentifierType(payout.type),
       description: payout.description,
       currency: payout.currency,
       amount: payout.amount,
