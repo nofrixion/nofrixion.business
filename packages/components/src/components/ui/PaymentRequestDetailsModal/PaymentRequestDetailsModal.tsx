@@ -162,7 +162,12 @@ const PaymentRequestDetailsModal = ({
   return (
     <>
       <Sheet open={open} onOpenChange={handleOnOpenChange}>
-        <SheetContent className="w-full lg:w-[37.5rem]">
+        <SheetContent
+          onOpenAutoFocus={(event) => {
+            event.preventDefault()
+          }}
+          className="w-full lg:w-[37.5rem]"
+        >
           <div className="bg-white max-h-full h-full overflow-auto">
             <div className="max-h-full h-full">
               {paymentRequest && (
