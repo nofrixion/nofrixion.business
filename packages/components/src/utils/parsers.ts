@@ -12,6 +12,7 @@ import {
   type PaymentRequestRefundAttempt,
   PaymentResult,
   Payout,
+  PayoutStatus,
   type Tag,
   Transaction,
   TransactionTypeValue,
@@ -490,11 +491,35 @@ const remoteAccountsToLocalAccounts = (remoteAccounts: Account[]): LocalAccount[
   })
 }
 
+const payoutStatusToStatus = (status: PayoutStatus): string => {
+  switch (status) {
+    case PayoutStatus.PENDING:
+      return 'pending'
+    case PayoutStatus.PROCESSED:
+      return 'processed'
+    case PayoutStatus.FAILED:
+      return 'failed'
+    case PayoutStatus.PENDING_APPROVAL:
+      return 'pending_approval'
+    case PayoutStatus.PENDING_INPUT:
+      return 'pending_input'
+    case PayoutStatus.QUEUED:
+      return 'queued'
+    case PayoutStatus.QUEUED_UPSTREAM:
+      return 'queued_upstream'
+    case PayoutStatus.REJECTED:
+      return 'rejected'
+    default:
+      return 'Unknown'
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
+  payoutStatusToStatus,
   remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
   remotePayoutsToLocal,

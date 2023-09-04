@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '../../atoms/Table/Table'
 import ColumnHeader from '../../ColumnHeader/ColumnHeader'
+import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
 import EmptyState from '../../PaymentRequestTable/EmptyState'
 
@@ -19,7 +20,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   payouts: LocalPayout[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  onSort: (name: 'date' | 'amount' | 'status', direction: SortDirection) => void
 }
 
 const PayoutsTable: React.FC<PayoutsTableProps> = ({
@@ -52,14 +53,17 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                 <TableHead className="w-[150px]">
                   <ColumnHeader
                     label={'Status'}
+                    onSort={(direction) => onSort('status', direction)}
+                  />
+                </TableHead>
+                <TableHead>
+                  <ColumnHeader
+                    label={'Created'}
                     onSort={(direction) => onSort('date', direction)}
                   />
                 </TableHead>
                 <TableHead>
-                  <ColumnHeader label={'Created'} />
-                </TableHead>
-                <TableHead>
-                  <ColumnHeader label={'PAyee'} />
+                  <ColumnHeader label={'Payee'} />
                 </TableHead>
                 <TableHead className="text-right">
                   <ColumnHeader
@@ -76,11 +80,13 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   className="cursor-auto hover:bg-inherit hover:border-inherit"
                   key={`${payout}-${index}`}
                 >
-                  <TableCell>{/* TODO: Add status icon */}</TableCell>
+                  <TableCell>
+                    <Status size="small" variant={'pending'} />
+                  </TableCell>
                   <TableCell>
                     {renderBasicInfoLayout(
                       format(payout.inserted, 'MMM dd, yyyy'),
-                      format(payout.inserted, 'hh:mm'),
+                      undefined,
                       'w-[100px] truncate',
                     )}
                   </TableCell>
@@ -112,7 +118,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
         </>
       )}
       {payouts.length === 0 && (
-        <EmptyState state="nothingFound" description="No transactions were found" />
+        <EmptyState state="nothingFound" description="No payouts were found" />
       )}
     </div>
   )

@@ -12,7 +12,7 @@ const statusVariants = cva('rounded-full space-x-1 inline-flex items-center text
       partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
       unpaid: ['bg-[#F1F3F4]'],
       pending: ['bg-information-bg'],
-      failed: ['bg-[#FEE7EB]'],
+      failed: ['bg-[#FEE7EB]', 'text-default-text'],
     },
     size: {
       small: ['text-xs', 'font-normal', 'py-1', 'px-2'],
@@ -32,7 +32,7 @@ const iconVariants = cva('w-auto', {
       partial: ['text-[#B25900]'],
       unpaid: ['text-[#C8D0D0]'],
       pending: ['text-control-grey-hover'],
-      failed: ['text-default-text'],
+      failed: ['text-[#FEE7EB]'],
     },
   },
   defaultVariants: {
@@ -67,8 +67,8 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     large: 'pending/12',
   },
   failed: {
-    small: '',
-    large: '',
+    small: 'failed/12',
+    large: 'failed/12',
   },
 }
 
