@@ -51,6 +51,9 @@ steps:
   - checkout: nofrixion.business.cicd
     fetchDepth: 1
 
+  - checkout: moneymoov-dotnet-sdk
+    fetchDepth: 1
+
   - task: Docker@2
     name: imageBuild
     displayName: Build container image
