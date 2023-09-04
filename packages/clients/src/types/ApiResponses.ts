@@ -338,6 +338,18 @@ export interface Payout {
   inserted: Date
   sourceAccountName: string
   destination?: Counterparty
+  tags: Tag[]
+}
+
+export type PayoutMetrics = {
+  all: number
+  paid: number
+  unpaid: number
+  pendingAuthorization: number
+  totalAmountsByCurrency: Record<
+    'all' | 'paid' | 'pendingAuthorization' | 'unpaid',
+    Record<'eur' | 'gbp', number | undefined>
+  >
 }
 
 export type PayoutPageResponse = PageResponse<Payout>
