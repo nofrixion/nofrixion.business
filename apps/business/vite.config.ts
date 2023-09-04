@@ -77,6 +77,10 @@ export default defineConfig({
         target: 'https://localhost:7105',
         secure: false,
       },
+      '/approve': {
+        target: 'https://localhost:7105',
+        secure: false,
+      },
     },
   },
 })

@@ -22,4 +22,14 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.0-preview" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Approve\Index.cshtml" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\moneymoov-dotnet\src\NoFrixion.MoneyMoov\NoFrixion.MoneyMoov.csproj" />
+  </ItemGroup>
+
 </Project>
