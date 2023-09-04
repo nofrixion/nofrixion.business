@@ -24,12 +24,12 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\nofrixion.common\src\NoFrixion.Common\NoFrixion.Common.csproj" />
+    <_ContentIncludedByDefault Remove="Views\Approve\Index.cshtml" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Approve\Index.cshtml" />
+    <ProjectReference Include="..\..\..\moneymoov-dotnet\src\NoFrixion.MoneyMoov\NoFrixion.MoneyMoov.csproj" />
   </ItemGroup>
 
 </Project>
