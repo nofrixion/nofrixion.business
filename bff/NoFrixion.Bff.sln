@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nofrixion.Bff", "Nofrixion.Bff\Nofrixion.Bff.csproj", "{AD35E0F7-5200-4864-88DE-D40A0A44ECB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoFrixion.MoneyMoov", "..\..\moneymoov-dotnet\src\NoFrixion.MoneyMoov\NoFrixion.MoneyMoov.csproj", "{3383B2BC-452C-4DE7-877F-375C3850DD7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +28,9 @@ Global
 		{28C9E423-A5AA-40AA-B5D5-4D770DE6E617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28C9E423-A5AA-40AA-B5D5-4D770DE6E617}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28C9E423-A5AA-40AA-B5D5-4D770DE6E617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3383B2BC-452C-4DE7-877F-375C3850DD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3383B2BC-452C-4DE7-877F-375C3850DD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3383B2BC-452C-4DE7-877F-375C3850DD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3383B2BC-452C-4DE7-877F-375C3850DD7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
