@@ -1,8 +1,10 @@
-import { Pagination, SortDirection } from '@nofrixion/moneymoov'
+import { Pagination, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
 import { formatAmount } from '../../../../utils/formatters'
+import { payoutStatusToStatus } from '../../../../utils/parsers'
+import { Button } from '../../atoms'
 import {
   Table,
   TableBody,
@@ -81,7 +83,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   key={`${payout}-${index}`}
                 >
                   <TableCell>
-                    <Status size="small" variant={'pending'} />
+                    <Status size="small" variant={payoutStatusToStatus(payout.status)} />
                   </TableCell>
                   <TableCell>
                     {renderBasicInfoLayout(
@@ -101,8 +103,13 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </div>
                   </TableCell>
 
-                  {/* Fill empty space */}
-                  <TableCell className="p-0"></TableCell>
+                  <TableCell className="w-0">
+                    {payout.status === PayoutStatus.PENDING_APPROVAL && (
+                      <Button variant="primary" size="x-small" className="w-fit" onClick={() => {}}>
+                        Approve
+                      </Button>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

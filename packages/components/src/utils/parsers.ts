@@ -491,26 +491,33 @@ const remoteAccountsToLocalAccounts = (remoteAccounts: Account[]): LocalAccount[
   })
 }
 
-const payoutStatusToStatus = (status: PayoutStatus): string => {
+const payoutStatusToStatus = (
+  status: PayoutStatus,
+):
+  | 'paid'
+  | 'partial'
+  | 'unpaid'
+  | 'pending'
+  | 'failed'
+  | 'pending_approval'
+  | 'inprogress'
+  | null
+  | undefined => {
   switch (status) {
+    case PayoutStatus.PENDING_INPUT:
+    case PayoutStatus.QUEUED:
+    case PayoutStatus.QUEUED_UPSTREAM:
     case PayoutStatus.PENDING:
-      return 'pending'
+      return 'inprogress'
     case PayoutStatus.PROCESSED:
-      return 'processed'
-    case PayoutStatus.FAILED:
-      return 'failed'
+      return 'paid'
     case PayoutStatus.PENDING_APPROVAL:
       return 'pending_approval'
-    case PayoutStatus.PENDING_INPUT:
-      return 'pending_input'
-    case PayoutStatus.QUEUED:
-      return 'queued'
-    case PayoutStatus.QUEUED_UPSTREAM:
-      return 'queued_upstream'
+    case PayoutStatus.FAILED:
     case PayoutStatus.REJECTED:
-      return 'rejected'
+      return 'failed'
     default:
-      return 'Unknown'
+      return undefined
   }
 }
 
