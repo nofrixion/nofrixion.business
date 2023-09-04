@@ -17,6 +17,8 @@ export interface PaymentRequestPageProps
     PaymentRequestProps,
     MerchantProps {}
 
+export interface PayoutPageProps extends PagedResponseProps, FilterResponseProps {}
+
 export interface FilterResponseProps {
   fromDate?: Date
   toDate?: Date
@@ -89,7 +91,22 @@ export interface usePaymentRequestsProps
   toDateMS?: number
 }
 
+export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
+  merchantId: string
+  statusSortDirection: SortDirection
+  createdSortDirection: SortDirection
+  contactSortDirection: SortDirection
+  amountSortDirection: SortDirection
+  fromDateMS?: number
+  toDateMS?: number
+}
+
 export interface usePaymentRequestMetricsProps extends MetricsProps {
+  fromDateMS?: number
+  toDateMS?: number
+}
+
+export interface usePayoutMetricsProps extends MetricsProps {
   fromDateMS?: number
   toDateMS?: number
 }

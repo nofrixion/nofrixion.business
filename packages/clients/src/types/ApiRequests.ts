@@ -84,4 +84,5 @@ export type PayoutCreate = {
   destination: Counterparty
   invoiceID?: string
   allowIncomplete: boolean
+  tagIds?: string[]
 }
