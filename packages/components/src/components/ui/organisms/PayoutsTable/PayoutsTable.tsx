@@ -91,7 +91,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   key={`${payout}-${index}`}
                   onClick={(event) => onPayoutClickedHandler(event, payout)}
                 >
-                  <TableCell>
+                  <TableCell className="w-48">
                     <Status size="small" variant={payoutStatusToStatus(payout.status)} />
                   </TableCell>
                   <TableCell className="w-48">
