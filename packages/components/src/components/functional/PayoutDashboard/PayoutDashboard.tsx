@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Payout, PayoutStatus, SortDirection, useMerchant, usePayouts } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
@@ -48,6 +47,8 @@ const PayoutDashboardMain = ({
   )
 
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
   const [dateRange, setDateRange] = useState<DateRange>({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
@@ -57,7 +58,9 @@ const PayoutDashboardMain = ({
   const [currencyFilter, setCurrencyFilter] = useState<string | undefined>()
   const [minAmountFilter, setMinAmountFilter] = useState<number | undefined>()
   const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tags, setTags] = useState<FilterableTag[]>([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
 
   const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
