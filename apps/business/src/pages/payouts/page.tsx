@@ -21,7 +21,9 @@ const PayoutsPage = () => {
         (payoutError) => payoutError.type === ErrorType.PAYOUT && payoutError.id === payoutId,
       )?.error
 
-      makeToast('error', error ? error.detail : 'Payout not approved')
+      if (error) {
+        makeToast('error', error.detail)
+      }
 
       if (payoutId && error) {
         removeError(payoutId)
@@ -31,9 +33,7 @@ const PayoutsPage = () => {
     return <Navigate to={location.pathname.replace(`/${payoutId}`, '').replace(`/${result}`, '')} />
   }
 
-  return (
-    <div>{merchant && <PayoutDashboard merchantId={merchant.id} apiUrl={NOFRIXION_API_URL} />}</div>
-  )
+  return <>{merchant && <PayoutDashboard merchantId={merchant.id} apiUrl={NOFRIXION_API_URL} />}</>
 }
 
 export default PayoutsPage
