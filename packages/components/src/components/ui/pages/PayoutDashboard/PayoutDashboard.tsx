@@ -1,9 +1,12 @@
 import { Pagination, SortDirection } from '@nofrixion/moneymoov'
+import { set } from 'date-fns'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
+import AmountFilter from '../../AmountFilter/AmountFilter'
 import { Button, Icon } from '../../atoms'
-import { DateRange } from '../../DateRangePicker/DateRangePicker'
+import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
+import SearchBar from '../../SearchBar/SearchBar'
 import { Toaster } from '../../Toast/Toast'
 
 export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,19 +19,31 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void
+  currency?: string
+  setCurrency?: (currency?: string) => void
+  minAmount?: number
+  setMinAmount?: (minAmount?: number) => void
+  maxAmount?: number
+  setMaxAmount?: (maxAmount?: number) => void
   isLoading: boolean
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   payouts,
   pagination,
-  //   searchFilter,
-  //   merchantCreatedAt,
-  //   onDateChange,
-  //   onSearch,
+  searchFilter,
+  merchantCreatedAt,
+  onDateChange,
+  onSearch,
   onPageChange,
   onSort,
   onCreatePayout,
+  currency,
+  setCurrency,
+  minAmount,
+  setMinAmount,
+  maxAmount,
+  setMaxAmount,
   isLoading = false,
 }) => {
   return (
@@ -44,15 +59,27 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
           </div>
         </div>
 
-        {/* <div className="bg-white rounded-[10px] h-16 flex justify-between items-center px-3 mb-4">
-        <DateRangePicker
-          onDateChange={onDateChange}
-          // Set first date to the first day of the year the merchant was created
-          firstDate={merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined}
-        />
+        <div className="bg-white rounded-[10px] h-16 flex justify-between items-center px-3 mb-4">
+          <DateRangePicker
+            onDateChange={onDateChange}
+            // Set first date to the first day of the year the merchant was created
+            firstDate={
+              merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
+            }
+          />
 
-        <SearchBar value={searchFilter} setValue={onSearch} />
-      </div> */}
+          <div className="hidden md:inline-flex flex-row space-x-2">
+            <AmountFilter
+              currency={currency}
+              setCurrency={setCurrency}
+              minAmount={minAmount}
+              setMinAmount={setMinAmount}
+              maxAmount={maxAmount}
+              setMaxAmount={setMaxAmount}
+            />
+            <SearchBar value={searchFilter} setValue={onSearch} />
+          </div>
+        </div>
 
         <div className="flex-row bg-white rounded-lg px-7 py-8">
           <PayoutsTable

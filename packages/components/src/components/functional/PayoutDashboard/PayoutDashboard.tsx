@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Payout, PayoutStatus, SortDirection, usePayouts } from '@nofrixion/moneymoov'
+import { Payout, PayoutStatus, SortDirection, useMerchant, usePayouts } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -59,6 +59,8 @@ const PayoutDashboardMain = ({
   const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
   const [tags, setTags] = useState<FilterableTag[]>([])
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
+
+  const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
 
   const { data: payoutsResponse, isLoading: isLoadingPayouts } = usePayouts(
     {
@@ -134,6 +136,15 @@ const PayoutDashboardMain = ({
       searchFilter={searchFilter}
       isLoading={isLoadingPayouts}
       onCreatePayout={onCreatePayout}
+      merchantCreatedAt={
+        merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
+      }
+      currency={currencyFilter}
+      setCurrency={setCurrencyFilter}
+      minAmount={minAmountFilter}
+      setMinAmount={setMinAmountFilter}
+      maxAmount={maxAmountFilter}
+      setMaxAmount={setMaxAmountFilter}
     />
   )
 }

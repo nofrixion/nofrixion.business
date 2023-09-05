@@ -97,10 +97,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   <TableCell className="w-48">
                     {payout.inserted && format(new Date(payout.inserted), 'MMM dd, yyyy')}
                   </TableCell>
-                  <TableCell>
-                    <div className="truncate w-36">{payout.destination?.name}</div>
+                  <TableCell className="w-60">
+                    <div className="truncate">{payout.destination?.name}</div>
                   </TableCell>
-                  <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6">
+                  <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6 w-72">
                     {formatAmount(payout.amount)}
                   </TableCell>
                   <TableCell className="pl-0 text-grey-text align-left font-normal text-sm">
