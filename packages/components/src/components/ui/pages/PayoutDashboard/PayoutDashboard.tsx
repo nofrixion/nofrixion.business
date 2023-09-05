@@ -69,6 +69,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
           />
 
           <div className="hidden md:inline-flex flex-row space-x-2">
+            <SearchBar value={searchFilter} setValue={onSearch} />
             <AmountFilter
               currency={currency}
               setCurrency={setCurrency}
@@ -77,7 +78,6 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
               maxAmount={maxAmount}
               setMaxAmount={setMaxAmount}
             />
-            <SearchBar value={searchFilter} setValue={onSearch} />
           </div>
         </div>
 
