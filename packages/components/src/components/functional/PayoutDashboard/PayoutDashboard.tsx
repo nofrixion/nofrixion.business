@@ -86,8 +86,6 @@ const PayoutDashboardMain = ({
     } else if (payoutsResponse?.status === 'error') {
       makeToast('error', 'Error fetching payment requests.')
       console.error(payoutsResponse.error)
-
-      //   handleApiError(payoutsResponse.error)
     }
   }, [payoutsResponse])
 
