@@ -4,7 +4,6 @@ import { format } from 'date-fns'
 import { LocalPayout } from '../../../../types/LocalTypes'
 import { formatAmount } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
-import { Button } from '../../atoms'
 import {
   Table,
   TableBody,
@@ -17,12 +16,15 @@ import ColumnHeader from '../../ColumnHeader/ColumnHeader'
 import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
 import EmptyState from '../../PaymentRequestTable/EmptyState'
+import { PayoutApproveForm } from '../../utils/PayoutApproveForm'
 
 export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> {
   payouts: LocalPayout[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount' | 'status', direction: SortDirection) => void
+  onPayoutClicked?: (payout: LocalPayout) => void
+  isLoading?: boolean
 }
 
 const PayoutsTable: React.FC<PayoutsTableProps> = ({
@@ -30,19 +32,18 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   pagination,
   onPageChange,
   onSort,
+  onPayoutClicked,
   ...props
 }) => {
-  const renderBasicInfoLayout = (
-    upperText: string,
-    lowerText: string | undefined,
-    className?: string,
+  const onPayoutClickedHandler = (
+    event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
+    payout: LocalPayout,
   ) => {
-    return (
-      <div className={className}>
-        <span className="block">{upperText}</span>
-        {lowerText && <span className="text-xs text-grey-text">{lowerText}</span>}
-      </div>
-    )
+    if (event.metaKey) {
+      console.log('metaKey', event.metaKey)
+    } else {
+      onPayoutClicked && onPayoutClicked(payout)
+    }
   }
 
   return (
@@ -67,58 +68,53 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                 <TableHead>
                   <ColumnHeader label={'Payee'} />
                 </TableHead>
-                <TableHead className="text-right">
+                <TableHead className="text-right px-0">
                   <ColumnHeader
                     label={'Amount'}
                     onSort={(direction) => onSort('amount', direction)}
                   />
                 </TableHead>
-                <TableHead>{/* Export  Icon + Status */}</TableHead>
+                <TableHead>{/* Currency */}</TableHead>
+                <TableHead>
+                  <Pager
+                    onPageChange={onPageChange}
+                    pageSize={pagination.pageSize}
+                    totalRecords={pagination.totalSize}
+                  />
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {payouts.map((payout, index) => (
                 <TableRow
-                  className="cursor-auto hover:bg-inherit hover:border-inherit"
+                  className="cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]"
                   key={`${payout}-${index}`}
+                  onClick={(event) => onPayoutClickedHandler(event, payout)}
                 >
                   <TableCell>
                     <Status size="small" variant={payoutStatusToStatus(payout.status)} />
                   </TableCell>
                   <TableCell className="w-48">
-                    {renderBasicInfoLayout(format(payout.inserted, 'MMM dd, yyyy'), undefined)}
+                    {payout.inserted && format(new Date(payout.inserted), 'MMM dd, yyyy')}
                   </TableCell>
                   <TableCell>
                     <div className="truncate w-36">{payout.destination?.name}</div>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex flex-col justify-center h-full items-end mr-5">
-                      <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
-                        {formatAmount(payout.amount)}{' '}
-                        <span className="text-grey-text pl-6">{payout.currency}</span>
-                      </div>
-                    </div>
+                  <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6">
+                    {formatAmount(payout.amount)}
                   </TableCell>
-
+                  <TableCell className="pl-0 text-grey-text align-left font-normal text-sm">
+                    {payout.currency}
+                  </TableCell>
                   <TableCell className="w-0">
                     {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                      <Button variant="primary" size="x-small" className="w-fit" onClick={() => {}}>
-                        Approve
-                      </Button>
+                      <PayoutApproveForm payoutId={payout.id} />
                     )}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-
-          <div className="flex items-center justify-end mt-8">
-            <Pager
-              onPageChange={onPageChange}
-              pageSize={pagination.pageSize}
-              totalRecords={pagination.totalSize}
-            />
-          </div>
         </>
       )}
       {payouts.length === 0 && (

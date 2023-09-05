@@ -1,9 +1,15 @@
-import UnderConstructionUI from '../../components/UnderConstructionUI'
+import { PayoutDashboard } from '@nofrixion/components'
+import { useStore } from 'zustand'
 
-const url = `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Payout/All`
+import { NOFRIXION_API_URL } from '../../lib/constants'
+import useMerchantStore from '../../lib/stores/useMerchantStore'
 
 const PayoutsPage = () => {
-  return <UnderConstructionUI title="Payouts" link={url} />
+  const merchant = useStore(useMerchantStore, (state) => state.merchant)
+
+  return (
+    <div>{merchant && <PayoutDashboard merchantId={merchant.id} apiUrl={NOFRIXION_API_URL} />}</div>
+  )
 }
 
 export default PayoutsPage
