@@ -10,14 +10,9 @@ import AnimateHeightWrapper from '../utils/AnimateHeight'
 
 export interface PendingPaymentsProps extends React.HTMLAttributes<HTMLDivElement> {
   pendingPayments: LocalPayout[]
-  onSeeMore: () => void
 }
 
-export const PendingPayments: React.FC<PendingPaymentsProps> = ({
-  pendingPayments,
-  onSeeMore,
-  ...props
-}) => {
+export const PendingPayments: React.FC<PendingPaymentsProps> = ({ pendingPayments, ...props }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -57,11 +52,10 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
               <div className="flex justify-end py-2 border-t">
                 {pendingPayments.length > 3 && (
                   <span
-                    onClick={() => onSeeMore()}
                     aria-hidden="true"
-                    className="text-right text-xs font-normal underline text-default-text cursor-pointer hover:no-underline"
+                    className="text-right text-xs font-normal text-default-text"
                   >
-                    See all
+                    +{pendingPayments.length - 3} more
                   </span>
                 )}
               </div>
