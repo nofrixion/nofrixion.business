@@ -85,12 +85,8 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   <TableCell>
                     <Status size="small" variant={payoutStatusToStatus(payout.status)} />
                   </TableCell>
-                  <TableCell>
-                    {renderBasicInfoLayout(
-                      format(payout.inserted, 'MMM dd, yyyy'),
-                      undefined,
-                      'w-[100px] truncate',
-                    )}
+                  <TableCell className="w-48">
+                    {renderBasicInfoLayout(format(payout.inserted, 'MMM dd, yyyy'), undefined)}
                   </TableCell>
                   <TableCell>
                     <div className="truncate w-36">{payout.destination?.name}</div>
@@ -98,7 +94,8 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   <TableCell>
                     <div className="flex flex-col justify-center h-full items-end mr-5">
                       <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
-                        {formatAmount(payout.amount)}
+                        {formatAmount(payout.amount)}{' '}
+                        <span className="text-grey-text pl-6">{payout.currency}</span>
                       </div>
                     </div>
                   </TableCell>

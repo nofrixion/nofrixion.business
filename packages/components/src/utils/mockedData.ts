@@ -1103,7 +1103,7 @@ export const mockPayouts: LocalPayout[] = [
   },
   {
     accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
-    amount: 1.33,
+    amount: 111253.33,
     createdBy: 'Arif Matin',
     currency: Currency.EUR,
     description: 'webhooks',
