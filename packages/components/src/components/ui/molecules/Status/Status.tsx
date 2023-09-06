@@ -30,7 +30,7 @@ const statusVariants = cva(
   },
 )
 
-const iconVariants = cva('w-auto', {
+const iconVariants = cva('w-auto mb-0.5', {
   variants: {
     variant: {
       paid: ['text-[#29A37A]'],
