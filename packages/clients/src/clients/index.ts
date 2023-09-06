@@ -1,4 +1,5 @@
 export { AccountsClient } from './AccountsClient'
+export { BeneficiaryClient } from './BeneficiaryClient'
 export { ClientSettingsClient } from './ClientSettingsClient'
 export { MerchantClient } from './MerchantClient'
 export { MoneyMoovApiClient } from './MoneyMoovApiClient'
