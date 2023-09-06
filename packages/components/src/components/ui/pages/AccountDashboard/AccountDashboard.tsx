@@ -29,7 +29,6 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
-  onSeeMore: () => void
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
@@ -44,7 +43,6 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   onPageChange,
   onSort,
   onAllCurrentAccountsClick,
-  onSeeMore,
 }) => {
   return (
     <>
@@ -92,20 +90,14 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           </div>
 
           <div className="flex flex-col items-end">
-            {/* TODO: Use Arif's component instead*/}
             <AccountBalance
               availableBalance={account?.availableBalance ?? 0}
               balance={account?.balance ?? 0}
               currency={account?.currency ?? Currency.None}
             />
 
-            {/* TODO: Add expand component */}
             {pendingPayments && pendingPayments.length > 0 && (
-              <PendingPayments
-                pendingPayments={pendingPayments}
-                onSeeMore={onSeeMore}
-                className="w-[400px]"
-              />
+              <PendingPayments pendingPayments={pendingPayments} className="w-[400px]" />
             )}
           </div>
         </div>

@@ -157,11 +157,6 @@ const AccountDashboardMain = ({
     setDateRange(dateRange)
   }
 
-  const onSeeMore = () => {
-    // TODO: Go to payouts
-    return
-  }
-
   return (
     <UIAccountDashboard
       transactions={transactions}
@@ -180,7 +175,6 @@ const AccountDashboardMain = ({
       onSearch={setSearchFilter}
       searchFilter={searchFilter}
       onAllCurrentAccountsClick={onAllCurrentAccountsClick}
-      onSeeMore={onSeeMore}
     />
   )
 }
