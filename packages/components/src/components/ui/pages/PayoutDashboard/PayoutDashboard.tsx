@@ -26,6 +26,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   maxAmount?: number
   setMaxAmount?: (maxAmount?: number) => void
   isLoading: boolean
+  onPayoutClicked?: (paymentRequest: LocalPayout) => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -45,6 +46,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   maxAmount,
   setMaxAmount,
   isLoading = false,
+  onPayoutClicked,
 }) => {
   return (
     <>
@@ -91,6 +93,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             onPageChange={onPageChange}
             onSort={onSort}
             isLoading={isLoading}
+            onPayoutClicked={onPayoutClicked}
           />
         </div>
 

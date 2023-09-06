@@ -39,11 +39,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
     payout: LocalPayout,
   ) => {
-    if (event.metaKey) {
-      console.log('metaKey', event.metaKey)
-    } else {
-      onPayoutClicked && onPayoutClicked(payout)
-    }
+    onPayoutClicked && onPayoutClicked(payout)
   }
 
   return (
