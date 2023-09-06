@@ -1,8 +1,7 @@
 import { Pagination, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
-import { format } from 'date-fns'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
-import { formatAmount } from '../../../../utils/formatters'
+import { formatAmount, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import {
   Table,
@@ -95,7 +94,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     <Status size="small" variant={payoutStatusToStatus(payout.status)} />
                   </TableCell>
                   <TableCell className="w-48">
-                    {payout.inserted && format(new Date(payout.inserted), 'MMM dd, yyyy')}
+                    {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
                   </TableCell>
                   <TableCell className="w-60">
                     <div className="truncate">{payout.destination?.name}</div>

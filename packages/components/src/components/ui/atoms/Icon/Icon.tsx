@@ -205,7 +205,12 @@ export const Icons = {
   ),
   'done/12': (className: string) => (
     <SVG className={className} size="12">
-      <path d="M1.5 6.31579L4.34211 9.15789L10.5 3" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M1.65378 6.81579L4.49588 9.65789L10.6538 3.5"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </SVG>
   ),
   'not-started/12': (className: string) => (
@@ -317,9 +322,9 @@ export const Icons = {
   'failed/12': (className: string) => (
     <SVG className={cn(className, 'fill-current stroke-none')} size="12">
       <path
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M3.86089 2.7929C3.47038 2.40237 2.83721 2.40236 2.44668 2.79288C2.05615 3.1834 2.05614 3.81657 2.44666 4.2071L4.74062 6.50112L2.44692 8.79488C2.0564 9.18541 2.05641 9.81858 2.44694 10.2091C2.83747 10.5996 3.47064 10.5996 3.86115 10.2091L6.15482 7.91535L8.44848 10.2091C8.839 10.5996 9.47217 10.5996 9.8627 10.2091C10.2532 9.81858 10.2532 9.18541 9.86272 8.79489L7.56901 6.50112L9.86298 4.2071C10.2535 3.81657 10.2535 3.1834 9.86296 2.79288C9.47243 2.40236 8.83926 2.40237 8.44874 2.7929L6.15482 5.08689L3.86089 2.7929Z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </SVG>
   ),
@@ -331,7 +336,7 @@ export const Icons = {
       </g>
       <defs>
         <clipPath id="clip0_7677_15478">
-          <rect width="10" height="10" fill="white" transform="translate(1.15378 1.5)" />
+          <rect width="12" height="12" fill="white" />
         </clipPath>
       </defs>
     </SVG>
@@ -347,7 +352,7 @@ export const Icons = {
       </g>
       <defs>
         <clipPath id="clip0_7681_7737">
-          <rect width="10" height="10" fill="white" transform="translate(1.01462 1.78418)" />
+          <rect width="12" height="12" fill="white" />
         </clipPath>
       </defs>
     </SVG>
