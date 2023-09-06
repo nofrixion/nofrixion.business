@@ -5,32 +5,41 @@ import { cn } from '../../../../utils'
 import { Icon } from '../../atoms'
 import { IconNames } from '../../atoms/Icon/Icon'
 
-const statusVariants = cva('rounded-full space-x-1 inline-flex items-center text-default-text', {
-  variants: {
-    variant: {
-      paid: ['bg-[#D8F2EA]', 'text-[#004D33]'],
-      partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
-      unpaid: ['bg-[#F1F3F4]'],
-      pending: ['bg-information-bg'],
+const statusVariants = cva(
+  'rounded-full space-x-1 inline-flex items-center text-default-text whitespace-nowrap',
+  {
+    variants: {
+      variant: {
+        paid: ['bg-[#D8F2EA]', 'text-[#004D33]'],
+        partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
+        unpaid: ['bg-[#F1F3F4]'],
+        pending: ['bg-information-bg'],
+        pending_approval: ['bg-warning-yellow', 'text-[#663300]'],
+        failed: ['bg-[#FEE7EB]', 'text-[#4D000D]'],
+        inprogress: ['bg-main-grey'],
+      },
+      size: {
+        small: ['text-xs', 'font-normal', 'py-1', 'px-2'],
+        large: ['text-sm', 'font-medium', 'leading-[17px]', 'px-4', 'py-2'],
+      },
     },
-    size: {
-      small: ['text-xs', 'font-normal', 'py-1', 'px-2'],
-      large: ['text-sm', 'font-medium', 'leading-[17px]', 'px-4', 'py-2'],
+    defaultVariants: {
+      variant: 'unpaid',
+      size: 'small',
     },
   },
-  defaultVariants: {
-    variant: 'unpaid',
-    size: 'small',
-  },
-})
+)
 
-const iconVariants = cva('w-auto', {
+const iconVariants = cva('w-auto mb-0.5', {
   variants: {
     variant: {
       paid: ['text-[#29A37A]'],
       partial: ['text-[#B25900]'],
       unpaid: ['text-[#C8D0D0]'],
       pending: ['text-control-grey-hover'],
+      pending_approval: ['text-[#B25900]'],
+      failed: ['text-[#F32448]'],
+      inprogress: ['text-grey-text'],
     },
   },
   defaultVariants: {
@@ -64,6 +73,18 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     small: 'pending/12',
     large: 'pending/12',
   },
+  failed: {
+    small: 'failed/12',
+    large: 'failed/12',
+  },
+  pending_approval: {
+    small: 'pending-approval/12',
+    large: 'pending-approval/12',
+  },
+  inprogress: {
+    small: 'inprogress/12',
+    large: 'inprogress/12',
+  },
 }
 
 const Status: React.FC<StatusProps> = ({
@@ -77,7 +98,13 @@ const Status: React.FC<StatusProps> = ({
       <Icon name={iconName[variant][size ?? 'small']} className={cn(iconVariants({ variant }))} />
     )}
     <span className="uppercase">
-      {size === 'large' && variant === 'partial' ? 'partially paid' : variant}
+      {size === 'large' && variant === 'partial'
+        ? 'partially paid'
+        : variant === 'inprogress'
+        ? 'in progress'
+        : variant === 'pending_approval'
+        ? 'pending approval'
+        : variant}
     </span>
   </div>
 )

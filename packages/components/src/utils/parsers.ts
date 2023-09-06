@@ -12,6 +12,7 @@ import {
   type PaymentRequestRefundAttempt,
   PaymentResult,
   Payout,
+  PayoutStatus,
   type Tag,
   Transaction,
   TransactionTypeValue,
@@ -433,7 +434,7 @@ const remotePayoutsToLocal = (payouts: Payout[]): LocalPayout[] => {
       id: payout.id,
       accountID: payout.accountID,
       merchantID: payout.merchantID,
-      type: payout.type,
+      type: parseApiAccountIdentifierTypeToLocalAccountIdentifierType(payout.type),
       description: payout.description,
       currency: payout.currency,
       amount: payout.amount,
@@ -490,11 +491,42 @@ const remoteAccountsToLocalAccounts = (remoteAccounts: Account[]): LocalAccount[
   })
 }
 
+const payoutStatusToStatus = (
+  status: PayoutStatus,
+):
+  | 'paid'
+  | 'partial'
+  | 'unpaid'
+  | 'pending'
+  | 'failed'
+  | 'pending_approval'
+  | 'inprogress'
+  | null
+  | undefined => {
+  switch (status) {
+    case PayoutStatus.PENDING_INPUT:
+    case PayoutStatus.QUEUED:
+    case PayoutStatus.QUEUED_UPSTREAM:
+    case PayoutStatus.PENDING:
+      return 'inprogress'
+    case PayoutStatus.PROCESSED:
+      return 'paid'
+    case PayoutStatus.PENDING_APPROVAL:
+      return 'pending_approval'
+    case PayoutStatus.FAILED:
+    case PayoutStatus.REJECTED:
+      return 'failed'
+    default:
+      return undefined
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
+  payoutStatusToStatus,
   remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
   remotePayoutsToLocal,

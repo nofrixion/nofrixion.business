@@ -103,6 +103,7 @@ export enum AccountIdentifierType {
 }
 
 export enum PayoutStatus {
+  All = 'All',
   UNKNOWN = 'UNKNOWN',
   REJECTED = 'REJECTED',
   PENDING = 'PENDING',

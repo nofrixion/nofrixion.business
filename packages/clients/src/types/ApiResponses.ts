@@ -345,9 +345,9 @@ export type PayoutMetrics = {
   all: number
   paid: number
   unpaid: number
-  pendingAuthorization: number
+  pendingApproval: number
   totalAmountsByCurrency: Record<
-    'all' | 'paid' | 'pendingAuthorization' | 'unpaid',
+    'all' | 'paid' | 'pendingApproval' | 'unpaid',
     Record<'eur' | 'gbp', number | undefined>
   >
 }
