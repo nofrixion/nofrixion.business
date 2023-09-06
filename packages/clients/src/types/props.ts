@@ -95,7 +95,6 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   merchantId: string
   statusSortDirection: SortDirection
   createdSortDirection: SortDirection
-  contactSortDirection: SortDirection
   amountSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number

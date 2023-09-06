@@ -9,7 +9,6 @@ const fetchPayouts = async (
   apiUrl: string,
   statusSortDirection: SortDirection,
   createdSortDirection: SortDirection,
-  contactSortDirection: SortDirection,
   amountSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
@@ -27,7 +26,6 @@ const fetchPayouts = async (
   const sortExpression = formatSortExpression({
     statusSortDirection: statusSortDirection,
     createdSortDirection: createdSortDirection,
-    contactSortDirection: contactSortDirection,
     amountSortDirection: amountSortDirection,
   })
 
@@ -56,7 +54,6 @@ export const usePayouts = (
     merchantId,
     statusSortDirection,
     createdSortDirection,
-    contactSortDirection,
     amountSortDirection,
     pageNumber,
     pageSize,
@@ -78,7 +75,6 @@ export const usePayouts = (
     merchantId,
     statusSortDirection,
     createdSortDirection,
-    contactSortDirection,
     amountSortDirection,
     pageNumber,
     pageSize,
@@ -99,7 +95,6 @@ export const usePayouts = (
         apiUrl,
         statusSortDirection,
         createdSortDirection,
-        contactSortDirection,
         amountSortDirection,
         authToken,
         merchantId,

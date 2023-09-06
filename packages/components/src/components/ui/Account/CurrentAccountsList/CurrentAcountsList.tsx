@@ -2,7 +2,7 @@ import { Account, Account as AccountModel } from '@nofrixion/moneymoov'
 
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
-import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader '
+import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
 
 export interface CurrentAccountsListProps {
   accounts: AccountModel[] | undefined
