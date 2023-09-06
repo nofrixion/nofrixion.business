@@ -91,27 +91,25 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     key={`pr-placeholder-${index}`}
                     className="animate-pulse border-b border-[#F1F2F3]"
                   >
-                    <TableCell className="py-6">
-                      <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                    <TableCell className="w-48 py-6">
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell>
-                      <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                    <TableCell className="w-48">
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell>
-                      <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                    <TableCell className="w-60">
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell className="p-0">
-                      <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                    <TableCell className="w-72">
+                      <div className="w-1/4 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell className="p-0">
-                      <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
-                    </TableCell>
+                    <TableCell className="p-0"></TableCell>
 
-                    <TableCell>
+                    <TableCell className="w-0">
                       <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
                   </TableRow>
