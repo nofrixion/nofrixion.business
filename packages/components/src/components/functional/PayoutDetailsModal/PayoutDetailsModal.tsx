@@ -11,10 +11,8 @@ export interface PayoutDetailsModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
   selectedPayoutId?: string
-  payouts: LocalPayout[]
   open: boolean
   onDismiss: () => void
-  //   setPayouts: (payouts: LocalPayout[]) => void
   merchantId: string
   statusSortDirection: SortDirection
   createdSortDirection: SortDirection
@@ -35,7 +33,6 @@ const PayoutDetailsModal = ({
   selectedPayoutId,
   open,
   onDismiss,
-  //   setPayouts,
   merchantId,
   statusSortDirection,
   createdSortDirection,

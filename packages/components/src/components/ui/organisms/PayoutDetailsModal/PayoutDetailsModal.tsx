@@ -23,9 +23,7 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
         className="w-full lg:w-[37.5rem]"
       >
         <div className="bg-white max-h-full h-full overflow-auto">
-          <div className="max-h-full h-full">
-            <h1>{payout?.id}</h1>
-          </div>
+          <h1>{payout?.id}</h1>
         </div>
       </SheetContent>
     </Sheet>

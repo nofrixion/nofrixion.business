@@ -160,6 +160,7 @@ const PayoutDashboardMain = ({
         maxAmount={maxAmountFilter}
         setMaxAmount={setMaxAmountFilter}
         onPayoutClicked={onPayoutRowClicked}
+        selectedPayoutId={selectedPayoutId}
       />
 
       <PayoutDetailsModal
@@ -167,9 +168,7 @@ const PayoutDashboardMain = ({
         amountSortDirection={amountSortDirection}
         apiUrl={apiUrl}
         selectedPayoutId={selectedPayoutId}
-        payouts={localPayouts}
         onDismiss={onPayoutDetailsModalDismiss}
-        // setPayouts={setPayouts}
         merchantId={merchantId}
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
@@ -181,7 +180,7 @@ const PayoutDashboardMain = ({
         minAmountFilter={minAmountFilter}
         maxAmountFilter={maxAmountFilter}
         tagsFilter={tagsFilter}
-      ></PayoutDetailsModal>
+      />
     </div>
   )
 }

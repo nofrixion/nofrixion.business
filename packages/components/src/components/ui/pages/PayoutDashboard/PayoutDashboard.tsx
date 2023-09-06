@@ -14,18 +14,19 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
   merchantCreatedAt?: Date
+  currency?: string
+  minAmount?: number
+  maxAmount?: number
+  isLoading: boolean
+  selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount' | 'status', direction: SortDirection) => void
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void
-  currency?: string
   setCurrency?: (currency?: string) => void
-  minAmount?: number
   setMinAmount?: (minAmount?: number) => void
-  maxAmount?: number
   setMaxAmount?: (maxAmount?: number) => void
-  isLoading: boolean
   onPayoutClicked?: (paymentRequest: LocalPayout) => void
 }
 
@@ -47,6 +48,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   setMaxAmount,
   isLoading = false,
   onPayoutClicked,
+  selectedPayoutId,
 }) => {
   return (
     <>
@@ -94,6 +96,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             onSort={onSort}
             isLoading={isLoading}
             onPayoutClicked={onPayoutClicked}
+            selectedPayoutId={selectedPayoutId}
           />
         </div>
 
