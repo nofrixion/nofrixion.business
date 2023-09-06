@@ -230,7 +230,7 @@ const PaymentRequestDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { createPayout } = useCreatePayout(
+  const { createRefund: createPayout } = useCreatePayout(
     {
       amountSortDirection: amountSortDirection,
       statusSortDirection: statusSortDirection,

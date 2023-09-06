@@ -10,9 +10,11 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
+  LocalPayout,
   LocalTransaction,
 } from '../types/LocalTypes'
 
@@ -1025,7 +1027,7 @@ export const mockPayouts: LocalPayout[] = [
       emailAddress: '',
       phoneNumber: 'dfsd',
       identifier: {
-        type: AccountIdentifierType.IBAN,
+        type: LocalAccountIdentifierType.IBAN,
         currency: 'EUR',
         iban: 'IE29AIBK93115212345678',
         accountNumber: '',
@@ -1054,7 +1056,7 @@ export const mockPayouts: LocalPayout[] = [
       emailAddress: '',
       phoneNumber: 'dfsd',
       identifier: {
-        type: AccountIdentifierType.IBAN,
+        type: LocalAccountIdentifierType.IBAN,
         currency: 'EUR',
         iban: 'IE29AIBK93115212345678',
         accountNumber: '',
@@ -1083,7 +1085,7 @@ export const mockPayouts: LocalPayout[] = [
       emailAddress: '',
       phoneNumber: 'dfsd',
       identifier: {
-        type: AccountIdentifierType.IBAN,
+        type: LocalAccountIdentifierType.IBAN,
         currency: 'EUR',
         iban: 'IE29AIBK93115212345678',
         accountNumber: '',
@@ -1112,7 +1114,7 @@ export const mockPayouts: LocalPayout[] = [
       emailAddress: '',
       phoneNumber: 'dfsd',
       identifier: {
-        type: AccountIdentifierType.IBAN,
+        type: LocalAccountIdentifierType.IBAN,
         currency: 'EUR',
         iban: 'IE29AIBK93115212345678',
         accountNumber: '',
@@ -1131,10 +1133,17 @@ export const mockPayouts: LocalPayout[] = [
   },
 ]
 
-const accountIdentifier: LocalAccountIdentifier = {
+const eurAccountIdentifier: LocalAccountIdentifier = {
   type: LocalAccountIdentifierType.IBAN,
   currency: Currency.EUR,
   iban: 'GB12345678901234567890',
+}
+
+const gbpAccountIdentifier: LocalAccountIdentifier = {
+  type: LocalAccountIdentifierType.SCAN,
+  currency: Currency.GBP,
+  accountNumber: '12345678',
+  sortCode: '123456',
 }
 
 const accounts: LocalAccount[] = [
@@ -1148,7 +1157,7 @@ const accounts: LocalAccount[] = [
     sortCode: '123456',
     iban: 'GB12345678901234567890',
     displayName: 'EURO Account',
-    identifier: accountIdentifier,
+    identifier: eurAccountIdentifier,
     summary: 'Account',
     isDefault: true,
     availableBalance: 100000,
@@ -1163,7 +1172,7 @@ const accounts: LocalAccount[] = [
     sortCode: '123456',
     iban: 'GB12345678901234567890',
     displayName: 'GBP Account',
-    identifier: accountIdentifier,
+    identifier: eurAccountIdentifier,
     summary: 'Account',
     isDefault: false,
     availableBalance: 100000,
@@ -1178,19 +1187,49 @@ const accounts: LocalAccount[] = [
     sortCode: '123456',
     iban: 'GB12345678901234567890',
     displayName: 'EUR Account 2',
-    identifier: accountIdentifier,
+    identifier: eurAccountIdentifier,
     summary: 'Account',
     isDefault: false,
     availableBalance: 100000,
   },
 ]
 
-const counterparty: LocalCounterparty = {
+const eurCounterparty: LocalCounterparty = {
   name: 'John Doe',
   emailAddress: 'email@email.com',
   phoneNumber: '01234567890',
-  identifier: accountIdentifier,
+  identifier: eurAccountIdentifier,
+  accountInfo: 'IE11MODR99035501927019',
 }
+
+const gbpCounterparty: LocalCounterparty = {
+  name: 'John Doe GBP',
+  emailAddress: '',
+  phoneNumber: '',
+  identifier: gbpAccountIdentifier,
+  accountInfo: '12345678 - 123456',
+}
+
+const beneficiaries: LocalBeneficiary[] = [
+  {
+    id: '1',
+    name: 'John Doe',
+    merchantID: '1',
+    yourReference: 'Test your reference',
+    theirReference: 'Test their reference',
+    destination: gbpCounterparty,
+    currency: Currency.GBP,
+  },
+  {
+    id: '2',
+    name: 'John Doe 2',
+    merchantID: '1',
+    yourReference: 'Test your reference',
+    theirReference: 'Test their reference',
+    destination: eurCounterparty,
+    currency: Currency.EUR,
+  },
+]
 
 export default {
   fewPaymentRequests,
@@ -1203,5 +1242,6 @@ export default {
   },
   merchantTags: mockMerchantTags,
   accounts,
-  counterparty,
+  counterparty: eurCounterparty,
+  beneficiaries: beneficiaries,
 }

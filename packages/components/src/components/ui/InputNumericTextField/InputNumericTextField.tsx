@@ -1,33 +1,19 @@
 import { AnimatePresence } from 'framer-motion'
 import { forwardRef, useId, useState } from 'react'
+import MaskedInput from 'react-text-mask'
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
-import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
+import AnimateHeightWrapper from '../utils/AnimateHeight'
 
-export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputNumericTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   required?: boolean
   validation?: (value: string) => string | undefined
   error?: string
-  subText?: string
-  validateOnKeyDown?: boolean
 }
 
-const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
-  (
-    {
-      label,
-      required,
-      maxLength,
-      value,
-      placeholder,
-      subText,
-      onChange,
-      onBlur,
-      validation,
-      ...props
-    },
-    ref,
-  ) => {
+const InputNumericTextField = forwardRef<HTMLInputElement, InputNumericTextFieldProps>(
+  ({ label, required, maxLength, value, placeholder, onChange, onBlur, validation, ...props }) => {
     const textId = useId()
 
     const [error, setError] = useState<string>()
@@ -52,6 +38,20 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
       setError(validation(e.target.value))
     }
 
+    const maskOptions = {
+      prefix: '',
+      suffix: '',
+      includeThousandsSeparator: false,
+      allowDecimal: false,
+      integerLimit: maxLength,
+      allowNegative: false,
+      allowLeadingZeroes: true,
+    }
+
+    const numberMask = createNumberMask({
+      ...maskOptions,
+    })
+
     return (
       <div>
         <div className="flex flex-col">
@@ -64,24 +64,24 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
               <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
             )}
           </div>
-          <input
-            ref={ref}
-            id={textId}
-            maxLength={maxLength}
-            type="text"
-            value={value}
-            onChange={handleOnChange}
-            onBlur={handleOnBlur}
-            placeholder={placeholder}
+          <MaskedInput
             className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text"
+            placeholder={placeholder}
+            mask={numberMask}
+            inputMode="numeric"
+            onBlur={handleOnBlur}
+            onChange={(e) => {
+              const masked = e.target.value
+              // eslint-disable-next-line no-useless-escape
+              e.target.value = e.target.value.replace(/[^\d\.\-]/g, '')
+              handleOnChange && handleOnChange(e)
+              e.target.value = masked
+            }}
             {...props}
           />
           {maxLength && (
-            <div className="mt-2 text-grey-text font-normal text-[0.813rem] leading-5 flex justify-between">
-              {subText && <span>{subText}</span>}
-              <div className="ml-auto">
-                {value?.toString().length}/{maxLength}
-              </div>
+            <div className="text-right mt-2 text-grey-text font-normal text-[0.813rem] leading-5">
+              {value?.toString().length}/{maxLength}
             </div>
           )}
         </div>
@@ -97,6 +97,6 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
   },
 )
 
-InputTextField.displayName = 'InputTextField'
+InputNumericTextField.displayName = 'InputNumericTextField'
 
-export default InputTextField
+export default InputNumericTextField

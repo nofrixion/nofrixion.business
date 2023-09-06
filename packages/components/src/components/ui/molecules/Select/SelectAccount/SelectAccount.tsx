@@ -1,3 +1,4 @@
+import { Currency } from '@nofrixion/moneymoov'
 import { type SelectProps } from '@radix-ui/react-select'
 
 import { LocalAccount } from '../../../../../types/LocalTypes'
@@ -20,6 +21,7 @@ export interface SelectAccountPros extends SelectProps {
   subText?: string
   className?: string
   accounts: LocalAccount[]
+  currency?: Currency
 }
 
 const SelectAccount: React.FC<SelectAccountPros> = ({
@@ -49,13 +51,13 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
                   </span>
                 </>
               ) : (
-                'Custom'
+                'custom'
               )}
             </div>
           </SelectValue>
         </SelectTrigger>
       }
-      <SelectContent className="w-full md:w-[375px] z-[200]">
+      <SelectContent className={cn('w-full md:w-[375px] z-[200]', className)}>
         {accounts.map((account) => (
           <SelectItem key={account.id} value={account.id} isText={false}>
             <div className="w-full flex justify-between">
