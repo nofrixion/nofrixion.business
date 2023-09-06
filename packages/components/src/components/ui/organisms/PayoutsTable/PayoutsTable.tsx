@@ -148,7 +148,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
           </Table>
         </>
       )}
-      {payouts.length === 0 && (
+      {!isLoading && payouts.length === 0 && (
         <EmptyState state="nothingFound" description="No payouts were found" />
       )}
     </div>
