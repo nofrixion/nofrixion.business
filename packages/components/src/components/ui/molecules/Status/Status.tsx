@@ -14,8 +14,8 @@ const statusVariants = cva(
         partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
         unpaid: ['bg-[#F1F3F4]'],
         pending: ['bg-information-bg'],
-        pending_approval: ['bg-warning-yellow'],
-        failed: ['bg-[#FEE7EB]', 'text-[#4D000D'],
+        pending_approval: ['bg-warning-yellow', 'text-[#663300]'],
+        failed: ['bg-[#FEE7EB]', 'text-[#4D000D]'],
         inprogress: ['bg-main-grey'],
       },
       size: {
@@ -30,7 +30,7 @@ const statusVariants = cva(
   },
 )
 
-const iconVariants = cva('w-auto', {
+const iconVariants = cva('w-auto mb-0.5', {
   variants: {
     variant: {
       paid: ['text-[#29A37A]'],
@@ -39,7 +39,7 @@ const iconVariants = cva('w-auto', {
       pending: ['text-control-grey-hover'],
       pending_approval: ['text-[#B25900]'],
       failed: ['text-[#F32448]'],
-      inprogress: ['text-control-grey-hover'],
+      inprogress: ['text-grey-text'],
     },
   },
   defaultVariants: {

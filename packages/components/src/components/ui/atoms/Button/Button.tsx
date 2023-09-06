@@ -22,10 +22,10 @@ const buttonVariants = cva(
         ],
       },
       size: {
-        big: ['text-base', 'px-3', 'py-3', 'md:px-6', 'font-normal', 'leading-6'],
-        medium: ['text-sm', 'px-4', 'py-2', 'font-normal', 'leading-6'],
-        small: ['text-[0.813rem]', 'py-1', 'px-3', 'font-normal', 'leading-6'],
-        'x-small': ['text-[0.813rem]', 'py-1', 'px-3', 'font-normal', 'leading-4'],
+        big: ['text-base', 'px-3', 'py-3', 'md:px-6', 'font-semibold', 'leading-6'],
+        medium: ['text-sm', 'px-4', 'py-2', 'font-semibold', 'leading-6'],
+        small: ['text-[0.813rem]', 'py-1', 'px-3', 'font-semibold', 'leading-6'],
+        'x-small': ['text-[0.813rem]', 'py-1', 'px-3', 'font-semibold', 'leading-4'],
       },
     },
     defaultVariants: {
