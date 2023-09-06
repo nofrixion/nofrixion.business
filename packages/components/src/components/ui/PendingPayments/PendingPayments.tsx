@@ -10,31 +10,23 @@ import AnimateHeightWrapper from '../utils/AnimateHeight'
 
 export interface PendingPaymentsProps extends React.HTMLAttributes<HTMLDivElement> {
   pendingPayments: LocalPayout[]
-  onSeeMore: () => void
 }
 
-export const PendingPayments: React.FC<PendingPaymentsProps> = ({
-  pendingPayments,
-  onSeeMore,
-  ...props
-}) => {
+export const PendingPayments: React.FC<PendingPaymentsProps> = ({ pendingPayments, ...props }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Collapsible {...props}>
-      <CollapsibleTrigger className="w-full">
-        <div
-          className="flex justify-end text-xs font-normal leading-4 items-center gap-2 text-grey-text"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-hidden="true"
-        >
-          <span>{pendingPayments.length} pending payments</span>
-          <span>
-            <Icon name={isOpen ? 'arrow-up/8' : 'arrow-down/8'} />
-          </span>
-        </div>
+      <CollapsibleTrigger
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex justify-end text-xs font-normal leading-4 items-center gap-2 text-grey-text mt-1"
+      >
+        <span>{pendingPayments.length} pending payments</span>
+        <span>
+          <Icon name={isOpen ? 'arrow-up/8' : 'arrow-down/8'} />
+        </span>
       </CollapsibleTrigger>
-      <CollapsibleContent asChild forceMount>
+      <CollapsibleContent forceMount>
         <AnimatePresence initial={isOpen}>
           {isOpen && pendingPayments && (
             <AnimateHeightWrapper layoutId="pendingPayments">
@@ -48,7 +40,7 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
                       <span className="mr-4 w-[128px] ">{payment.createdBy}</span>
                       <span className="w-[144px]">{payment.description}</span>
                     </div>
-                    <span className="text-right font-medium tabular-nums font-inter-fontFeatureSettings whitespace-nowrap ml-4">
+                    <span className="text-right font-medium tabular-nums font-inter-fontFeatureSettings whitespace-nowrap">
                       - {formatCurrency(payment.currency)} {formatAmount(payment.amount)}
                     </span>
                   </div>
@@ -57,11 +49,10 @@ export const PendingPayments: React.FC<PendingPaymentsProps> = ({
               <div className="flex justify-end py-2 border-t">
                 {pendingPayments.length > 3 && (
                   <span
-                    onClick={() => onSeeMore()}
                     aria-hidden="true"
-                    className="text-right text-xs font-normal underline text-default-text cursor-pointer hover:no-underline"
+                    className="text-right text-xs font-normal text-default-text"
                   >
-                    See all
+                    +{pendingPayments.length - 3} more
                   </span>
                 )}
               </div>
