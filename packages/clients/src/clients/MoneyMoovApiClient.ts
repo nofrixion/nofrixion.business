@@ -3,6 +3,7 @@ import { AccountsClient } from './AccountsClient'
 import { ClientSettingsClient } from './ClientSettingsClient'
 import { MerchantClient } from './MerchantClient'
 import { PaymentRequestClient } from './PaymentRequestClient'
+import { PayoutClient } from './PayoutClient'
 import { TransactionsClient } from './TransactionsClient'
 import { UsersClient } from './UsersClient'
 
@@ -43,6 +44,11 @@ export class MoneyMoovApiClient {
   Users: UsersClient
 
   /**
+   * Provides access to the MoneyMoov Payout api.
+   */
+  Payouts: PayoutClient
+
+  /**
    *
    * Production: https://api.nofrixion.com/api/v1
    * Sandbox: https://api-sandbox.nofrixion.com/api/v1
@@ -58,5 +64,6 @@ export class MoneyMoovApiClient {
     this.Accounts = new AccountsClient(props)
     this.Transactions = new TransactionsClient(props)
     this.Users = new UsersClient(props)
+    this.Payouts = new PayoutClient(props)
   }
 }
