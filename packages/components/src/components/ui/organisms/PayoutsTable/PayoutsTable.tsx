@@ -32,6 +32,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   onPageChange,
   onSort,
   onPayoutClicked,
+  isLoading = false,
   ...props
 }) => {
   const onPayoutClickedHandler = (
@@ -84,34 +85,67 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {payouts.map((payout, index) => (
-                <TableRow
-                  className="cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]"
-                  key={`${payout}-${index}`}
-                  onClick={(event) => onPayoutClickedHandler(event, payout)}
-                >
-                  <TableCell className="w-48">
-                    <Status size="small" variant={payoutStatusToStatus(payout.status)} />
-                  </TableCell>
-                  <TableCell className="w-48">
-                    {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
-                  </TableCell>
-                  <TableCell className="w-60">
-                    <div className="truncate">{payout.destination?.name}</div>
-                  </TableCell>
-                  <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6 w-72">
-                    {formatAmount(payout.amount)}
-                  </TableCell>
-                  <TableCell className="pl-0 text-grey-text align-left font-normal text-sm">
-                    {payout.currency}
-                  </TableCell>
-                  <TableCell className="w-0">
-                    {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                      <PayoutApproveForm payoutId={payout.id} />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {isLoading &&
+                Array.from(Array(12)).map((_, index) => (
+                  <TableRow
+                    key={`pr-placeholder-${index}`}
+                    className="animate-pulse border-b border-[#F1F2F3]"
+                  >
+                    <TableCell className="py-6">
+                      <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell className="p-0">
+                      <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                    </TableCell>
+
+                    <TableCell className="p-0">
+                      <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+
+              {!isLoading &&
+                payouts.map((payout, index) => (
+                  <TableRow
+                    className="cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]"
+                    key={`${payout}-${index}`}
+                    onClick={(event) => onPayoutClickedHandler(event, payout)}
+                  >
+                    <TableCell className="w-48">
+                      <Status size="small" variant={payoutStatusToStatus(payout.status)} />
+                    </TableCell>
+                    <TableCell className="w-48">
+                      {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
+                    </TableCell>
+                    <TableCell className="w-60">
+                      <div className="truncate">{payout.destination?.name}</div>
+                    </TableCell>
+                    <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6 w-72">
+                      {formatAmount(payout.amount)}
+                    </TableCell>
+                    <TableCell className="pl-0 text-grey-text align-left font-normal text-sm">
+                      {payout.currency}
+                    </TableCell>
+                    <TableCell className="w-0">
+                      {payout.status === PayoutStatus.PENDING_APPROVAL && (
+                        <PayoutApproveForm payoutId={payout.id} />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </>
