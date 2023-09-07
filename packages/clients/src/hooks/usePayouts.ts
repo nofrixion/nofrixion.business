@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { PayoutClient } from '../clients'
-import { formatSortExpression, SortDirection } from '../types'
+import { formatSortExpression, PayoutStatus, SortDirection } from '../types'
 import { ApiResponse, PayoutPageResponse } from '../types/ApiResponses'
 import { ApiProps, usePayoutsProps } from '../types/props'
 
@@ -16,7 +16,7 @@ const fetchPayouts = async (
   pageSize?: number,
   fromDateMS?: number,
   toDateMS?: number,
-  status?: string,
+  statuses?: PayoutStatus[],
   search?: string,
   currency?: string,
   minAmount?: number,
@@ -37,7 +37,7 @@ const fetchPayouts = async (
     sort: sortExpression,
     fromDate: fromDateMS ? new Date(fromDateMS) : undefined,
     toDate: toDateMS ? new Date(toDateMS) : undefined,
-    status: status,
+    payoutStatuses: statuses,
     search: search,
     currency: currency,
     minAmount: minAmount,
@@ -59,7 +59,7 @@ export const usePayouts = (
     pageSize,
     fromDateMS,
     toDateMS,
-    status,
+    statuses,
     search,
     currency,
     minAmount,
@@ -80,7 +80,7 @@ export const usePayouts = (
     pageSize,
     fromDateMS,
     toDateMS,
-    status,
+    statuses,
     search,
     currency,
     minAmount,
@@ -102,7 +102,7 @@ export const usePayouts = (
         pageSize,
         fromDateMS,
         toDateMS,
-        status,
+        statuses,
         search,
         currency,
         minAmount,

@@ -1,29 +1,35 @@
-import { PaymentRequestStatus } from '@nofrixion/moneymoov'
+import { PaymentRequestStatus, PayoutStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import classNames from 'classnames'
 
 export interface TabProps {
-  status: PaymentRequestStatus
+  status: string
   totalRecords: number
   isLoading?: boolean
   totalAmountInEuros?: number
   totalAmountInPounds?: number
 }
 
-const getSpecificStatusClasses = (status: PaymentRequestStatus) => {
+const getSpecificStatusClasses = (status: string) => {
   return classNames({
-    "fill-[#ABB2BA] data-[state='active']:border-[#73808C]":
-      status === PaymentRequestStatus.None || status === PaymentRequestStatus.Authorized,
-    "fill-[#ABB2BA] data-[state='active']:border-[#40BFBF]": status === PaymentRequestStatus.All,
-    "fill-[#E88C30] data-[state='active']:border-[#E88C30]":
-      status === PaymentRequestStatus.PartiallyPaid,
-    "fill-[#00CC88] data-[state='active']:border-[#29A37A]":
-      status === PaymentRequestStatus.FullyPaid,
+    "fill-[#ABB2BA] [&>span]:text-defaultText data-[state='active']:border-[#73808C]":
+      status === PaymentRequestStatus.None ||
+      status === PaymentRequestStatus.Authorized ||
+      status === PayoutStatus.PENDING,
+    "fill-[#ABB2BA] [&>span]:text-defaultText data-[state='active']:border-[#40BFBF]":
+      status === PaymentRequestStatus.All || status === PayoutStatus.All,
+    "fill-[#E88C30] [&>span]:text-[#B25900] data-[state='active']:border-[#E88C30]":
+      status === PaymentRequestStatus.PartiallyPaid || status === PayoutStatus.PENDING_APPROVAL,
+    "fill-[#00CC88] [&>span]:text-positive-green data-[state='active']:border-[#29A37A]":
+      status === PaymentRequestStatus.FullyPaid || status === PayoutStatus.PROCESSED,
+    "fill-negative-red [&>span]:text-negative-red data-[state='active']:border-[#DA0C30]":
+      status === PayoutStatus.FAILED,
   })
 }
 
-const getDisplayTextForStatus = (status: PaymentRequestStatus) => {
+const getDisplayTextForStatus = (status: string) => {
   switch (status) {
+    /* PaymentRequests */
     case PaymentRequestStatus.PartiallyPaid:
       return 'Partially paid'
     case PaymentRequestStatus.FullyPaid:
@@ -32,17 +38,30 @@ const getDisplayTextForStatus = (status: PaymentRequestStatus) => {
       return 'Unpaid'
     case PaymentRequestStatus.Authorized:
       return 'Authorized'
+    /* Payouts */
+    case PayoutStatus.FAILED:
+      return 'Failed'
+    case PayoutStatus.PENDING:
+      return 'In progress'
+    case PayoutStatus.PENDING_APPROVAL:
+      return 'Pending approval'
+    case PayoutStatus.PROCESSED:
+      return 'Paid'
     default:
       return 'All'
   }
 }
 
-const showIndicator = (status: PaymentRequestStatus) => {
+const showIndicator = (status: string) => {
   switch (status) {
     case PaymentRequestStatus.None:
     case PaymentRequestStatus.PartiallyPaid:
     case PaymentRequestStatus.FullyPaid:
     case PaymentRequestStatus.Authorized:
+    case PayoutStatus.PENDING:
+    case PayoutStatus.PENDING_APPROVAL:
+    case PayoutStatus.PROCESSED:
+    case PayoutStatus.FAILED:
       return true
     default:
       return false
