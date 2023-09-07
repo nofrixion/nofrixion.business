@@ -156,13 +156,12 @@ const PayoutDashboardMain = ({
         setQueryStatuses([PayoutStatus.PROCESSED])
         break
       case PayoutStatus.PENDING_APPROVAL:
-        setQueryStatuses([PayoutStatus.PENDING_APPROVAL])
+        setQueryStatuses([PayoutStatus.PENDING_APPROVAL, PayoutStatus.PENDING_INPUT,])
         break
       case PayoutStatus.FAILED:
         setQueryStatuses([
           PayoutStatus.FAILED,
           PayoutStatus.REJECTED,
-          PayoutStatus.PENDING_INPUT,
           PayoutStatus.UNKNOWN,
         ])
         break
