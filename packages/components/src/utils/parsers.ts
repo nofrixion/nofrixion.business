@@ -443,6 +443,9 @@ const remotePayoutToLocal = (payout: Payout): LocalPayout => {
     createdBy: payout.createdBy,
     inserted: payout.inserted,
     sourceAccountName: payout.sourceAccountName,
+    sourceAccountNumber: payout.sourceAccountNumber,
+    sourceAccountSortCode: payout.sourceAccountSortCode,
+    sourceAccountIban: payout.sourceAccountIban,
     destination: payout.destination
       ? parseApiCounterPartyToLocalCounterParty(payout.destination)
       : undefined,
