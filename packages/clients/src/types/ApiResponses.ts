@@ -356,3 +356,15 @@ export type PayoutMetrics = {
 }
 
 export type PayoutPageResponse = PageResponse<Payout>
+
+export type Beneficiary = {
+  id: string
+  merchantID: string
+  name: string
+  yourReference: string
+  theirReference: string
+  currency: Currency
+  destination: Counterparty
+}
+
+export type BeneficiaryPageResponse = PageResponse<Beneficiary>
