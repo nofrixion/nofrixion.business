@@ -41,15 +41,13 @@ const PayoutsPage = () => {
   }
 
   return (
-    <>
-      {merchant && (
-        <PayoutDashboard
-          merchantId={merchant.id}
-          apiUrl={NOFRIXION_API_URL}
-          onUnauthorized={onUnauthorized}
-        />
-      )}
-    </>
+    merchant && (
+      <PayoutDashboard
+        merchantId={merchant.id}
+        apiUrl={NOFRIXION_API_URL}
+        onUnauthorized={onUnauthorized}
+      />
+    )
   )
 }
 
