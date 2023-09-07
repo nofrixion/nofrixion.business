@@ -1151,7 +1151,7 @@ const accounts: LocalAccount[] = [
     id: '1',
     accountName: 'EURO Account',
     currency: Currency.GBP,
-    balance: 100000,
+    balance: 100,
     merchantID: '1',
     accountNumber: '12345678',
     sortCode: '123456',
@@ -1160,7 +1160,7 @@ const accounts: LocalAccount[] = [
     identifier: eurAccountIdentifier,
     summary: 'Account',
     isDefault: true,
-    availableBalance: 100000,
+    availableBalance: 100,
   },
   {
     id: '2',

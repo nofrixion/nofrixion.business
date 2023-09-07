@@ -30,7 +30,7 @@ const SelectBeneficiary: React.FC<SelectBeneficiaryPros> = ({
   return (
     <Select value={value} onValueChange={onValueChange} {...props}>
       {
-        <SelectTrigger className={cn('w-[27rem] py-4 rounded', className)}>
+        <SelectTrigger className={cn('md:w-[27rem] py-4 rounded', className)}>
           <SelectValue asChild>
             <div className="w-full flex justify-between">
               {value != undefined ? (
@@ -56,7 +56,7 @@ const SelectBeneficiary: React.FC<SelectBeneficiaryPros> = ({
           </SelectValue>
         </SelectTrigger>
       }
-      <SelectContent className="w-[27rem] z-[200]">
+      <SelectContent className="md:w-[27rem] z-[200]">
         {beneficiaries.map((beneficiary) => (
           <SelectItem key={beneficiary.id} value={beneficiary.id} isText={false}>
             <div className="w-full flex justify-between font-medium">

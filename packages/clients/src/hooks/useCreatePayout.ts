@@ -1,9 +1,9 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import { PayoutClient } from '../clients/PayoutClient'
 import { AccountIdentifierType, ApiError, Counterparty, Currency, PayoutCreate } from '../types'
-import { ApiProps, CreatePayoutProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, CreatePayoutProps, usePayoutsProps } from '../types/props'
 
 const createPayoutAsync = async (
   apiUrl: string,
@@ -49,7 +49,6 @@ export const useCreatePayout = (
     merchantId,
     statusSortDirection,
     createdSortDirection,
-    contactSortDirection,
     amountSortDirection,
     pageNumber,
     pageSize,
@@ -61,26 +60,15 @@ export const useCreatePayout = (
     minAmount,
     maxAmount,
     tags,
-  }: usePaymentRequestsProps,
+  }: usePayoutsProps,
   { apiUrl, authToken }: ApiProps,
-  isForRefund?: boolean,
 ): {
   createPayout: (createPayoutProps: CreatePayoutProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
-  const [paymentRequestID, setPaymentRequestID] = useState<string>()
-
-  const SINGLE_PAYMENT_REQUEST_QUERY_KEY = [
-    'PaymentRequest',
-    merchantId,
-    paymentRequestID,
-    apiUrl,
-    authToken,
-  ]
-
   const METRICS_QUERY_KEY = [
-    'PaymentRequestMetrics',
+    'PayoutMetrics',
     apiUrl,
     authToken,
     currency,
@@ -93,14 +81,13 @@ export const useCreatePayout = (
     tags,
   ]
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
+  const PAYOUTS_QUERY_KEY = [
+    'Payouts',
     apiUrl,
     authToken,
     merchantId,
     statusSortDirection,
     createdSortDirection,
-    contactSortDirection,
     amountSortDirection,
     pageNumber,
     pageSize,
@@ -113,6 +100,7 @@ export const useCreatePayout = (
     maxAmount,
     tags,
   ]
+
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
@@ -134,11 +122,13 @@ export const useCreatePayout = (
         variables.yourReference,
       ),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
-      if (data.success && isForRefund) {
+      if (data.success) {
         // After create payout for refund is successful, invalidate the payment requests cache, the single payment request cache,
         // and the metrics cache because the status of the payment request has changed
-        queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
-        queryClient.invalidateQueries({ queryKey: SINGLE_PAYMENT_REQUEST_QUERY_KEY })
+        console.log('invalidating queries', queryClient.getQueryCache())
+        console.log('PAYOUTS_QUERY_KEY', PAYOUTS_QUERY_KEY)
+        console.log('METRICS_QUERY_KEY', METRICS_QUERY_KEY)
+        queryClient.invalidateQueries({ queryKey: PAYOUTS_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: METRICS_QUERY_KEY })
       }
     },
@@ -156,30 +146,25 @@ export const useCreatePayout = (
       destination,
       invoiceID,
       allowIncomplete,
-      paymentRequestId,
     }: CreatePayoutProps) => {
-      if (paymentRequestId) {
-        setPaymentRequestID(paymentRequestId)
-        const result = await mutation.mutateAsync({
-          accountID,
-          type,
-          description,
-          currency,
-          amount,
-          yourReference,
-          theirReference,
-          destination,
-          invoiceID,
-          allowIncomplete,
-        })
+      const result = await mutation.mutateAsync({
+        accountID,
+        type,
+        description,
+        currency,
+        amount,
+        yourReference,
+        theirReference,
+        destination,
+        invoiceID,
+        allowIncomplete,
+      })
 
-        if (result.success) {
-          return { error: undefined }
-        } else {
-          return { error: result.error }
-        }
+      if (result.success) {
+        return { error: undefined }
+      } else {
+        return { error: result.error }
       }
-      return { error: undefined }
     },
     [mutation],
   )

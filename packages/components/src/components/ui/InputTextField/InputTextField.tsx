@@ -1,6 +1,7 @@
 import { AnimatePresence } from 'framer-motion'
 import { forwardRef, useId, useState } from 'react'
 
+import { cn } from '../../../utils'
 import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
 export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -9,7 +10,7 @@ export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInput
   validation?: (value: string) => string | undefined
   error?: string
   subText?: string
-  validateOnKeyDown?: boolean
+  requiredErrorPrompt?: boolean
 }
 
 const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
@@ -21,6 +22,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
       value,
       placeholder,
       subText,
+      requiredErrorPrompt,
       onChange,
       onBlur,
       validation,
@@ -61,7 +63,13 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
             </label>
 
             {required && (
-              <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
+              <div
+                className={cn('text-grey-text font-normal text-xs leading-4', {
+                  'text-[#F32448]': requiredErrorPrompt,
+                })}
+              >
+                REQUIRED
+              </div>
             )}
           </div>
           <input

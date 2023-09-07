@@ -1,14 +1,23 @@
-import { Payout, PayoutStatus, SortDirection, useMerchant, usePayouts } from '@nofrixion/moneymoov'
+import {
+  Account,
+  Payout,
+  PayoutStatus,
+  SortDirection,
+  useAccounts,
+  useMerchant,
+  usePayouts,
+} from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout } from '../../../types/LocalTypes'
-import { remotePayoutsToLocal } from '../../../utils/parsers'
+import { remoteAccountsToLocalAccounts, remotePayoutsToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
+import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 
 export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -40,6 +49,7 @@ const PayoutDashboardMain = ({
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [payouts, setPayouts] = useState<Payout[]>([])
+  const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
   const [localPayouts, setLocalPayouts] = useState<LocalPayout[]>([])
   const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
@@ -47,6 +57,8 @@ const PayoutDashboardMain = ({
   )
 
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+
+  const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
@@ -75,6 +87,7 @@ const PayoutDashboardMain = ({
       statusSortDirection: statusSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
+      status: status,
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -83,6 +96,16 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { data: accountsResponse } = useAccounts({ merchantId }, { apiUrl, authToken: token })
+
+  useEffect(() => {
+    if (accountsResponse?.status === 'success') {
+      setAccounts(accountsResponse.data)
+    } else if (accountsResponse?.status === 'error') {
+      console.error(accountsResponse.error)
+    }
+  }, [accountsResponse])
 
   useEffect(() => {
     if (payoutsResponse?.status === 'success') {
@@ -122,33 +145,62 @@ const PayoutDashboardMain = ({
   }
 
   const onCreatePayout = () => {
-    console.log('Create payout')
+    setCreatePayoutClicked(true)
   }
 
   return (
-    <UIPayoutDashboard
-      payouts={localPayouts}
-      pagination={{
-        pageSize: pageSize,
-        totalSize: totalRecords,
-      }}
-      onPageChange={onPageChange}
-      onDateChange={onDateChange}
-      onSearch={setSearchFilter}
-      onSort={onSort}
-      searchFilter={searchFilter}
-      isLoading={isLoadingPayouts}
-      onCreatePayout={onCreatePayout}
-      merchantCreatedAt={
-        merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
-      }
-      currency={currencyFilter}
-      setCurrency={setCurrencyFilter}
-      minAmount={minAmountFilter}
-      setMinAmount={setMinAmountFilter}
-      maxAmount={maxAmountFilter}
-      setMaxAmount={setMaxAmountFilter}
-    />
+    <>
+      <UIPayoutDashboard
+        payouts={localPayouts}
+        pagination={{
+          pageSize: pageSize,
+          totalSize: totalRecords,
+        }}
+        onPageChange={onPageChange}
+        onDateChange={onDateChange}
+        onSearch={setSearchFilter}
+        onSort={onSort}
+        searchFilter={searchFilter}
+        isLoading={isLoadingPayouts}
+        onCreatePayout={onCreatePayout}
+        merchantCreatedAt={
+          merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
+        }
+        currency={currencyFilter}
+        setCurrency={setCurrencyFilter}
+        minAmount={minAmountFilter}
+        setMinAmount={setMinAmountFilter}
+        maxAmount={maxAmountFilter}
+        setMaxAmount={setMaxAmountFilter}
+      />
+
+      {accounts && (
+        <CreatePayoutModal
+          accounts={remoteAccountsToLocalAccounts(accounts)}
+          amountSortDirection={amountSortDirection}
+          createdSortDirection={createdSortDirection}
+          statusSortDirection={statusSortDirection}
+          currency={currencyFilter}
+          minAmount={minAmountFilter}
+          maxAmount={maxAmountFilter}
+          tags={tagsFilter}
+          pageSize={pageSize}
+          pageNumber={page}
+          fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}
+          toDateMS={dateRange.toDate && dateRange.toDate.getTime()}
+          status={status}
+          search={searchFilter?.length >= 3 ? searchFilter : undefined}
+          beneficiaries={[]}
+          apiUrl={apiUrl}
+          token={token}
+          isOpen={createPayoutClicked}
+          onDismiss={() => {
+            setCreatePayoutClicked(false)
+          }}
+          merchantId={merchantId}
+        />
+      )}
+    </>
   )
 }
 

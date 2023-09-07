@@ -1,8 +1,10 @@
 import { AnimatePresence } from 'framer-motion'
 import { forwardRef, useId, useState } from 'react'
+import { useEffect } from 'react'
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
+import { cn } from '../../../utils'
 import AnimateHeightWrapper from '../utils/AnimateHeight'
 
 export interface InputNumericTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -10,13 +12,35 @@ export interface InputNumericTextFieldProps extends React.InputHTMLAttributes<HT
   required?: boolean
   validation?: (value: string) => string | undefined
   error?: string
+  formSubmitClicked?: boolean
 }
 
 const InputNumericTextField = forwardRef<HTMLInputElement, InputNumericTextFieldProps>(
-  ({ label, required, maxLength, value, placeholder, onChange, onBlur, validation, ...props }) => {
+  ({
+    label,
+    required,
+    maxLength,
+    value,
+    placeholder,
+    formSubmitClicked,
+    onChange,
+    onBlur,
+    validation,
+    ...props
+  }) => {
     const textId = useId()
 
     const [error, setError] = useState<string>()
+    const [requiredErrorPrompt, setRequiredErrorPrompt] = useState<boolean>(false)
+    const [fieldValue, setFieldValue] = useState<string>()
+
+    useEffect(() => {
+      if (formSubmitClicked && required && !fieldValue) {
+        setRequiredErrorPrompt(true)
+      } else {
+        setRequiredErrorPrompt(false)
+      }
+    }, [formSubmitClicked])
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange && onChange(e)
@@ -24,6 +48,8 @@ const InputNumericTextField = forwardRef<HTMLInputElement, InputNumericTextField
       if (!validation || !error) {
         return
       }
+
+      required && !e.target.value ? setRequiredErrorPrompt(true) : setRequiredErrorPrompt(false)
 
       setError(validation(e.target.value))
     }
@@ -61,7 +87,13 @@ const InputNumericTextField = forwardRef<HTMLInputElement, InputNumericTextField
             </label>
 
             {required && (
-              <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
+              <div
+                className={cn('text-grey-text font-normal text-xs leading-4', {
+                  'text-[#F32448]': requiredErrorPrompt,
+                })}
+              >
+                REQUIRED
+              </div>
             )}
           </div>
           <MaskedInput
@@ -76,6 +108,7 @@ const InputNumericTextField = forwardRef<HTMLInputElement, InputNumericTextField
               e.target.value = e.target.value.replace(/[^\d\.\-]/g, '')
               handleOnChange && handleOnChange(e)
               e.target.value = masked
+              setFieldValue(e.target.value)
             }}
             {...props}
           />

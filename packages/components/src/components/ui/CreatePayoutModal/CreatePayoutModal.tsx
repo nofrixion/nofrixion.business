@@ -8,13 +8,14 @@ import { cn } from '../../../utils'
 import { formatAmount } from '../../../utils/formatters'
 import { formatCurrency } from '../../../utils/uiFormaters'
 import { Button, Icon, Sheet, SheetContent } from '../atoms'
+import InputTextField from '../atoms/InputTextField/InputTextField'
+import { ValidationMessage } from '../atoms/ValidationMessage/ValidationMessage'
 import InputAmountField from '../InputAmountField/InputAmountField'
-import InputNumericTextField from '../InputNumericTextField/InputNumericTextField'
 import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
-import InputTextField from '../InputTextField/InputTextField'
 import { Loader } from '../Loader/Loader'
 import { SelectAccount } from '../molecules/Select/SelectAccount/SelectAccount'
 import { SelectBeneficiary } from '../molecules/Select/SelectBeneficiary/SelectBeneficiary'
+import AnimateHeightWrapper from '../utils/AnimateHeight'
 
 export interface CreatePayoutModalProps {
   onCreatePayout: (
@@ -39,7 +40,12 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   isOpen,
 }) => {
   const [isCreatePayoutButtonDisabled, setIsCreatePayoutButtonDisabled] = useState(false)
-  const [validationErrorMessage, setValidationErrorMessage] = useState('')
+  const [amountValidationErrorMessage, setAmountValidationErrorMessage] = useState<
+    string | undefined
+  >(undefined)
+  const [accountValidationErrorMessage, setAccountValidationErrorMessage] = useState<
+    string | undefined
+  >(undefined)
   const [payoutAmount, setPayoutAmount] = useState<string | undefined>('')
   const [reference, setReference] = useState<string | undefined>('')
   const [yourReference, setYourReference] = useState<string | undefined>('')
@@ -54,6 +60,11 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const [destinationAccountSortCode, setDestinationAccountSortCode] = useState<string | undefined>(
     '',
   )
+
+  const [destinationAccountRequiredPrompt, setDestinationAccountRequiredPrompt] =
+    useState<boolean>(false)
+
+  const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
 
   const formatter = new Intl.NumberFormat(navigator.language, {
     minimumFractionDigits: 2,
@@ -77,13 +88,65 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     accounts?.filter((x) => x.currency === currency)[0],
   )
 
-  const onCreatePayoutClick = async () => {
-    setValidationErrorMessage('')
+  const validateAmount = (amount: string, account: LocalAccount) => {
+    setAmountValidationErrorMessage(undefined)
+    if (account && account.availableBalance < Number(amount)) {
+      setAmountValidationErrorMessage('The amount is higher than the funds on your account')
+    } else if (
+      accountValidationErrorMessage ===
+      "This account doesn't have enough funds for this transaction"
+    ) {
+      setAccountValidationErrorMessage(undefined)
+    }
+  }
+
+  const handleAmountOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPayoutAmount(e.target.value)
+    console.log(payoutAmount)
+    validateAmount(e.target.value, selectedAccount)
+  }
+
+  const handleAccountOnChange = (value: string) => {
+    setAccountValidationErrorMessage(undefined)
+    const account = accounts.find((account) => account.id === value)
+
+    setSelectedAccount(account ?? accounts.filter((account) => account.currency === currency)[0])
+
+    if (account && account.availableBalance < Number(payoutAmount)) {
+      setAccountValidationErrorMessage(
+        "This account doesn't have enough funds for this transaction",
+      )
+    } else if (
+      amountValidationErrorMessage === 'The amount is higher than the funds on your account'
+    ) {
+      setAmountValidationErrorMessage(undefined)
+    }
+  }
+
+  const handleValidation = (): boolean => {
+    let validationFailed = false
+    setAmountValidationErrorMessage(undefined)
+    setDestinationAccountRequiredPrompt(false)
+    if (beneficiaries && beneficiaries.length > 0 && !selectedBeneficiary && !addManuallySelected) {
+      validationFailed = true
+      setDestinationAccountRequiredPrompt(true)
+    }
+
     const parsedAmount = Number(payoutAmount)
     if (parsedAmount < 0) {
-      setValidationErrorMessage('The amount must be greater than 0.')
+      validationFailed = true
+      setAmountValidationErrorMessage('The amount must be greater than 0.')
     } else if (parsedAmount === 0) {
-      setValidationErrorMessage("The amount can't be 0.")
+      validationFailed = true
+      setAmountValidationErrorMessage("The amount can't be 0.")
+    }
+    return validationFailed
+  }
+
+  const onCreatePayoutClick = async () => {
+    setCreatePayoutClicked(true)
+    if (handleValidation()) {
+      return
     } else if (
       (destinationAccountIBAN || (destinationAccountNumber && destinationAccountSortCode)) &&
       payoutAmount &&
@@ -129,18 +192,10 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const onValidateDestinationAccountName = (destinationAccountName: string): string | undefined => {
     // Get invalid characters if any (using the same regex from backend "^['\.\-\/&\s]*?\w+['\.\-\/&\s\w]*$")
     // eslint-disable-next-line no-useless-escape
-    const invalidCharacters = destinationAccountName.match(/^['\.\-\/&\s]*?\w+['\.\-\/&\s\w]*$/g)
+    const accountNameRegex = /^['\.\-\/&\s]*?\w+['\.\-\/&\s\w]*$/g
 
-    if (destinationAccountName.length > 0 && invalidCharacters) {
-      // Singular
-      if (invalidCharacters.length === 1) {
-        return `The character "${invalidCharacters[0]}" is not allowed in the destination account name`
-      }
-
-      // Plural
-      return `The characters "${invalidCharacters.join(
-        '',
-      )}" are not allowed in the destination account name`
+    if (destinationAccountName.length > 0 && !accountNameRegex.test(destinationAccountName)) {
+      return `The account name is not valid`
     }
   }
 
@@ -185,6 +240,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const onCurrencyChange = (currency: string) => {
     setCurrency(currency as Currency.EUR | Currency.GBP)
     setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
+    payoutAmount &&
+      validateAmount(payoutAmount, accounts?.filter((x) => x.currency === currency)[0])
   }
 
   return (
@@ -201,32 +258,25 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   New payout
                 </span>
 
-                <div className="mt-12 md:flex w-64">
-                  <div className="text-left">
+                <div className="mt-12 md:flex w-full">
+                  <div className="text-left ">
                     <div>
                       <InputAmountField
                         currency={currency}
                         onCurrencyChange={onCurrencyChange}
                         allowCurrencyChange={singleCurrency ? false : true}
                         value={formatter.format(Number(payoutAmount))}
-                        onChange={(e) => setPayoutAmount(e.target.value)}
+                        onChange={handleAmountOnChange}
+                        required
                       ></InputAmountField>
                     </div>
-                    <AnimatePresence>
-                      {validationErrorMessage && (
-                        <motion.div
-                          className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                        >
-                          {validationErrorMessage}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </div>
                 </div>
-                <div className="w-[27rem]">
+                <div className="w-fit">
+                  <ValidationMessage variant="error" message={amountValidationErrorMessage} />
+                </div>
+
+                <div className="md:w-[27rem]">
                   <div className="mt-10 flex-row items-baseline">
                     <div className="mb-2">
                       <span className="text-default-text font-semibold text-sm leading-4">
@@ -238,12 +288,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         <SelectAccount
                           className="text-right border border-border-grey md:w-[27rem]"
                           value={selectedAccount?.id}
-                          onValueChange={(value) => {
-                            setSelectedAccount(
-                              accounts.find((account) => account.id === value) ??
-                                accounts.filter((account) => account.currency === currency)[0],
-                            )
-                          }}
+                          onValueChange={handleAccountOnChange}
                           accounts={accounts.filter((account) => account.currency === currency)}
                         />
                       ) : (
@@ -257,6 +302,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                           </div>
                         </div>
                       )}
+                      <ValidationMessage variant="error" message={accountValidationErrorMessage} />
                     </div>
                   </div>
 
@@ -266,8 +312,18 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         'mb-10': !addManuallySelected,
                       })}
                     >
-                      <div className="md:w-[152px] mb-2">
-                        <span className="text-sm font-semibold ">Destination account</span>
+                      <div className="py-2 flex justify-between">
+                        <span className="text-default-text font-semibold text-sm leading-4">
+                          Destination account
+                        </span>
+
+                        <div
+                          className={cn('text-grey-text font-normal text-xs leading-4', {
+                            'text-[#F32448]': destinationAccountRequiredPrompt,
+                          })}
+                        >
+                          REQUIRED
+                        </div>
                       </div>
                       <div className="text-left">
                         <SelectBeneficiary
@@ -292,7 +348,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   )}
 
                   <AnimatePresence initial={false}>
-                    {(beneficiaries?.length === 0 || addManuallySelected) && (
+                    {(selectedBeneficiary || addManuallySelected) && (
                       <motion.div
                         initial={{ opacity: 0, height: 0, marginTop: 0, marginBottom: 0 }}
                         animate={{
@@ -300,101 +356,75 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                           height: 'auto',
                           marginTop: '32px',
                           marginBottom: '32px',
-                          transition: { duration: 0.4 },
+                          transition: { duration: 0.3 },
                         }}
                         exit={{
                           opacity: 0,
                           height: 0,
                           marginTop: 0,
                           marginBottom: 0,
-                          transition: { duration: 0.4 },
+                          transition: { duration: 0.3 },
                         }}
                       >
-                        <div className="items-baseline">
+                        <div className="items-baseline mt-10">
                           <div className="text-left">
                             <InputTextField
-                              label="Destination account name"
+                              label="Account name"
                               maxLength={40}
                               value={destinationAccountName}
                               onChange={(e) => setDestinationAccountName(e.target.value)}
-                              validation={onValidateDestinationAccountName}
+                              warningValidation={onValidateDestinationAccountName}
                               placeholder="The person or company that owns the account"
                             />
                           </div>
                         </div>
                         <AnimatePresence initial={false}>
                           {currency === Currency.EUR && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                              animate={{
-                                opacity: 1,
-                                height: 'auto',
-                                marginTop: '32px',
-                                transition: { duration: 0.4 },
-                              }}
-                              exit={{
-                                opacity: 0,
-                                height: 0,
-                                marginTop: 0,
-                                transition: { duration: 0.4 },
-                              }}
-                              className="items-baseline"
-                            >
+                            <AnimateHeightWrapper layoutId="eur-account-details">
                               <div className="text-left">
                                 <InputTextField
-                                  label="Destination account IBAN"
+                                  label="Account IBAN"
                                   value={destinationAccountIBAN}
                                   onChange={(e) =>
                                     setDestinationAccountIBAN(e.target.value.toUpperCase())
                                   }
-                                  validation={onValidateDestinationAccountIBAN}
+                                  warningValidation={onValidateDestinationAccountIBAN}
                                   placeholder='e.g. "GB29NWBK60161331926819"'
                                   required
-                                  validateOnKeyDown
+                                  formSubmitted={createPayoutClicked}
                                 />
                               </div>
-                            </motion.div>
+                            </AnimateHeightWrapper>
                           )}
                         </AnimatePresence>
                         <AnimatePresence initial={false}>
                           {currency === Currency.GBP && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                              animate={{
-                                opacity: 1,
-                                height: 'auto',
-                                marginTop: '32px',
-                                transition: { duration: 0.4 },
-                              }}
-                              exit={{
-                                opacity: 0,
-                                height: 0,
-                                marginTop: 0,
-                                transition: { duration: 0.4 },
-                              }}
-                              className="items-baseline"
-                            >
+                            <AnimateHeightWrapper layoutId="gbp-account-details">
                               <div className="text-left">
-                                <InputNumericTextField
-                                  label="Destination account number"
+                                <InputTextField
+                                  variant="numeric"
+                                  label="Account number"
                                   maxLength={8}
                                   value={destinationAccountNumber}
                                   onChange={(e) => setDestinationAccountNumber(e.target.value)}
                                   placeholder='e.g. "12345678"'
                                   required
+                                  formSubmitted={createPayoutClicked}
                                 />
                               </div>
                               <div className="text-left mt-10">
-                                <InputNumericTextField
-                                  label="Destination account sort code"
+                                <InputTextField
+                                  variant="numeric"
+                                  label="Account sort code"
                                   maxLength={6}
                                   value={destinationAccountSortCode}
                                   onChange={(e) => setDestinationAccountSortCode(e.target.value)}
                                   placeholder='e.g. "123456"'
                                   required
+                                  formSubmitted={createPayoutClicked}
                                 />
                               </div>
-                            </motion.div>
+                            </AnimateHeightWrapper>
                           )}
                         </AnimatePresence>
                       </motion.div>
@@ -408,9 +438,10 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         maxLength={currency === Currency.EUR ? 140 : 18}
                         value={reference}
                         onChange={(e) => setReference(e.target.value)}
-                        validation={onValidateTheirReference}
+                        warningValidation={onValidateTheirReference}
                         subText="This is what the recipient is going to see."
                         required
+                        formSubmitted={createPayoutClicked}
                       />
                     </div>
                   </div>
@@ -422,7 +453,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         maxLength={50}
                         value={yourReference}
                         onChange={(e) => setYourReference(e.target.value)}
-                        validation={onValidateYourReference}
+                        warningValidation={onValidateYourReference}
                         subText="For internal use only."
                       />
                     </div>
