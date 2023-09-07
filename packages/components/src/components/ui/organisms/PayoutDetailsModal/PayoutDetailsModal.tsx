@@ -1,7 +1,7 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
-import { formatAmount } from '../../../../utils/formatters'
+import { formatAmountAndDecimals } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
@@ -22,6 +22,8 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
       onDismiss()
     }
   }
+
+  const { amountValueWithCommas, amountDecimals } = formatAmountAndDecimals(payout?.amount ?? 0)
 
   return (
     <Sheet open={open} onOpenChange={handleOnOpenChange}>
@@ -46,10 +48,15 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
               </div>
             )}
             <div className="flex mt-10 mx-8 justify-between items-center">
-              <span className="text-[2rem] font-semibold leading-8 text-default-text tabular-nums">
+              <span className="text-[2rem] font-semibold leading-8 text-default-text tabular-nums pt-1">
+                {formatCurrency(payout?.currency ?? Currency.EUR)}
+                {amountValueWithCommas}
+                <sup className="ml-0.5 text-xl">.{amountDecimals}</sup>
+              </span>
+              {/* <span className="text-[2rem] font-semibold leading-8 text-default-text tabular-nums">
                 {formatCurrency(payout?.currency ?? Currency.EUR)}
                 {formatAmount(payout?.amount ?? 0)}
-              </span>
+              </span> */}
               <Status size="large" variant={payoutStatusToStatus(payout.status)} />
             </div>
             <Table className="mt-16 mx-8 w-11/12">
