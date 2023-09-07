@@ -5,7 +5,6 @@ import { formatAmountAndDecimals } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
-import { Table, TableCell, TableRow } from '../../atoms/Table/Table'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
 import { PayoutApproveForm } from '../../utils/PayoutApproveForm'
@@ -34,7 +33,7 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
         className="w-full lg:w-[37.5rem] outline-none"
       >
         {payout && (
-          <div className="bg-white max-h-full h-full overflow-auto">
+          <div className="bg-white max-h-full h-full overflow-hidden">
             {payout && payout.status === PayoutStatus.PENDING_APPROVAL && (
               <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
                 <div className="mt-4">
@@ -53,16 +52,13 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
                 {amountValueWithCommas}
                 <sup className="ml-0.5 text-xl">.{amountDecimals}</sup>
               </span>
-              {/* <span className="text-[2rem] font-semibold leading-8 text-default-text tabular-nums">
-                {formatCurrency(payout?.currency ?? Currency.EUR)}
-                {formatAmount(payout?.amount ?? 0)}
-              </span> */}
+
               <Status size="large" variant={payoutStatusToStatus(payout.status)} />
             </div>
-            <Table className="mt-16 mx-8 w-11/12">
-              <TableRow className="border-none hover:bg-white cursor-default text-sm h-20">
-                <TableCell className="text-grey-text align-top w-1/3">From account</TableCell>
-                <TableCell className="align-top">
+            <table className="mt-16 mx-8 w-11/12 overflow-hidden">
+              <tr className="border-none hover:bg-white cursor-default text-sm h-20">
+                <td className="text-grey-text align-top w-1/3">From account</td>
+                <td className="align-top">
                   <AccountDetails
                     accountName={payout.sourceAccountName}
                     accountNumber={
@@ -70,11 +66,11 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
                       payout.sourceAccountNumber + ' ' + payout.sourceAccountSortCode
                     }
                   ></AccountDetails>
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-none hover:bg-white cursor-default text-sm h-20">
-                <TableCell className="text-grey-text align-top w-1/3">To account</TableCell>
-                <TableCell className="align-top">
+                </td>
+              </tr>
+              <tr className="border-none hover:bg-white cursor-default text-sm h-20">
+                <td className="text-grey-text align-top w-1/3">To account</td>
+                <td className="align-top">
                   <AccountDetails
                     accountName={payout.destination?.name}
                     accountNumber={
@@ -84,27 +80,27 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
                         payout.destination?.identifier?.sortCode
                     }
                   ></AccountDetails>
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
               {payout.theirReference && (
-                <TableRow className="border-none hover:bg-white cursor-default text-sm h-14">
-                  <TableCell className="text-grey-text align-top w-1/3">Their reference</TableCell>
-                  <TableCell className="align-top">{payout.theirReference}</TableCell>
-                </TableRow>
+                <tr className="border-none hover:bg-white cursor-default text-sm h-14">
+                  <td className="text-grey-text align-top w-1/3">Their reference</td>
+                  <td className="align-top">{payout.theirReference}</td>
+                </tr>
               )}
               {payout.yourReference && (
-                <TableRow className="border-none hover:bg-white cursor-default text-sm h-14">
-                  <TableCell className="text-grey-text align-top w-1/3">Your reference</TableCell>
-                  <TableCell className="align-top">{payout.yourReference}</TableCell>
-                </TableRow>
+                <tr className="border-none hover:bg-white cursor-default text-sm h-14">
+                  <td className="text-grey-text align-top w-1/3">Your reference</td>
+                  <td className="align-top">{payout.yourReference}</td>
+                </tr>
               )}
               {payout.description && (
-                <TableRow className="border-none hover:bg-white cursor-default text-sm h-16">
-                  <TableCell className="text-grey-text align-top w-1/3">Description</TableCell>
-                  <TableCell className="align-top">{payout.description}</TableCell>
-                </TableRow>
+                <tr className="border-none hover:bg-white cursor-default text-sm h-16">
+                  <td className="text-grey-text align-top w-1/3">Description</td>
+                  <td className="align-top">{payout.description}</td>
+                </tr>
               )}
-            </Table>
+            </table>
           </div>
         )}
       </SheetContent>
