@@ -21,7 +21,10 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   searchFilter: string
   merchantCreatedAt?: Date
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount' | 'status', direction: SortDirection) => void
+  onSort: (
+    name: 'date' | 'amount' | 'status' | 'counterParty.name',
+    direction: SortDirection,
+  ) => void
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void

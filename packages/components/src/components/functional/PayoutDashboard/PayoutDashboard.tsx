@@ -62,7 +62,9 @@ const PayoutDashboardMain = ({
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
-
+  const [counterPartyNameSortDirection, setCounterPartyNameSortDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -107,6 +109,7 @@ const PayoutDashboardMain = ({
       amountSortDirection: amountSortDirection,
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
+      counterPartyNameSortDirection: counterPartyNameSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
@@ -178,7 +181,10 @@ const PayoutDashboardMain = ({
     setDateRange(dateRange)
   }
 
-  const onSort = (column: 'status' | 'date' | 'amount', direction: SortDirection) => {
+  const onSort = (
+    column: 'status' | 'date' | 'amount' | 'counterParty.name',
+    direction: SortDirection,
+  ) => {
     switch (column) {
       case 'status':
         setStatusSortDirection(direction)
@@ -188,6 +194,9 @@ const PayoutDashboardMain = ({
         break
       case 'amount':
         setAmountSortDirection(direction)
+        break
+      case 'counterParty.name':
+        setCounterPartyNameSortDirection(direction)
         break
     }
   }
