@@ -102,8 +102,8 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                   onCurrencyChange={() => {}}
                   allowCurrencyChange={false}
                   value={formatter.format(Number(initialAmount))}
-                  onChange={(e) => setAmountToCapture(e.target.value)}
-                ></InputAmountField>
+                  onChange={(value) => setAmountToCapture(value)}
+                />
               </div>
               <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                 There are {getCurrencySymbol(currency)} {formatter.format(maxCapturableAmount)}{' '}
