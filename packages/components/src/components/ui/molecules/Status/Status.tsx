@@ -6,7 +6,7 @@ import { Icon } from '../../atoms'
 import { IconNames } from '../../atoms/Icon/Icon'
 
 const statusVariants = cva(
-  'rounded-full space-x-1 inline-flex items-center text-default-text whitespace-nowrap',
+  'rounded-full space-x-1.5 inline-flex items-center text-default-text whitespace-nowrap',
   {
     variants: {
       variant: {
@@ -20,7 +20,7 @@ const statusVariants = cva(
       },
       size: {
         small: ['text-xs', 'font-normal', 'py-1', 'px-2', 'h-fit'],
-        large: ['text-sm', 'font-medium', 'leading-[17px]', 'px-4', 'py-2', 'h-fit', 'w-fit'],
+        large: ['text-sm', 'font-medium', 'px-3', 'py-1.5', 'h-fit', 'w-fit'],
       },
     },
     defaultVariants: {

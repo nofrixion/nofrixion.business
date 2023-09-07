@@ -215,7 +215,7 @@ export const Icons = {
     </SVG>
   ),
   'done/16': (className: string) => (
-    <SVG className={className} size="16" viewBox="0 -2">
+    <SVG className={className} size="16" viewBox="0 -1">
       <path
         d="M2 8.42105L5.78947 12.2105L14 4"
         stroke="#29A37A"
@@ -341,7 +341,7 @@ export const Icons = {
     </SVG>
   ),
   'failed/16': (className: string) => (
-    <SVG className={cn(className, 'fill-current stroke-none')} size="16" viewBox="0 -2">
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16" viewBox="0 -1">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
