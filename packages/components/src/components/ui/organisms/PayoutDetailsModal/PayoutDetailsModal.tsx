@@ -79,18 +79,24 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
                   ></AccountDetails>
                 </TableCell>
               </TableRow>
-              <TableRow className="border-none hover:bg-white cursor-default text-sm h-14">
-                <TableCell className="text-grey-text align-top w-1/3">Their reference</TableCell>
-                <TableCell className="align-top">{payout.theirReference}</TableCell>
-              </TableRow>
-              <TableRow className="border-none hover:bg-white cursor-default text-sm h-14">
-                <TableCell className="text-grey-text align-top w-1/3">Your reference</TableCell>
-                <TableCell className="align-top">{payout.yourReference}</TableCell>
-              </TableRow>
-              <TableRow className="border-none hover:bg-white cursor-default text-sm h-16">
-                <TableCell className="text-grey-text align-top w-1/3">Description</TableCell>
-                <TableCell className="align-top">{payout.description}</TableCell>
-              </TableRow>
+              {payout.theirReference && (
+                <TableRow className="border-none hover:bg-white cursor-default text-sm h-14">
+                  <TableCell className="text-grey-text align-top w-1/3">Their reference</TableCell>
+                  <TableCell className="align-top">{payout.theirReference}</TableCell>
+                </TableRow>
+              )}
+              {payout.yourReference && (
+                <TableRow className="border-none hover:bg-white cursor-default text-sm h-14">
+                  <TableCell className="text-grey-text align-top w-1/3">Your reference</TableCell>
+                  <TableCell className="align-top">{payout.yourReference}</TableCell>
+                </TableRow>
+              )}
+              {payout.description && (
+                <TableRow className="border-none hover:bg-white cursor-default text-sm h-16">
+                  <TableCell className="text-grey-text align-top w-1/3">Description</TableCell>
+                  <TableCell className="align-top">{payout.description}</TableCell>
+                </TableRow>
+              )}
             </Table>
           </div>
         )}
