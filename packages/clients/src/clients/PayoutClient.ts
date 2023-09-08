@@ -1,5 +1,11 @@
 import { PayoutCreate } from '../types/ApiRequests'
-import { ApiResponse, Payout, PayoutMetrics, PayoutPageResponse } from '../types/ApiResponses'
+import {
+  ApiResponse,
+  Payout,
+  PayoutMetrics,
+  PayoutPageResponse,
+  PayoutUpdate,
+} from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
 import { ApiProps, MetricsProps, PayoutPageProps, PayoutProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
@@ -29,6 +35,20 @@ export class PayoutClient extends BaseApiClient {
    */
   async create(payoutCreate: PayoutCreate): Promise<ApiResponse<Payout>> {
     return await this.httpRequest<Payout>(this.apiUrl, HttpMethod.POST, payoutCreate)
+  }
+
+  /**
+   * Updates a Payout
+   * @param payoutId The ID of the Payout to update.
+   * @param payoutUpdate The Payout update object with the updated values.
+   * @returns The updated Payout if successful. An ApiError if not successful.
+   */
+  async update(payoutId: string, payoutUpdate: PayoutUpdate): Promise<ApiResponse<Payout>> {
+    return await this.httpRequest<Payout>(
+      `${this.apiUrl}/${payoutId}`,
+      HttpMethod.PUT,
+      payoutUpdate,
+    )
   }
 
   /**
