@@ -10,6 +10,7 @@ interface SortExpressionProps {
   referenceSortDirection?: SortDirection
   descriptionSortDirection?: SortDirection
   typeSortDirection?: SortDirection
+  counterPartyNameSortDirection?: SortDirection
 }
 
 /**
@@ -62,6 +63,14 @@ const formatSortExpression = ({ ...props }: SortExpressionProps): string => {
   if (props.contactSortDirection && props.contactSortDirection !== SortDirection.NONE) {
     sortExpression += sortExpression.length > 0 ? ',' : ''
     sortExpression += `CustomerEmailAddress ${props.contactSortDirection}`
+  }
+
+  if (
+    props.counterPartyNameSortDirection &&
+    props.counterPartyNameSortDirection !== SortDirection.NONE
+  ) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `DestinationAccountName ${props.counterPartyNameSortDirection}`
   }
 
   return sortExpression

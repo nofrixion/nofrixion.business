@@ -104,10 +104,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
   }
 
-  const handleAmountOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPayoutAmount(e.target.value)
-    console.log(payoutAmount)
-    validateAmount(e.target.value, selectedAccount)
+  const handleAmountOnChange = (value: string) => {
+    setPayoutAmount(value)
+    validateAmount(value, selectedAccount)
   }
 
   const handleAccountOnChange = (value: string) => {

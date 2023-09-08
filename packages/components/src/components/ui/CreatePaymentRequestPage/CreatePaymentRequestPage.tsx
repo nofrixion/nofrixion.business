@@ -796,9 +796,10 @@ const CreatePaymentRequestPage = ({
                                 <div className="md:w-72 lg:w-[13.938rem]">
                                   <InputAmountField
                                     value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
+                                    onChange={(value) => setAmount(value)}
                                     onCurrencyChange={onCurrencyChange}
                                     currency={currency}
+                                    max={9999999}
                                   />
                                 </div>
                                 <AnimatePresence initial={false}>

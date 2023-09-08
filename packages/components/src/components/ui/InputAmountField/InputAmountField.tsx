@@ -2,18 +2,22 @@ import { Currency } from '@nofrixion/moneymoov'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { cva } from 'class-variance-authority'
 import { motion } from 'framer-motion'
-import { InputHTMLAttributes, useEffect, useState } from 'react'
-import MaskedInput from 'react-text-mask'
-import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+import { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
+import { IMaskInput } from 'react-imask'
 
 import { cn } from '../../../utils'
 import { localCurrency } from '../../../utils/constants'
 import ResizableComponent from '../ResizableComponent/ResizableComponent'
 
-export interface InputAmountFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputAmountFieldProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   currency: string
+  onChange: (value: string) => void
   onCurrencyChange: (currency: string) => void
   allowCurrencyChange?: boolean
+  min?: number // Need to override the default type to use them in IMaskInput
+  max?: number // Need to override the default type to use them in IMaskInput
+  value: string // Need to override the default type to use them in IMaskInput
 }
 
 const actionItemClassNames =
@@ -33,28 +37,14 @@ const actionItem = cva(actionItemClassNames, {
 const InputAmountField: React.FC<InputAmountFieldProps> = ({
   currency,
   onCurrencyChange,
-  onChange,
   allowCurrencyChange = true,
+  onChange,
   ...props
 }) => {
+  const ref = useRef(null)
+  const inputRef = useRef(null)
+
   const [selectedCurrency, setSelectedCurrency] = useState(localCurrency.eur)
-
-  const maskOptions = {
-    prefix: '',
-    suffix: '',
-    includeThousandsSeparator: true,
-    thousandsSeparatorSymbol: ',',
-    allowDecimal: true,
-    decimalSymbol: '.',
-    decimalLimit: 2,
-    integerLimit: 7,
-    allowNegative: false,
-    allowLeadingZeroes: false,
-  }
-
-  const currencyMask = createNumberMask({
-    ...maskOptions,
-  })
 
   useEffect(() => {
     setSelectedCurrency(currency === Currency.EUR ? localCurrency.eur : localCurrency.gbp)
@@ -70,7 +60,7 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
         <span className="flex absolute inset-y-0 pointer-events-none items-center ml-3 font-normal text-sm text-grey-text">
           {selectedCurrency.symbol}
         </span>
-        <MaskedInput
+        <IMaskInput
           className={cn(
             'block w-full pl-7 rounded font-normal text-sm text-default-text appearance-none',
             {
@@ -78,14 +68,18 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
               'pr-2 text-right text-xl leading-5 font-semibold': !allowCurrencyChange,
             },
           )}
-          mask={currencyMask}
-          inputMode="decimal"
-          onChange={(e) => {
-            const masked = e.target.value
-            // eslint-disable-next-line no-useless-escape
-            e.target.value = e.target.value.replace(/[^\d\.\-]/g, '')
-            onChange && onChange(e)
-            e.target.value = masked
+          mask={Number}
+          scale={2}
+          thousandsSeparator=","
+          padFractionalZeros={true}
+          normalizeZeros={true}
+          radix="."
+          mapToRadix={[',']}
+          unmask={true}
+          ref={ref}
+          inputRef={inputRef}
+          onAccept={(value) => {
+            onChange && onChange(value)
           }}
           {...props}
         />

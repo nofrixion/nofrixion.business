@@ -337,6 +337,9 @@ export interface Payout {
   createdBy?: string
   inserted: Date
   sourceAccountName: string
+  sourceAccountNumber: string
+  sourceAccountSortCode: string
+  sourceAccountIban: string
   destination?: Counterparty
   tags: Tag[]
 }
@@ -344,10 +347,11 @@ export interface Payout {
 export type PayoutMetrics = {
   all: number
   paid: number
-  unpaid: number
+  inProgress: number
   pendingApproval: number
+  failed: number
   totalAmountsByCurrency: Record<
-    'all' | 'paid' | 'pendingApproval' | 'unpaid',
+    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed',
     Record<'eur' | 'gbp', number | undefined>
   >
 }

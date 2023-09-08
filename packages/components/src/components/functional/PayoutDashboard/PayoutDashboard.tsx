@@ -1,10 +1,13 @@
 import {
   Account,
+  ApiError,
   Payout,
+  PayoutMetrics,
   PayoutStatus,
   SortDirection,
   useAccounts,
   useMerchant,
+  usePayoutMetrics,
   usePayouts,
 } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -18,11 +21,13 @@ import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashb
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
+import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 
 export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
+  onUnauthorized: () => void
 }
 
 const queryClient = new QueryClient()
@@ -31,10 +36,16 @@ const PayoutDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  onUnauthorized,
 }: PayoutDashboardProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <PayoutDashboardMain token={token} merchantId={merchantId} apiUrl={apiUrl} />
+      <PayoutDashboardMain
+        token={token}
+        merchantId={merchantId}
+        apiUrl={apiUrl}
+        onUnauthorized={onUnauthorized}
+      />
     </QueryClientProvider>
   )
 }
@@ -45,6 +56,7 @@ const PayoutDashboardMain = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  onUnauthorized,
 }: PayoutDashboardProps) => {
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
@@ -55,13 +67,16 @@ const PayoutDashboardMain = ({
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
-
+  const [counterPartyNameSortDirection, setCounterPartyNameSortDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
+  const [queryStatuses, setQueryStatuses] = useState<PayoutStatus[]>([])
   const [dateRange, setDateRange] = useState<DateRange>({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
     toDate: endOfDay(new Date()),
@@ -74,6 +89,23 @@ const PayoutDashboardMain = ({
   const [tags, setTags] = useState<FilterableTag[]>([])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
+  const [selectedPayoutId, setSelectedPayoutId] = useState<string | undefined>(undefined)
+  const [metrics, setMetrics] = useState<PayoutMetrics | undefined>(undefined)
+  const [firstMetrics, setFirstMetrics] = useState<PayoutMetrics | undefined>()
+
+  const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
+    {
+      merchantId: merchantId,
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
+      search: searchFilter?.length >= 3 ? searchFilter : undefined,
+      currency: currencyFilter,
+      minAmount: minAmountFilter,
+      maxAmount: maxAmountFilter,
+      tags: tagsFilter,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
 
   const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
 
@@ -85,6 +117,7 @@ const PayoutDashboardMain = ({
       amountSortDirection: amountSortDirection,
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
+      counterPartyNameSortDirection: counterPartyNameSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       status: status,
@@ -93,6 +126,7 @@ const PayoutDashboardMain = ({
       minAmount: minAmountFilter,
       maxAmount: maxAmountFilter,
       tags: tagsFilter,
+      statuses: queryStatuses,
     },
     { apiUrl: apiUrl, authToken: token },
   )
@@ -122,6 +156,42 @@ const PayoutDashboardMain = ({
     setLocalPayouts(remotePayoutsToLocal(payouts))
   }, [payouts])
 
+  useEffect(() => {
+    if (metricsResponse?.status === 'success') {
+      setMetrics(metricsResponse.data)
+    } else if (metricsResponse?.status === 'error') {
+      makeToast('error', 'Error fetching metrics.')
+      console.error(metricsResponse.error)
+      handleApiError(metricsResponse.error)
+    }
+  }, [metricsResponse])
+
+  useEffect(() => {
+    switch (status) {
+      case PayoutStatus.All:
+        setQueryStatuses([])
+        break
+      case PayoutStatus.PENDING:
+        setQueryStatuses([PayoutStatus.PENDING, PayoutStatus.QUEUED, PayoutStatus.QUEUED_UPSTREAM])
+        break
+      case PayoutStatus.PROCESSED:
+        setQueryStatuses([PayoutStatus.PROCESSED])
+        break
+      case PayoutStatus.PENDING_APPROVAL:
+        setQueryStatuses([PayoutStatus.PENDING_APPROVAL, PayoutStatus.PENDING_INPUT])
+        break
+      case PayoutStatus.FAILED:
+        setQueryStatuses([PayoutStatus.FAILED, PayoutStatus.REJECTED, PayoutStatus.UNKNOWN])
+        break
+    }
+  }, [status])
+
+  const handleApiError = (error: ApiError) => {
+    if (error && error.status === 401) {
+      onUnauthorized()
+    }
+  }
+
   const onPageChange = (page: number) => {
     setPage(page)
   }
@@ -130,7 +200,10 @@ const PayoutDashboardMain = ({
     setDateRange(dateRange)
   }
 
-  const onSort = (column: 'status' | 'date' | 'amount', direction: SortDirection) => {
+  const onSort = (
+    column: 'status' | 'date' | 'amount' | 'counterParty.name',
+    direction: SortDirection,
+  ) => {
     switch (column) {
       case 'status':
         setStatusSortDirection(direction)
@@ -141,6 +214,9 @@ const PayoutDashboardMain = ({
       case 'amount':
         setAmountSortDirection(direction)
         break
+      case 'counterParty.name':
+        setCounterPartyNameSortDirection(direction)
+        break
     }
   }
 
@@ -148,10 +224,31 @@ const PayoutDashboardMain = ({
     setCreatePayoutClicked(true)
   }
 
+  const onPayoutDetailsModalDismiss = () => {
+    setSelectedPayoutId(undefined)
+  }
+
+  const onPayoutRowClicked = (payout: LocalPayout) => {
+    setSelectedPayoutId(payout.id)
+  }
+
+  // Store the results of the first execution of the metrics
+  // and use them as the initial state of the metrics.
+  // This way, when they change the dates
+  // we don't see the metrics disappear
+  useEffect(() => {
+    if (metrics && (!firstMetrics || firstMetrics?.all === 0)) {
+      setFirstMetrics(metrics)
+    }
+  }, [metrics])
+
+  const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
+
   return (
-    <>
+    <div>
       <UIPayoutDashboard
         payouts={localPayouts}
+        payoutMetrics={metrics}
         pagination={{
           pageSize: pageSize,
           totalSize: totalRecords,
@@ -162,16 +259,42 @@ const PayoutDashboardMain = ({
         onSort={onSort}
         searchFilter={searchFilter}
         isLoading={isLoadingPayouts}
+        isLoadingMetrics={isLoadingMetrics}
+        isInitialState={isInitialState}
         onCreatePayout={onCreatePayout}
         merchantCreatedAt={
           merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
         }
+        setStatus={setStatus}
         currency={currencyFilter}
         setCurrency={setCurrencyFilter}
         minAmount={minAmountFilter}
         setMinAmount={setMinAmountFilter}
         maxAmount={maxAmountFilter}
         setMaxAmount={setMaxAmountFilter}
+        onPayoutClicked={onPayoutRowClicked}
+        selectedPayoutId={selectedPayoutId}
+      />
+
+      <PayoutDetailsModal
+        open={!!selectedPayoutId}
+        amountSortDirection={amountSortDirection}
+        apiUrl={apiUrl}
+        selectedPayoutId={selectedPayoutId}
+        onDismiss={onPayoutDetailsModalDismiss}
+        merchantId={merchantId}
+        statusSortDirection={statusSortDirection}
+        createdSortDirection={createdSortDirection}
+        counterPartyNameSortDirection={counterPartyNameSortDirection}
+        page={page}
+        pageSize={pageSize}
+        dateRange={dateRange}
+        statuses={queryStatuses}
+        searchFilter={searchFilter}
+        currencyFilter={currencyFilter}
+        minAmountFilter={minAmountFilter}
+        maxAmountFilter={maxAmountFilter}
+        tagsFilter={tagsFilter}
       />
 
       {accounts && (
@@ -190,6 +313,8 @@ const PayoutDashboardMain = ({
           toDateMS={dateRange.toDate && dateRange.toDate.getTime()}
           status={status}
           search={searchFilter?.length >= 3 ? searchFilter : undefined}
+          counterPartyNameSortDirection={counterPartyNameSortDirection}
+          statuses={queryStatuses}
           beneficiaries={[]}
           apiUrl={apiUrl}
           token={token}
@@ -200,7 +325,7 @@ const PayoutDashboardMain = ({
           merchantId={merchantId}
         />
       )}
-    </>
+    </div>
   )
 }
 
