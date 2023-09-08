@@ -51,7 +51,7 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
                   </span>
                 </>
               ) : (
-                'custom'
+                'Custom'
               )}
             </div>
           </SelectValue>
