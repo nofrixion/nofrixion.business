@@ -48,9 +48,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     string | undefined
   >(undefined)
 
-  const [fillError, setFillError] = useState<string | undefined>(undefined)
+  const [formError, setFormError] = useState<string | undefined>(undefined)
   const [payoutAmount, setPayoutAmount] = useState<string | undefined>('')
-  const [reference, setReference] = useState<string | undefined>('')
+  const [theirReference, setTheirReference] = useState<string | undefined>('')
   const [yourReference, setYourReference] = useState<string | undefined>('')
   const [description, setDescription] = useState<string | undefined>('')
   const [addManuallySelected, setAddManuallySelected] = useState<boolean>(false)
@@ -139,10 +139,20 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
           destinationAccountSortCode &&
           payoutAmount &&
           selectedAccount &&
-          reference)
+          theirReference)
       )
     ) {
-      setFillError('Please fill all required fields')
+      setFormError('Please fill all required fields')
+      validationFailed = true
+    } else {
+      setFormError(undefined)
+    }
+    if (
+      amountValidationErrorMessage ||
+      accountValidationErrorMessage ||
+      beneficiaryValidationErrorMessage ||
+      formError
+    ) {
       validationFailed = true
     }
     return validationFailed
@@ -175,7 +185,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         selectedAccount,
         counterParty,
         parsedAmount,
-        reference!,
+        theirReference!,
         yourReference,
         description,
       )
@@ -387,6 +397,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                               onChange={(e) => setDestinationAccountName(e.target.value)}
                               warningValidation={onValidateDestinationAccountName}
                               placeholder="The person or company that owns the account"
+                              required
+                              formSubmitted={createPayoutClicked}
                               disabled={selectedBeneficiary ? true : false}
                             />
                           </div>
@@ -472,8 +484,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       <InputTextField
                         label="Their reference"
                         maxLength={currency === Currency.EUR ? 140 : 18}
-                        value={reference}
-                        onChange={(e) => setReference(e.target.value)}
+                        value={theirReference}
+                        onChange={(e) => setTheirReference(e.target.value)}
                         warningValidation={onValidateTheirReference}
                         subText="This is what the recipient is going to see."
                         required
@@ -512,7 +524,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
                   <div className="mb-4">
-                    <ValidationMessage label="required" variant="error" message={fillError} />
+                    <ValidationMessage label="required" variant="error" message={formError} />
                   </div>
                   <Button
                     variant="primaryDark"
