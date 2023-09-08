@@ -1,7 +1,7 @@
 import { PayoutCreate } from '../types/ApiRequests'
 import { ApiResponse, Payout, PayoutMetrics, PayoutPageResponse } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
-import { ApiProps, MetricsProps, PayoutPageProps } from '../types/props'
+import { ApiProps, MetricsProps, PayoutPageProps, PayoutProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -139,5 +139,14 @@ export class PayoutClient extends BaseApiClient {
       },
       this.apiUrl,
     )
+  }
+
+  /**
+   * Get a single Payout
+   * @param paymentRequestId The Payout Id
+   * @returns A Payout if successful. An ApiError if not successful.
+   */
+  async get({ payoutId }: PayoutProps): Promise<ApiResponse<Payout>> {
+    return await this.httpRequest<Payout>(`${this.apiUrl}/${payoutId}`, HttpMethod.GET)
   }
 }

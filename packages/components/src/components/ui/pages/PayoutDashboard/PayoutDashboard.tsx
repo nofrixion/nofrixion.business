@@ -20,6 +20,11 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
   merchantCreatedAt?: Date
+  currency?: string
+  minAmount?: number
+  maxAmount?: number
+  isLoading: boolean
+  selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
   onSort: (
     name: 'date' | 'amount' | 'status' | 'counterParty.name',
@@ -29,15 +34,13 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void
   setStatus?: (status: PayoutStatus) => void
-  currency?: string
   setCurrency?: (currency?: string) => void
-  minAmount?: number
   setMinAmount?: (minAmount?: number) => void
-  maxAmount?: number
   setMaxAmount?: (maxAmount?: number) => void
   isLoading: boolean
   isLoadingMetrics: boolean
   isInitialState: boolean
+  onPayoutClicked?: (paymentRequest: LocalPayout) => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -61,6 +64,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   isLoading = false,
   isLoadingMetrics = false,
   isInitialState = false,
+  onPayoutClicked,
+  selectedPayoutId,
 }) => {
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
@@ -184,6 +189,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             onPageChange={onPageChange}
             onSort={onSort}
             isLoading={isLoading}
+            onPayoutClicked={onPayoutClicked}
+            selectedPayoutId={selectedPayoutId}
           />
         </div>
 

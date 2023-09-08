@@ -18,6 +18,7 @@ import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
+import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 
 export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -82,6 +83,7 @@ const PayoutDashboardMain = ({
   const [tags, setTags] = useState<FilterableTag[]>([])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
+  const [selectedPayoutId, setSelectedPayoutId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<PayoutMetrics | undefined>(undefined)
   const [firstMetrics, setFirstMetrics] = useState<PayoutMetrics | undefined>()
 
@@ -205,6 +207,14 @@ const PayoutDashboardMain = ({
     console.log('Create payout')
   }
 
+  const onPayoutDetailsModalDismiss = () => {
+    setSelectedPayoutId(undefined)
+  }
+
+  const onPayoutRowClicked = (payout: LocalPayout) => {
+    setSelectedPayoutId(payout.id)
+  }
+
   // Store the results of the first execution of the metrics
   // and use them as the initial state of the metrics.
   // This way, when they change the dates
@@ -218,33 +228,56 @@ const PayoutDashboardMain = ({
   const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
   return (
-    <UIPayoutDashboard
-      payouts={localPayouts}
-      payoutMetrics={metrics}
-      pagination={{
-        pageSize: pageSize,
-        totalSize: totalRecords,
-      }}
-      onPageChange={onPageChange}
-      onDateChange={onDateChange}
-      onSearch={setSearchFilter}
-      onSort={onSort}
-      searchFilter={searchFilter}
-      isLoading={isLoadingPayouts}
-      isLoadingMetrics={isLoadingMetrics}
-      isInitialState={isInitialState}
-      onCreatePayout={onCreatePayout}
-      merchantCreatedAt={
-        merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
-      }
-      setStatus={setStatus}
-      currency={currencyFilter}
-      setCurrency={setCurrencyFilter}
-      minAmount={minAmountFilter}
-      setMinAmount={setMinAmountFilter}
-      maxAmount={maxAmountFilter}
-      setMaxAmount={setMaxAmountFilter}
-    />
+    <div>
+      <UIPayoutDashboard
+        payouts={localPayouts}
+        payoutMetrics={metrics}
+        pagination={{
+          pageSize: pageSize,
+          totalSize: totalRecords,
+        }}
+        onPageChange={onPageChange}
+        onDateChange={onDateChange}
+        onSearch={setSearchFilter}
+        onSort={onSort}
+        searchFilter={searchFilter}
+        isLoading={isLoadingPayouts}
+        isLoadingMetrics={isLoadingMetrics}
+        isInitialState={isInitialState}
+        onCreatePayout={onCreatePayout}
+        merchantCreatedAt={
+          merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
+        }
+        setStatus={setStatus}
+        currency={currencyFilter}
+        setCurrency={setCurrencyFilter}
+        minAmount={minAmountFilter}
+        setMinAmount={setMinAmountFilter}
+        maxAmount={maxAmountFilter}
+        setMaxAmount={setMaxAmountFilter}
+        onPayoutClicked={onPayoutRowClicked}
+        selectedPayoutId={selectedPayoutId}
+      />
+
+      <PayoutDetailsModal
+        open={!!selectedPayoutId}
+        amountSortDirection={amountSortDirection}
+        apiUrl={apiUrl}
+        selectedPayoutId={selectedPayoutId}
+        onDismiss={onPayoutDetailsModalDismiss}
+        merchantId={merchantId}
+        statusSortDirection={statusSortDirection}
+        createdSortDirection={createdSortDirection}
+        page={page}
+        pageSize={pageSize}
+        dateRange={dateRange}
+        searchFilter={searchFilter}
+        currencyFilter={currencyFilter}
+        minAmountFilter={minAmountFilter}
+        maxAmountFilter={maxAmountFilter}
+        tagsFilter={tagsFilter}
+      />
+    </div>
   )
 }
 

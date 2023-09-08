@@ -120,8 +120,8 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       onCurrencyChange={() => {}}
                       allowCurrencyChange={false}
                       value={formatter.format(Number(initialAmount))}
-                      onChange={(e) => setAmountToRefund(e.target.value)}
-                    ></InputAmountField>
+                      onChange={(value) => setAmountToRefund(value)}
+                    />
                   </div>
                   <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                     There are {getCurrencySymbol(currency)} {formatter.format(maxRefundableAmount)}{' '}

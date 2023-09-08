@@ -32,6 +32,11 @@ export interface FilterResponseProps {
 
 export interface MetricsProps extends FilterResponseProps, MerchantProps {}
 
+export interface BeneficiaryProps extends PagedResponseProps {
+  search?: string
+  currency?: string
+}
+
 export interface ApiProps {
   apiUrl: string
   authToken?: string
@@ -112,6 +117,13 @@ export interface usePayoutMetricsProps extends MetricsProps {
   toDateMS?: number
 }
 
+export interface useBeneficiaryProps {
+  pageNumber?: number
+  pageSize?: number
+  search?: string
+  currency?: string
+}
+
 export interface RefundProps {
   authorizationId: string
   paymentRequestId: string
@@ -175,4 +187,8 @@ export interface CreatePayoutProps {
   invoiceID?: string
   allowIncomplete: boolean
   paymentRequestId?: string
+}
+
+export interface PayoutProps {
+  payoutId?: string
 }

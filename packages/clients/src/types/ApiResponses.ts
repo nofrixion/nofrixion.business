@@ -337,6 +337,9 @@ export interface Payout {
   createdBy?: string
   inserted: Date
   sourceAccountName: string
+  sourceAccountNumber: string
+  sourceAccountSortCode: string
+  sourceAccountIban: string
   destination?: Counterparty
   tags: Tag[]
 }
@@ -354,3 +357,15 @@ export type PayoutMetrics = {
 }
 
 export type PayoutPageResponse = PageResponse<Payout>
+
+export type Beneficiary = {
+  id: string
+  merchantID: string
+  name: string
+  yourReference: string
+  theirReference: string
+  currency: Currency
+  destination: Counterparty
+}
+
+export type BeneficiaryPageResponse = PageResponse<Beneficiary>

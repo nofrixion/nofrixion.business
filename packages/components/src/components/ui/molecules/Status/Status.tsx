@@ -6,7 +6,7 @@ import { Icon } from '../../atoms'
 import { IconNames } from '../../atoms/Icon/Icon'
 
 const statusVariants = cva(
-  'rounded-full space-x-1 inline-flex items-center text-default-text whitespace-nowrap',
+  'rounded-full space-x-1.5 inline-flex items-center text-default-text whitespace-nowrap',
   {
     variants: {
       variant: {
@@ -19,8 +19,8 @@ const statusVariants = cva(
         inprogress: ['bg-main-grey'],
       },
       size: {
-        small: ['text-xs', 'font-normal', 'py-1', 'px-2'],
-        large: ['text-sm', 'font-medium', 'leading-[17px]', 'px-4', 'py-2'],
+        small: ['text-xs', 'font-normal', 'py-1', 'px-2', 'h-fit'],
+        large: ['text-sm', 'font-medium', 'px-3', 'py-1.5', 'h-fit', 'w-fit'],
       },
     },
     defaultVariants: {
@@ -59,7 +59,7 @@ type TVariant = Exclude<
 const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
   paid: {
     small: 'done/12',
-    large: 'done/12',
+    large: 'done/16',
   },
   partial: {
     small: 'partial/12',
@@ -75,15 +75,15 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
   },
   failed: {
     small: 'failed/12',
-    large: 'failed/12',
+    large: 'failed/16',
   },
   pending_approval: {
     small: 'pending-approval/12',
-    large: 'pending-approval/12',
+    large: 'pending-approval/16',
   },
   inprogress: {
     small: 'inprogress/12',
-    large: 'inprogress/12',
+    large: 'inprogress/16',
   },
 }
 

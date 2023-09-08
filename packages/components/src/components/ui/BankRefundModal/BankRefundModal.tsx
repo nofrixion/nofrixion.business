@@ -120,9 +120,9 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                         currency={bankPaymentAttempt.currency}
                         onCurrencyChange={() => {}}
                         allowCurrencyChange={false}
-                        value={formatter.format(Number(amountToRefund))}
-                        onChange={(e) => setAmountToRefund(e.target.value)}
-                      ></InputAmountField>
+                        value={amountToRefund}
+                        onChange={(value) => setAmountToRefund(value)}
+                      />
                     </div>
                     <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                       There are {getCurrencySymbol(bankPaymentAttempt.currency)}{' '}

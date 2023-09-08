@@ -428,26 +428,33 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
   })
 }
 
+const remotePayoutToLocal = (payout: Payout): LocalPayout => {
+  return {
+    id: payout.id,
+    accountID: payout.accountID,
+    merchantID: payout.merchantID,
+    type: parseApiAccountIdentifierTypeToLocalAccountIdentifierType(payout.type),
+    description: payout.description,
+    currency: payout.currency,
+    amount: payout.amount,
+    yourReference: payout.yourReference,
+    theirReference: payout.theirReference,
+    status: payout.status,
+    createdBy: payout.createdBy,
+    inserted: payout.inserted,
+    sourceAccountName: payout.sourceAccountName,
+    sourceAccountNumber: payout.sourceAccountNumber,
+    sourceAccountSortCode: payout.sourceAccountSortCode,
+    sourceAccountIban: payout.sourceAccountIban,
+    destination: payout.destination
+      ? parseApiCounterPartyToLocalCounterParty(payout.destination)
+      : undefined,
+  }
+}
+
 const remotePayoutsToLocal = (payouts: Payout[]): LocalPayout[] => {
   return payouts.map((payout) => {
-    return {
-      id: payout.id,
-      accountID: payout.accountID,
-      merchantID: payout.merchantID,
-      type: parseApiAccountIdentifierTypeToLocalAccountIdentifierType(payout.type),
-      description: payout.description,
-      currency: payout.currency,
-      amount: payout.amount,
-      yourReference: payout.yourReference,
-      theirReference: payout.theirReference,
-      status: payout.status,
-      createdBy: payout.createdBy,
-      inserted: payout.inserted,
-      sourceAccountName: payout.sourceAccountName,
-      destination: payout.destination
-        ? parseApiCounterPartyToLocalCounterParty(payout.destination)
-        : undefined,
-    }
+    return remotePayoutToLocal(payout)
   })
 }
 
@@ -530,5 +537,6 @@ export {
   remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
   remotePayoutsToLocal,
+  remotePayoutToLocal,
   remoteTransactionsToLocal,
 }
