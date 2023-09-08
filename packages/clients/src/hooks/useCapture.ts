@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PaymentRequestClient } from '../clients'
 import { ApiError } from '../types'
-import { ApiProps, CaptureProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, CaptureProps, MerchantProps } from '../types/props'
 
 const capture = async (
   apiUrl: string,
@@ -22,23 +22,7 @@ const capture = async (
 }
 
 export const useCapture = (
-  {
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  }: usePaymentRequestsProps,
+  { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
 ): {
   processCapture: (captureProps: CaptureProps) => Promise<{ error: ApiError | undefined }>
@@ -55,26 +39,7 @@ export const useCapture = (
     authToken,
   ]
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
-    apiUrl,
-    authToken,
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  ]
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
 
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<

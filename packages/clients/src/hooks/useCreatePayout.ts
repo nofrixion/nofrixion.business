@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PayoutClient } from '../clients/PayoutClient'
 import { AccountIdentifierType, ApiError, Counterparty, Currency, PayoutCreate } from '../types'
-import { ApiProps, CreatePayoutProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, CreatePayoutProps, MerchantProps } from '../types/props'
 
 const createPayoutAsync = async (
   apiUrl: string,
@@ -45,23 +45,7 @@ const createPayoutAsync = async (
 }
 
 export const useCreatePayout = (
-  {
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  }: usePaymentRequestsProps,
+  { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
   isForRefund?: boolean,
 ): {
@@ -79,40 +63,9 @@ export const useCreatePayout = (
     authToken,
   ]
 
-  const METRICS_QUERY_KEY = [
-    'PaymentRequestMetrics',
-    apiUrl,
-    authToken,
-    currency,
-    fromDateMS,
-    toDateMS,
-    maxAmount,
-    merchantId,
-    minAmount,
-    search,
-    tags,
-  ]
+  const METRICS_QUERY_KEY = ['PaymentRequestMetrics']
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
-    apiUrl,
-    authToken,
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  ]
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
