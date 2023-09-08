@@ -359,10 +359,11 @@ export interface PayoutUpdate {
 export type PayoutMetrics = {
   all: number
   paid: number
-  unpaid: number
+  inProgress: number
   pendingApproval: number
+  failed: number
   totalAmountsByCurrency: Record<
-    'all' | 'paid' | 'pendingApproval' | 'unpaid',
+    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed',
     Record<'eur' | 'gbp', number | undefined>
   >
 }

@@ -22,7 +22,10 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   payouts: LocalPayout[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount' | 'status', direction: SortDirection) => void
+  onSort: (
+    name: 'date' | 'amount' | 'status' | 'counterParty.name',
+    direction: SortDirection,
+  ) => void
   onPayoutClicked?: (payout: LocalPayout) => void
   isLoading?: boolean
   selectedPayoutId: string | undefined
@@ -65,7 +68,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   />
                 </TableHead>
                 <TableHead>
-                  <ColumnHeader label={'Payee'} />
+                  <ColumnHeader
+                    label={'Payee'}
+                    onSort={(direction) => onSort('counterParty.name', direction)}
+                  />
                 </TableHead>
                 <TableHead className="text-right px-0">
                   <ColumnHeader
