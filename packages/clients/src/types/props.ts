@@ -152,9 +152,7 @@ export interface AddTagProps {
 }
 
 export interface CreateTagProps {
-  paymentRequestId: string
   tag: Tag
-  existingTagsIds: string[]
 }
 
 export interface PayoutsProps extends AccountProps {

@@ -74,20 +74,6 @@ const PaymentRequestDetailsModal = ({
   const { createTag } = useCreateTag(
     {
       merchantId: merchantId,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
-      amountSortDirection: amountSortDirection,
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      fromDateMS: fromDateMS,
-      toDateMS: toDateMS,
-      status: status,
-      search: search,
-      currency: currency,
-      minAmount: minAmount,
-      maxAmount: maxAmount,
-      tags: tags,
     },
     { apiUrl: apiUrl, authToken: token },
   )
@@ -185,14 +171,26 @@ const PaymentRequestDetailsModal = ({
   const onTagCreated = async (tag: LocalTag) => {
     if (paymentRequest) {
       const apiTag: Tag = parseLocalTagToApiTag(tag)
-      const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
-      const response = await createTag({
+      const createTagResponse = await createTag({
         tag: apiTag,
-        existingTagsIds: existingTagIds,
-        paymentRequestId: paymentRequest.id,
       })
-      if (response.error) {
-        makeToast('error', 'Could not create tag.')
+
+      if (createTagResponse.status === 'error') {
+        makeToast('error', 'Could not create new tag.')
+      }
+
+      if (createTagResponse.status === 'success') {
+        const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
+
+        const addTagresponse = await addPaymentRequestTag({
+          id: paymentRequest.id,
+          tag: createTagResponse.data,
+          existingTagsIds: existingTagIds,
+        })
+
+        if (addTagresponse.error) {
+          makeToast('error', 'Failed to add tag to Payment Request.')
+        }
       }
     }
   }
