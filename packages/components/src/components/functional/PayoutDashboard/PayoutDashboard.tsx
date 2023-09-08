@@ -68,7 +68,6 @@ const PayoutDashboardMain = ({
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
   const [queryStatuses, setQueryStatuses] = useState<PayoutStatus[]>([])
   const [dateRange, setDateRange] = useState<DateRange>({
