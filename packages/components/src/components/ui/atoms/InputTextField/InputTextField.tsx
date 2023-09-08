@@ -37,14 +37,13 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
 
     const [warning, setWarning] = useState<string>()
     const [requiredErrorPrompt, setRequiredErrorPrompt] = useState<boolean>(false)
-    const [fieldValue, setFieldValue] = useState<string>()
 
     useEffect(() => {
       if (!formSubmitted && !required) {
         return
       }
 
-      if (formSubmitted && required && !fieldValue) {
+      if (formSubmitted && required && !value) {
         setRequiredErrorPrompt(true)
       } else {
         setRequiredErrorPrompt(false)
@@ -52,8 +51,6 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
     }, [formSubmitted])
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFieldValue(e.target.value)
-
       onChange && onChange(e)
 
       required && !e.target.value ? setRequiredErrorPrompt(true) : setRequiredErrorPrompt(false)
@@ -114,6 +111,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
               mask={numberMask}
               inputMode="numeric"
               onBlur={handleOnBlur}
+              value={value}
               onChange={(e) => {
                 const masked = e.target.value
                 // eslint-disable-next-line no-useless-escape
