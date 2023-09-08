@@ -2,9 +2,9 @@ import {
   Tag,
   useAddPaymentRequestTag,
   useCreateTag,
-  useDeleteTag,
   usePaymentRequest,
   usePaymentRequestsProps,
+  useRemovePaymentRequestTag,
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
@@ -113,7 +113,7 @@ const PaymentRequestDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { deleteTag } = useDeleteTag(
+  const { removeTag } = useRemovePaymentRequestTag(
     {
       merchantId: merchantId,
       statusSortDirection: statusSortDirection,
@@ -197,10 +197,10 @@ const PaymentRequestDetailsModal = ({
     }
   }
 
-  const onTagDeleted = async (tagIdToDelete: string) => {
+  const onTagRemoved = async (tagIdToDelete: string) => {
     if (paymentRequest) {
       const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
-      const response = await deleteTag({
+      const response = await removeTag({
         tagId: tagIdToDelete,
         existingTagsIds: existingTagIds,
         paymentRequestId: paymentRequest.id,
@@ -228,7 +228,7 @@ const PaymentRequestDetailsModal = ({
       onCapture={onCapture}
       onTagAdded={onTagAdded}
       onTagCreated={onTagCreated}
-      onTagDeleted={onTagDeleted}
+      onTagRemoved={onTagRemoved}
       onDismiss={onModalDismiss}
     />
   )

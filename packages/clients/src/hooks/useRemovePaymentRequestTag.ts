@@ -5,7 +5,7 @@ import { PaymentRequestClient } from '../clients'
 import { ApiError, PaymentRequestUpdate } from '../types'
 import { ApiProps, DeleteTagProps, usePaymentRequestsProps } from '../types/props'
 
-const deleteTagAsync = async (
+const removeTagAsync = async (
   apiUrl: string,
   tagId: string,
   paymentRequestId: string,
@@ -31,7 +31,7 @@ const deleteTagAsync = async (
   return { success: true }
 }
 
-export const useDeleteTag = (
+export const useRemovePaymentRequestTag = (
   {
     merchantId,
     statusSortDirection,
@@ -51,7 +51,7 @@ export const useDeleteTag = (
   }: usePaymentRequestsProps,
   { apiUrl, authToken }: ApiProps,
 ): {
-  deleteTag: (deleteTagProps: DeleteTagProps) => Promise<{ error: ApiError | undefined }>
+  removeTag: (deleteTagProps: DeleteTagProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
@@ -93,7 +93,7 @@ export const useDeleteTag = (
     DeleteTagProps
   > = useMutation({
     mutationFn: (variables: DeleteTagProps) =>
-      deleteTagAsync(
+      removeTagAsync(
         apiUrl,
         variables.tagId,
         variables.paymentRequestId,
@@ -109,7 +109,7 @@ export const useDeleteTag = (
     },
   })
 
-  const deleteTag = useCallback(
+  const removeTag = useCallback(
     async ({ tagId, existingTagsIds, paymentRequestId }: DeleteTagProps) => {
       if (paymentRequestId) {
         setPaymentRequestID(paymentRequestId)
@@ -126,5 +126,5 @@ export const useDeleteTag = (
     [mutation],
   )
 
-  return { deleteTag }
+  return { removeTag }
 }

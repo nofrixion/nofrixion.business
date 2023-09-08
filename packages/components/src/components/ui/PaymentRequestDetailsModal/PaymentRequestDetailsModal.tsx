@@ -33,7 +33,7 @@ export interface PaymentRequestDetailsModalProps {
   ) => Promise<void>
   onCapture: (authorizationID: string, amount: number) => Promise<void>
   onTagAdded: (tag: LocalTag) => void
-  onTagDeleted: (id: string) => void
+  onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
   open: boolean
   onDismiss: () => void
@@ -48,7 +48,7 @@ const PaymentRequestDetailsModal = ({
   onBankRefund,
   onCapture,
   onTagAdded,
-  onTagDeleted,
+  onTagRemoved,
   onTagCreated,
   open,
   onDismiss,
@@ -183,7 +183,7 @@ const PaymentRequestDetailsModal = ({
                   }
                   onCapture={onCaptureClick}
                   onTagAdded={onTagAdded}
-                  onTagDeleted={onTagDeleted}
+                  onTagRemoved={onTagRemoved}
                   onTagCreated={onTagCreated}
                 ></PaymentRequestDetails>
               )}

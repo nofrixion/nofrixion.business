@@ -95,6 +95,26 @@ export const useCreateTag = (
 
   const MERCHANT_TAGS_QUERY_KEY = ['MerchantTags', merchantId, apiUrl, authToken]
 
+  const PAYOUTS_KEY = [
+    'Payouts',
+    apiUrl,
+    authToken,
+    merchantId,
+    statusSortDirection,
+    createdSortDirection,
+    amountSortDirection,
+    pageNumber,
+    pageSize,
+    fromDateMS,
+    toDateMS,
+    status,
+    search,
+    currency,
+    minAmount,
+    maxAmount,
+    tags,
+  ]
+
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
@@ -116,6 +136,7 @@ export const useCreateTag = (
         queryClient.invalidateQueries({ queryKey: SINGLE_PAYMENT_REQUEST_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: MERCHANT_TAGS_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: PAYOUTS_KEY })
       }
     },
   })
