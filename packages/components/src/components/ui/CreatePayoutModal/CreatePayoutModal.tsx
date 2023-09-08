@@ -1,6 +1,6 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalAccountIdentifierType } from '../../../types/LocalEnums'
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
@@ -86,6 +86,12 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     accounts?.filter((x) => x.currency === currency)[0],
   )
 
+  useEffect(() => {
+    if (isOpen) {
+      resetFields()
+    }
+  }, [isOpen])
+
   const balanceLessThanAmountMessage = "This account doesn't have enough funds for this transaction"
 
   const beneficiaryDifferentCurrencyMessage =
@@ -134,12 +140,10 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
     if (
       !(
-        destinationAccountIBAN ||
-        (destinationAccountNumber &&
-          destinationAccountSortCode &&
-          payoutAmount &&
-          selectedAccount &&
-          theirReference)
+        (destinationAccountIBAN || (destinationAccountNumber && destinationAccountSortCode)) &&
+        payoutAmount &&
+        selectedAccount &&
+        theirReference
       )
     ) {
       setFormError('Please fill all required fields')
@@ -189,8 +193,27 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         yourReference,
         description,
       )
-      onDismiss()
+      setIsCreatePayoutButtonDisabled(false)
     }
+  }
+  const resetFields = () => {
+    setPayoutAmount('')
+    setTheirReference('')
+    setYourReference('')
+    setDescription('')
+    setDestinationAccountName('')
+    setDestinationAccountIBAN('')
+    setDestinationAccountNumber('')
+    setDestinationAccountSortCode('')
+    setAddManuallySelected(false)
+    setSelectedBeneficiary(undefined)
+    setDestinationAccountRequiredPrompt(false)
+    setAmountValidationErrorMessage('')
+    setAccountValidationErrorMessage('')
+    setBeneficiaryValidationErrorMessage('')
+    setFormError('')
+    setCreatePayoutClicked(false)
+    setIsCreatePayoutButtonDisabled(false)
   }
 
   const handleOnOpenChange = (open: boolean) => {
