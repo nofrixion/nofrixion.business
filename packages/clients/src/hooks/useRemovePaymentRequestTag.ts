@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PaymentRequestClient } from '../clients'
 import { ApiError, PaymentRequestUpdate } from '../types'
-import { ApiProps, DeleteTagProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, DeleteTagProps, MerchantProps } from '../types/props'
 
 const removeTagAsync = async (
   apiUrl: string,
@@ -32,23 +32,7 @@ const removeTagAsync = async (
 }
 
 export const useRemovePaymentRequestTag = (
-  {
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  }: usePaymentRequestsProps,
+  { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
 ): {
   removeTag: (deleteTagProps: DeleteTagProps) => Promise<{ error: ApiError | undefined }>
@@ -65,26 +49,7 @@ export const useRemovePaymentRequestTag = (
     authToken,
   ]
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
-    apiUrl,
-    authToken,
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  ]
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
 
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<

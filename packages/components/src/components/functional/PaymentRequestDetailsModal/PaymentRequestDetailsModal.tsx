@@ -81,20 +81,6 @@ const PaymentRequestDetailsModal = ({
   const { addPaymentRequestTag } = useAddPaymentRequestTag(
     {
       merchantId: merchantId,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
-      amountSortDirection: amountSortDirection,
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      fromDateMS: fromDateMS,
-      toDateMS: toDateMS,
-      status: status,
-      search: search,
-      currency: currency,
-      minAmount: minAmount,
-      maxAmount: maxAmount,
-      tags: tags,
     },
     { apiUrl: apiUrl, authToken: token },
   )
@@ -102,20 +88,6 @@ const PaymentRequestDetailsModal = ({
   const { removeTag } = useRemovePaymentRequestTag(
     {
       merchantId: merchantId,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
-      amountSortDirection: amountSortDirection,
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      fromDateMS: fromDateMS,
-      toDateMS: toDateMS,
-      status: status,
-      search: search,
-      currency: currency,
-      minAmount: minAmount,
-      maxAmount: maxAmount,
-      tags: tags,
     },
     { apiUrl: apiUrl, authToken: token },
   )
