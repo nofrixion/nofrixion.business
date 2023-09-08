@@ -172,7 +172,7 @@ const PaymentRequestDetailsModal = ({
       const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
       const apiTag: Tag = parseLocalTagToApiTag(tag)
       const response = await addPaymentRequestTag({
-        paymentRequestId: paymentRequest.id,
+        id: paymentRequest.id,
         tag: apiTag,
         existingTagsIds: existingTagIds,
       })

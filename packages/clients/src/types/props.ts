@@ -146,7 +146,7 @@ export interface DeleteTagProps {
 }
 
 export interface AddTagProps {
-  paymentRequestId: string
+  id: string
   tag: Tag
   existingTagsIds: string[]
 }

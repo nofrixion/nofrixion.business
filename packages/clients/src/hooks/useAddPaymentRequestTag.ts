@@ -93,13 +93,7 @@ export const useAddPaymentRequestTag = (
     AddTagProps
   > = useMutation({
     mutationFn: (variables: AddTagProps) =>
-      addTagAsync(
-        apiUrl,
-        variables.tag,
-        variables.paymentRequestId,
-        variables.existingTagsIds,
-        authToken,
-      ),
+      addTagAsync(apiUrl, variables.tag, variables.id, variables.existingTagsIds, authToken),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
       if (data.success) {
         // After add tag is successful, invalidate the payment requests cache, the single payment request cache
@@ -110,10 +104,10 @@ export const useAddPaymentRequestTag = (
   })
 
   const addPaymentRequestTag = useCallback(
-    async ({ tag, existingTagsIds, paymentRequestId }: AddTagProps) => {
+    async ({ tag, existingTagsIds, id: paymentRequestId }: AddTagProps) => {
       if (paymentRequestId) {
         setPaymentRequestID(paymentRequestId)
-        const result = await mutation.mutateAsync({ tag, existingTagsIds, paymentRequestId })
+        const result = await mutation.mutateAsync({ tag, existingTagsIds, id: paymentRequestId })
 
         if (result.success) {
           return { error: undefined }
