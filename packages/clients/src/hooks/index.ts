@@ -1,6 +1,6 @@
 export { useAccount } from './useAccount'
 export { useAccounts } from './useAccounts'
-export { useAddTag } from './useAddTag'
+export { useAddPaymentRequestTag } from './useAddPaymentRequestTag'
 export { useBanks } from './useBanks'
 export { useBeneficiaries } from './useBeneficiaries'
 export { useCapture } from './useCapture'

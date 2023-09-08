@@ -1,6 +1,6 @@
 import {
   Tag,
-  useAddTag,
+  useAddPaymentRequestTag,
   useCreateTag,
   useDeleteTag,
   usePaymentRequest,
@@ -92,7 +92,7 @@ const PaymentRequestDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { addTag } = useAddTag(
+  const { addPaymentRequestTag } = useAddPaymentRequestTag(
     {
       merchantId: merchantId,
       statusSortDirection: statusSortDirection,
@@ -171,7 +171,7 @@ const PaymentRequestDetailsModal = ({
     if (paymentRequest) {
       const existingTagIds = paymentRequest.tags?.map((tag) => tag.id) ?? []
       const apiTag: Tag = parseLocalTagToApiTag(tag)
-      const response = await addTag({
+      const response = await addPaymentRequestTag({
         paymentRequestId: paymentRequest.id,
         tag: apiTag,
         existingTagsIds: existingTagIds,
