@@ -2,7 +2,6 @@ import { type SelectProps } from '@radix-ui/react-select'
 
 import { LocalBeneficiary } from '../../../../../types/LocalTypes'
 import { cn } from '../../../../../utils'
-// import { cn } from '../../../../../utils'
 import {
   Select,
   SelectContent,
