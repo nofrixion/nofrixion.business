@@ -345,15 +345,16 @@ export interface Payout {
 }
 
 export interface PayoutUpdate {
-  accountID: string
-  type: AccountIdentifierType
-  description: string
-  currency: Currency
-  amount: number
+  accountID?: string
+  type?: AccountIdentifierType
+  description?: string
+  currency?: Currency
+  amount?: number
   yourReference?: string
-  theirReference: string
+  theirReference?: string
   destination?: Counterparty
-  tags: Tag[]
+  tags?: Tag[]
+  tagIds?: string[]
 }
 
 export type PayoutMetrics = {
