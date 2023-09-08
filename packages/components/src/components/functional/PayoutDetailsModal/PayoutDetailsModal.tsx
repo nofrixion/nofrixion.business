@@ -1,4 +1,4 @@
-import { SortDirection, usePayout } from '@nofrixion/moneymoov'
+import { PayoutStatus, SortDirection, usePayout } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout } from '../../../types/LocalTypes'
@@ -17,6 +17,8 @@ export interface PayoutDetailsModalProps {
   statusSortDirection: SortDirection
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
+  counterPartyNameSortDirection: SortDirection
+  statuses: PayoutStatus[]
   page: number
   pageSize: number
   dateRange: DateRange
@@ -37,6 +39,8 @@ const PayoutDetailsModal = ({
   statusSortDirection,
   createdSortDirection,
   amountSortDirection,
+  counterPartyNameSortDirection,
+  statuses,
   page,
   pageSize,
   dateRange,
@@ -56,8 +60,10 @@ const PayoutDetailsModal = ({
       amountSortDirection: amountSortDirection,
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
+      counterPartyNameSortDirection: counterPartyNameSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
+      statuses: statuses,
       search: searchFilter.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,

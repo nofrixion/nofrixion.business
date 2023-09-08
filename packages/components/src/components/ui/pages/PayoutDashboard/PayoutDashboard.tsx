@@ -37,7 +37,6 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   setCurrency?: (currency?: string) => void
   setMinAmount?: (minAmount?: number) => void
   setMaxAmount?: (maxAmount?: number) => void
-  isLoading: boolean
   isLoadingMetrics: boolean
   isInitialState: boolean
   onPayoutClicked?: (paymentRequest: LocalPayout) => void
