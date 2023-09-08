@@ -1,11 +1,13 @@
 import {
   Account,
   ApiError,
+  Beneficiary,
   Payout,
   PayoutMetrics,
   PayoutStatus,
   SortDirection,
   useAccounts,
+  useBeneficiaries,
   useMerchant,
   usePayoutMetrics,
   usePayouts,
@@ -15,7 +17,11 @@ import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout } from '../../../types/LocalTypes'
-import { remoteAccountsToLocalAccounts, remotePayoutsToLocal } from '../../../utils/parsers'
+import {
+  remoteAccountsToLocalAccounts,
+  remoteBeneficiariesToLocalBeneficiaries,
+  remotePayoutsToLocal,
+} from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
@@ -73,6 +79,7 @@ const PayoutDashboardMain = ({
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
+  const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
@@ -140,6 +147,19 @@ const PayoutDashboardMain = ({
       console.error(accountsResponse.error)
     }
   }, [accountsResponse])
+
+  const { data: beneficiariesResponse } = useBeneficiaries(
+    { pageNumber: page, pageSize, search: searchFilter, currency: currencyFilter },
+    { apiUrl, authToken: token },
+  )
+
+  useEffect(() => {
+    if (beneficiariesResponse?.status === 'success') {
+      setBeneficiaries(beneficiariesResponse.data.content)
+    } else if (beneficiariesResponse?.status === 'error') {
+      console.error(beneficiariesResponse.error)
+    }
+  }, [beneficiariesResponse])
 
   useEffect(() => {
     if (payoutsResponse?.status === 'success') {
@@ -315,7 +335,7 @@ const PayoutDashboardMain = ({
           search={searchFilter?.length >= 3 ? searchFilter : undefined}
           counterPartyNameSortDirection={counterPartyNameSortDirection}
           statuses={queryStatuses}
-          beneficiaries={[]}
+          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
           apiUrl={apiUrl}
           token={token}
           isOpen={createPayoutClicked}

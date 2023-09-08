@@ -36,12 +36,13 @@ const CreatePayoutModal = ({
   pageSize,
   fromDateMS,
   toDateMS,
-  status,
   search,
   currency,
   minAmount,
   maxAmount,
   tags,
+  statuses,
+  counterPartyNameSortDirection,
 }: CreatePayoutModalProps) => {
   const { createPayout } = useCreatePayout(
     {
@@ -59,6 +60,8 @@ const CreatePayoutModal = ({
       minAmount: minAmount,
       maxAmount: maxAmount,
       tags: tags,
+      statuses: statuses,
+      counterPartyNameSortDirection: counterPartyNameSortDirection,
     },
     { apiUrl: apiUrl, authToken: token },
   )

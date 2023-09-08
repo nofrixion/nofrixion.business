@@ -14,7 +14,6 @@ const meta: Meta<typeof CreatePayoutModal> = {
 }
 
 const Template: StoryFn<CreatePayoutModalProps> = (args) => {
-  console.log(mockedData.beneficiaries)
   return <CreatePayoutModal {...args} />
 }
 

@@ -69,11 +69,6 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
 
-  const formatter = new Intl.NumberFormat(navigator.language, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-
   const singleCurrency =
     accounts
       .map((item) => item.currency)
@@ -296,7 +291,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         currency={currency}
                         onCurrencyChange={onCurrencyChange}
                         allowCurrencyChange={singleCurrency ? false : true}
-                        value={formatter.format(Number(payoutAmount))}
+                        value={payoutAmount ?? ''}
                         onChange={handleAmountOnChange}
                         required
                       ></InputAmountField>
@@ -331,7 +326,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     />
                   </div>
 
-                  {beneficiaries.length > 1 && (
+                  {beneficiaries.length > 0 && (
                     <div
                       className={cn('mt-8 flex-row items-baseline', {
                         'mb-10': !addManuallySelected,
@@ -362,7 +357,10 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   )}
 
                   <AnimatePresence initial={false}>
-                    {(selectedBeneficiary || addManuallySelected) && (
+                    {(selectedBeneficiary ||
+                      addManuallySelected ||
+                      !beneficiaries ||
+                      beneficiaries.length === 0) && (
                       <motion.div
                         initial={{ opacity: 0, height: 0, marginTop: 0, marginBottom: 0 }}
                         animate={{
@@ -395,7 +393,10 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         </div>
                         <AnimatePresence initial={false}>
                           {(destinationAccountIBAN ||
-                            (addManuallySelected && currency === Currency.EUR)) && (
+                            ((addManuallySelected ||
+                              !beneficiaries ||
+                              beneficiaries.length === 0) &&
+                              currency === Currency.EUR)) && (
                             <AnimateHeightWrapper layoutId="eur-account-details">
                               <div className="text-left mt-2">
                                 <InputTextField
@@ -416,7 +417,10 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         </AnimatePresence>
                         <AnimatePresence initial={false}>
                           {((destinationAccountSortCode && destinationAccountNumber) ||
-                            (addManuallySelected && currency === Currency.GBP)) && (
+                            ((addManuallySelected ||
+                              !beneficiaries ||
+                              beneficiaries.length === 0) &&
+                              currency === Currency.GBP)) && (
                             <AnimateHeightWrapper layoutId="gbp-account-details">
                               <div className="text-left mt-2">
                                 <InputTextField

@@ -54,7 +54,8 @@ export const useCreatePayout = (
     pageSize,
     fromDateMS,
     toDateMS,
-    status,
+    statuses,
+    counterPartyNameSortDirection,
     search,
     currency,
     minAmount,
@@ -89,11 +90,12 @@ export const useCreatePayout = (
     statusSortDirection,
     createdSortDirection,
     amountSortDirection,
+    counterPartyNameSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
     toDateMS,
-    status,
+    statuses,
     search,
     currency,
     minAmount,
@@ -125,9 +127,6 @@ export const useCreatePayout = (
       if (data.success) {
         // After create payout for refund is successful, invalidate the payment requests cache, the single payment request cache,
         // and the metrics cache because the status of the payment request has changed
-        console.log('invalidating queries', queryClient.getQueryCache())
-        console.log('PAYOUTS_QUERY_KEY', PAYOUTS_QUERY_KEY)
-        console.log('METRICS_QUERY_KEY', METRICS_QUERY_KEY)
         queryClient.invalidateQueries({ queryKey: PAYOUTS_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: METRICS_QUERY_KEY })
       }
