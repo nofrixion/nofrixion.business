@@ -337,6 +337,9 @@ export interface Payout {
   createdBy?: string
   inserted: Date
   sourceAccountName: string
+  sourceAccountNumber: string
+  sourceAccountSortCode: string
+  sourceAccountIban: string
   destination?: Counterparty
   tags: Tag[]
 }

@@ -186,3 +186,7 @@ export interface CreatePayoutProps {
   allowIncomplete: boolean
   paymentRequestId?: string
 }
+
+export interface PayoutProps {
+  payoutId?: string
+}

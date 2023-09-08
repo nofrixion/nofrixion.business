@@ -198,6 +198,9 @@ export interface LocalPayout {
   createdBy?: string
   inserted: Date
   sourceAccountName: string
+  sourceAccountNumber: string
+  sourceAccountSortCode: string
+  sourceAccountIban: string
   destination?: LocalCounterparty
 }
 

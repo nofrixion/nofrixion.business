@@ -1,6 +1,7 @@
 import { Pagination, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
+import { cn } from '../../../../utils'
 import { formatAmount, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import {
@@ -24,6 +25,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   onSort: (name: 'date' | 'amount' | 'status', direction: SortDirection) => void
   onPayoutClicked?: (payout: LocalPayout) => void
   isLoading?: boolean
+  selectedPayoutId: string | undefined
 }
 
 const PayoutsTable: React.FC<PayoutsTableProps> = ({
@@ -33,17 +35,14 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   onSort,
   onPayoutClicked,
   isLoading = false,
+  selectedPayoutId,
   ...props
 }) => {
   const onPayoutClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
     payout: LocalPayout,
   ) => {
-    if (event.metaKey) {
-      console.log('metaKey', event.metaKey)
-    } else {
-      onPayoutClicked && onPayoutClicked(payout)
-    }
+    onPayoutClicked && onPayoutClicked(payout)
   }
 
   return (
@@ -118,7 +117,12 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
               {!isLoading &&
                 payouts.map((payout, index) => (
                   <TableRow
-                    className="cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]"
+                    className={cn(
+                      'cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]',
+                      {
+                        'bg-[#F6F8F9] border-[#E1E5EA]': selectedPayoutId === payout.id,
+                      },
+                    )}
                     key={`${payout}-${index}`}
                     onClick={(event) => onPayoutClickedHandler(event, payout)}
                   >
@@ -139,7 +143,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </TableCell>
                     <TableCell className="w-0">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                        <PayoutApproveForm payoutId={payout.id} />
+                        <PayoutApproveForm payoutId={payout.id} size="x-small" />
                       )}
                     </TableCell>
                   </TableRow>
