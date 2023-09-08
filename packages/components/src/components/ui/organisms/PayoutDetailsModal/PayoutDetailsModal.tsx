@@ -56,50 +56,52 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
               <Status size="large" variant={payoutStatusToStatus(payout.status)} />
             </div>
             <table className="mt-16 mx-8 w-11/12 overflow-hidden">
-              <tr className="border-none hover:bg-white cursor-default text-sm h-20">
-                <td className="text-grey-text align-top w-1/3">From account</td>
-                <td className="align-top">
-                  <AccountDetails
-                    accountName={payout.sourceAccountName}
-                    accountNumber={
-                      payout.sourceAccountIban ??
-                      payout.sourceAccountNumber + ' ' + payout.sourceAccountSortCode
-                    }
-                  ></AccountDetails>
-                </td>
-              </tr>
-              <tr className="border-none hover:bg-white cursor-default text-sm h-20">
-                <td className="text-grey-text align-top w-1/3">To account</td>
-                <td className="align-top">
-                  <AccountDetails
-                    accountName={payout.destination?.name}
-                    accountNumber={
-                      payout.destination?.identifier?.iban ??
-                      payout.destination?.identifier?.accountNumber +
-                        ' ' +
-                        payout.destination?.identifier?.sortCode
-                    }
-                  ></AccountDetails>
-                </td>
-              </tr>
-              {payout.theirReference && (
-                <tr className="border-none hover:bg-white cursor-default text-sm h-14">
-                  <td className="text-grey-text align-top w-1/3">Their reference</td>
-                  <td className="align-top">{payout.theirReference}</td>
+              <tbody>
+                <tr className="border-none hover:bg-white cursor-default text-sm h-20">
+                  <td className="text-grey-text align-top w-1/3">From account</td>
+                  <td className="align-top">
+                    <AccountDetails
+                      accountName={payout.sourceAccountName}
+                      accountNumber={
+                        payout.sourceAccountIban ??
+                        payout.sourceAccountNumber + ' ' + payout.sourceAccountSortCode
+                      }
+                    ></AccountDetails>
+                  </td>
                 </tr>
-              )}
-              {payout.yourReference && (
-                <tr className="border-none hover:bg-white cursor-default text-sm h-14">
-                  <td className="text-grey-text align-top w-1/3">Your reference</td>
-                  <td className="align-top">{payout.yourReference}</td>
+                <tr className="border-none hover:bg-white cursor-default text-sm h-20">
+                  <td className="text-grey-text align-top w-1/3">To account</td>
+                  <td className="align-top">
+                    <AccountDetails
+                      accountName={payout.destination?.name}
+                      accountNumber={
+                        payout.destination?.identifier?.iban ??
+                        payout.destination?.identifier?.accountNumber +
+                          ' ' +
+                          payout.destination?.identifier?.sortCode
+                      }
+                    ></AccountDetails>
+                  </td>
                 </tr>
-              )}
-              {payout.description && (
-                <tr className="border-none hover:bg-white cursor-default text-sm h-16">
-                  <td className="text-grey-text align-top w-1/3">Description</td>
-                  <td className="align-top">{payout.description}</td>
-                </tr>
-              )}
+                {payout.theirReference && (
+                  <tr className="border-none hover:bg-white cursor-default text-sm h-14">
+                    <td className="text-grey-text align-top w-1/3">Their reference</td>
+                    <td className="align-top">{payout.theirReference}</td>
+                  </tr>
+                )}
+                {payout.yourReference && (
+                  <tr className="border-none hover:bg-white cursor-default text-sm h-14">
+                    <td className="text-grey-text align-top w-1/3">Your reference</td>
+                    <td className="align-top">{payout.yourReference}</td>
+                  </tr>
+                )}
+                {payout.description && (
+                  <tr className="border-none hover:bg-white cursor-default text-sm h-16">
+                    <td className="text-grey-text align-top w-1/3">Description</td>
+                    <td className="align-top">{payout.description}</td>
+                  </tr>
+                )}
+              </tbody>
             </table>
           </div>
         )}
