@@ -101,8 +101,10 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   statusSortDirection: SortDirection
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
+  counterPartyNameSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
+  statuses: PayoutStatus[]
 }
 
 export interface usePaymentRequestMetricsProps extends MetricsProps {
