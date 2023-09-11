@@ -86,6 +86,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     accounts?.filter((x) => x.currency === currency)[0],
   )
 
+  const theirReferenceMaxLength = currency === Currency.EUR ? 139 : 17
+
   const balanceLessThanAmountMessage = "This account doesn't have enough funds for this transaction"
 
   const beneficiaryDifferentCurrencyMessage =
@@ -260,6 +262,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   }
 
   const onValidateTheirReference = (theirReference: string): string | undefined => {
+    if (theirReference.length > theirReferenceMaxLength) {
+      return `Their reference is too long`
+    }
     const theirReferenceReplaceRegex = /[\\.\-/&\s]/g
 
     const cleanTheirReference = theirReference.replace(theirReferenceReplaceRegex, '')

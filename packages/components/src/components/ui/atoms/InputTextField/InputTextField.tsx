@@ -38,8 +38,12 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
     const [requiredErrorPrompt, setRequiredErrorPrompt] = useState<boolean>(false)
 
     useEffect(() => {
-      if (!formSubmitted && !required) {
+      if (!formSubmitted) {
         return
+      }
+
+      if (formSubmitted && value && maxLength && value.toString().length > maxLength) {
+        setWarning(`${label} is too long`)
       }
 
       if (formSubmitted && required && !value) {
