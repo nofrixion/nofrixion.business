@@ -1,7 +1,6 @@
 import { AnimatePresence } from 'framer-motion'
 import { forwardRef, useId, useState } from 'react'
 
-import { cn } from '../../../utils'
 import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
 export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -9,27 +8,10 @@ export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInput
   required?: boolean
   validation?: (value: string) => string | undefined
   error?: string
-  subText?: string
-  requiredErrorPrompt?: boolean
 }
 
 const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
-  (
-    {
-      label,
-      required,
-      maxLength,
-      value,
-      placeholder,
-      subText,
-      requiredErrorPrompt,
-      onChange,
-      onBlur,
-      validation,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ label, required, maxLength, value, onChange, onBlur, validation, ...props }, ref) => {
     const textId = useId()
 
     const [error, setError] = useState<string>()
@@ -63,13 +45,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
             </label>
 
             {required && (
-              <div
-                className={cn('text-grey-text font-normal text-xs leading-4', {
-                  'text-[#F32448]': requiredErrorPrompt,
-                })}
-              >
-                REQUIRED
-              </div>
+              <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
             )}
           </div>
           <input
@@ -80,16 +56,12 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
             value={value}
             onChange={handleOnChange}
             onBlur={handleOnBlur}
-            placeholder={placeholder}
             className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text"
             {...props}
           />
           {maxLength && (
-            <div className="mt-2 text-grey-text font-normal text-[0.813rem] leading-5 flex justify-between">
-              {subText && <span>{subText}</span>}
-              <div className="ml-auto">
-                {value?.toString().length}/{maxLength}
-              </div>
+            <div className="text-right mt-2 text-grey-text font-normal text-[0.813rem] leading-5">
+              {value?.toString().length}/{maxLength}
             </div>
           )}
         </div>

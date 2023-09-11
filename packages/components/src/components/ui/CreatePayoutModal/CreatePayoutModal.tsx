@@ -1,11 +1,11 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { LocalAccountIdentifierType } from '../../../types/LocalEnums'
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
 import { cn } from '../../../utils'
-import { Button, Icon, Sheet, SheetContent } from '../atoms'
+import { Button, Sheet, SheetContent } from '../atoms'
 import InputTextField from '../atoms/InputTextField/InputTextField'
 import { ValidationMessage } from '../atoms/ValidationMessage/ValidationMessage'
 import InputAmountField from '../InputAmountField/InputAmountField'
@@ -85,12 +85,6 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount>(
     accounts?.filter((x) => x.currency === currency)[0],
   )
-
-  useEffect(() => {
-    if (isOpen) {
-      resetFields()
-    }
-  }, [isOpen])
 
   const balanceLessThanAmountMessage = "This account doesn't have enough funds for this transaction"
 
@@ -218,6 +212,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
+      resetFields()
       onDismiss()
     }
   }
@@ -235,7 +230,33 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     const ibanReplaceRegex = /^[a-zA-Z]{2}[0-9]{2}([a-zA-Z0-9]){11,30}$/g
 
     if (destinationAccountIBAN.length > 0 && !ibanReplaceRegex.test(destinationAccountIBAN)) {
-      return `The IBAN is not valid`
+      return `Invalid IBAN. Please check your IBAN.`
+    }
+
+    const bank = destinationAccountIBAN.slice(4) + destinationAccountIBAN.slice(0, 4)
+    const asciiShift = 55
+    const sb = []
+
+    for (const c of bank) {
+      let v
+      if (/[A-Z]/.test(c)) {
+        v = c.charCodeAt(0) - asciiShift
+      } else {
+        v = parseInt(c, 10)
+      }
+      sb.push(v)
+    }
+
+    const checkSumString = sb.join('')
+    let checksum = parseInt(checkSumString[0], 10)
+
+    for (let i = 1; i < checkSumString.length; i++) {
+      const v = parseInt(checkSumString.charAt(i), 10)
+      checksum = (checksum * 10 + v) % 97
+    }
+
+    if (checksum !== 1) {
+      return `Invalid IBAN. Please enter a valid IBAN.`
     }
   }
 
@@ -310,9 +331,6 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
           <SheetContent className="w-full lg:w-[37.5rem]">
             <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8">
               <div className="h-fit mb-[7.5rem] lg:mb-0">
-                <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
-                  <Icon name="back/24" />
-                </button>
                 <span className="block text-2xl font-semibold text-default-text mt-8">
                   New payout
                 </span>
@@ -332,7 +350,11 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   </div>
                 </div>
                 <div className="w-fit">
-                  <ValidationMessage variant="warning" message={amountValidationErrorMessage} />
+                  <ValidationMessage
+                    variant="warning"
+                    message={amountValidationErrorMessage}
+                    label="amount"
+                  />
                 </div>
 
                 <div className="md:w-[27rem]">
@@ -347,7 +369,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         className="text-right border border-border-grey md:w-[27rem]"
                         value={selectedAccount?.id}
                         onValueChange={handleAccountOnChange}
-                        accounts={accounts.filter((account) => account.currency === currency)}
+                        accounts={accounts
+                          .filter((account) => account.currency === currency)
+                          .sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
                       />
                     </div>
                   </div>
@@ -494,6 +518,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       variant="warning"
                       message={beneficiaryValidationErrorMessage}
                       className="-mt-6"
+                      label="beneficiary"
                     />
                   </div>
 
@@ -506,7 +531,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     <div className="text-left">
                       <InputTextField
                         label="Their reference"
-                        maxLength={currency === Currency.EUR ? 140 : 18}
+                        maxLength={currency === Currency.EUR ? 139 : 17}
                         value={theirReference}
                         onChange={(e) => setTheirReference(e.target.value)}
                         warningValidation={onValidateTheirReference}
@@ -547,7 +572,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
                   <div className="mb-4">
-                    <ValidationMessage label="required" variant="error" message={formError} />
+                    <ValidationMessage label="form" variant="error" message={formError} />
                   </div>
                   <Button
                     variant="primaryDark"

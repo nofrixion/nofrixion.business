@@ -106,7 +106,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
           </div>
           {variant === 'numeric' && (
             <MaskedInput
-              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text"
+              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
               placeholder={placeholder}
               mask={numberMask}
               inputMode="numeric"
@@ -132,7 +132,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
               onChange={handleOnChange}
               onBlur={handleOnBlur}
               placeholder={placeholder}
-              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text"
+              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
               {...props}
             />
           )}
