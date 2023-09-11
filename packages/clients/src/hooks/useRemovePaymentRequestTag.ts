@@ -58,13 +58,7 @@ export const useRemovePaymentRequestTag = (
     DeleteTagProps
   > = useMutation({
     mutationFn: (variables: DeleteTagProps) =>
-      removeTagAsync(
-        apiUrl,
-        variables.tagId,
-        variables.paymentRequestId,
-        variables.existingTagsIds,
-        authToken,
-      ),
+      removeTagAsync(apiUrl, variables.tagId, variables.id, variables.existingTagsIds, authToken),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
       if (data.success) {
         // After delete tag is successful, invalidate the payment requests cache, the single payment request cache
@@ -75,10 +69,10 @@ export const useRemovePaymentRequestTag = (
   })
 
   const removeTag = useCallback(
-    async ({ tagId, existingTagsIds, paymentRequestId }: DeleteTagProps) => {
+    async ({ tagId, existingTagsIds, id: paymentRequestId }: DeleteTagProps) => {
       if (paymentRequestId) {
         setPaymentRequestID(paymentRequestId)
-        const result = await mutation.mutateAsync({ tagId, existingTagsIds, paymentRequestId })
+        const result = await mutation.mutateAsync({ tagId, existingTagsIds, id: paymentRequestId })
 
         if (result.success) {
           return { error: undefined }

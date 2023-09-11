@@ -32,7 +32,7 @@ export const useAddPayoutTag = (
   { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
 ): {
-  useAddPayoutTag: (addTagProps: AddTagProps) => Promise<{ error: ApiError | undefined }>
+  addPayoutTag: (addTagProps: AddTagProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
@@ -57,7 +57,7 @@ export const useAddPayoutTag = (
     },
   })
 
-  const useAddPayoutTag = useCallback(
+  const addPayoutTag = useCallback(
     async ({ tag, existingTagsIds, id }: AddTagProps) => {
       if (id) {
         setPayoutId(id)
@@ -74,5 +74,5 @@ export const useAddPayoutTag = (
     [mutation],
   )
 
-  return { useAddPayoutTag }
+  return { addPayoutTag }
 }

@@ -1,8 +1,16 @@
-import { PayoutStatus, SortDirection, usePayout } from '@nofrixion/moneymoov'
+import {
+  PayoutStatus,
+  SortDirection,
+  Tag,
+  useAddPayoutTag,
+  useCreateTag,
+  usePayout,
+  useRemovePayoutTag,
+} from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
-import { LocalPayout } from '../../../types/LocalTypes'
-import { remotePayoutToLocal } from '../../../utils/parsers'
+import { LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { parseLocalTagToApiTag, remotePayoutToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import UIPayoutDetailsModal from '../../ui/organisms/PayoutDetailsModal/PayoutDetailsModal'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -82,7 +90,93 @@ const PayoutDetailsModal = ({
     }
   }, [payoutResponse])
 
-  return <UIPayoutDetailsModal onDismiss={onDismiss} open={open} payout={payout} />
+  const { createTag } = useCreateTag(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const { addPayoutTag } = useAddPayoutTag(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const { removeTag } = useRemovePayoutTag(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const onTagAdded = async (tag: LocalTag) => {
+    if (payout) {
+      const existingTagIds = payout.tags?.map((tag) => tag.id) ?? []
+      const apiTag: Tag = parseLocalTagToApiTag(tag)
+      const response = await addPayoutTag({
+        id: payout.id,
+        tag: apiTag,
+        existingTagsIds: existingTagIds,
+      })
+      if (response.error) {
+        makeToast('error', 'Could not add tag.')
+      }
+    }
+  }
+
+  const onTagCreated = async (tag: LocalTag) => {
+    if (payout) {
+      const apiTag: Tag = parseLocalTagToApiTag(tag)
+      const createTagResponse = await createTag({
+        tag: apiTag,
+      })
+
+      if (createTagResponse.status === 'error') {
+        makeToast('error', 'Could not create new tag.')
+      }
+
+      if (createTagResponse.status === 'success') {
+        const existingTagIds = payout.tags?.map((tag) => tag.id) ?? []
+
+        const addTagresponse = await addPayoutTag({
+          id: payout.id,
+          tag: createTagResponse.data,
+          existingTagsIds: existingTagIds,
+        })
+
+        if (addTagresponse.error) {
+          makeToast('error', 'Failed to add tag to Payout.')
+        }
+      }
+    }
+  }
+
+  const onTagRemoved = async (tagId: string) => {
+    if (payout) {
+      const existingTagIds = payout.tags?.map((tag) => tag.id) ?? []
+      const response = await removeTag({
+        tagId: tagId,
+        existingTagsIds: existingTagIds,
+        id: payout.id,
+      })
+      if (response.error) {
+        makeToast('error', 'Could not delete tag.')
+      }
+    }
+  }
+
+  return (
+    <UIPayoutDetailsModal
+      onDismiss={onDismiss}
+      onTagAdded={onTagAdded}
+      onTagCreated={onTagCreated}
+      onTagRemoved={onTagRemoved}
+      open={open}
+      payout={payout}
+    />
+  )
 }
 
 export default PayoutDetailsModal

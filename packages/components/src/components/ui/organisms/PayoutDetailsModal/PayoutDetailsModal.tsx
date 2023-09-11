@@ -1,6 +1,6 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
-import { LocalPayout } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalTag } from '../../../../types/LocalTypes'
 import { formatAmountAndDecimals } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
@@ -13,9 +13,19 @@ export interface PayoutDetailsModalProps {
   payout?: LocalPayout
   open: boolean
   onDismiss: () => void
+  onTagAdded: (tag: LocalTag) => void
+  onTagRemoved: (id: string) => void
+  onTagCreated: (tag: LocalTag) => void
 }
 
-const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps) => {
+const PayoutDetailsModal = ({
+  payout,
+  open,
+  onDismiss,
+}: // onTagAdded,
+// onTagRemoved,
+// onTagCreated,
+PayoutDetailsModalProps) => {
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
       onDismiss()

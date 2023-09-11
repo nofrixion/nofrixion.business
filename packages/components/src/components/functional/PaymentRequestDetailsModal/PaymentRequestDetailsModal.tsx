@@ -173,7 +173,7 @@ const PaymentRequestDetailsModal = ({
       const response = await removeTag({
         tagId: tagIdToDelete,
         existingTagsIds: existingTagIds,
-        paymentRequestId: paymentRequest.id,
+        id: paymentRequest.id,
       })
       if (response.error) {
         makeToast('error', 'Could not delete tag.')
