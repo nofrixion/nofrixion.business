@@ -1,9 +1,9 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { PayoutClient } from '../clients/PayoutClient'
 import { AccountIdentifierType, ApiError, Counterparty, Currency, PayoutCreate } from '../types'
-import { ApiProps, CreatePayoutProps } from '../types/props'
+import { ApiProps, CreatePayoutProps, MerchantProps } from '../types/props'
 
 const createPayoutAsync = async (
   apiUrl: string,
@@ -44,18 +44,28 @@ const createPayoutAsync = async (
   return { success: true }
 }
 
-export const useCreatePayout = ({
-  apiUrl,
-  authToken,
-}: ApiProps): {
-  createPayout: (createPayoutProps: CreatePayoutProps) => Promise<{ error: ApiError | undefined }>
+export const useCreateRefund = (
+  { merchantId }: MerchantProps,
+  { apiUrl, authToken }: ApiProps,
+  isForRefund?: boolean,
+): {
+  createRefund: (createPayoutProps: CreatePayoutProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
-  const METRICS_QUERY_KEY = ['PayoutMetrics']
+  const [paymentRequestID, setPaymentRequestID] = useState<string>()
 
-  const PAYOUTS_QUERY_KEY = ['Payouts']
+  const SINGLE_PAYMENT_REQUEST_QUERY_KEY = [
+    'PaymentRequest',
+    merchantId,
+    paymentRequestID,
+    apiUrl,
+    authToken,
+  ]
 
+  const METRICS_QUERY_KEY = ['PaymentRequestMetrics']
+
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
@@ -77,16 +87,17 @@ export const useCreatePayout = ({
         variables.yourReference,
       ),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
-      if (data.success) {
+      if (data.success && isForRefund) {
         // After create payout for refund is successful, invalidate the payment requests cache, the single payment request cache,
         // and the metrics cache because the status of the payment request has changed
-        queryClient.invalidateQueries({ queryKey: PAYOUTS_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: PAYMENT_REQUESTS_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: SINGLE_PAYMENT_REQUEST_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: METRICS_QUERY_KEY })
       }
     },
   })
 
-  const createPayout = useCallback(
+  const createRefund = useCallback(
     async ({
       accountID,
       type,
@@ -98,28 +109,33 @@ export const useCreatePayout = ({
       destination,
       invoiceID,
       allowIncomplete,
+      paymentRequestId,
     }: CreatePayoutProps) => {
-      const result = await mutation.mutateAsync({
-        accountID,
-        type,
-        description,
-        currency,
-        amount,
-        yourReference,
-        theirReference,
-        destination,
-        invoiceID,
-        allowIncomplete,
-      })
+      if (paymentRequestId) {
+        setPaymentRequestID(paymentRequestId)
+        const result = await mutation.mutateAsync({
+          accountID,
+          type,
+          description,
+          currency,
+          amount,
+          yourReference,
+          theirReference,
+          destination,
+          invoiceID,
+          allowIncomplete,
+        })
 
-      if (result.success) {
-        return { error: undefined }
-      } else {
-        return { error: result.error }
+        if (result.success) {
+          return { error: undefined }
+        } else {
+          return { error: result.error }
+        }
       }
+      return { error: undefined }
     },
     [mutation],
   )
 
-  return { createPayout }
+  return { createRefund }
 }

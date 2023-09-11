@@ -10,6 +10,7 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
@@ -1144,28 +1145,61 @@ export const mockPayouts: LocalPayout[] = [
   },
 ]
 
-const accountIdentifier: LocalAccountIdentifier = {
+const eurAccountIdentifier: LocalAccountIdentifier = {
   type: LocalAccountIdentifierType.IBAN,
   currency: Currency.EUR,
   iban: 'GB12345678901234567890',
 }
 
+const gbpAccountIdentifier: LocalAccountIdentifier = {
+  type: LocalAccountIdentifierType.SCAN,
+  currency: Currency.GBP,
+  accountNumber: '12345678',
+  sortCode: '123456',
+}
+
 const accounts: LocalAccount[] = [
   {
-    id: '1',
-    accountName: 'EURO Account',
+    id: '7',
+    accountName: 'E account',
     currency: Currency.GBP,
     balance: 100000,
     merchantID: '1',
     accountNumber: '12345678',
     sortCode: '123456',
-    iban: 'GB12345678901234567890',
-    displayName: 'EURO Account',
-    identifier: accountIdentifier,
+    displayName: 'GBP Account',
+    identifier: eurAccountIdentifier,
     summary: 'Account',
-    isDefault: true,
+    isDefault: false,
     availableBalance: 100000,
   },
+  {
+    id: '4',
+    accountName: 'EURO Account 2',
+    currency: Currency.EUR,
+    balance: 100,
+    merchantID: '1',
+    iban: 'GB12345678901234567890',
+    displayName: 'EURO Account',
+    identifier: eurAccountIdentifier,
+    summary: 'Account',
+    isDefault: true,
+    availableBalance: 100,
+  },
+  {
+    id: '1',
+    accountName: 'EURO Account',
+    currency: Currency.EUR,
+    balance: 100,
+    merchantID: '1',
+    iban: 'GB12345678901234567890',
+    displayName: 'EURO Account',
+    identifier: eurAccountIdentifier,
+    summary: 'Account',
+    isDefault: true,
+    availableBalance: 100,
+  },
+
   {
     id: '2',
     accountName: 'GBP Account',
@@ -1174,36 +1208,105 @@ const accounts: LocalAccount[] = [
     merchantID: '1',
     accountNumber: '12345678',
     sortCode: '123456',
-    iban: 'GB12345678901234567890',
     displayName: 'GBP Account',
-    identifier: accountIdentifier,
+    identifier: eurAccountIdentifier,
     summary: 'Account',
     isDefault: false,
     availableBalance: 100000,
   },
   {
     id: '3',
-    accountName: 'EUR Account 2',
-    currency: Currency.EUR,
+    accountName: 'GBP Account 2',
+    currency: Currency.GBP,
     balance: 100000,
     merchantID: '1',
     accountNumber: '12345678',
     sortCode: '123456',
-    iban: 'GB12345678901234567890',
     displayName: 'EUR Account 2',
-    identifier: accountIdentifier,
+    identifier: eurAccountIdentifier,
+    summary: 'Account',
+    isDefault: false,
+    availableBalance: 100000,
+  },
+  {
+    id: '5',
+    accountName: 'A account',
+    currency: Currency.EUR,
+    balance: 100,
+    merchantID: '1',
+    iban: 'GB12345678901234567890',
+    displayName: 'EURO Account',
+    identifier: eurAccountIdentifier,
+    summary: 'Account',
+    isDefault: true,
+    availableBalance: 100,
+  },
+  {
+    id: '6',
+    accountName: 'B account',
+    currency: Currency.EUR,
+    balance: 100,
+    merchantID: '1',
+    iban: 'GB12345678901234567890',
+    displayName: 'EURO Account',
+    identifier: eurAccountIdentifier,
+    summary: 'Account',
+    isDefault: true,
+    availableBalance: 100,
+  },
+
+  {
+    id: '8',
+    accountName: 'D account',
+    currency: Currency.GBP,
+    balance: 100000,
+    merchantID: '1',
+    accountNumber: '12345678',
+    sortCode: '123456',
+    displayName: 'EUR Account 2',
+    identifier: eurAccountIdentifier,
     summary: 'Account',
     isDefault: false,
     availableBalance: 100000,
   },
 ]
 
-const counterparty: LocalCounterparty = {
+const eurCounterparty: LocalCounterparty = {
   name: 'John Doe',
   emailAddress: 'email@email.com',
   phoneNumber: '01234567890',
-  identifier: accountIdentifier,
+  identifier: eurAccountIdentifier,
+  accountInfo: 'IE11MODR99035501927019',
 }
+
+const gbpCounterparty: LocalCounterparty = {
+  name: 'John Doe GBP',
+  emailAddress: '',
+  phoneNumber: '',
+  identifier: gbpAccountIdentifier,
+  accountInfo: '12345678 - 123456',
+}
+
+const beneficiaries: LocalBeneficiary[] = [
+  {
+    id: '1',
+    name: 'John Doe',
+    merchantID: '1',
+    yourReference: 'Test your reference',
+    theirReference: 'Test their reference',
+    destination: gbpCounterparty,
+    currency: Currency.GBP,
+  },
+  {
+    id: '2',
+    name: 'John Doe 2',
+    merchantID: '1',
+    yourReference: 'Test your reference',
+    theirReference: 'Test their reference',
+    destination: eurCounterparty,
+    currency: Currency.EUR,
+  },
+]
 
 export default {
   fewPaymentRequests,
@@ -1216,7 +1319,8 @@ export default {
   },
   merchantTags: mockMerchantTags,
   accounts,
-  counterparty,
+  counterparty: eurCounterparty,
+  beneficiaries: beneficiaries,
   payout: {
     pendingApproval: mockPayouts.find((p) => p.status === PayoutStatus.PENDING_APPROVAL),
     queued: mockPayouts.find((p) => p.status === PayoutStatus.QUEUED),

@@ -8,7 +8,7 @@ import {
   PaymentRequestStatus,
   useAccounts,
   useCapture,
-  useCreatePayout,
+  useCreateRefund,
   useMerchant,
   useMerchantTags,
   usePaymentRequestMetrics,
@@ -188,7 +188,7 @@ const PaymentRequestDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { createPayout } = useCreatePayout(
+  const { createRefund } = useCreateRefund(
     {
       merchantId: merchantId,
     },
@@ -433,7 +433,7 @@ const PaymentRequestDashboardMain = ({
   ) => {
     const yourReference = `REFUND-${paymentInitiationID}`
     if (selectedPaymentRequestID) {
-      const result = await createPayout({
+      const result = await createRefund({
         accountID: sourceAccount.id,
         type: localAccountIdentifierTypeToRemoteAccountIdentifierType(
           sourceAccount.identifier.type,

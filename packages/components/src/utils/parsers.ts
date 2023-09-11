@@ -2,6 +2,7 @@ import {
   Account,
   AccountIdentifier,
   AccountIdentifierType,
+  Beneficiary,
   Counterparty,
   PartialPaymentMethods,
   PaymentMethodTypes,
@@ -30,6 +31,7 @@ import {
   LocalAccount,
   LocalAccountIdentifier,
   LocalAddress,
+  LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
@@ -499,6 +501,29 @@ const remoteAccountsToLocalAccounts = (remoteAccounts: Account[]): LocalAccount[
   })
 }
 
+const remoteBeneficiaryToLocalBeneficiary = (remoteBeneficiary: Beneficiary): LocalBeneficiary => {
+  const { id, merchantID, name, yourReference, theirReference, currency, destination } =
+    remoteBeneficiary
+
+  return {
+    id: id,
+    merchantID: merchantID,
+    name: name,
+    yourReference: yourReference,
+    theirReference: theirReference,
+    currency: currency,
+    destination: parseApiCounterPartyToLocalCounterParty(destination),
+  }
+}
+
+const remoteBeneficiariesToLocalBeneficiaries = (
+  remoteBeneficiaries: Beneficiary[],
+): LocalBeneficiary[] => {
+  return remoteBeneficiaries.map((remoteBeneficiary) => {
+    return remoteBeneficiaryToLocalBeneficiary(remoteBeneficiary)
+  })
+}
+
 const payoutStatusToStatus = (
   status: PayoutStatus,
 ):
@@ -536,6 +561,8 @@ export {
   parseLocalTagToApiTag,
   payoutStatusToStatus,
   remoteAccountsToLocalAccounts,
+  remoteBeneficiariesToLocalBeneficiaries,
+  remoteBeneficiaryToLocalBeneficiary,
   remotePaymentRequestToLocalPaymentRequest,
   remotePayoutsToLocal,
   remotePayoutToLocal,

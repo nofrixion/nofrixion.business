@@ -3,6 +3,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { cva } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
+// eslint-disable-next-line import/no-unresolved
 import { IMaskInput } from 'react-imask'
 
 import { cn } from '../../../utils'
