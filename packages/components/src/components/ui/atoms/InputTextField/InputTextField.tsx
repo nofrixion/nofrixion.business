@@ -2,7 +2,6 @@ import { forwardRef, useEffect, useId, useState } from 'react'
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
-import { cn } from '../../../../utils'
 import { ValidationMessage } from '../ValidationMessage/ValidationMessage'
 
 export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -94,14 +93,11 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
               {label}
             </label>
 
-            {required && (
-              <div
-                className={cn('text-grey-text font-normal text-xs leading-4', {
-                  'text-[#F32448]': requiredErrorPrompt,
-                })}
-              >
-                REQUIRED
-              </div>
+            {requiredErrorPrompt && (
+              <div className="text-[#F32448] font-normal text-xs leading-4">REQUIRED</div>
+            )}
+            {!required && (
+              <div className="text-grey-text font-normal text-xs leading-4">OPTIONAL</div>
             )}
           </div>
           {variant === 'numeric' && (

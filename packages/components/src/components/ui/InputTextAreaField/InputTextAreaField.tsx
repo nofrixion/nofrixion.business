@@ -60,8 +60,10 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
               {label}
             </label>
 
-            {required && (
+            {required ? (
               <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
+            ) : (
+              <div className="text-grey-text font-normal text-xs leading-4">OPTIONAL</div>
             )}
           </div>
           <textarea

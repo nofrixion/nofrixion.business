@@ -393,14 +393,11 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         <span className="text-default-text font-semibold text-sm leading-4">
                           Destination account
                         </span>
-
-                        <div
-                          className={cn('text-grey-text font-normal text-xs leading-4', {
-                            'text-[#F32448]': destinationAccountRequiredPrompt,
-                          })}
-                        >
-                          REQUIRED
-                        </div>
+                        {destinationAccountRequiredPrompt && (
+                          <div className="text-[#F32448] font-normal text-xs leading-4">
+                            REQUIRED
+                          </div>
+                        )}
                       </div>
                       <div className="text-left">
                         <SelectBeneficiary
