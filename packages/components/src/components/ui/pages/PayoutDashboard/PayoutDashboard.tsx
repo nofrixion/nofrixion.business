@@ -4,14 +4,13 @@ import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
-import AmountFilter from '../../AmountFilter/AmountFilter'
 import { Button, Icon } from '../../atoms'
-import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
+import { DateRange } from '../../DateRangePicker/DateRangePicker'
+import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
-import SearchBar from '../../SearchBar/SearchBar'
 import Tab from '../../Tab/Tab'
-import TagFilter, { FilterableTag } from '../../TagFilter/TagFilter'
+import { FilterableTag } from '../../TagFilter/TagFilter'
 import { Toaster } from '../../Toast/Toast'
 import LayoutWrapper from '../../utils/LayoutWrapper'
 
@@ -43,6 +42,10 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onPayoutClicked?: (paymentRequest: LocalPayout) => void
   tags: FilterableTag[]
   setTags: (tags: FilterableTag[]) => void
+  createdSortDirection: SortDirection
+  setCreatedSortDirection?: (direction: SortDirection) => void
+  amountSortDirection: SortDirection
+  setAmountSortDirection?: (direction: SortDirection) => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -70,6 +73,10 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   selectedPayoutId,
   tags,
   setTags,
+  createdSortDirection,
+  setCreatedSortDirection,
+  amountSortDirection,
+  setAmountSortDirection,
 }) => {
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
@@ -102,28 +109,32 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
           </div>
         </div>
 
-        <div className="bg-white rounded-[10px] h-16 flex justify-between items-center px-3 mb-4">
-          <DateRangePicker
-            onDateChange={onDateChange}
-            // Set first date to the first day of the year the merchant was created
-            firstDate={
-              merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
-            }
-          />
-
-          <div className="hidden md:inline-flex flex-row space-x-2">
-            <SearchBar value={searchFilter} setValue={onSearch} />
-            <AmountFilter
-              currency={currency}
-              setCurrency={setCurrency}
-              minAmount={minAmount}
-              setMinAmount={setMinAmount}
-              maxAmount={maxAmount}
-              setMaxAmount={setMaxAmount}
-            />
-            <TagFilter tags={tags} setTags={setTags} />
-          </div>
-        </div>
+        <AnimatePresence>
+          {!isInitialState && (
+            <div className="mb-4">
+              <FilterControlsRow
+                setDateRange={onDateChange}
+                searchFilter={searchFilter}
+                setSearchFilter={onSearch}
+                currency={currency}
+                setCurrency={setCurrency}
+                minAmount={minAmount}
+                setMinAmount={setMinAmount}
+                maxAmount={maxAmount}
+                setMaxAmount={setMaxAmount}
+                tags={tags}
+                setTags={setTags}
+                createdSortDirection={createdSortDirection}
+                setCreatedSortDirection={setCreatedSortDirection}
+                amountSortDirection={amountSortDirection}
+                setAmountSortDirection={setAmountSortDirection}
+                firstDate={
+                  merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
+                }
+              />
+            </div>
+          )}
+        </AnimatePresence>
 
         <AnimatePresence initial={false}>
           {!isInitialState && (

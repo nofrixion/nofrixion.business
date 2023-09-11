@@ -160,7 +160,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell className="text-center">
+                    <TableCell className="text-center w-0">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (
                         <PayoutApproveForm payoutId={payout.id} size="x-small" />
                       )}

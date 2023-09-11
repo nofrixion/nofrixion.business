@@ -295,6 +295,10 @@ const PayoutDashboardMain = ({
         selectedPayoutId={selectedPayoutId}
         tags={tags}
         setTags={setTags}
+        createdSortDirection={createdSortDirection}
+        setCreatedSortDirection={setCreatedSortDirection}
+        amountSortDirection={amountSortDirection}
+        setAmountSortDirection={setAmountSortDirection}
       />
 
       <PayoutDetailsModal
