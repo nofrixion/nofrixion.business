@@ -148,8 +148,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     if (
       amountValidationErrorMessage ||
       accountValidationErrorMessage ||
-      beneficiaryValidationErrorMessage ||
-      formError
+      beneficiaryValidationErrorMessage
     ) {
       validationFailed = true
     }
@@ -369,9 +368,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         className="text-right border border-border-grey md:w-[27rem]"
                         value={selectedAccount?.id}
                         onValueChange={handleAccountOnChange}
-                        accounts={accounts
-                          .filter((account) => account.currency === currency)
-                          .sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
+                        accounts={accounts.filter((account) => account.currency === currency)}
                       />
                     </div>
                   </div>

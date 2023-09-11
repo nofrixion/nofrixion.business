@@ -104,8 +104,8 @@ const CreatePayoutModal = ({
       onDismiss={onDismiss}
       isOpen={isOpen}
       onCreatePayout={onCreatePayout}
-      accounts={accounts}
-      beneficiaries={beneficiaries}
+      accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
+      beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
     />
   )
 }
