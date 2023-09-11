@@ -3,7 +3,6 @@ import {
   Currency,
   PayoutCreate,
   useCreatePayout,
-  usePayoutsProps,
 } from '@nofrixion/moneymoov'
 
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
@@ -11,7 +10,7 @@ import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
 import UICreatePayoutModal from '../../ui/CreatePayoutModal/CreatePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
 
-export interface CreatePayoutModalProps extends usePayoutsProps {
+export interface CreatePayoutModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   merchantId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
@@ -23,48 +22,13 @@ export interface CreatePayoutModalProps extends usePayoutsProps {
 
 const CreatePayoutModal = ({
   token,
-  merchantId,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   isOpen,
   onDismiss,
   accounts,
   beneficiaries,
-  statusSortDirection,
-  createdSortDirection,
-  amountSortDirection,
-  pageNumber,
-  pageSize,
-  fromDateMS,
-  toDateMS,
-  search,
-  currency,
-  minAmount,
-  maxAmount,
-  tags,
-  statuses,
-  counterPartyNameSortDirection,
 }: CreatePayoutModalProps) => {
-  const { createPayout } = useCreatePayout(
-    {
-      merchantId: merchantId,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      amountSortDirection: amountSortDirection,
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      fromDateMS: fromDateMS,
-      toDateMS: toDateMS,
-      status: status,
-      search: search,
-      currency: currency,
-      minAmount: minAmount,
-      maxAmount: maxAmount,
-      tags: tags,
-      statuses: statuses,
-      counterPartyNameSortDirection: counterPartyNameSortDirection,
-    },
-    { apiUrl: apiUrl, authToken: token },
-  )
+  const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
 
   const onCreatePayout = async (
     sourceAccount: LocalAccount,

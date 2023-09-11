@@ -320,21 +320,6 @@ const PayoutDashboardMain = ({
       {accounts && (
         <CreatePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
-          amountSortDirection={amountSortDirection}
-          createdSortDirection={createdSortDirection}
-          statusSortDirection={statusSortDirection}
-          currency={currencyFilter}
-          minAmount={minAmountFilter}
-          maxAmount={maxAmountFilter}
-          tags={tagsFilter}
-          pageSize={pageSize}
-          pageNumber={page}
-          fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}
-          toDateMS={dateRange.toDate && dateRange.toDate.getTime()}
-          status={status}
-          search={searchFilter?.length >= 3 ? searchFilter : undefined}
-          counterPartyNameSortDirection={counterPartyNameSortDirection}
-          statuses={queryStatuses}
           beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
           apiUrl={apiUrl}
           token={token}
