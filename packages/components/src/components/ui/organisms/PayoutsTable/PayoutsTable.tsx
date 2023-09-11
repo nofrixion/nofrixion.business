@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '../../atoms/Table/Table'
+import Chip from '../../Chip/Chip'
 import ColumnHeader from '../../ColumnHeader/ColumnHeader'
 import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
@@ -80,6 +81,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   />
                 </TableHead>
                 <TableHead>{/* Currency */}</TableHead>
+                <TableHead>{/* Tags */}</TableHead>
                 <TableHead>
                   <Pager
                     onPageChange={onPageChange}
@@ -104,15 +106,19 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                       <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell className="w-60">
+                    <TableCell className="w-48">
                       <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell className="w-72">
+                    <TableCell className="w-48">
                       <div className="w-1/4 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
                     <TableCell className="p-0"></TableCell>
+
+                    <TableCell className="w-0">
+                      <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
 
                     <TableCell className="w-0">
                       <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
@@ -138,16 +144,23 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     <TableCell className="w-48">
                       {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
                     </TableCell>
-                    <TableCell className="w-60">
+                    <TableCell className="w-48">
                       <div className="truncate">{payout.destination?.name}</div>
                     </TableCell>
-                    <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6 w-72">
+                    <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6 w-48">
                       {formatAmount(payout.amount)}
                     </TableCell>
-                    <TableCell className="pl-0 text-grey-text align-left font-normal text-sm">
+                    <TableCell className="pl-0 text-grey-text font-normal text-sm">
                       {payout.currency}
                     </TableCell>
-                    <TableCell className="w-0">
+                    <TableCell className="pl-0 text-grey-text font-normal text-sm text-right">
+                      <div className="hidden xl:block space-x-1 justify-end">
+                        {payout.tags.map((tag, index) => (
+                          <Chip key={`tag-${index}`} label={tag.name} />
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (
                         <PayoutApproveForm payoutId={payout.id} size="x-small" />
                       )}

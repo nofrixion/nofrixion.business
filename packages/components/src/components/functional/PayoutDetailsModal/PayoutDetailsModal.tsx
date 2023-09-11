@@ -35,6 +35,7 @@ export interface PayoutDetailsModalProps {
   minAmountFilter?: number
   maxAmountFilter?: number
   tagsFilter?: string[]
+  merchantTags: LocalTag[]
 }
 
 const PayoutDetailsModal = ({
@@ -57,6 +58,7 @@ const PayoutDetailsModal = ({
   minAmountFilter,
   maxAmountFilter,
   tagsFilter,
+  merchantTags,
 }: PayoutDetailsModalProps) => {
   const [payout, setPayout] = useState<LocalPayout | undefined>(undefined)
 
@@ -175,6 +177,7 @@ const PayoutDetailsModal = ({
       onTagRemoved={onTagRemoved}
       open={open}
       payout={payout}
+      merchantTags={merchantTags}
     />
   )
 }

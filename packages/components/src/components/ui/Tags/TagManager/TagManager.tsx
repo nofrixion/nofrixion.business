@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalTag } from '../../../../types/LocalTypes'
 import AddTag from '../AddTag/AddTag'
@@ -14,7 +14,11 @@ export interface TagManagerProps {
 }
 
 const TagManager = ({ tags, availableTags, onRemoved, onAdded, onCreated }: TagManagerProps) => {
-  const [tagsArray, setTagsArray] = useState(tags)
+  const [tagsArray, setTagsArray] = useState<LocalTag[]>([])
+
+  useEffect(() => {
+    setTagsArray(tags)
+  }, [tags])
 
   const handleDelete = (id: string) => {
     setTagsArray(tagsArray.filter((item) => item.id !== id))

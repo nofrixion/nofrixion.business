@@ -40,7 +40,7 @@ export const useRemovePayoutTag = (
 
   const SINGLE_REQUEST_QUERY_KEY = ['Payout', merchantId, payoutId, apiUrl, authToken]
 
-  const REQUESTS_QUERY_KEY = ['Payout']
+  const REQUESTS_QUERY_KEY = ['Payouts']
 
   // When this mutation succeeds, invalidate any queries
   const mutation: UseMutationResult<
