@@ -202,6 +202,7 @@ export interface LocalPayout {
   sourceAccountSortCode: string
   sourceAccountIban: string
   destination?: LocalCounterparty
+  tags: LocalTag[]
 }
 
 export interface LocalAccount {

@@ -9,6 +9,7 @@ import {
   useAccounts,
   useBeneficiaries,
   useMerchant,
+  useMerchantTags,
   usePayoutMetrics,
   usePayouts,
 } from '@nofrixion/moneymoov'
@@ -16,8 +17,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
-import { LocalPayout } from '../../../types/LocalTypes'
+import { LocalPayout, LocalTag } from '../../../types/LocalTypes'
 import {
+  parseApiTagToLocalTag,
   remoteAccountsToLocalAccounts,
   remoteBeneficiariesToLocalBeneficiaries,
   remotePayoutsToLocal,
@@ -81,7 +83,6 @@ const PayoutDashboardMain = ({
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
   const [queryStatuses, setQueryStatuses] = useState<PayoutStatus[]>([])
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -92,9 +93,7 @@ const PayoutDashboardMain = ({
   const [currencyFilter, setCurrencyFilter] = useState<string | undefined>()
   const [minAmountFilter, setMinAmountFilter] = useState<number | undefined>()
   const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tags, setTags] = useState<FilterableTag[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
   const [selectedPayoutId, setSelectedPayoutId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<PayoutMetrics | undefined>(undefined)
@@ -161,6 +160,21 @@ const PayoutDashboardMain = ({
     }
   }, [beneficiariesResponse])
 
+  const { data: merchantTagsResponse } = useMerchantTags(
+    { merchantId: merchantId },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
+
+  const getSelectedTagFilters = () => {
+    if (!tags) {
+      return []
+    }
+
+    return tags.filter((tag) => tag.isSelected).map((tag) => tag.id)
+  }
+
   useEffect(() => {
     if (payoutsResponse?.status === 'success') {
       setPayouts(payoutsResponse.data.content)
@@ -187,6 +201,24 @@ const PayoutDashboardMain = ({
   }, [metricsResponse])
 
   useEffect(() => {
+    if (merchantTagsResponse?.status === 'success') {
+      setLocalMerchantTags(merchantTagsResponse.data.map((tag) => parseApiTagToLocalTag(tag)))
+      setTags(
+        merchantTagsResponse.data.map((tag) => {
+          return {
+            id: tag.id,
+            label: tag.name,
+            isSelected: false,
+          }
+        }),
+      )
+    } else if (merchantTagsResponse?.status === 'error') {
+      console.warn(merchantTagsResponse.error)
+      handleApiError(merchantTagsResponse.error)
+    }
+  }, [merchantTagsResponse])
+
+  useEffect(() => {
     switch (status) {
       case PayoutStatus.All:
         setQueryStatuses([])
@@ -205,6 +237,11 @@ const PayoutDashboardMain = ({
         break
     }
   }, [status])
+
+  useEffect(() => {
+    const tempTagArray = getSelectedTagFilters()
+    setTagsFilter([...tempTagArray])
+  }, [tags])
 
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {
@@ -294,6 +331,12 @@ const PayoutDashboardMain = ({
         setMaxAmount={setMaxAmountFilter}
         onPayoutClicked={onPayoutRowClicked}
         selectedPayoutId={selectedPayoutId}
+        tags={tags}
+        setTags={setTags}
+        createdSortDirection={createdSortDirection}
+        setCreatedSortDirection={setCreatedSortDirection}
+        amountSortDirection={amountSortDirection}
+        setAmountSortDirection={setAmountSortDirection}
       />
 
       <PayoutDetailsModal
@@ -315,6 +358,7 @@ const PayoutDashboardMain = ({
         minAmountFilter={minAmountFilter}
         maxAmountFilter={maxAmountFilter}
         tagsFilter={tagsFilter}
+        merchantTags={localMerchantTags}
       />
 
       {accounts && (

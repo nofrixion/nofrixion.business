@@ -18,7 +18,7 @@ export interface PaymentRequestDetailsProps {
   onVoid: (paymentAttempt: LocalPaymentAttempt) => void
   onCapture: (paymentAttempt: LocalPaymentAttempt) => void
   onTagAdded: (tag: LocalTag) => void
-  onTagDeleted: (id: string) => void
+  onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
 }
 
@@ -30,7 +30,7 @@ const PaymentRequestDetails = ({
   onVoid,
   onCapture,
   onTagAdded,
-  onTagDeleted,
+  onTagRemoved,
   onTagCreated,
 }: PaymentRequestDetailsProps) => {
   return (
@@ -82,7 +82,7 @@ const PaymentRequestDetails = ({
               availableTags={merchantTags}
               tags={paymentRequest.tags}
               onAdded={onTagAdded}
-              onDeleted={onTagDeleted}
+              onRemoved={onTagRemoved}
               onCreated={onTagCreated}
             ></TagManager>
           </div>
