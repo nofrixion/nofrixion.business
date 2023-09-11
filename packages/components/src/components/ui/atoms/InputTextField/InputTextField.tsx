@@ -52,8 +52,6 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange && onChange(e)
 
-      required && !e.target.value ? setRequiredErrorPrompt(true) : setRequiredErrorPrompt(false)
-
       if (!warningValidation || !warning) {
         return
       }
@@ -141,7 +139,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
             </div>
           )}
         </div>
-        <ValidationMessage variant="warning" message={warning} />
+        <ValidationMessage variant="warning" message={warning} label={label} />
       </div>
     )
   },
