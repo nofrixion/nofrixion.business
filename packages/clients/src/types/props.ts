@@ -142,21 +142,19 @@ export interface CaptureProps {
 }
 
 export interface DeleteTagProps {
-  paymentRequestId: string
+  id: string
   tagId: string
   existingTagsIds: string[]
 }
 
 export interface AddTagProps {
-  paymentRequestId: string
+  id: string
   tag: Tag
   existingTagsIds: string[]
 }
 
 export interface CreateTagProps {
-  paymentRequestId: string
   tag: Tag
-  existingTagsIds: string[]
 }
 
 export interface PayoutsProps extends AccountProps {

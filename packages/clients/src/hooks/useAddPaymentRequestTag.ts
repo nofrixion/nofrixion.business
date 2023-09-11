@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PaymentRequestClient } from '../clients'
 import { ApiError, PaymentRequestUpdate, Tag } from '../types'
-import { AddTagProps, ApiProps, usePaymentRequestsProps } from '../types/props'
+import { AddTagProps, ApiProps, MerchantProps } from '../types/props'
 
 const addTagAsync = async (
   apiUrl: string,
@@ -31,27 +31,11 @@ const addTagAsync = async (
   return { success: true }
 }
 
-export const useAddTag = (
-  {
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  }: usePaymentRequestsProps,
+export const useAddPaymentRequestTag = (
+  { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
 ): {
-  addTag: (addTagProps: AddTagProps) => Promise<{ error: ApiError | undefined }>
+  addPaymentRequestTag: (addTagProps: AddTagProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
@@ -65,26 +49,7 @@ export const useAddTag = (
     authToken,
   ]
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
-    apiUrl,
-    authToken,
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  ]
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
 
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<
@@ -93,13 +58,7 @@ export const useAddTag = (
     AddTagProps
   > = useMutation({
     mutationFn: (variables: AddTagProps) =>
-      addTagAsync(
-        apiUrl,
-        variables.tag,
-        variables.paymentRequestId,
-        variables.existingTagsIds,
-        authToken,
-      ),
+      addTagAsync(apiUrl, variables.tag, variables.id, variables.existingTagsIds, authToken),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
       if (data.success) {
         // After add tag is successful, invalidate the payment requests cache, the single payment request cache
@@ -109,11 +68,11 @@ export const useAddTag = (
     },
   })
 
-  const addTag = useCallback(
-    async ({ tag, existingTagsIds, paymentRequestId }: AddTagProps) => {
+  const addPaymentRequestTag = useCallback(
+    async ({ tag, existingTagsIds, id: paymentRequestId }: AddTagProps) => {
       if (paymentRequestId) {
         setPaymentRequestID(paymentRequestId)
-        const result = await mutation.mutateAsync({ tag, existingTagsIds, paymentRequestId })
+        const result = await mutation.mutateAsync({ tag, existingTagsIds, id: paymentRequestId })
 
         if (result.success) {
           return { error: undefined }
@@ -126,5 +85,5 @@ export const useAddTag = (
     [mutation],
   )
 
-  return { addTag }
+  return { addPaymentRequestTag }
 }

@@ -1,21 +1,34 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
-import { LocalPayout } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalTag } from '../../../../types/LocalTypes'
 import { formatAmountAndDecimals } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
+import TagManager from '../../Tags/TagManager/TagManager'
 import { PayoutApproveForm } from '../../utils/PayoutApproveForm'
 
 export interface PayoutDetailsModalProps {
   payout?: LocalPayout
+  merchantTags: LocalTag[]
   open: boolean
   onDismiss: () => void
+  onTagAdded: (tag: LocalTag) => void
+  onTagRemoved: (id: string) => void
+  onTagCreated: (tag: LocalTag) => void
 }
 
-const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps) => {
+const PayoutDetailsModal = ({
+  payout,
+  merchantTags,
+  open,
+  onDismiss,
+  onTagAdded,
+  onTagRemoved,
+  onTagCreated,
+}: PayoutDetailsModalProps) => {
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
       onDismiss()
@@ -33,7 +46,7 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
         className="w-full lg:w-[37.5rem] outline-none"
       >
         {payout && (
-          <div className="bg-white max-h-full h-full overflow-hidden">
+          <div className="bg-white max-h-full h-full">
             {payout && payout.status === PayoutStatus.PENDING_APPROVAL && (
               <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
                 <div className="mt-4">
@@ -46,7 +59,7 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
                 </div>
               </div>
             )}
-            <div className="flex mt-10 mx-8 justify-between items-center">
+            <div className="flex pt-10 mx-8 justify-between items-center">
               <span className="text-[2rem] font-semibold leading-8 text-default-text tabular-nums pt-1">
                 {formatCurrency(payout?.currency ?? Currency.EUR)}
                 {amountValueWithCommas}
@@ -55,22 +68,22 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
 
               <Status size="large" variant={payoutStatusToStatus(payout.status)} />
             </div>
-            <table className="mt-16 mx-8 w-11/12 overflow-hidden">
-              <tr className="border-none hover:bg-white cursor-default text-sm h-20">
-                <td className="text-grey-text align-top w-1/3">From account</td>
-                <td className="align-top">
+            <div className="mt-16 mx-8 w-11/12">
+              <div className="flex text-sm">
+                <div className="text-grey-text w-1/3">From account</div>
+                <div>
                   <AccountDetails
                     accountName={payout.sourceAccountName}
                     accountNumber={
                       payout.sourceAccountIban ??
                       payout.sourceAccountNumber + ' ' + payout.sourceAccountSortCode
                     }
-                  ></AccountDetails>
-                </td>
-              </tr>
-              <tr className="border-none hover:bg-white cursor-default text-sm h-20">
-                <td className="text-grey-text align-top w-1/3">To account</td>
-                <td className="align-top">
+                  />
+                </div>
+              </div>
+              <div className="flex text-sm mt-8">
+                <div className="text-grey-text w-1/3">To account</div>
+                <div>
                   <AccountDetails
                     accountName={payout.destination?.name}
                     accountNumber={
@@ -79,28 +92,40 @@ const PayoutDetailsModal = ({ payout, open, onDismiss }: PayoutDetailsModalProps
                         ' ' +
                         payout.destination?.identifier?.sortCode
                     }
-                  ></AccountDetails>
-                </td>
-              </tr>
+                  />
+                </div>
+              </div>
               {payout.theirReference && (
-                <tr className="border-none hover:bg-white cursor-default text-sm h-14">
-                  <td className="text-grey-text align-top w-1/3">Their reference</td>
-                  <td className="align-top">{payout.theirReference}</td>
-                </tr>
+                <div className="flex text-sm mt-8">
+                  <div className="text-grey-text w-1/3">Their reference</div>
+                  <div>{payout.theirReference}</div>
+                </div>
               )}
               {payout.yourReference && (
-                <tr className="border-none hover:bg-white cursor-default text-sm h-14">
-                  <td className="text-grey-text align-top w-1/3">Your reference</td>
-                  <td className="align-top">{payout.yourReference}</td>
-                </tr>
+                <div className="flex text-sm mt-8">
+                  <div className="text-grey-text w-1/3">Your reference</div>
+                  <div>{payout.yourReference}</div>
+                </div>
               )}
               {payout.description && (
-                <tr className="border-none hover:bg-white cursor-default text-sm h-16">
-                  <td className="text-grey-text align-top w-1/3">Description</td>
-                  <td className="align-top">{payout.description}</td>
-                </tr>
+                <div className="flex text-sm mt-8">
+                  <div className="text-grey-text w-1/3">Description</div>
+                  <div className="w-2/3">{payout.description}</div>
+                </div>
               )}
-            </table>
+              <div className="flex text-sm mt-8">
+                <div className="text-grey-text w-1/3">Tags</div>
+                <div className="w-2/3">
+                  <TagManager
+                    availableTags={merchantTags}
+                    tags={payout.tags}
+                    onAdded={onTagAdded}
+                    onRemoved={onTagRemoved}
+                    onCreated={onTagCreated}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </SheetContent>
