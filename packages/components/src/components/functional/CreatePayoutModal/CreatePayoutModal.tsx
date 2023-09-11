@@ -4,11 +4,13 @@ import {
   PayoutCreate,
   useCreatePayout,
 } from '@nofrixion/moneymoov'
+import { useEffect, useRef, useState } from 'react'
 
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
 import UICreatePayoutModal from '../../ui/CreatePayoutModal/CreatePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
+import { PayoutApproveForm } from '../../ui/utils/PayoutApproveForm'
 
 export interface CreatePayoutModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -30,6 +32,15 @@ const CreatePayoutModal = ({
 }: CreatePayoutModalProps) => {
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
 
+  const [payoutID, setPayoutID] = useState<string | undefined>(undefined)
+  const approveFormRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    if (payoutID !== undefined) {
+      approveFormRef.current?.submit()
+    }
+  }, [payoutID])
+
   const onCreatePayout = async (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
@@ -37,6 +48,7 @@ const CreatePayoutModal = ({
     theirReference: string,
     yourReference?: string,
     description?: string,
+    createAndApprove?: boolean,
   ) => {
     const payoutCreate: PayoutCreate = {
       accountID: sourceAccount.id,
@@ -55,22 +67,40 @@ const CreatePayoutModal = ({
 
     const response = await createPayout(payoutCreate)
 
-    if (response.error) {
+    if (response.status === 'error') {
       makeToast('error', 'Could not create payout.')
     } else {
-      makeToast('success', 'Payout created.')
+      if (createAndApprove) {
+        setPayoutID(response.data.id)
+      }
+      if (!createAndApprove) {
+        makeToast('success', 'Payout saved for later approval.')
+      } else {
+        makeToast('success', 'Payout created.')
+      }
       onDismiss()
     }
   }
 
   return (
-    <UICreatePayoutModal
-      onDismiss={onDismiss}
-      isOpen={isOpen}
-      onCreatePayout={onCreatePayout}
-      accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
-      beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
-    />
+    <>
+      <UICreatePayoutModal
+        onDismiss={onDismiss}
+        isOpen={isOpen}
+        onCreatePayout={onCreatePayout}
+        accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
+        beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
+      />
+
+      {payoutID && (
+        <PayoutApproveForm
+          payoutId={payoutID}
+          size="x-small"
+          formRef={approveFormRef}
+          className="hidden"
+        />
+      )}
+    </>
   )
 }
 
