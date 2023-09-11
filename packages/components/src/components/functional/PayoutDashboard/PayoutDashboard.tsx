@@ -79,9 +79,7 @@ const PayoutDashboardMain = ({
   const [currencyFilter, setCurrencyFilter] = useState<string | undefined>()
   const [minAmountFilter, setMinAmountFilter] = useState<number | undefined>()
   const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tags, setTags] = useState<FilterableTag[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
   const [selectedPayoutId, setSelectedPayoutId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<PayoutMetrics | undefined>(undefined)
@@ -130,6 +128,14 @@ const PayoutDashboardMain = ({
   )
 
   const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
+
+  const getSelectedTagFilters = () => {
+    if (!tags) {
+      return []
+    }
+
+    return tags.filter((tag) => tag.isSelected).map((tag) => tag.id)
+  }
 
   useEffect(() => {
     if (payoutsResponse?.status === 'success') {
@@ -193,6 +199,11 @@ const PayoutDashboardMain = ({
         break
     }
   }, [status])
+
+  useEffect(() => {
+    const tempTagArray = getSelectedTagFilters()
+    setTagsFilter([...tempTagArray])
+  }, [tags])
 
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {
@@ -282,6 +293,8 @@ const PayoutDashboardMain = ({
         setMaxAmount={setMaxAmountFilter}
         onPayoutClicked={onPayoutRowClicked}
         selectedPayoutId={selectedPayoutId}
+        tags={tags}
+        setTags={setTags}
       />
 
       <PayoutDetailsModal

@@ -11,6 +11,7 @@ import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
 import SearchBar from '../../SearchBar/SearchBar'
 import Tab from '../../Tab/Tab'
+import TagFilter, { FilterableTag } from '../../TagFilter/TagFilter'
 import { Toaster } from '../../Toast/Toast'
 import LayoutWrapper from '../../utils/LayoutWrapper'
 
@@ -40,6 +41,8 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   isLoadingMetrics: boolean
   isInitialState: boolean
   onPayoutClicked?: (paymentRequest: LocalPayout) => void
+  tags: FilterableTag[]
+  setTags: (tags: FilterableTag[]) => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -65,6 +68,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   isInitialState = false,
   onPayoutClicked,
   selectedPayoutId,
+  tags,
+  setTags,
 }) => {
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
@@ -116,6 +121,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
               maxAmount={maxAmount}
               setMaxAmount={setMaxAmount}
             />
+            <TagFilter tags={tags} setTags={setTags} />
           </div>
         </div>
 
