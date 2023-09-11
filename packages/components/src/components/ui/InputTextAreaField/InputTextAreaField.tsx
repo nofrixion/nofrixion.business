@@ -10,6 +10,7 @@ export interface InputTextAreaFieldProps extends React.InputHTMLAttributes<HTMLT
   validation?: (value: string) => string | undefined
   enableQuickValidation?: boolean // If enabled, the validation will be done on every change, not only after blur
   error?: string
+  subText?: string
 }
 const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldProps>(
   (
@@ -22,6 +23,7 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
       value,
       required,
       maxLength,
+      subText,
       ...props
     },
     ref,
@@ -58,8 +60,10 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
               {label}
             </label>
 
-            {required && (
+            {required ? (
               <div className="text-grey-text font-normal text-xs leading-4">REQUIRED</div>
+            ) : (
+              <div className="text-grey-text font-normal text-xs leading-4">OPTIONAL</div>
             )}
           </div>
           <textarea
@@ -73,8 +77,11 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
             {...props}
           />
           {maxLength && (
-            <div className="text-right mt-2 text-grey-text font-normal text-[0.813rem] leading-5">
-              {value?.toString().length}/{maxLength}
+            <div className="mt-2 text-grey-text font-normal text-[0.813rem] leading-5 flex justify-between">
+              {subText && <span>{subText}</span>}
+              <div className="ml-auto">
+                {value?.toString().length}/{maxLength}
+              </div>
             </div>
           )}
         </div>

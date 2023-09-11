@@ -56,7 +56,7 @@ const SelectTrigger = React.forwardRef<
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <Icon name="arrow-down/8" />
+        <Icon name="arrow-down/12" />
       </SelectPrimitive.Icon>
     </div>
     {/* Show sub text only on mobile */}

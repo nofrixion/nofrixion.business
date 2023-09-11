@@ -395,6 +395,11 @@ export const Icons = {
       </defs>
     </SVG>
   ),
+  'arrow-down/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M1 3L6 8L11 3" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
   'inprogress/16': (className: string) => (
     <SVG className={cn(className, 'fill-current stroke-none')} size="16" viewBox="0 -2">
       <g clipPath="url(#clip0_7890_8905)">

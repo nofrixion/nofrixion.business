@@ -219,3 +219,13 @@ export interface LocalAccount {
   identifier: LocalAccountIdentifier
   isDefault: boolean
 }
+
+export interface LocalBeneficiary {
+  id: string
+  merchantID: string
+  yourReference?: string
+  theirReference?: string
+  currency: Currency
+  name: string
+  destination?: LocalCounterparty
+}

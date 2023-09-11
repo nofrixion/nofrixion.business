@@ -1,9 +1,13 @@
 import {
+  Account,
   ApiError,
+  Beneficiary,
   Payout,
   PayoutMetrics,
   PayoutStatus,
   SortDirection,
+  useAccounts,
+  useBeneficiaries,
   useMerchant,
   usePayoutMetrics,
   usePayouts,
@@ -13,11 +17,16 @@ import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout } from '../../../types/LocalTypes'
-import { remotePayoutsToLocal } from '../../../utils/parsers'
+import {
+  remoteAccountsToLocalAccounts,
+  remoteBeneficiariesToLocalBeneficiaries,
+  remotePayoutsToLocal,
+} from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
+import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 
 export interface PayoutDashboardProps {
@@ -58,6 +67,7 @@ const PayoutDashboardMain = ({
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [payouts, setPayouts] = useState<Payout[]>([])
+  const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
   const [localPayouts, setLocalPayouts] = useState<LocalPayout[]>([])
   const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
@@ -67,6 +77,9 @@ const PayoutDashboardMain = ({
     SortDirection.NONE,
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+
+  const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
+  const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<PayoutStatus>(PayoutStatus.All)
@@ -114,6 +127,7 @@ const PayoutDashboardMain = ({
       counterPartyNameSortDirection: counterPartyNameSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
+      status: status,
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -123,6 +137,29 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { data: accountsResponse } = useAccounts({ merchantId }, { apiUrl, authToken: token })
+
+  useEffect(() => {
+    if (accountsResponse?.status === 'success') {
+      setAccounts(accountsResponse.data)
+    } else if (accountsResponse?.status === 'error') {
+      console.error(accountsResponse.error)
+    }
+  }, [accountsResponse])
+
+  const { data: beneficiariesResponse } = useBeneficiaries(
+    { pageNumber: page, pageSize, search: searchFilter, currency: currencyFilter },
+    { apiUrl, authToken: token },
+  )
+
+  useEffect(() => {
+    if (beneficiariesResponse?.status === 'success') {
+      setBeneficiaries(beneficiariesResponse.data.content)
+    } else if (beneficiariesResponse?.status === 'error') {
+      console.error(beneficiariesResponse.error)
+    }
+  }, [beneficiariesResponse])
 
   useEffect(() => {
     if (payoutsResponse?.status === 'success') {
@@ -204,7 +241,7 @@ const PayoutDashboardMain = ({
   }
 
   const onCreatePayout = () => {
-    console.log('Create payout')
+    setCreatePayoutClicked(true)
   }
 
   const onPayoutDetailsModalDismiss = () => {
@@ -279,6 +316,20 @@ const PayoutDashboardMain = ({
         maxAmountFilter={maxAmountFilter}
         tagsFilter={tagsFilter}
       />
+
+      {accounts && (
+        <CreatePayoutModal
+          accounts={remoteAccountsToLocalAccounts(accounts)}
+          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
+          apiUrl={apiUrl}
+          token={token}
+          isOpen={createPayoutClicked}
+          onDismiss={() => {
+            setCreatePayoutClicked(false)
+          }}
+          merchantId={merchantId}
+        />
+      )}
     </div>
   )
 }
