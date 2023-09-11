@@ -56,6 +56,10 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange && onChange(e)
 
+      if (required && value) {
+        setRequiredErrorPrompt(false)
+      }
+
       if (!warningValidation || !warning) {
         return
       }
