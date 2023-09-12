@@ -126,7 +126,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
                 variant={'secondary'}
                 size="big"
                 onClick={handleApproveBatchPayouts}
-                className="w-fit h-10 md:w-full md:h-full space-x-1 transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
                 disabled={isApproveButtonDisabled}
               >
                 {isApproveButtonDisabled ? (
