@@ -81,8 +81,6 @@ const CreatePayoutModal = ({
 
       if (!createAndApprove) {
         makeToast('success', 'Payout saved for later approval.')
-      } else {
-        makeToast('success', 'Payout created.')
       }
 
       if (createAndApprove) {
