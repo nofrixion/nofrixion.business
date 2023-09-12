@@ -196,7 +196,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     onClick={(event) => onPayoutClickedHandler(event, payout)}
                   >
                     {status && status === PayoutStatus.PENDING_APPROVAL && (
-                      <TableCell>
+                      <TableCell onClick={(event) => event.stopPropagation()}>
                         <Checkbox
                           value={selectedPayouts.includes(payout.id)}
                           onChange={(value) => {
