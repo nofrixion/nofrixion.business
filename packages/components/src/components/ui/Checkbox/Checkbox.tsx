@@ -5,7 +5,7 @@ import CheckedIcon from '../../../assets/icons/checked-icon.svg'
 import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 export interface CheckboxProps {
-  label: string
+  label?: string
   description?: string
   infoText?: string
   value: boolean
@@ -22,19 +22,22 @@ const Checkbox = ({ label, description, value, infoText, onChange }: CheckboxPro
         id={id}
         checked={value}
         onCheckedChange={onChange}
+        onClick={(event) => event.stopPropagation()}
       >
         <RadixCheckbox.Indicator className="w-full h-full block">
           <img src={CheckedIcon} alt="Checked icon" className="w-3 h-full m-auto" />
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
 
-      <label className="cursor-pointer pl-3 pr-2 mb-0 -mt-0.5 md:mt-0" htmlFor={id}>
-        {label}
+      {label && (
+        <label className="cursor-pointer pl-3 pr-2 mb-0 -mt-0.5 md:mt-0" htmlFor={id}>
+          {label}
 
-        {description && (
-          <div className="mt-1 text-grey-text font-normal text-xs">{description}</div>
-        )}
-      </label>
+          {description && (
+            <div className="mt-1 text-grey-text font-normal text-xs">{description}</div>
+          )}
+        </label>
+      )}
 
       {infoText && <InfoTooltip content={infoText} />}
     </div>

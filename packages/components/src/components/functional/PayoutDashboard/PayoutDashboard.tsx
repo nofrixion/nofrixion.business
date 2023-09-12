@@ -98,6 +98,7 @@ const PayoutDashboardMain = ({
   const [selectedPayoutId, setSelectedPayoutId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<PayoutMetrics | undefined>(undefined)
   const [firstMetrics, setFirstMetrics] = useState<PayoutMetrics | undefined>()
+  const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -301,6 +302,20 @@ const PayoutDashboardMain = ({
 
   const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
+  const addPayoutForApproval = (payoutId: string) => {
+    if (!selectedPayouts.includes(payoutId)) {
+      setSelectedPayouts((prev) => [...prev, payoutId])
+    }
+  }
+
+  const removePayoutForApproval = (payoutId: string) => {
+    setSelectedPayouts((prev) => prev.filter((id) => id !== payoutId))
+  }
+
+  useEffect(() => {
+    console.log('selected payouts', selectedPayouts)
+  }, [selectedPayouts])
+
   return (
     <div>
       <UIPayoutDashboard
@@ -337,6 +352,10 @@ const PayoutDashboardMain = ({
         setCreatedSortDirection={setCreatedSortDirection}
         amountSortDirection={amountSortDirection}
         setAmountSortDirection={setAmountSortDirection}
+        status={status}
+        onAddPayoutForApproval={addPayoutForApproval}
+        onRemovePayoutForApproval={removePayoutForApproval}
+        selectedPayouts={selectedPayouts}
       />
 
       <PayoutDetailsModal

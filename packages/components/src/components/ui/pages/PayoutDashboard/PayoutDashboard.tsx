@@ -46,6 +46,10 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   setCreatedSortDirection?: (direction: SortDirection) => void
   amountSortDirection: SortDirection
   setAmountSortDirection?: (direction: SortDirection) => void
+  status: PayoutStatus
+  onAddPayoutForApproval: (payoutId: string) => void
+  onRemovePayoutForApproval: (payoutId: string) => void
+  selectedPayouts: string[]
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -77,6 +81,10 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   setCreatedSortDirection,
   amountSortDirection,
   setAmountSortDirection,
+  status,
+  onAddPayoutForApproval,
+  onRemovePayoutForApproval,
+  selectedPayouts,
 }) => {
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
@@ -101,7 +109,22 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
       <div className="font-inter bg-main-grey text-default-text h-full">
         <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
           <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Payouts</span>
-          <div>
+          <div className="flex space-x-4">
+            {selectedPayouts && selectedPayouts.length > 1 && (
+              <Button
+                variant={'secondary'}
+                size="big"
+                onClick={() => {
+                  console.log('approve payouts', selectedPayouts)
+                }}
+                className="w-fit h-10 md:w-full md:h-full space-x-1 transition-all ease-in-out duration-200"
+              >
+                <Icon name="pending-approval/16" />
+                <span className="hidden md:inline-block">
+                  Authorise {selectedPayouts.length} pending
+                </span>
+              </Button>
+            )}
             <Button size="big" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
               <span className="hidden md:inline-block">Create payout</span>
               <Icon name="add/16" className="md:hidden" />
@@ -207,6 +230,10 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             isLoading={isLoading}
             onPayoutClicked={onPayoutClicked}
             selectedPayoutId={selectedPayoutId}
+            status={status}
+            onAddPayoutForApproval={onAddPayoutForApproval}
+            onRemovePayoutForApproval={onRemovePayoutForApproval}
+            selectedPayouts={selectedPayouts}
           />
         </div>
 
