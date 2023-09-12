@@ -103,7 +103,7 @@ const Status: React.FC<StatusProps> = ({
         : variant === 'inprogress'
         ? 'in progress'
         : variant === 'pending_approval'
-        ? 'pending approval'
+        ? 'pending'
         : variant}
     </span>
   </div>

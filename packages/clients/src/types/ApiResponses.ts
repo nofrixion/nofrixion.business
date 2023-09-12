@@ -382,3 +382,8 @@ export type Beneficiary = {
 }
 
 export type BeneficiaryPageResponse = PageResponse<Beneficiary>
+
+export type BatchPayout = {
+  id: string
+  payouts: Payout[]
+}
