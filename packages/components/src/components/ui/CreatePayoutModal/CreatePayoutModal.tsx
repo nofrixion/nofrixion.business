@@ -195,26 +195,25 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         description,
         createAndApprove,
       )
-      setIsCreateAndApproveButtonDisabled(false)
-      setIsCreatePayoutButtonDisabled(false)
+      resetFields()
     }
   }
   const resetFields = () => {
-    setPayoutAmount('')
-    setTheirReference('')
-    setYourReference('')
-    setDescription('')
-    setDestinationAccountName('')
-    setDestinationAccountIBAN('')
-    setDestinationAccountNumber('')
-    setDestinationAccountSortCode('')
+    setPayoutAmount(undefined)
+    setTheirReference(undefined)
+    setYourReference(undefined)
+    setDescription(undefined)
+    setDestinationAccountName(undefined)
+    setDestinationAccountIBAN(undefined)
+    setDestinationAccountNumber(undefined)
+    setDestinationAccountSortCode('undefined')
     setAddManuallySelected(false)
     setSelectedBeneficiary(undefined)
     setDestinationAccountRequiredPrompt(false)
-    setAmountValidationErrorMessage('')
-    setAccountValidationErrorMessage('')
-    setBeneficiaryValidationErrorMessage('')
-    setFormError('')
+    setAmountValidationErrorMessage(undefined)
+    setAccountValidationErrorMessage(undefined)
+    setBeneficiaryValidationErrorMessage(undefined)
+    setFormError(undefined)
     setCreatePayoutClicked(false)
     setIsCreatePayoutButtonDisabled(false)
     setIsCreateAndApproveButtonDisabled(false)
@@ -222,7 +221,6 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
-      resetFields()
       onDismiss()
     }
   }
