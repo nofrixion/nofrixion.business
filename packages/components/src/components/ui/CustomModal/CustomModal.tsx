@@ -1,8 +1,9 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import * as Dialog from '@radix-ui/react-dialog'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
 
 import { cn } from '../../../utils'
-import { Button } from '../../ui/atoms'
+import { Button, Icon } from '../../ui/atoms'
 import Checkbox from '../Checkbox/Checkbox'
 
 export interface CustomModalProps extends BaseModalProps {
@@ -56,91 +57,77 @@ const CustomModal = ({
   }
 
   return (
-    <Transition appear show={open} as={Fragment}>
-      <Dialog as="div" onClose={handleOnDismiss}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 overflow-y-auto z-50">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+    <Dialog.Root open={open}>
+      <AnimatePresence>
+        {open && (
+          <Dialog.Portal forceMount>
+            <Dialog.Overlay forceMount>
+              <motion.div
+                className="fixed inset-0 bg-black bg-opacity-25 z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </Dialog.Overlay>
+            <Dialog.Content
+              forceMount
+              className="fixed top-[50%] left-[50%] w-full max-w-md translate-x-[-50%] translate-y-[-50%] z-50"
+              onEscapeKeyDown={handleOnDismiss}
+              onInteractOutside={handleOnDismiss}
             >
-              <Dialog.Panel className="flex flex-col w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
-                <button className="ml-auto mt-6 mr-6" onClick={handleOnDismiss}>
-                  <svg
-                    className="w-4 h-4 transition stroke-control-grey hover:stroke-control-grey-hover"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 15"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="flex flex-col min-h-full justify-center overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title asChild>
+                    <h3 className="text-2xl font-medium leading-8 md:leading-6 p-6 md:p-12 md:pt-2 mt-6">
+                      {title}
+                    </h3>
+                  </Dialog.Title>
+                  <div className="px-6 md:px-12">{children}</div>
+                  <div
+                    className={cn(
+                      buttonRowClassName,
+                      'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
+                    )}
                   >
-                    <path
-                      d="M14.6667 14.3333L8 7.66665L14.6667 1"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M1.33335 0.999944L8 7.6666L1.33335 14.3333"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-                <Dialog.Title
-                  as="h3"
-                  className="text-2xl font-medium leading-8 md:leading-6 p-6 md:p-12 md:pt-2"
-                >
-                  {title}
-                </Dialog.Title>
-                <div className="px-6 md:px-12">{children}</div>
+                    <div>
+                      <Checkbox
+                        label="Use as my default"
+                        value={isDefaultChecked}
+                        onChange={setIsDefaultChecked}
+                      />
+                    </div>
 
-                <div
-                  className={cn(
-                    buttonRowClassName,
-                    'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
-                  )}
-                >
-                  <div>
-                    <Checkbox
-                      label="Use as my default"
-                      value={isDefaultChecked}
-                      onChange={setIsDefaultChecked}
-                    />
+                    <Button
+                      variant="primaryDark"
+                      size="medium"
+                      onClick={onApplyClicked}
+                      disabled={!onApplyEnabled}
+                      className="w-full md:w-auto px-16"
+                    >
+                      Apply
+                    </Button>
                   </div>
-
-                  <Button
-                    variant="primaryDark"
-                    size="medium"
-                    onClick={onApplyClicked}
-                    disabled={!onApplyEnabled}
-                    className="w-full md:w-auto px-16"
-                  >
-                    Apply
-                  </Button>
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+                <Dialog.Close asChild>
+                  <button className="absolute top-0 right-0 mt-6 mr-6" onClick={handleOnDismiss}>
+                    <Icon
+                      name="close/16"
+                      className="w-4 h-4 transition stroke-control-grey hover:stroke-control-grey-hover"
+                    />
+                  </button>
+                </Dialog.Close>
+              </motion.div>
+            </Dialog.Content>
+          </Dialog.Portal>
+        )}
+      </AnimatePresence>
+    </Dialog.Root>
   )
 }
 
