@@ -2,11 +2,13 @@ import { Pagination, PayoutMetrics, PayoutStatus, SortDirection } from '@nofrixi
 import * as Tabs from '@radix-ui/react-tabs'
 import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
+import { Loader } from '../../Loader/Loader'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
 import Tab from '../../Tab/Tab'
@@ -88,6 +90,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   selectedPayouts,
   onApproveBatchPayouts,
 }) => {
+  const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
+
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
   /// unless there are no payouts at all for the specified status.
@@ -106,6 +110,11 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
     }
   }
 
+  const handleApproveBatchPayouts = async () => {
+    setIsApproveButtonDisabled(true)
+    onApproveBatchPayouts()
+  }
+
   return (
     <>
       <div className="font-inter bg-main-grey text-default-text h-full">
@@ -116,13 +125,20 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
               <Button
                 variant={'secondary'}
                 size="big"
-                onClick={onApproveBatchPayouts}
-                className="w-fit h-10 md:w-full md:h-full space-x-1 transition-all ease-in-out duration-200"
+                onClick={handleApproveBatchPayouts}
+                className="w-fit h-10 md:w-full md:h-full space-x-1 transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                disabled={isApproveButtonDisabled}
               >
-                <Icon name="authorise/16" />
-                <span className="hidden md:inline-block">
-                  Authorise {selectedPayouts.length} pending
-                </span>
+                {isApproveButtonDisabled ? (
+                  <Loader className="h-6 w-6 mx-20" />
+                ) : (
+                  <>
+                    <Icon name="authorise/16" />
+                    <span className="hidden md:inline-block">
+                      Authorise {selectedPayouts.length} pending
+                    </span>
+                  </>
+                )}
               </Button>
             )}
             <Button size="big" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
