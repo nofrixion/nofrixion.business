@@ -33,6 +33,7 @@ const CreatePayoutModal = ({
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
 
   const [payoutID, setPayoutID] = useState<string | undefined>(undefined)
+
   const approveFormRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
@@ -40,6 +41,10 @@ const CreatePayoutModal = ({
       approveFormRef.current?.submit()
     }
   }, [payoutID])
+
+  const sleep = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
 
   const onCreatePayout = async (
     sourceAccount: LocalAccount,
@@ -73,11 +78,19 @@ const CreatePayoutModal = ({
       if (createAndApprove) {
         setPayoutID(response.data.id)
       }
+
       if (!createAndApprove) {
         makeToast('success', 'Payout saved for later approval.')
       } else {
         makeToast('success', 'Payout created.')
       }
+
+      if (createAndApprove) {
+        await sleep(3000).then(() => {
+          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+        })
+      }
+
       onDismiss()
     }
   }
