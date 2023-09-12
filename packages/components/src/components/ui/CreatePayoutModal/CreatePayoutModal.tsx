@@ -23,6 +23,7 @@ export interface CreatePayoutModalProps {
     theirReference: string,
     yourReference?: string,
     description?: string,
+    createAndApprove?: boolean,
   ) => Promise<void>
   onDismiss: () => void
   accounts: LocalAccount[]
@@ -38,6 +39,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   isOpen,
 }) => {
   const [isCreatePayoutButtonDisabled, setIsCreatePayoutButtonDisabled] = useState(false)
+  const [isCreateAndApproveButtonDisabled, setIsCreateAndApproveButtonDisabled] = useState(false)
   const [amountValidationErrorMessage, setAmountValidationErrorMessage] = useState<
     string | undefined
   >(undefined)
@@ -157,12 +159,16 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     return validationFailed
   }
 
-  const onCreatePayoutClick = async () => {
+  const onCreatePayoutClick = async (createAndApprove?: boolean) => {
     setCreatePayoutClicked(true)
     if (handleValidation()) {
       return
     } else {
-      setIsCreatePayoutButtonDisabled(true)
+      if (!createAndApprove) {
+        setIsCreatePayoutButtonDisabled(true)
+      } else {
+        setIsCreateAndApproveButtonDisabled(true)
+      }
       let parsedAmount = Number(payoutAmount)
       parsedAmount = parsedAmount ?? 0
 
@@ -187,33 +193,34 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         theirReference!,
         yourReference,
         description,
+        createAndApprove,
       )
-      setIsCreatePayoutButtonDisabled(false)
+      resetFields()
     }
   }
   const resetFields = () => {
-    setPayoutAmount('')
-    setTheirReference('')
-    setYourReference('')
-    setDescription('')
-    setDestinationAccountName('')
-    setDestinationAccountIBAN('')
-    setDestinationAccountNumber('')
-    setDestinationAccountSortCode('')
+    setPayoutAmount(undefined)
+    setTheirReference(undefined)
+    setYourReference(undefined)
+    setDescription(undefined)
+    setDestinationAccountName(undefined)
+    setDestinationAccountIBAN(undefined)
+    setDestinationAccountNumber(undefined)
+    setDestinationAccountSortCode('undefined')
     setAddManuallySelected(false)
     setSelectedBeneficiary(undefined)
     setDestinationAccountRequiredPrompt(false)
-    setAmountValidationErrorMessage('')
-    setAccountValidationErrorMessage('')
-    setBeneficiaryValidationErrorMessage('')
-    setFormError('')
+    setAmountValidationErrorMessage(undefined)
+    setAccountValidationErrorMessage(undefined)
+    setBeneficiaryValidationErrorMessage(undefined)
+    setFormError(undefined)
     setCreatePayoutClicked(false)
     setIsCreatePayoutButtonDisabled(false)
+    setIsCreateAndApproveButtonDisabled(false)
   }
 
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
-      resetFields()
       onDismiss()
     }
   }
@@ -577,13 +584,26 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     variant="primaryDark"
                     size="big"
                     className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                    onClick={onCreatePayoutClick}
+                    onClick={() => onCreatePayoutClick(true)}
+                    disabled={isCreateAndApproveButtonDisabled}
+                  >
+                    {isCreateAndApproveButtonDisabled ? (
+                      <Loader className="h-6 w-6 mx-auto" />
+                    ) : (
+                      <span>Create and approve</span>
+                    )}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="big"
+                    className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed mt-4"
+                    onClick={() => onCreatePayoutClick(false)}
                     disabled={isCreatePayoutButtonDisabled}
                   >
                     {isCreatePayoutButtonDisabled ? (
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
-                      <span>Create and approve</span>
+                      <span>Save for later approval</span>
                     )}
                   </Button>
                 </div>
