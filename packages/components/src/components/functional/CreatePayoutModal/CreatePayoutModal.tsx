@@ -84,7 +84,7 @@ const CreatePayoutModal = ({
       }
 
       if (createAndApprove) {
-        await sleep(3000).then(() => {
+        await sleep(10000).then(() => {
           makeToast('error', 'Could not redirect to approve payout. Please try again.')
         })
       }
