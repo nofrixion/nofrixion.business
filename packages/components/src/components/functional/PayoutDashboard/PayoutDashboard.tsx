@@ -3,6 +3,7 @@ import {
   ApiError,
   Beneficiary,
   Payout,
+  PayoutClient,
   PayoutMetrics,
   PayoutStatus,
   SortDirection,
@@ -312,9 +313,20 @@ const PayoutDashboardMain = ({
     setSelectedPayouts((prev) => prev.filter((id) => id !== payoutId))
   }
 
-  useEffect(() => {
-    console.log('selected payouts', selectedPayouts)
-  }, [selectedPayouts])
+  const onApproveBatchPayouts = async () => {
+    console.log('Approving payouts', selectedPayouts)
+
+    const client = new PayoutClient({ apiUrl, authToken: token })
+
+    const response = await client.createBatch(selectedPayouts.map((id) => id))
+
+    if (response.status === 'success') {
+      const batchId = response.data.id
+      console.log('Batch created', batchId)
+    } else {
+      makeToast('error', 'Error creating payout batch.')
+    }
+  }
 
   return (
     <div>
@@ -356,6 +368,7 @@ const PayoutDashboardMain = ({
         onAddPayoutForApproval={addPayoutForApproval}
         onRemovePayoutForApproval={removePayoutForApproval}
         selectedPayouts={selectedPayouts}
+        onApproveBatchPayouts={onApproveBatchPayouts}
       />
 
       <PayoutDetailsModal

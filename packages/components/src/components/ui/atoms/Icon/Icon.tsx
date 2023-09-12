@@ -421,6 +421,31 @@ export const Icons = {
       </defs>
     </SVG>
   ),
+  'authorise/16': (className: string) => (
+    <SVG className={cn(className, 'fill-none stroke-none')} size="16" viewBox="0 -2">
+      <g id="16px/Authorise" clipPath="url(#clip0_8090_3518)">
+        <path
+          id="Vector"
+          d="M14.4533 14.5C14.4533 14.7643 14.3487 15.0178 14.1623 15.2052C13.9759 15.3926 13.723 15.4986 13.4587 15.5H2.52C2.2557 15.4986 2.00272 15.3926 1.81633 15.2052C1.62995 15.0178 1.52533 14.7643 1.52533 14.5V13.5H14.4533V14.5Z"
+          stroke="#454D54"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M12.9613 9.49963H10.9726C9.6753 9.49963 9.28664 8.65162 9.28664 7.67362C9.28664 6.04296 10.908 5.05496 10.908 3.43429C10.908 2.66021 10.6005 1.91784 10.0531 1.37048C9.50576 0.823127 8.76338 0.515625 7.9893 0.515625C7.21523 0.515625 6.47285 0.823127 5.9255 1.37048C5.37814 1.91784 5.07064 2.66021 5.07064 3.43429C5.07064 5.05496 6.69197 6.04296 6.69197 7.67362C6.69197 8.65162 6.3033 9.49963 5.00597 9.49963H2.51997C0.119971 9.49963 0.115304 13.4996 1.1793 13.4996H14.8C15.8346 13.4996 16.088 9.49963 12.9613 9.49963Z"
+          stroke="#454D54"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_8090_3518">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons

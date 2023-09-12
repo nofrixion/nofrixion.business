@@ -50,6 +50,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onAddPayoutForApproval: (payoutId: string) => void
   onRemovePayoutForApproval: (payoutId: string) => void
   selectedPayouts: string[]
+  onApproveBatchPayouts: () => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -85,6 +86,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   onAddPayoutForApproval,
   onRemovePayoutForApproval,
   selectedPayouts,
+  onApproveBatchPayouts,
 }) => {
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
@@ -114,12 +116,10 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
               <Button
                 variant={'secondary'}
                 size="big"
-                onClick={() => {
-                  console.log('approve payouts', selectedPayouts)
-                }}
+                onClick={onApproveBatchPayouts}
                 className="w-fit h-10 md:w-full md:h-full space-x-1 transition-all ease-in-out duration-200"
               >
-                <Icon name="pending-approval/16" />
+                <Icon name="authorise/16" />
                 <span className="hidden md:inline-block">
                   Authorise {selectedPayouts.length} pending
                 </span>
