@@ -1,6 +1,6 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalAccountIdentifierType } from '../../../types/LocalEnums'
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
@@ -71,22 +71,32 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
 
-  const singleCurrency =
-    accounts
-      .map((item) => item.currency)
-      .filter((value, index, self) => self.indexOf(value) === index).length === 1
-      ? accounts
-          .map((item) => item.currency)
-          .filter((value, index, self) => self.indexOf(value) === index)[0]
-      : undefined
+  useEffect(() => {
+    if (!isOpen) {
+      resetFields()
+    }
+  }, [isOpen])
 
-  const [currency, setCurrency] = useState<Currency>(
-    singleCurrency != undefined ? singleCurrency : Currency.EUR,
-  )
+  const [currency, setCurrency] = useState<Currency>()
 
-  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>(
-    accounts?.filter((x) => x.currency === currency)[0],
-  )
+  useEffect(() => {
+    const singleCurrency =
+      accounts
+        .map((item) => item.currency)
+        .filter((value, index, self) => self.indexOf(value) === index).length === 1
+        ? accounts
+            .map((item) => item.currency)
+            .filter((value, index, self) => self.indexOf(value) === index)[0]
+        : undefined
+
+    setCurrency(singleCurrency != undefined ? singleCurrency : Currency.EUR)
+  }, [accounts])
+
+  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>()
+
+  useEffect(() => {
+    setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
+  }, [accounts, currency])
 
   const theirReferenceMaxLength = currency === Currency.EUR ? 139 : 17
 
@@ -105,7 +115,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
   const handleAmountOnChange = (value: string) => {
     setPayoutAmount(value)
-    validateAmount(value, selectedAccount)
+    selectedAccount && validateAmount(value, selectedAccount)
   }
 
   const handleAccountOnChange = (value: string) => {
@@ -149,13 +159,43 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     } else {
       setFormError(undefined)
     }
-    if (
-      amountValidationErrorMessage ||
-      accountValidationErrorMessage ||
-      beneficiaryValidationErrorMessage
-    ) {
+
+    const validateAccountNameMessage = onValidateDestinationAccountName(
+      destinationAccountName ?? '',
+    )
+
+    if (validateAccountNameMessage) {
       validationFailed = true
     }
+
+    const validateAccountIBANMessage = onValidateDestinationAccountIBAN(
+      destinationAccountIBAN ?? '',
+    )
+
+    if (validateAccountIBANMessage) {
+      validationFailed = true
+    }
+
+    const validateTheirReferenceMessage = onValidateTheirReference(theirReference ?? '')
+
+    if (validateTheirReferenceMessage) {
+      validationFailed = true
+    }
+
+    const validateYourReferenceMessage = onValidateYourReference(yourReference ?? '')
+
+    if (validateYourReferenceMessage) {
+      validationFailed = true
+    }
+
+    if (selectedBeneficiary && selectedBeneficiary.currency !== currency) {
+      validationFailed = true
+    }
+
+    if (selectedAccount && selectedAccount.availableBalance < Number(payoutAmount)) {
+      validationFailed = true
+    }
+
     return validationFailed
   }
 
@@ -179,15 +219,15 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
           accountNumber: destinationAccountNumber ?? '',
           sortCode: destinationAccountSortCode ?? '',
           type:
-            currency === Currency.EUR
+            currency && currency === Currency.EUR
               ? LocalAccountIdentifierType.IBAN
               : LocalAccountIdentifierType.SCAN,
-          currency: currency,
+          currency: currency ? currency : Currency.EUR,
         },
       }
 
       await onCreatePayout(
-        selectedAccount,
+        selectedAccount!,
         counterParty,
         parsedAmount,
         theirReference!,
@@ -195,7 +235,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         description,
         createAndApprove,
       )
-      resetFields()
+
+      setIsCreatePayoutButtonDisabled(false)
+      setIsCreateAndApproveButtonDisabled(false)
     }
   }
   const resetFields = () => {
@@ -206,7 +248,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     setDestinationAccountName(undefined)
     setDestinationAccountIBAN(undefined)
     setDestinationAccountNumber(undefined)
-    setDestinationAccountSortCode('undefined')
+    setDestinationAccountSortCode(undefined)
     setAddManuallySelected(false)
     setSelectedBeneficiary(undefined)
     setDestinationAccountRequiredPrompt(false)
@@ -238,7 +280,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     const ibanReplaceRegex = /^[a-zA-Z]{2}[0-9]{2}([a-zA-Z0-9]){11,30}$/g
 
     if (destinationAccountIBAN.length > 0 && !ibanReplaceRegex.test(destinationAccountIBAN)) {
-      return `Invalid IBAN. Please check your IBAN.`
+      return `The IBAN is not valid. Please check for incorrectly entered characters.`
     }
 
     const bank = destinationAccountIBAN.slice(4) + destinationAccountIBAN.slice(0, 4)
@@ -264,7 +306,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
 
     if (checksum !== 1) {
-      return `Invalid IBAN. Please enter a valid IBAN.`
+      return `The IBAN is not valid. Please check for incorrectly entered characters.`
     }
   }
 
@@ -350,12 +392,13 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   <div className="text-left ">
                     <div>
                       <InputAmountField
-                        currency={currency}
+                        currency={currency ?? Currency.EUR}
                         onCurrencyChange={onCurrencyChange}
-                        allowCurrencyChange={singleCurrency ? false : true}
+                        allowCurrencyChange={true}
                         value={payoutAmount ?? ''}
                         onChange={handleAmountOnChange}
                         required
+                        formSubmitted={createPayoutClicked}
                       ></InputAmountField>
                     </div>
                   </div>
@@ -446,7 +489,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                             <InputTextField
                               label="Account name"
                               maxLength={40}
-                              value={destinationAccountName}
+                              value={destinationAccountName ?? ''}
                               onChange={(e) => setDestinationAccountName(e.target.value)}
                               warningValidation={onValidateDestinationAccountName}
                               placeholder="The person or company that owns the account"
@@ -466,7 +509,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                               <div className="text-left mt-2">
                                 <InputTextField
                                   label="Account IBAN"
-                                  value={destinationAccountIBAN}
+                                  value={destinationAccountIBAN ?? ''}
                                   onChange={(e) =>
                                     setDestinationAccountIBAN(e.target.value.toUpperCase())
                                   }
@@ -492,7 +535,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                   variant="numeric"
                                   label="Account number"
                                   maxLength={8}
-                                  value={destinationAccountNumber}
+                                  value={destinationAccountNumber ?? ''}
                                   onChange={(e) => setDestinationAccountNumber(e.target.value)}
                                   placeholder='e.g. "12345678"'
                                   required
@@ -505,7 +548,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                   variant="numeric"
                                   label="Account sort code"
                                   maxLength={6}
-                                  value={destinationAccountSortCode}
+                                  value={destinationAccountSortCode ?? ''}
                                   onChange={(e) => setDestinationAccountSortCode(e.target.value)}
                                   placeholder='e.g. "123456"'
                                   required
@@ -538,7 +581,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       <InputTextField
                         label="Their reference"
                         maxLength={currency === Currency.EUR ? 139 : 17}
-                        value={theirReference}
+                        value={theirReference ?? ''}
                         onChange={(e) => setTheirReference(e.target.value)}
                         warningValidation={onValidateTheirReference}
                         subText="This is what the recipient is going to see."
@@ -553,7 +596,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       <InputTextField
                         label="Your reference"
                         maxLength={50}
-                        value={yourReference}
+                        value={yourReference ?? ''}
                         onChange={(e) => setYourReference(e.target.value)}
                         warningValidation={onValidateYourReference}
                         subText="For internal use only."
@@ -566,7 +609,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       <InputTextAreaField
                         label="Description"
                         maxLength={140}
-                        value={description}
+                        value={description ?? ''}
                         onChange={(e) => setDescription(e.target.value)}
                         validation={onValidateYourReference}
                         subText="For internal use only."
