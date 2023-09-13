@@ -77,9 +77,6 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
       {requiredErrorPrompt && (
         <div className="text-[#F32448] font-normal text-xs leading-4 text-right mb-2">REQUIRED</div>
       )}
-      {!required && (
-        <div className="text-grey-text font-normal text-xs leading-4 text-right mb-2">OPTIONAL</div>
-      )}
       <div className="flex w-full h-12 border border-border-grey rounded justify-between">
         <div className="flex relative w-full">
           <span className="flex absolute inset-y-0 pointer-events-none items-center ml-3 font-normal text-sm text-grey-text">
