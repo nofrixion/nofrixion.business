@@ -1046,6 +1046,14 @@ export const mockPayouts: LocalPayout[] = [
     status: PayoutStatus.PROCESSED,
     theirReference: 'refe&12',
     yourReference: 'internal reference ',
+    tags: [
+      {
+        id: '1',
+        name: 'Logo Design',
+        description: 'Logo Design',
+        merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+      },
+    ],
   },
   {
     accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
@@ -1078,6 +1086,14 @@ export const mockPayouts: LocalPayout[] = [
     status: PayoutStatus.QUEUED,
     theirReference: 'refe&12',
     yourReference: 'internal reference ',
+    tags: [
+      {
+        id: '2',
+        name: 'Web Design',
+        description: 'Web Design',
+        merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+      },
+    ],
   },
   {
     accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
@@ -1110,6 +1126,14 @@ export const mockPayouts: LocalPayout[] = [
     status: PayoutStatus.FAILED,
     theirReference: 'refe&12',
     yourReference: 'internal reference ',
+    tags: [
+      {
+        id: '3',
+        name: 'App Development',
+        description: 'App Development',
+        merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+      },
+    ],
   },
   {
     accountID: '0678bfaa-4683-4dd9-8be8-cada724688d7',
@@ -1142,6 +1166,14 @@ export const mockPayouts: LocalPayout[] = [
     status: PayoutStatus.PENDING_APPROVAL,
     theirReference: 'refe&12',
     yourReference: 'internal reference ',
+    tags: [
+      {
+        id: '4',
+        name: 'UI Design',
+        description: 'UI Design',
+        merchantID: 'c544ae7e-e7f8-4482-552e-08daf005c17b',
+      },
+    ],
   },
 ]
 
