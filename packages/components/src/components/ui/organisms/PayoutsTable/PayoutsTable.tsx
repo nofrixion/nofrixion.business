@@ -1,4 +1,5 @@
 import { Pagination, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
+import { useEffect, useState } from 'react'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
@@ -12,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '../../atoms/Table/Table'
+import Checkbox from '../../Checkbox/Checkbox'
 import Chip from '../../Chip/Chip'
 import ColumnHeader from '../../ColumnHeader/ColumnHeader'
 import { Status } from '../../molecules'
@@ -30,6 +32,10 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   onPayoutClicked?: (payout: LocalPayout) => void
   isLoading?: boolean
   selectedPayoutId: string | undefined
+  status: PayoutStatus
+  onAddPayoutForApproval: (payoutId: string) => void
+  onRemovePayoutForApproval: (payoutId: string) => void
+  selectedPayouts: string[]
 }
 
 const PayoutsTable: React.FC<PayoutsTableProps> = ({
@@ -40,14 +46,55 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   onPayoutClicked,
   isLoading = false,
   selectedPayoutId,
+  status,
+  onAddPayoutForApproval,
+  onRemovePayoutForApproval,
+  selectedPayouts,
   ...props
 }) => {
+  const [allPayoutsSelected, setAllPayoutsSelected] = useState(false)
+
   const onPayoutClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
     payout: LocalPayout,
   ) => {
     onPayoutClicked && onPayoutClicked(payout)
   }
+
+  const togglePayoutApproveStatus = (payoutId: string, checked: boolean) => {
+    if (checked) {
+      onAddPayoutForApproval(payoutId)
+    } else {
+      setAllPayoutsSelected(false)
+      onRemovePayoutForApproval(payoutId)
+    }
+  }
+
+  const toggleAllPayoutApproveStatuses = (checked: boolean) => {
+    if (checked) {
+      setAllPayoutsSelected(true)
+
+      payouts.map((payout) => {
+        onAddPayoutForApproval(payout.id)
+      })
+    } else {
+      setAllPayoutsSelected(false)
+      payouts.map((payout) => {
+        onRemovePayoutForApproval(payout.id)
+      })
+    }
+  }
+
+  useEffect(() => {
+    let allSelected = true
+    payouts.map((payout) => {
+      if (!selectedPayouts.includes(payout.id)) {
+        allSelected = false
+        return
+      }
+    })
+    setAllPayoutsSelected(allSelected)
+  }, [selectedPayouts, payouts])
 
   return (
     <div {...props}>
@@ -56,6 +103,16 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
           <Table {...props}>
             <TableHeader>
               <TableRow className="hover:bg-transparent cursor-auto">
+                {status && status === PayoutStatus.PENDING_APPROVAL && (
+                  <TableHead className="w-0">
+                    <Checkbox
+                      value={allPayoutsSelected}
+                      onChange={(value) => {
+                        toggleAllPayoutApproveStatuses(value)
+                      }}
+                    />
+                  </TableHead>
+                )}
                 <TableHead className="w-[150px]">
                   <ColumnHeader
                     label={'Status'}
@@ -132,12 +189,25 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     className={cn(
                       'cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]',
                       {
-                        'bg-[#F6F8F9] border-[#E1E5EA]': selectedPayoutId === payout.id,
+                        'bg-[#F6F8F9] border-[#E1E5EA]':
+                          selectedPayoutId === payout.id ||
+                          (selectedPayouts.includes(payout.id) &&
+                            status === PayoutStatus.PENDING_APPROVAL),
                       },
                     )}
                     key={`${payout}-${index}`}
                     onClick={(event) => onPayoutClickedHandler(event, payout)}
                   >
+                    {status && status === PayoutStatus.PENDING_APPROVAL && (
+                      <TableCell onClick={(event) => event.stopPropagation()}>
+                        <Checkbox
+                          value={selectedPayouts.includes(payout.id)}
+                          onChange={(value) => {
+                            togglePayoutApproveStatus(payout.id, value)
+                          }}
+                        />
+                      </TableCell>
+                    )}
                     <TableCell className="w-48">
                       <Status size="small" variant={payoutStatusToStatus(payout.status)} />
                     </TableCell>
@@ -162,7 +232,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </TableCell>
                     <TableCell className="text-center w-0">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                        <PayoutApproveForm payoutId={payout.id} size="x-small" />
+                        <PayoutApproveForm id={payout.id} size="x-small" />
                       )}
                     </TableCell>
                   </TableRow>

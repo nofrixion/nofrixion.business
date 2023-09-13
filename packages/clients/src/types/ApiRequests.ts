@@ -86,3 +86,7 @@ export type PayoutCreate = {
   allowIncomplete: boolean
   tagIds?: string[]
 }
+
+export type BatchApprove = {
+  payoutIDs: string[]
+}

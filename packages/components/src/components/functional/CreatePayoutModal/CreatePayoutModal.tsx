@@ -105,7 +105,7 @@ const CreatePayoutModal = ({
 
       {payoutID && (
         <PayoutApproveForm
-          payoutId={payoutID}
+          id={payoutID}
           size="x-small"
           formRef={approveFormRef}
           className="hidden"

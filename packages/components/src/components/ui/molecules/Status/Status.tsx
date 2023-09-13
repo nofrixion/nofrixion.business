@@ -17,6 +17,7 @@ const statusVariants = cva(
         pending_approval: ['bg-warning-yellow', 'text-[#663300]'],
         failed: ['bg-[#FEE7EB]', 'text-[#4D000D]'],
         inprogress: ['bg-main-grey'],
+        authorise: ['text-[#454D54]'],
       },
       size: {
         small: ['text-xs', 'font-normal', 'py-1', 'px-2', 'h-fit'],
@@ -40,6 +41,7 @@ const iconVariants = cva('w-auto mb-0.5', {
       pending_approval: ['text-[#B25900]'],
       failed: ['text-[#F32448]'],
       inprogress: ['text-grey-text'],
+      authorise: ['text-[#454D54]'],
     },
   },
   defaultVariants: {
@@ -85,6 +87,10 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     small: 'inprogress/12',
     large: 'inprogress/16',
   },
+  authorise: {
+    small: 'pending-approval/12',
+    large: 'pending-approval/16',
+  },
 }
 
 const Status: React.FC<StatusProps> = ({
@@ -103,7 +109,7 @@ const Status: React.FC<StatusProps> = ({
         : variant === 'inprogress'
         ? 'in progress'
         : variant === 'pending_approval'
-        ? 'pending approval'
+        ? 'pending'
         : variant}
     </span>
   </div>
