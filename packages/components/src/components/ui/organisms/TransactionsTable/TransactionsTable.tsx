@@ -85,7 +85,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
                   <TableCell>
                     {renderBasicInfoLayout(
                       format(transaction.date, 'MMM dd, yyyy'),
-                      format(transaction.date, 'hh:mm'),
+                      format(transaction.date, 'H:mm'),
                       'w-[100px] truncate',
                     )}
                   </TableCell>
