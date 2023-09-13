@@ -185,6 +185,19 @@ export const Icons = {
       />
     </SVG>
   ),
+  'qr/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path d="M6.66667 6.66667H4V4H6.66667V6.66667Z" />
+      <path d="M12 6.66667H9.33331V4H12V6.66667Z" />
+      <path d="M6.66667 12H4V9.33331H6.66667V12Z" />
+      <path d="M1.33331 5.99998L1.33331 1.33331L5.99998 1.33331" />
+      <path d="M1.33331 10L1.33331 14.6667H5.99998" />
+      <path d="M10 1.33331L14.6667 1.33331V5.99998" />
+      <path d="M10 14.6667H14.6667V10" />
+      <path d="M12.8333 12H9.33331V8.66669" />
+      <path d="M11.9973 9.50269V9.16669H12.3333V9.50269H11.9973Z" />
+    </SVG>
+  ),
   'back/12': (className: string) => (
     <SVG className={className} size="12">
       <path d="M6 11L0.999999 6L6 1" strokeLinecap="round" strokeLinejoin="round" />
