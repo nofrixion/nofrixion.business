@@ -1,7 +1,11 @@
-import { Tag } from './ApiResponses'
-import { SortDirection } from './Enums'
+import { Counterparty, Tag } from './ApiResponses'
+import { AccountIdentifierType, Currency, PayoutStatus, SortDirection } from './Enums'
 
-export interface PagedResponseProps extends FilterResponseProps, MerchantProps, AccountProps {
+export interface PagedResponseProps
+  extends FilterResponseProps,
+    MerchantProps,
+    AccountProps,
+    PayoutsProps {
   pageNumber?: number
   pageSize?: number
   status?: string
@@ -12,6 +16,8 @@ export interface PaymentRequestPageProps
     FilterResponseProps,
     PaymentRequestProps,
     MerchantProps {}
+
+export interface PayoutPageProps extends PagedResponseProps, FilterResponseProps {}
 
 export interface FilterResponseProps {
   fromDate?: Date
@@ -25,6 +31,11 @@ export interface FilterResponseProps {
 }
 
 export interface MetricsProps extends FilterResponseProps, MerchantProps {}
+
+export interface BeneficiaryProps extends PagedResponseProps {
+  search?: string
+  currency?: string
+}
 
 export interface ApiProps {
   apiUrl: string
@@ -85,9 +96,32 @@ export interface usePaymentRequestsProps
   toDateMS?: number
 }
 
+export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
+  merchantId: string
+  statusSortDirection: SortDirection
+  createdSortDirection: SortDirection
+  amountSortDirection: SortDirection
+  counterPartyNameSortDirection: SortDirection
+  fromDateMS?: number
+  toDateMS?: number
+  statuses: PayoutStatus[]
+}
+
 export interface usePaymentRequestMetricsProps extends MetricsProps {
   fromDateMS?: number
   toDateMS?: number
+}
+
+export interface usePayoutMetricsProps extends MetricsProps {
+  fromDateMS?: number
+  toDateMS?: number
+}
+
+export interface useBeneficiaryProps {
+  pageNumber?: number
+  pageSize?: number
+  search?: string
+  currency?: string
 }
 
 export interface RefundProps {
@@ -108,19 +142,51 @@ export interface CaptureProps {
 }
 
 export interface DeleteTagProps {
-  paymentRequestId: string
+  id: string
   tagId: string
   existingTagsIds: string[]
 }
 
 export interface AddTagProps {
-  paymentRequestId: string
+  id: string
   tag: Tag
   existingTagsIds: string[]
 }
 
 export interface CreateTagProps {
-  paymentRequestId: string
   tag: Tag
-  existingTagsIds: string[]
+}
+
+export interface PayoutsProps extends AccountProps {
+  pageNumber?: number
+  pageSize?: number
+  fromDate?: Date
+  toDate?: Date
+  payoutStatuses?: PayoutStatus[]
+}
+
+export interface usePendingPaymentsProps extends AccountProps {
+  pageNumber?: number
+  pageSize?: number
+  fromDateMS?: number
+  toDateMS?: number
+  payoutStatuses?: PayoutStatus[]
+}
+
+export interface CreatePayoutProps {
+  accountID: string
+  type: AccountIdentifierType
+  description?: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
+  destination: Counterparty
+  invoiceID?: string
+  allowIncomplete: boolean
+  paymentRequestId?: string
+}
+
+export interface PayoutProps {
+  payoutId?: string
 }

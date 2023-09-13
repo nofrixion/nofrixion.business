@@ -14,17 +14,18 @@ const pillClasses =
   'text-default-text leading-6 hover:text-grey-text bg-transparent text-sm whitespace-nowrap cursor-pointer select-none stroke-default-text hover:stroke-control-grey'
 
 export type DateRange = {
-  fromDate: Date
-  toDate: Date
+  fromDate?: Date
+  toDate?: Date
 }
 
 export interface DateRangeFilterProps {
+  firstDate?: Date
   onDateChange: (dateRange: DateRange) => void
 }
 
 const dateFormat = 'MMM do'
 
-const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
+const DateRangePicker = ({ onDateChange, firstDate }: DateRangeFilterProps) => {
   const [dates, setDates] = useState<DateObject[]>([])
   const [selectRangeText, setSelectRangeText] = useState<TDateRangeOptions | undefined>(
     'last90Days',
@@ -34,8 +35,9 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
   const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
   const onDateChangeHandler = () => {
-    if (dates.length === 2 && isClosed) {
-      setSelectRangeText(getSelectRangeText(dates[0].toDate(), dates[1].toDate()))
+    if (dates && dates.length == 2 && isClosed) {
+      setSelectRangeText(getSelectRangeText(dates[0].toDate(), dates[1].toDate(), firstDate))
+
       onDateChange &&
         onDateChange({
           fromDate: new Date(dates[0].toDate()),
@@ -53,8 +55,8 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
   }, [isClosed])
 
   useEffect(() => {
-    let fromDate = new Date()
-    let toDate = new Date()
+    let fromDate
+    let toDate
 
     switch (selectRangeText) {
       case 'today':
@@ -76,6 +78,10 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         break
       case 'last90Days':
         fromDate = startOfDay(add(new Date(), { days: -90 }))
+        setDates([new DateObject(fromDate), new DateObject(new Date())])
+        break
+      case 'all':
+        fromDate = firstDate ?? new Date(0)
         setDates([new DateObject(fromDate), new DateObject(new Date())])
         break
       default:
@@ -101,7 +107,7 @@ const DateRangePicker = ({ onDateChange }: DateRangeFilterProps) => {
         }
       />
 
-      <div className={cn(pillClasses, 'hidden md:flex py-2 pr-4 border-border-grey border-l')}>
+      <div className={cn(pillClasses, 'hidden md:flex border-border-grey border-l')}>
         <DatePicker
           value={dates}
           onChange={(changes: DateObject[]) => {

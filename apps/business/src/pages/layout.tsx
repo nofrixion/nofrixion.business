@@ -70,12 +70,10 @@ const Layout = () => {
 
   return (
     <>
-      <div className="font-inter h-full">
-        <StickyFeedback />
-        <Navbar />
-        <div className="min-h-full flex">
-          <div className="bg-main-grey w-full pb-28 px-6 md:px-[72px] pt-16 md:pb-16">{outlet}</div>
-        </div>
+      <StickyFeedback />
+      <Navbar />
+      <div className="min-h-full flex">
+        <div className="bg-main-grey w-full pb-28 px-6 md:px-[56px] pt-16 md:pb-16">{outlet}</div>
       </div>
     </>
   )

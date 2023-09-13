@@ -19,8 +19,20 @@ Before you begin, there's a few preconditions to be aware of:
 
 - You need the BFF .NET project running locally. This is available in the `./bff` folder.
 - Locate the file at `bff/NoFrixion.Bff/appsettings.json`.
-- Create a local development `appsettings.json` file called `appsettings.development.json` and copy the contents into the file.
-- Change the `ClientId` and `ClientSecret` to match your specific development environment.
+- Create a local development `appsettings.json` file called `appsettings.development.json`.
+- Add the following settings to it
+
+```bash
+"ClientId": "nofrixion.business"
+"ClientSecret": "secret"
+```
+
+- To test payout approvals add the following settings to `appsettings.development.json`
+
+```bash
+"DevelopmentBaseUrl": "https://localhost:3001",
+"MoneyMoovBusinessBaseUrl": "https://localhost:7105",
+```
 
 ### Setup and Launch:
 

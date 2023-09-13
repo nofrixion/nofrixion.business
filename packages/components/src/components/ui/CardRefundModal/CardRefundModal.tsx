@@ -3,7 +3,6 @@ import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-import { cn } from '../../../utils'
 import { localCurrency } from '../../../utils/constants'
 import { Button, Icon } from '../atoms'
 import InputAmountField from '../InputAmountField/InputAmountField'
@@ -121,8 +120,8 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       onCurrencyChange={() => {}}
                       allowCurrencyChange={false}
                       value={formatter.format(Number(initialAmount))}
-                      onChange={(e) => setAmountToRefund(e.target.value)}
-                    ></InputAmountField>
+                      onChange={(value) => setAmountToRefund(value)}
+                    />
                   </div>
                   <span className="mt-2 block text-13px leading-5 font-normal text-grey-text">
                     There are {getCurrencySymbol(currency)} {formatter.format(maxRefundableAmount)}{' '}
@@ -152,9 +151,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
               <Button
                 variant="primaryDark"
                 size="big"
-                className={cn({
-                  '!bg-grey-text disabled:!opacity-100 cursor-not-allowed': isRefundButtonDisabled,
-                })}
+                className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
                 onClick={onRefundClick}
                 disabled={isRefundButtonDisabled}
               >

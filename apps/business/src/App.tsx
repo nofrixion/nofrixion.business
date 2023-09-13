@@ -34,6 +34,7 @@ export const App = () => {
                 <Route path="current-accounts" element={<CurrentAccountsPage />} />
                 <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 <Route path="payouts" element={<PayoutsPage />} />
+                <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="pricing" element={<PricingPage />} />
               </Route>

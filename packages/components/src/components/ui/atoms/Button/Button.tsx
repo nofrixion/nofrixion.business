@@ -3,29 +3,53 @@ import { cva, VariantProps } from 'class-variance-authority'
 import { cn } from '../../../../utils'
 import { Icon, IconNames } from '../Icon/Icon'
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'rounded-full inline-flex items-center justify-center whitespace-nowrap align-middle cursor-pointer transition w-full disabled:opacity-20 disabled:cursor-not-allowed select-none',
   {
     variants: {
       variant: {
-        primary: ['bg-primary-green', 'text-white', 'hover:bg-primary-green-hover', 'stroke:white'],
-        primaryDark: ['bg-[#006A80]', 'text-white', 'hover:bg-[#144752]', 'stroke:white'],
-        secondary: ['bg-secondary-button', 'text-default-text', 'hover:bg-secondary-button-hover'],
+        primary: [
+          'bg-primary-green',
+          'text-white',
+          'hover:bg-primary-green-hover',
+          'stroke:white',
+          'font-semibold',
+          'leading-6',
+        ],
+        primaryDark: [
+          'bg-[#006A80]',
+          'text-white',
+          'hover:bg-[#144752]',
+          'stroke:white',
+          'font-semibold',
+          'leading-6',
+        ],
+        secondary: [
+          'bg-secondary-button',
+          'text-default-text',
+          'hover:bg-secondary-button-hover',
+          'font-normal',
+          'leading-6',
+        ],
         tertiary: [
           'border',
           'border-border-grey',
           'hover:border-border-grey-highlighted',
           'text-default-text',
+          'font-normal',
+          'leading-6',
         ],
         text: [
           'text-grey-text underline underline-offset-2 hover:text-grey-text-hover hover:no-underline',
+          'font-normal',
+          'leading-6',
         ],
       },
       size: {
-        big: ['text-base', 'px-3', 'py-3', 'md:px-6', 'font-normal', 'leading-6'],
-        medium: ['text-sm', 'px-4', 'py-2', 'font-normal', 'leading-6'],
-        small: ['text-[0.813rem]', 'py-1', 'px-3', 'font-normal', 'leading-6'],
-        'x-small': ['text-[0.813rem]', 'py-1', 'px-3', 'font-normal', 'leading-4'],
+        big: ['text-base', 'px-3', 'py-3', 'md:px-6'],
+        medium: ['text-sm', 'px-4', 'py-2'],
+        small: ['text-[0.813rem]', 'py-1', 'px-3'],
+        'x-small': ['text-[0.813rem]', 'py-1', 'px-3'],
       },
     },
     defaultVariants: {

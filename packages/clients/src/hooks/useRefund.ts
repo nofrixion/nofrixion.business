@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PaymentRequestClient } from '../clients'
 import { ApiError } from '../types'
-import { ApiProps, RefundProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, MerchantProps, RefundProps } from '../types/props'
 
 const refund = async (
   apiUrl: string,
@@ -22,23 +22,7 @@ const refund = async (
 }
 
 export const useRefund = (
-  {
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  }: usePaymentRequestsProps,
+  { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
 ): {
   processRefund: (refundProps: RefundProps) => Promise<{ error: ApiError | undefined }>
@@ -55,40 +39,9 @@ export const useRefund = (
     authToken,
   ]
 
-  const METRICS_QUERY_KEY = [
-    'PaymentRequestMetrics',
-    apiUrl,
-    authToken,
-    currency,
-    fromDateMS,
-    toDateMS,
-    maxAmount,
-    merchantId,
-    minAmount,
-    search,
-    tags,
-  ]
+  const METRICS_QUERY_KEY = ['PaymentRequestMetrics']
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
-    apiUrl,
-    authToken,
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  ]
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
 
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<

@@ -32,11 +32,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   onSort,
   ...props
 }) => {
-  const renderBasicInfoLayout = (upperText: string, lowerText: string, className?: string) => {
+  const renderBasicInfoLayout = (
+    upperText: string,
+    lowerText: string | undefined,
+    className?: string,
+  ) => {
     return (
       <div className={className}>
         <span className="block">{upperText}</span>
-        <span className="text-xs text-grey-text">{lowerText}</span>
+        {lowerText && <span className="text-xs text-grey-text">{lowerText}</span>}
       </div>
     )
   }
@@ -74,7 +78,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             </TableHeader>
             <TableBody>
               {transactions.map((transaction, index) => (
-                <TableRow key={`${transaction}-${index}`}>
+                <TableRow
+                  className="cursor-auto hover:bg-inherit hover:border-inherit"
+                  key={`${transaction}-${index}`}
+                >
                   <TableCell>
                     {renderBasicInfoLayout(
                       format(transaction.date, 'MMM dd, yyyy'),
@@ -84,8 +91,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
                   </TableCell>
                   <TableCell>
                     {renderBasicInfoLayout(
-                      transaction.destinationAccount.name,
-                      transaction.destinationAccount.accountInfo,
+                      transaction.counterParty.name,
+                      transaction.counterParty.accountInfo,
                       'w-[200px] truncate',
                     )}
                   </TableCell>

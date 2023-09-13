@@ -56,7 +56,7 @@ const SelectTrigger = React.forwardRef<
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <Icon name="arrow-down/8" />
+        <Icon name="arrow-down/12" />
       </SelectPrimitive.Icon>
     </div>
     {/* Show sub text only on mobile */}
@@ -112,17 +112,18 @@ SelectLabel.displayName = SelectPrimitive.Label.displayName
 
 const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & { isText?: boolean }
+>(({ className, children, isText = true, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full px-3 py-0.5 cursor-default select-none items-center rounded-full text-sm outline-none transition active:bg-grey-bg lg:focus:bg-grey-bg focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=checked]:text-[#099]',
+      'relative flex w-full px-3 py-0.5 cursor-pointer select-none items-center rounded-full text-sm outline-none transition active:bg-grey-bg lg:focus:bg-grey-bg data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=checked]:text-[#099]',
       className,
     )}
     {...props}
   >
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    {!isText && children}
+    {isText && isText === true && <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>}
   </SelectPrimitive.Item>
 ))
 SelectItem.displayName = SelectPrimitive.Item.displayName

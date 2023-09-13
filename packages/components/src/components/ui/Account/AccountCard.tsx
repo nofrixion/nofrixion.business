@@ -24,12 +24,16 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, className, ...props 
           </span>
         </div>
         <div className="flex gap-6 mt-2">
-          {account.identifier.type === AccountIdentifierType.IBAN ? (
+          {account.identifier.type === AccountIdentifierType.IBAN && account.identifier.iban ? (
             <DisplayAndCopy name="IBAN" value={account.identifier.iban} />
           ) : (
             <>
-              <DisplayAndCopy name="SC" value={account.identifier.sortCode} />
-              <DisplayAndCopy name="AN" value={account.identifier.accountNumber} />
+              {account.identifier.sortCode && (
+                <DisplayAndCopy name="SC" value={account.identifier.sortCode} />
+              )}
+              {account.identifier.accountNumber && (
+                <DisplayAndCopy name="AN" value={account.identifier.accountNumber} />
+              )}
             </>
           )}
         </div>

@@ -6,7 +6,10 @@ import {
   PaymentRequestClient,
   PaymentRequestMetrics,
   PaymentRequestStatus,
+  useAccounts,
   useCapture,
+  useCreateRefund,
+  useMerchant,
   useMerchantTags,
   usePaymentRequestMetrics,
   usePaymentRequests,
@@ -15,15 +18,24 @@ import {
 } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { add, endOfDay, startOfDay } from 'date-fns'
+import { add, endOfDay, set, startOfDay } from 'date-fns'
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 import { Button, Icon } from '../../../components/ui/atoms'
 import { LocalPartialPaymentMethods, LocalPaymentMethodTypes } from '../../../types/LocalEnums'
-import { LocalPaymentRequest, LocalPaymentRequestCreate, LocalTag } from '../../../types/LocalTypes'
 import {
+  LocalAccount,
+  LocalCounterparty,
+  LocalPaymentRequest,
+  LocalPaymentRequestCreate,
+  LocalTag,
+} from '../../../types/LocalTypes'
+import {
+  localAccountIdentifierTypeToRemoteAccountIdentifierType,
+  localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
+  remoteAccountsToLocalAccounts,
   remotePaymentRequestToLocalPaymentRequest,
 } from '../../../utils/parsers'
 import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage'
@@ -132,6 +144,8 @@ const PaymentRequestDashboardMain = ({
     }
   }
 
+  const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
+
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
       amountSortDirection: amountSortDirection,
@@ -142,8 +156,8 @@ const PaymentRequestDashboardMain = ({
       pageNumber: page,
       pageSize: pageSize,
       status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -155,66 +169,34 @@ const PaymentRequestDashboardMain = ({
 
   const { processRefund } = useRefund(
     {
-      amountSortDirection: amountSortDirection,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
       merchantId: merchantId,
-      pageNumber: page,
-      pageSize: pageSize,
-      status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
-      search: searchFilter?.length >= 3 ? searchFilter : undefined,
-      currency: currencyFilter,
-      minAmount: minAmountFilter,
-      maxAmount: maxAmountFilter,
-      tags: tagsFilter,
     },
     { apiUrl: apiUrl, authToken: token },
   )
 
   const { processVoid } = useVoid(
     {
-      amountSortDirection: amountSortDirection,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
       merchantId: merchantId,
-      pageNumber: page,
-      pageSize: pageSize,
-      status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
-      search: searchFilter?.length >= 3 ? searchFilter : undefined,
-      currency: currencyFilter,
-      minAmount: minAmountFilter,
-      maxAmount: maxAmountFilter,
-      tags: tagsFilter,
     },
     { apiUrl: apiUrl, authToken: token },
   )
 
   const { processCapture } = useCapture(
     {
-      amountSortDirection: amountSortDirection,
-      statusSortDirection: statusSortDirection,
-      createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
       merchantId: merchantId,
-      pageNumber: page,
-      pageSize: pageSize,
-      status: status,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
-      search: searchFilter?.length >= 3 ? searchFilter : undefined,
-      currency: currencyFilter,
-      minAmount: minAmountFilter,
-      maxAmount: maxAmountFilter,
-      tags: tagsFilter,
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { createRefund } = useCreateRefund(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+    true,
+  )
+
+  const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
 
   const [localPaymentRequests, setLocalPaymentRequests] = useState<LocalPaymentRequest[]>([])
 
@@ -223,8 +205,8 @@ const PaymentRequestDashboardMain = ({
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePaymentRequestMetrics(
     {
       merchantId: merchantId,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter?.length >= 3 ? searchFilter : undefined,
       currency: currencyFilter,
       minAmount: minAmountFilter,
@@ -412,7 +394,7 @@ const PaymentRequestDashboardMain = ({
     setSelectedPaymentRequestID(paymentRequest.id)
   }
 
-  const onRefundClick = async (authorizationID: string, amount: number, isVoid: boolean) => {
+  const onCardRefundClick = async (authorizationID: string, amount: number, isVoid: boolean) => {
     if (selectedPaymentRequestID) {
       if (isVoid) {
         const voidResult = await processVoid({
@@ -439,6 +421,38 @@ const PaymentRequestDashboardMain = ({
         } else {
           makeToast('success', 'Payment successfully refunded.')
         }
+      }
+    }
+  }
+
+  const onBankRefundClick = async (
+    sourceAccount: LocalAccount,
+    counterParty: LocalCounterparty,
+    amount: number,
+    paymentInitiationID: string,
+  ) => {
+    const yourReference = `REFUND-${paymentInitiationID}`
+    if (selectedPaymentRequestID) {
+      const result = await createRefund({
+        accountID: sourceAccount.id,
+        type: localAccountIdentifierTypeToRemoteAccountIdentifierType(
+          sourceAccount.identifier.type,
+        ),
+        description: `Refund for ${selectedPaymentRequestID}`,
+        currency: sourceAccount.currency,
+        amount: amount,
+        yourReference: yourReference,
+        theirReference: 'Refund',
+        destination: localCounterPartyToRemoteCounterParty(counterParty),
+        allowIncomplete: false,
+        paymentRequestId: selectedPaymentRequestID,
+      })
+
+      if (result.error) {
+        makeToast('error', 'Error creating refund.')
+        handleApiError(result.error)
+      } else {
+        makeToast('success', 'Refund successfully submitted for approval.')
       }
     }
   }
@@ -530,8 +544,8 @@ const PaymentRequestDashboardMain = ({
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
-      <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px]">
-        <span className="md:pl-4 leading-8 font-medium text-2xl md:text-[1.75rem]">
+      <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
+        <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
           Accounts Receivable
         </span>
         <LayoutGroup>
@@ -571,6 +585,12 @@ const PaymentRequestDashboardMain = ({
               setCreatedSortDirection={setCreatedSortDirection}
               amountSortDirection={amountSortDirection}
               setAmountSortDirection={setAmountSortDirection}
+              firstDate={
+                // Set first date to the first day of the year the merchant was created
+                merchant?.status == 'success'
+                  ? set(new Date(merchant?.data.inserted), { month: 0, date: 1 })
+                  : undefined
+              }
             />
           </div>
         )}
@@ -693,7 +713,8 @@ const PaymentRequestDashboardMain = ({
         onDismiss={onPaymentRequestDetailsModalDismiss}
         setMerchantTags={setLocalMerchantTags}
         setPaymentRequests={setLocalPaymentRequests}
-        onRefund={onRefundClick}
+        onCardRefund={onCardRefundClick}
+        onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
@@ -701,14 +722,19 @@ const PaymentRequestDashboardMain = ({
         amountSortDirection={amountSortDirection}
         pageNumber={page}
         pageSize={pageSize}
-        fromDateMS={dateRange.fromDate.getTime()}
-        toDateMS={dateRange.toDate.getTime()}
+        fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}
+        toDateMS={dateRange.toDate && dateRange.toDate.getTime()}
         status={status}
         search={searchFilter?.length >= 3 ? searchFilter : undefined}
         currency={currencyFilter}
         minAmount={minAmountFilter}
         maxAmount={maxAmountFilter}
         tags={tagsFilter}
+        accounts={
+          accounts?.status === 'success' && accounts.data
+            ? remoteAccountsToLocalAccounts(accounts.data)
+            : []
+        }
       ></PaymentRequestDetailsModal>
     </div>
   )

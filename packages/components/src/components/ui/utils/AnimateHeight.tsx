@@ -8,6 +8,7 @@ const AnimateHeightWrapper = ({
   children: React.ReactNode
   layoutId: string
   layout?: boolean | 'position' | 'size' | 'preserve-aspect'
+  className?: string
 }) => {
   return (
     <motion.div

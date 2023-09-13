@@ -1,10 +1,17 @@
-import { SortDirection, useAccount, useTransactions } from '@nofrixion/moneymoov'
+import {
+  PayoutStatus,
+  SortDirection,
+  useAccount,
+  useMerchant,
+  usePendingPayments,
+  useTransactions,
+} from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
-import { LocalTransaction } from '../../../types/LocalTypes'
-import { remoteTransactionsToLocal } from '../../../utils/parsers'
+import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
+import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
 
@@ -13,6 +20,7 @@ export interface AccountDashboardProps {
   onAllCurrentAccountsClick?: () => void
   accountId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
+  merchantId: string
 }
 
 const AccountDashboard = ({
@@ -20,6 +28,7 @@ const AccountDashboard = ({
   accountId,
   onAllCurrentAccountsClick,
   apiUrl = 'https://api.nofrixion.com/api/v1',
+  merchantId,
 }: AccountDashboardProps) => {
   const queryClient = new QueryClient()
 
@@ -30,6 +39,7 @@ const AccountDashboard = ({
         accountId={accountId}
         apiUrl={apiUrl}
         onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+        merchantId={merchantId}
       />
     </QueryClientProvider>
   )
@@ -41,11 +51,14 @@ const AccountDashboardMain = ({
   token,
   accountId,
   apiUrl,
+  merchantId,
   onAllCurrentAccountsClick,
 }: AccountDashboardProps) => {
+  const [currentMercahntID, setCurrentMercahntID] = useState<string | undefined>()
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [transactions, setTransactions] = useState<LocalTransaction[]>([])
+  const [payouts, setPayouts] = useState<LocalPayout[]>([])
   const [dateRange, setDateRange] = useState<DateRange>({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
     toDate: endOfDay(new Date()),
@@ -65,8 +78,8 @@ const AccountDashboardMain = ({
       pageSize: pageSize,
       dateSortDirection: transactionDateSortDirection,
       amountSortDirection: amountSortDirection,
-      fromDateMS: dateRange.fromDate.getTime(),
-      toDateMS: dateRange.toDate.getTime(),
+      fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
+      toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter,
     },
     { apiUrl: apiUrl, authToken: token },
@@ -79,6 +92,33 @@ const AccountDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  const { data: payoutPageResponse } = usePendingPayments(
+    {
+      accountId,
+      pageNumber: 1,
+      pageSize: 5,
+      payoutStatuses: [PayoutStatus.PENDING, PayoutStatus.QUEUED, PayoutStatus.QUEUED_UPSTREAM],
+    },
+    { apiUrl, authToken: token },
+  )
+
+  const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
+
+  //When switching merchants, go back to current accounts page
+  useEffect(() => {
+    if (merchantId) {
+      setCurrentMercahntID(merchantId)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (onAllCurrentAccountsClick && merchantId && currentMercahntID) {
+      if (merchantId != currentMercahntID) {
+        onAllCurrentAccountsClick()
+      }
+    }
+  }, [merchantId, currentMercahntID])
+
   useEffect(() => {
     if (transactionsResponse?.status === 'success') {
       setTransactions(remoteTransactionsToLocal(transactionsResponse.data.content))
@@ -88,6 +128,15 @@ const AccountDashboardMain = ({
       console.error(transactionsResponse.error)
     }
   }, [transactionsResponse])
+
+  useEffect(() => {
+    if (payoutPageResponse?.status === 'success') {
+      setPayouts(remotePayoutsToLocal(payoutPageResponse.data.content))
+    } else if (payoutPageResponse?.status === 'error') {
+      // TODO: Handle error
+      console.error(payoutPageResponse.error)
+    }
+  }, [payoutPageResponse])
 
   const onPageChange = (page: number) => {
     setPage(page)
@@ -111,11 +160,15 @@ const AccountDashboardMain = ({
   return (
     <UIAccountDashboard
       transactions={transactions}
+      pendingPayments={payouts}
       account={accountResponse?.status == 'success' ? accountResponse?.data : undefined}
       pagination={{
         pageSize: pageSize,
         totalSize: totalRecords,
       }}
+      merchantCreatedAt={
+        merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
+      }
       onPageChange={onPageChange}
       onSort={onSort}
       onDateChange={onDateChange}

@@ -152,20 +152,19 @@ const Transactions = ({
                           Authorized
                         </span>
                       )}
-                      {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
-                        isRefundable(transaction) && (
-                          <Button
-                            variant="secondary"
-                            size="x-small"
-                            className="px-2 w-min"
-                            onClick={() => onRefund(transaction)}
-                          >
-                            <div className="flex flex-row gap-2 items-center">
-                              <Icon name="return/12" />
-                              <span>Refund</span>
-                            </div>
-                          </Button>
-                        )}
+                      {isRefundable(transaction) && (
+                        <Button
+                          variant="secondary"
+                          size="x-small"
+                          className="px-2 w-min"
+                          onClick={() => onRefund(transaction)}
+                        >
+                          <div className="flex flex-row gap-2 items-center">
+                            <Icon name="return/12" />
+                            <span>Refund</span>
+                          </div>
+                        </Button>
+                      )}
                       {transaction.paymentMethod === LocalPaymentMethodTypes.Card &&
                         isVoid(transaction) && (
                           <Button
@@ -186,8 +185,8 @@ const Transactions = ({
                 {getSubTransactions(transaction).map(
                   (subTransaction, evIndex) =>
                     (cardAuthoriseOnly ||
-                      (!cardAuthoriseOnly &&
-                        subTransaction.type !== SubTransactionType.Capture)) && (
+                      (!cardAuthoriseOnly && subTransaction.type !== SubTransactionType.Capture)) &&
+                    !subTransaction.cancelled && (
                       <tr
                         key={`ev_${evIndex}`}
                         className={cn('text-xs leading-6 group whitespace-nowrap', {
@@ -241,9 +240,18 @@ const Transactions = ({
                           <td className="pl-1 lg:pl-5 py-0" colSpan={2}>
                             <div className="flex flex-row items-center ml-1">
                               <span className="mr-2 p-1.5">
-                                <Icon name="return/12" className="text-control-grey-hover" />
+                                {subTransaction.awaitingApproval === true ? (
+                                  <Icon name="pending/12" className="text-control-grey-hover" />
+                                ) : (
+                                  <Icon name="return/12" className="text-control-grey-hover" />
+                                )}
                               </span>
-                              <span>Refund</span>
+                              <span>{subTransaction.awaitingApproval}</span>
+                              {subTransaction.awaitingApproval === true ? (
+                                <span>Refund pending approval</span>
+                              ) : (
+                                <span>Refunded</span>
+                              )}
                             </div>
                           </td>
                         )}
@@ -253,7 +261,7 @@ const Transactions = ({
                               <span className="mr-2 p-1.5">
                                 <Icon name="void/12" className="text-control-grey-hover" />
                               </span>
-                              <span>Void</span>
+                              <span>Voided</span>
                             </div>
                           </td>
                         )}

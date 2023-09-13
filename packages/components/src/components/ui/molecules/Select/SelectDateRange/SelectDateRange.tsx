@@ -15,6 +15,7 @@ const options = {
   last7Days: 'Last 7 days',
   last30Days: 'Last 30 days',
   last90Days: 'Last 90 days',
+  all: 'All',
 }
 
 type TDateRangeOptions = keyof typeof options

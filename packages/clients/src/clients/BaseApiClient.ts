@@ -46,6 +46,7 @@ export abstract class BaseApiClient {
       maxAmount,
       tags,
       accountId,
+      payoutStatuses,
     }: PagedResponseProps,
     url: string,
   ): Promise<ApiResponse<TResponse>> {
@@ -105,6 +106,10 @@ export abstract class BaseApiClient {
 
     if (accountId) {
       filterParams.append('accountId', accountId)
+    }
+
+    if (payoutStatuses) {
+      payoutStatuses.forEach((status) => filterParams.append('statuses', status))
     }
 
     url = `${url}?${filterParams.toString()}`

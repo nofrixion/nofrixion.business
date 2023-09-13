@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import InputAmountField, { InputAmountFieldProps } from './InputAmountField'
 
@@ -19,8 +19,8 @@ const meta: Meta<typeof InputAmountField> = {
 const Template: StoryFn<InputAmountFieldProps> = (args) => {
   const [localValue, setValue] = useState<string>(args.value?.toString() || '')
 
-  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+  const onChangeInput = (value: string) => {
+    setValue(value)
   }
 
   return <InputAmountField {...args} value={localValue} onChange={onChangeInput} />

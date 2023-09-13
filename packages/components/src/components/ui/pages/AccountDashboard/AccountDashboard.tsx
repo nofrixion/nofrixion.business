@@ -5,21 +5,25 @@ import {
   Pagination,
   SortDirection,
 } from '@nofrixion/moneymoov'
+import { set } from 'date-fns'
 import * as React from 'react'
 
-import { LocalTransaction } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
+import { PendingPayments } from '../../PendingPayments/PendingPayments'
 import SearchBar from '../../SearchBar/SearchBar'
 import { Toaster } from '../../Toast/Toast'
 
 export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
   transactions: LocalTransaction[]
   account?: Account
+  pendingPayments?: LocalPayout[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
+  merchantCreatedAt?: Date
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount', direction: SortDirection) => void
   onDateChange: (dateRange: DateRange) => void
@@ -30,8 +34,10 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
   transactions,
   account,
+  pendingPayments,
   pagination,
   searchFilter,
+  merchantCreatedAt,
   onDateChange,
   onSearch,
   onPageChange,
@@ -40,11 +46,11 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
 }) => {
   return (
     <>
-      <div className="mb-12">
+      <div className="mb-12 md:px-4">
         <div className="flex justify-between">
           <button onClick={onAllCurrentAccountsClick} className="flex items-center space-x-3">
             <Icon name="back/12" />
-            <span>All current accounts</span>
+            <span className="hover:underline text-sm">All current accounts</span>
           </button>
           {/* TODO: Implement download statement feature*/}
           {/* <div>
@@ -65,12 +71,17 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           <div className="text-[28px]/8 font-semibold">
             <h2>{account?.accountName}</h2>
             <div className="flex gap-6 mt-2">
-              {account?.identifier.type === AccountIdentifierType.IBAN ? (
+              {account?.identifier.type === AccountIdentifierType.IBAN &&
+              account.identifier.iban ? (
                 <DisplayAndCopy name="IBAN" value={account.identifier.iban} />
               ) : account?.identifier.type === AccountIdentifierType.SCAN ? (
                 <>
-                  <DisplayAndCopy name="SC" value={account?.identifier.sortCode} />
-                  <DisplayAndCopy name="AN" value={account?.identifier.accountNumber} />
+                  {account?.identifier.sortCode && (
+                    <DisplayAndCopy name="SC" value={account?.identifier.sortCode} />
+                  )}
+                  {account?.identifier.accountNumber && (
+                    <DisplayAndCopy name="AN" value={account?.identifier.accountNumber} />
+                  )}
                 </>
               ) : (
                 <></>
@@ -79,20 +90,25 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           </div>
 
           <div className="flex flex-col items-end">
-            {/* TODO: Use Arif's component instead*/}
             <AccountBalance
               availableBalance={account?.availableBalance ?? 0}
               balance={account?.balance ?? 0}
               currency={account?.currency ?? Currency.None}
             />
 
-            {/* TODO: Add expand component */}
+            {pendingPayments && pendingPayments.length > 0 && (
+              <PendingPayments pendingPayments={pendingPayments} className="w-[400px]" />
+            )}
           </div>
         </div>
       </div>
 
       <div className="bg-white rounded-[10px] h-16 flex justify-between items-center px-3 mb-4">
-        <DateRangePicker onDateChange={onDateChange} />
+        <DateRangePicker
+          onDateChange={onDateChange}
+          // Set first date to the first day of the year the merchant was created
+          firstDate={merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined}
+        />
 
         <SearchBar value={searchFilter} setValue={onSearch} />
       </div>

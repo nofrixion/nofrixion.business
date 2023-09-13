@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PaymentRequestClient } from '../clients'
 import { ApiError } from '../types'
-import { ApiProps, usePaymentRequestsProps, VoidProps } from '../types/props'
+import { ApiProps, MerchantProps, VoidProps } from '../types/props'
 
 const voidPayment = async (
   apiUrl: string,
@@ -21,23 +21,7 @@ const voidPayment = async (
 }
 
 export const useVoid = (
-  {
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  }: usePaymentRequestsProps,
+  { merchantId }: MerchantProps,
   { apiUrl, authToken }: ApiProps,
 ): {
   processVoid: (voidProps: VoidProps) => Promise<{ error: ApiError | undefined }>
@@ -54,40 +38,9 @@ export const useVoid = (
     authToken,
   ]
 
-  const METRICS_QUERY_KEY = [
-    'PaymentRequestMetrics',
-    apiUrl,
-    authToken,
-    currency,
-    fromDateMS,
-    toDateMS,
-    maxAmount,
-    merchantId,
-    minAmount,
-    search,
-    tags,
-  ]
+  const METRICS_QUERY_KEY = ['PaymentRequestMetrics']
 
-  const PAYMENT_REQUESTS_QUERY_KEY = [
-    'PaymentRequests',
-    apiUrl,
-    authToken,
-    merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    contactSortDirection,
-    amountSortDirection,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    status,
-    search,
-    currency,
-    minAmount,
-    maxAmount,
-    tags,
-  ]
+  const PAYMENT_REQUESTS_QUERY_KEY = ['PaymentRequests']
 
   // When this mutation succeeds, invalidate any queries with the payment requests query key
   const mutation: UseMutationResult<

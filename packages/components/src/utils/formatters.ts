@@ -1,4 +1,13 @@
-import { add, formatDistanceToNowStrict, isEqual, isToday, isYesterday, startOfDay } from 'date-fns'
+import {
+  add,
+  format,
+  formatDistanceToNowStrict,
+  isEqual,
+  isSameYear,
+  isToday,
+  isYesterday,
+  startOfDay,
+} from 'date-fns'
 
 import { SortDirection } from '../components/ui/ColumnHeader/ColumnHeader'
 import type { TDateRangeOptions } from '../components/ui/molecules'
@@ -20,6 +29,14 @@ const formatDate = (date: Date): string => {
   }
 
   return formatDistanceToNowStrict(date, { addSuffix: true })
+}
+
+const formatDateWithYear = (date: Date): string => {
+  if (isSameYear(date, new Date())) {
+    return format(date, 'MMM do')
+  } else {
+    return format(date, 'MMM do, yyyy')
+  }
 }
 
 // Formats the given amount into a currency string.
@@ -109,7 +126,11 @@ const getDateFormat = (date: Date): string => {
   return 'MMM do'
 }
 
-const getSelectRangeText = (fromDate: Date, toDate: Date): TDateRangeOptions | undefined => {
+const getSelectRangeText = (
+  fromDate: Date,
+  toDate: Date,
+  firstDate?: Date,
+): TDateRangeOptions | undefined => {
   if (isToday(fromDate) && isToday(toDate)) {
     return 'today'
   } else if (isYesterday(fromDate) && isYesterday(toDate)) {
@@ -120,6 +141,8 @@ const getSelectRangeText = (fromDate: Date, toDate: Date): TDateRangeOptions | u
     return 'last30Days'
   } else if (isToday(toDate) && isEqual(fromDate, startOfDay(add(new Date(), { days: -90 })))) {
     return 'last90Days'
+  } else if (firstDate && isEqual(fromDate, firstDate) && isToday(toDate)) {
+    return 'all'
   } else {
     return undefined
   }
@@ -129,6 +152,7 @@ export {
   formatAmount,
   formatAmountAndDecimals,
   formatDate,
+  formatDateWithYear,
   formatPaymentRequestSortExpression,
   getDateFormat,
   getSelectRangeText,

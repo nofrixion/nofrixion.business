@@ -7,6 +7,7 @@ import {
   PaymentMethodTypes,
   PaymentProcessor,
   PaymentResult,
+  PayoutStatus,
   Wallets,
 } from './Enums'
 
@@ -51,6 +52,7 @@ export type PaymentRequest = {
   title?: string
   paymentAttempts: PaymentRequestPaymentAttempt[]
   notificationEmailAddresses?: string
+  transactions: Transaction[]
 }
 
 export type PaymentRequestPaymentAttempt = {
@@ -73,6 +75,7 @@ export type PaymentRequestPaymentAttempt = {
   paymentProcessor: PaymentProcessor
   status: PaymentResult
   walletName?: Wallets
+  reconciledTransactionID?: string
 }
 
 export type PaymentRequestMinimal = {
@@ -230,8 +233,8 @@ export interface Account {
   balance: number
   currency: Currency
   displayName: string
-  iban: string
-  sortCode: string
+  iban?: string
+  sortCode?: string
   summary: string
   identifier: AccountIdentifier
   isDefault: boolean
@@ -240,10 +243,10 @@ export interface Account {
 export interface AccountIdentifier {
   type: AccountIdentifierType
   currency: string
-  bic: string
-  iban: string
-  accountNumber: string
-  sortCode: string
+  bic?: string
+  iban?: string
+  accountNumber?: string
+  sortCode?: string
 }
 
 export interface Merchant {
@@ -300,11 +303,11 @@ export const TransactionTypeValue: { [key in TransactionType]: string } = {
 export type TransactionPageResponse = PageResponse<Transaction>
 
 export interface Counterparty {
-  accountID: string
+  accountID?: string
   name: string
-  emailAddress: string
-  phoneNumber: string
-  identifier: AccountIdentifier
+  emailAddress?: string
+  phoneNumber?: string
+  identifier?: AccountIdentifier
 }
 
 export interface User {
@@ -312,4 +315,75 @@ export interface User {
   emailAddress: string
   firstName: string
   lastName: string
+}
+
+export interface Payout {
+  id: string
+  accountID: string
+  merchantID: string
+  userID?: string
+  approverID?: string
+  type: AccountIdentifierType
+  description: string
+  currency: Currency
+  amount: number
+  yourReference?: string
+  theirReference: string
+  merchantTokenDescription: string
+  status: PayoutStatus
+  currentUserID?: string
+  currentUserRole?: string // TODO: Add type
+  approvePayoutUrl?: string
+  createdBy?: string
+  inserted: Date
+  sourceAccountName: string
+  sourceAccountNumber: string
+  sourceAccountSortCode: string
+  sourceAccountIban: string
+  destination?: Counterparty
+  tags: Tag[]
+}
+
+export interface PayoutUpdate {
+  accountID?: string
+  type?: AccountIdentifierType
+  description?: string
+  currency?: Currency
+  amount?: number
+  yourReference?: string
+  theirReference?: string
+  destination?: Counterparty
+  tags?: Tag[]
+  tagIds?: string[]
+}
+
+export type PayoutMetrics = {
+  all: number
+  paid: number
+  inProgress: number
+  pendingApproval: number
+  failed: number
+  totalAmountsByCurrency: Record<
+    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed',
+    Record<'eur' | 'gbp', number | undefined>
+  >
+}
+
+export type PayoutPageResponse = PageResponse<Payout>
+
+export type Beneficiary = {
+  id: string
+  merchantID: string
+  name: string
+  yourReference: string
+  theirReference: string
+  currency: Currency
+  destination: Counterparty
+}
+
+export type BeneficiaryPageResponse = PageResponse<Beneficiary>
+
+export type BatchPayout = {
+  id: string
+  payouts: Payout[]
 }

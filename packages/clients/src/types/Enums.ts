@@ -101,3 +101,16 @@ export enum AccountIdentifierType {
   IBAN = 'IBAN',
   DD = 'DD',
 }
+
+export enum PayoutStatus {
+  All = 'All',
+  UNKNOWN = 'UNKNOWN',
+  REJECTED = 'REJECTED',
+  PENDING = 'PENDING',
+  PROCESSED = 'PROCESSED',
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
+  QUEUED_UPSTREAM = 'QUEUED_UPSTREAM',
+  QUEUED = 'QUEUED',
+  FAILED = 'FAILED',
+  PENDING_INPUT = 'PENDING_INPUT',
+}

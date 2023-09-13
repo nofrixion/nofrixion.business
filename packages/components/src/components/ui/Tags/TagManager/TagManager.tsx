@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalTag } from '../../../../types/LocalTypes'
 import AddTag from '../AddTag/AddTag'
@@ -8,18 +8,22 @@ import Tag from '../Tag/Tag'
 export interface TagManagerProps {
   tags: LocalTag[]
   availableTags: LocalTag[]
-  onDeleted: (id: string) => void
+  onRemoved: (id: string) => void
   onAdded: (tag: LocalTag) => void
   onCreated: (tag: LocalTag) => void
 }
 
-const TagManager = ({ tags, availableTags, onDeleted, onAdded, onCreated }: TagManagerProps) => {
-  const [tagsArray, setTagsArray] = useState(tags)
+const TagManager = ({ tags, availableTags, onRemoved, onAdded, onCreated }: TagManagerProps) => {
+  const [tagsArray, setTagsArray] = useState<LocalTag[]>([])
+
+  useEffect(() => {
+    setTagsArray(tags)
+  }, [tags])
 
   const handleDelete = (id: string) => {
     setTagsArray(tagsArray.filter((item) => item.id !== id))
 
-    onDeleted(id)
+    onRemoved(id)
   }
 
   const handleTagAdded = (tag: LocalTag) => {

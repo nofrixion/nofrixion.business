@@ -10,7 +10,7 @@ export default {
 } as Meta<typeof SelectSorter>
 
 const Template: StoryFn<typeof SelectSorter> = ({ onValueChange, ...args }) => {
-  const [dateRange, setDateRange] = useState<TSorterOptions | undefined>('moreRecentFirst')
+  const [dateRange, setDateRange] = useState<TSorterOptions | undefined>('mostRecentFirst')
 
   const handleOnValueChange = (value: TSorterOptions) => {
     setDateRange(value)

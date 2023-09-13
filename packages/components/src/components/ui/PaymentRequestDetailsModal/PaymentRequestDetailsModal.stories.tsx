@@ -13,7 +13,7 @@ export default {
     },
     onTagAdded: { action: 'tag added' },
     onTagCreated: { action: 'tag created' },
-    onTagDeleted: { action: 'tag deleted' },
+    onTagRemoved: { action: 'tag deleted' },
   },
 } as Meta<typeof PaymentRequestDetailsModal>
 
