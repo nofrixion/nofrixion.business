@@ -1,25 +1,19 @@
 import { Combobox, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useState } from 'react'
 
-const people: Person[] = [
-  { id: 1, name: 'Wade Cooper' },
-  { id: 2, name: 'Arlene Mccoy' },
-  { id: 3, name: 'Devon Webb' },
-  { id: 4, name: 'Tom Cook' },
-  { id: 5, name: 'Tanya Fox' },
-  { id: 6, name: 'Hellen Schmidt' },
+const people: string[] = [
+  'Wade Cooper',
+  'Arlene Mccoy',
+  'Devon Webb',
+  'Tom Cook',
+  'Tanya Fox',
+  'Hellen Schmidt',
 ]
 
-interface Person {
-  id: number
-  name: string
-}
-
 export default function Example() {
-  const [selected, setSelected] = useState<Person | undefined>()
+  const [selected, setSelected] = useState<string | undefined>()
   //const [query, setQuery] = useState('')
-  const [filteredPeople, setFilteredPeople] = useState<Person[] | undefined>(undefined)
-  const [value, setValue] = useState('')
+  const [filteredPeople, setFilteredPeople] = useState<string[] | undefined>(undefined)
 
   const [command, setCommand] = useState<string | undefined>(undefined)
 
@@ -34,7 +28,7 @@ export default function Example() {
     } else {
       setFilteredPeople(
         people.filter((person) =>
-          person.name
+          person
             .toLowerCase()
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, '')),
@@ -49,27 +43,27 @@ export default function Example() {
 
   return (
     <div className="fixed top-16 w-72">
-      <Combobox value={selected} onChange={setSelected}>
+      <Combobox value={selected ?? ''} onChange={setSelected}>
         {({ open }) => (
           <div className="relative mt-1">
             <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
               <Combobox.Input
                 className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                displayValue={(person: Person) => person.name}
+                displayValue={(person: string) => person}
                 onChange={(event) => {
                   setCommand(undefined)
-                  setValue(event.target.value)
-                  setSelected(undefined)
+                  setSelected(event.target.value)
                   filterPeople(event.target.value)
                 }}
                 onClick={() => {
-                  if (value === '') {
+                  if (selected === '') {
                     setCommand('all')
                     filterPeople('all')
                   }
                 }}
                 onBlur={() => {
-                  if (value === '' && command === 'all') {
+                  if (selected === '' && command === 'all') {
+                    setSelected(undefined)
                     setCommand(undefined)
                   }
                 }}
@@ -96,7 +90,7 @@ export default function Example() {
                     filteredPeople.length !== 0 &&
                     filteredPeople.map((person) => (
                       <Combobox.Option
-                        key={person.id}
+                        key={person}
                         className={({ active }) =>
                           `relative cursor-default select-none py-2 pl-10 pr-4 ${
                             active ? 'bg-teal-600 text-white' : 'text-gray-900'
@@ -111,7 +105,7 @@ export default function Example() {
                                 selected ? 'font-medium' : 'font-normal'
                               }`}
                             >
-                              {person.name}
+                              {person}
                             </span>
                             {selected ? (
                               <span
