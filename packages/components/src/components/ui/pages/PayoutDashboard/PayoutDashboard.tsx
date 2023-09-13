@@ -120,31 +120,33 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
       <div className="font-inter bg-main-grey text-default-text h-full">
         <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
           <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Payouts</span>
-          <div className="flex space-x-4">
-            <AnimatePresence>
-              {selectedPayouts && selectedPayouts.length > 1 && (
-                <LayoutWrapper>
-                  <Button
-                    variant={'secondary'}
-                    size="big"
-                    onClick={handleApproveBatchPayouts}
-                    className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                    disabled={isApproveButtonDisabled}
-                  >
-                    {isApproveButtonDisabled ? (
-                      <Loader className="h-6 w-6 mx-20" />
-                    ) : (
-                      <>
-                        <Icon name="authorise/16" />
-                        <span className="hidden md:inline-block">
-                          Authorise {selectedPayouts.length} pending
-                        </span>
-                      </>
-                    )}
-                  </Button>
-                </LayoutWrapper>
-              )}
-            </AnimatePresence>
+          <div className="flex">
+            <div className="mr-4">
+              <AnimatePresence>
+                {selectedPayouts && selectedPayouts.length > 1 && (
+                  <LayoutWrapper layout={'preserve-aspect'}>
+                    <Button
+                      variant={'secondary'}
+                      size="big"
+                      onClick={handleApproveBatchPayouts}
+                      className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                      disabled={isApproveButtonDisabled}
+                    >
+                      {isApproveButtonDisabled ? (
+                        <Loader className="h-6 w-6 mx-[77px]" />
+                      ) : (
+                        <>
+                          <Icon name="authorise/16" />
+                          <span className="hidden md:inline-block">
+                            Authorise {selectedPayouts.length} pending
+                          </span>
+                        </>
+                      )}
+                    </Button>
+                  </LayoutWrapper>
+                )}
+              </AnimatePresence>
+            </div>
             <Button size="big" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
               <span className="hidden md:inline-block">Create payout</span>
               <Icon name="add/16" className="md:hidden" />

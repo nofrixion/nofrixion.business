@@ -189,7 +189,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     className={cn(
                       'cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]',
                       {
-                        'bg-[#F6F8F9] border-[#E1E5EA]': selectedPayoutId === payout.id,
+                        'bg-[#F6F8F9] border-[#E1E5EA]':
+                          selectedPayoutId === payout.id ||
+                          (selectedPayouts.includes(payout.id) &&
+                            status === PayoutStatus.PENDING_APPROVAL),
                       },
                     )}
                     key={`${payout}-${index}`}
