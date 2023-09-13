@@ -398,6 +398,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         value={payoutAmount ?? ''}
                         onChange={handleAmountOnChange}
                         required
+                        formSubmitted={createPayoutClicked}
                       ></InputAmountField>
                     </div>
                   </div>
