@@ -230,3 +230,8 @@ export interface LocalBeneficiary {
   name: string
   destination?: LocalCounterparty
 }
+
+export enum ApproveType {
+  PAYOUT = 'Payout',
+  BATCH_PAYOUT = 'BatchPayout',
+}

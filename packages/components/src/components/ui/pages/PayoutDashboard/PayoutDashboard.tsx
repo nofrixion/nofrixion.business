@@ -2,11 +2,13 @@ import { Pagination, PayoutMetrics, PayoutStatus, SortDirection } from '@nofrixi
 import * as Tabs from '@radix-ui/react-tabs'
 import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
+import { Loader } from '../../Loader/Loader'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
 import Tab from '../../Tab/Tab'
@@ -46,6 +48,11 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   setCreatedSortDirection?: (direction: SortDirection) => void
   amountSortDirection: SortDirection
   setAmountSortDirection?: (direction: SortDirection) => void
+  status: PayoutStatus
+  onAddPayoutForApproval: (payoutId: string) => void
+  onRemovePayoutForApproval: (payoutId: string) => void
+  selectedPayouts: string[]
+  onApproveBatchPayouts: () => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -77,7 +84,14 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   setCreatedSortDirection,
   amountSortDirection,
   setAmountSortDirection,
+  status,
+  onAddPayoutForApproval,
+  onRemovePayoutForApproval,
+  selectedPayouts,
+  onApproveBatchPayouts,
 }) => {
+  const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
+
   /// Only show the total amount if there are payouts
   /// with the specified timeframe and currency, no matter the status,
   /// unless there are no payouts at all for the specified status.
@@ -96,12 +110,43 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
     }
   }
 
+  const handleApproveBatchPayouts = async () => {
+    setIsApproveButtonDisabled(true)
+    onApproveBatchPayouts()
+  }
+
   return (
     <>
       <div className="font-inter bg-main-grey text-default-text h-full">
         <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
           <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Payouts</span>
-          <div>
+          <div className="flex">
+            <div className="mr-4">
+              <AnimatePresence>
+                {selectedPayouts && selectedPayouts.length > 1 && (
+                  <LayoutWrapper layout={'preserve-aspect'}>
+                    <Button
+                      variant={'secondary'}
+                      size="big"
+                      onClick={handleApproveBatchPayouts}
+                      className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                      disabled={isApproveButtonDisabled}
+                    >
+                      {isApproveButtonDisabled ? (
+                        <Loader className="h-6 w-6 mx-[77px]" />
+                      ) : (
+                        <>
+                          <Icon name="authorise/16" />
+                          <span className="hidden md:inline-block">
+                            Authorise {selectedPayouts.length} pending
+                          </span>
+                        </>
+                      )}
+                    </Button>
+                  </LayoutWrapper>
+                )}
+              </AnimatePresence>
+            </div>
             <Button size="big" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
               <span className="hidden md:inline-block">Create payout</span>
               <Icon name="add/16" className="md:hidden" />
@@ -207,6 +252,10 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             isLoading={isLoading}
             onPayoutClicked={onPayoutClicked}
             selectedPayoutId={selectedPayoutId}
+            status={status}
+            onAddPayoutForApproval={onAddPayoutForApproval}
+            onRemovePayoutForApproval={onRemovePayoutForApproval}
+            selectedPayouts={selectedPayouts}
           />
         </div>
 

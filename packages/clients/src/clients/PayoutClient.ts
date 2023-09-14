@@ -1,6 +1,7 @@
-import { PayoutCreate } from '../types/ApiRequests'
+import { BatchApprove, PayoutCreate } from '../types/ApiRequests'
 import {
   ApiResponse,
+  BatchPayout,
   Payout,
   PayoutMetrics,
   PayoutPageResponse,
@@ -168,5 +169,14 @@ export class PayoutClient extends BaseApiClient {
    */
   async get({ payoutId }: PayoutProps): Promise<ApiResponse<Payout>> {
     return await this.httpRequest<Payout>(`${this.apiUrl}/${payoutId}`, HttpMethod.GET)
+  }
+
+  /**
+   * Creates a BatchPayout from a list of payout ids
+   * @param payoutIds A list of payout ids to add to the batch
+   * @returns A BatchPayout if successful. An ApiError if not successful.
+   */
+  async createBatch(payoutIds: BatchApprove): Promise<ApiResponse<BatchPayout>> {
+    return await this.httpRequest<BatchPayout>(`${this.apiUrl}/batch`, HttpMethod.POST, payoutIds)
   }
 }

@@ -185,6 +185,19 @@ export const Icons = {
       />
     </SVG>
   ),
+  'qr/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path d="M6.66667 6.66667H4V4H6.66667V6.66667Z" />
+      <path d="M12 6.66667H9.33331V4H12V6.66667Z" />
+      <path d="M6.66667 12H4V9.33331H6.66667V12Z" />
+      <path d="M1.33331 5.99998L1.33331 1.33331L5.99998 1.33331" />
+      <path d="M1.33331 10L1.33331 14.6667H5.99998" />
+      <path d="M10 1.33331L14.6667 1.33331V5.99998" />
+      <path d="M10 14.6667H14.6667V10" />
+      <path d="M12.8333 12H9.33331V8.66669" />
+      <path d="M11.9973 9.50269V9.16669H12.3333V9.50269H11.9973Z" />
+    </SVG>
+  ),
   'back/12': (className: string) => (
     <SVG className={className} size="12">
       <path d="M6 11L0.999999 6L6 1" strokeLinecap="round" strokeLinejoin="round" />
@@ -417,6 +430,29 @@ export const Icons = {
             fill="white"
             transform="translate(0.147827 0.711914)"
           />
+        </clipPath>
+      </defs>
+    </SVG>
+  ),
+  'authorise/16': (className: string) => (
+    <SVG className={cn(className, 'fill-none stroke-current')} size="16" viewBox="0 0">
+      <g id="16px/Authorise" clipPath="url(#clip0_8090_3518)">
+        <path
+          id="Vector"
+          d="M14.4533 14.5C14.4533 14.7643 14.3487 15.0178 14.1623 15.2052C13.9759 15.3926 13.723 15.4986 13.4587 15.5H2.52C2.2557 15.4986 2.00272 15.3926 1.81633 15.2052C1.62995 15.0178 1.52533 14.7643 1.52533 14.5V13.5H14.4533V14.5Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M12.9613 9.49963H10.9726C9.6753 9.49963 9.28664 8.65162 9.28664 7.67362C9.28664 6.04296 10.908 5.05496 10.908 3.43429C10.908 2.66021 10.6005 1.91784 10.0531 1.37048C9.50576 0.823127 8.76338 0.515625 7.9893 0.515625C7.21523 0.515625 6.47285 0.823127 5.9255 1.37048C5.37814 1.91784 5.07064 2.66021 5.07064 3.43429C5.07064 5.05496 6.69197 6.04296 6.69197 7.67362C6.69197 8.65162 6.3033 9.49963 5.00597 9.49963H2.51997C0.119971 9.49963 0.115304 13.4996 1.1793 13.4996H14.8C15.8346 13.4996 16.088 9.49963 12.9613 9.49963Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_8090_3518">
+          <rect width="16" height="16" fill="white" />
         </clipPath>
       </defs>
     </SVG>

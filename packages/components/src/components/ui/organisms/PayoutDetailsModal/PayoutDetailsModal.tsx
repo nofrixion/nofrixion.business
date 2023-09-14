@@ -55,7 +55,7 @@ const PayoutDetailsModal = ({
                   </Button>
                 </div>
                 <div className="mt-4 mr-8">
-                  {payout && <PayoutApproveForm payoutId={payout?.id} size={'medium'} />}
+                  {payout && <PayoutApproveForm id={payout?.id} size={'medium'} />}
                 </div>
               </div>
             )}

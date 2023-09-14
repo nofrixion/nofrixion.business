@@ -2,8 +2,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import QRCodeComponent from 'react-qr-code'
 
+import { Icon, Sheet, SheetContent } from '../atoms'
+
 const QRCode = ({ url }: { url: string }) => {
   const [isHovered, setIsHovered] = useState(false)
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false)
   const largeQrCodeCanvasRef = useRef<HTMLCanvasElement>(null)
   const qrCodeSvgRef = useRef<HTMLDivElement>(null)
 
@@ -51,6 +54,12 @@ const QRCode = ({ url }: { url: string }) => {
     return `QR-${day}-${month}-${year}-${hours}${minutes}${seconds}`
   }
 
+  const handleOnQrModalOpenChange = (open: boolean) => {
+    if (!open) {
+      setIsQrModalOpen(false)
+    }
+  }
+
   return (
     <>
       <canvas ref={largeQrCodeCanvasRef} height="1024" width="1024" className="hidden"></canvas>
@@ -69,32 +78,9 @@ const QRCode = ({ url }: { url: string }) => {
             key="review-pr"
             type="button"
             className="w-full h-10 px-3 whitespace-nowrap flex justify-center items-center rounded-full py-3 text-sm cursor-pointer bg-[#DEE5ED] transition hover:bg-[#BDCCDB]"
-            onClick={downloadAsImage}
+            onClick={() => setIsQrModalOpen(true)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="16"
-              viewBox="0 0 28 16"
-              fill="none"
-            >
-              <path d="M6.66667 6.66667H4V4H6.66667V6.66667Z" stroke="#454D54" />
-              <path d="M12 6.66667H9.33337V4H12V6.66667Z" stroke="#454D54" />
-              <path d="M6.66667 12H4V9.33331H6.66667V12Z" stroke="#454D54" />
-              <path d="M1.33337 5.99998L1.33337 1.33331L6.00004 1.33331" stroke="#454D54" />
-              <path d="M1.33337 10L1.33337 14.6667H6.00004" stroke="#454D54" />
-              <path d="M10 1.33331L14.6667 1.33331V5.99998" stroke="#454D54" />
-              <path d="M10 14.6667H14.6667V10" stroke="#454D54" />
-              <path d="M12.8334 12H9.33337V8.66663" stroke="#454D54" />
-              <path d="M11.9973 9.50263V9.16663H12.3333V9.50263H11.9973Z" stroke="#454D54" />
-              <path d="M23 13L23 2" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
-              <path
-                d="M20 11L23 14L26 11"
-                stroke="#454D54"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <Icon name="qr/16" className="text-control-grey-hover" />
           </button>
         </div>
 
@@ -144,6 +130,14 @@ const QRCode = ({ url }: { url: string }) => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <Sheet open={isQrModalOpen} onOpenChange={handleOnQrModalOpenChange}>
+          <SheetContent className="w-full lg:w-[37.5rem]">
+            <div className="bg-white max-h-full h-full p-4">
+              <QRCodeComponent value={url} className="w-full h-full" />
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </>
   )

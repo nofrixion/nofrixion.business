@@ -3,6 +3,7 @@ import {
   ApiError,
   Beneficiary,
   Payout,
+  PayoutClient,
   PayoutMetrics,
   PayoutStatus,
   SortDirection,
@@ -15,9 +16,9 @@ import {
 } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
 import {
   parseApiTagToLocalTag,
   remoteAccountsToLocalAccounts,
@@ -28,6 +29,7 @@ import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
+import { PayoutApproveForm } from '../../ui/utils/PayoutApproveForm'
 import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 
@@ -98,6 +100,9 @@ const PayoutDashboardMain = ({
   const [selectedPayoutId, setSelectedPayoutId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<PayoutMetrics | undefined>(undefined)
   const [firstMetrics, setFirstMetrics] = useState<PayoutMetrics | undefined>()
+  const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
+  const [batchId, setBatchId] = useState<string | undefined>(undefined)
+  const approveFormRef = useRef<HTMLFormElement>(null)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -243,6 +248,12 @@ const PayoutDashboardMain = ({
     setTagsFilter([...tempTagArray])
   }, [tags])
 
+  useEffect(() => {
+    if (batchId !== undefined) {
+      approveFormRef.current?.submit()
+    }
+  }, [batchId])
+
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {
       onUnauthorized()
@@ -301,6 +312,32 @@ const PayoutDashboardMain = ({
 
   const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
+  const addPayoutForApproval = (payoutId: string) => {
+    if (!selectedPayouts.includes(payoutId)) {
+      setSelectedPayouts((prev) => [...prev, payoutId])
+    }
+  }
+
+  const removePayoutForApproval = (payoutId: string) => {
+    setSelectedPayouts((prev) => prev.filter((id) => id !== payoutId))
+  }
+
+  const onApproveBatchPayouts = async () => {
+    if (selectedPayouts && selectedPayouts.length > 1) {
+      const client = new PayoutClient({ apiUrl, authToken: token })
+
+      const payoutIds = selectedPayouts.map((id) => id)
+      const response = await client.createBatch({ payoutIDs: payoutIds })
+
+      if (response.status === 'success') {
+        const batchId = response.data.id
+        setBatchId(batchId)
+      } else {
+        makeToast('error', 'Error creating payout batch.')
+      }
+    }
+  }
+
   return (
     <div>
       <UIPayoutDashboard
@@ -337,6 +374,11 @@ const PayoutDashboardMain = ({
         setCreatedSortDirection={setCreatedSortDirection}
         amountSortDirection={amountSortDirection}
         setAmountSortDirection={setAmountSortDirection}
+        status={status}
+        onAddPayoutForApproval={addPayoutForApproval}
+        onRemovePayoutForApproval={removePayoutForApproval}
+        selectedPayouts={selectedPayouts}
+        onApproveBatchPayouts={onApproveBatchPayouts}
       />
 
       <PayoutDetailsModal
@@ -372,6 +414,16 @@ const PayoutDashboardMain = ({
             setCreatePayoutClicked(false)
           }}
           merchantId={merchantId}
+        />
+      )}
+
+      {batchId && (
+        <PayoutApproveForm
+          id={batchId}
+          size="x-small"
+          formRef={approveFormRef}
+          className="hidden"
+          approveType={ApproveType.BATCH_PAYOUT}
         />
       )}
     </div>
