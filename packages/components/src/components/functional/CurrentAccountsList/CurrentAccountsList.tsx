@@ -42,6 +42,7 @@ const CurrentAccountsMain = ({
   onAccountClick,
 }: CurrentAccountsListProps) => {
   const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
+  const { userSettings, updateUserSettings } = useUserSettings()
 
   if (accounts?.status == 'error') {
     if (accounts?.error && accounts?.error.status === 401) {
@@ -49,18 +50,19 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const { settings, update } = useUserSettings()
-
   const onConnect = () => {
     console.log('onConnect')
   }
 
   const onMaybeLater = () => {
-    update({ connectMaybeLater: true })
-    console.log('onMaybeLater')
+    if (userSettings) {
+      userSettings.connectMaybeLater = true
+      updateUserSettings(userSettings)
+    } else {
+      updateUserSettings({ connectMaybeLater: true })
+    }
   }
 
-  console.log('Settings', settings)
   return (
     <>
       {accounts?.status === 'success' && accounts.data && (

@@ -6,15 +6,15 @@ export type UserSettings = {
 }
 
 interface UserSettingsState {
-  settings?: UserSettings
-  update: (settings: UserSettings) => void
+  userSettings?: UserSettings
+  updateUserSettings: (settings: UserSettings) => void
 }
 
 export const useUserSettings = create<UserSettingsState>()(
   persist(
     (set) => ({
-      settings: undefined,
-      update: (settings: UserSettings) => set(() => ({ settings })),
+      userSettings: undefined,
+      updateUserSettings: (userSettings: UserSettings) => set(() => ({ userSettings })),
     }),
     {
       name: 'user-settings',

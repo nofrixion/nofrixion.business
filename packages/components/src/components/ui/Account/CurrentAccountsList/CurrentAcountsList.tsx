@@ -1,5 +1,6 @@
 import { Account, Account as AccountModel } from '@nofrixion/moneymoov'
 
+import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -20,6 +21,8 @@ const CurrentAcountsList = ({
   onConnect,
   onMaybeLater,
 }: CurrentAccountsListProps) => {
+  const { userSettings } = useUserSettings()
+
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
       <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
@@ -40,7 +43,9 @@ const CurrentAcountsList = ({
         </div>
       )}
 
-      <ExternalAccountCard onConnect={onConnect} onMaybeLater={onMaybeLater} />
+      {!userSettings?.connectMaybeLater && (
+        <ExternalAccountCard onConnect={onConnect} onMaybeLater={onMaybeLater} />
+      )}
       <Toaster positionY="top" positionX="right" duration={3000} />
     </div>
   )
