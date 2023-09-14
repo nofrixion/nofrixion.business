@@ -1,6 +1,7 @@
 import { Account, useAccounts } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
 
 export interface CurrentAccountsListProps {
@@ -48,10 +49,27 @@ const CurrentAccountsMain = ({
     }
   }
 
+  const { settings, update } = useUserSettings()
+
+  const onConnect = () => {
+    console.log('onConnect')
+  }
+
+  const onMaybeLater = () => {
+    update({ connectMaybeLater: true })
+    console.log('onMaybeLater')
+  }
+
+  console.log('Settings', settings)
   return (
     <>
       {accounts?.status === 'success' && accounts.data && (
-        <CurrentAcountsList accounts={accounts.data} onAccountClick={onAccountClick} />
+        <CurrentAcountsList
+          accounts={accounts.data}
+          onAccountClick={onAccountClick}
+          onConnect={onConnect}
+          onMaybeLater={onMaybeLater}
+        />
       )}
     </>
   )
