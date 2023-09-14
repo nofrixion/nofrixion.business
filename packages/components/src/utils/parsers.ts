@@ -423,7 +423,10 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
       counterParty: parseApiCounterPartyToLocalCounterParty(transaction.counterparty),
       amount: transaction.amount,
       balanceAfterTx: transaction.balance,
-      reference: transaction.amount > 0 ? transaction.theirReference : transaction.yourReference,
+      reference:
+        transaction.amount > 0
+          ? transaction.yourReference
+          : transaction.yourReference ?? transaction.description,
       description: transaction.description,
       type: TransactionTypeValue[transaction.type],
     }
