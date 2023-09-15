@@ -190,3 +190,9 @@ export interface CreatePayoutProps {
 export interface PayoutProps {
   payoutId?: string
 }
+
+export interface ConsentProps {
+  consentId?: string
+  merchantId?: string
+  emailAddress?: string
+}
