@@ -11,12 +11,14 @@ export interface CustomModalProps extends BaseModalProps {
   children: React.ReactNode
   onApplyEnabled?: boolean
   buttonRowClassName?: string
+  buttonText?: string
 }
 
 export interface BaseModalProps {
   open: boolean
   onApply?: (data: any) => void
   onDismiss: () => void
+  showDefault?: boolean
 }
 
 interface CustomModalState {
@@ -31,6 +33,8 @@ const CustomModal = ({
   onDismiss,
   onApplyEnabled = true,
   buttonRowClassName,
+  showDefault = true,
+  buttonText = 'Apply',
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -95,22 +99,24 @@ const CustomModal = ({
                       'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
                     )}
                   >
-                    <div>
-                      <Checkbox
-                        label="Use as my default"
-                        value={isDefaultChecked}
-                        onChange={setIsDefaultChecked}
-                      />
-                    </div>
+                    {showDefault && (
+                      <div>
+                        <Checkbox
+                          label="Use as my default"
+                          value={isDefaultChecked}
+                          onChange={setIsDefaultChecked}
+                        />
+                      </div>
+                    )}
 
                     <Button
                       variant="primaryDark"
                       size="medium"
                       onClick={onApplyClicked}
                       disabled={!onApplyEnabled}
-                      className="w-full md:w-auto px-16"
+                      className="w-full md:w-auto px-16 ml-auto"
                     >
-                      Apply
+                      {buttonText}
                     </Button>
                   </div>
                 </div>

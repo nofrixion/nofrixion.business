@@ -1,5 +1,6 @@
-import { Account, useAccounts } from '@nofrixion/moneymoov'
+import { Account, BankSettings, useAccounts, useBanks } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
@@ -41,8 +42,22 @@ const CurrentAccountsMain = ({
   onUnauthorized,
   onAccountClick,
 }: CurrentAccountsListProps) => {
+  const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
   const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
   const { userSettings, updateUserSettings } = useUserSettings()
+
+  const { data: banksResponse } = useBanks(
+    { merchantId: merchantId },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
+  useEffect(() => {
+    if (banksResponse?.status === 'success') {
+      setBanks(banksResponse.data.payByBankSettings)
+    } else if (banksResponse?.status === 'error') {
+      console.warn(banksResponse.error)
+    }
+  }, [banksResponse])
 
   if (accounts?.status == 'error') {
     if (accounts?.error && accounts?.error.status === 401) {
@@ -50,8 +65,8 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const onConnect = () => {
-    console.log('onConnect')
+  const onConnectBank = (bank: BankSettings) => {
+    console.log(bank)
   }
 
   const onMaybeLater = () => {
@@ -69,8 +84,9 @@ const CurrentAccountsMain = ({
         <CurrentAcountsList
           accounts={accounts.data}
           onAccountClick={onAccountClick}
-          onConnect={onConnect}
+          onConnectToBank={onConnectBank}
           onMaybeLater={onMaybeLater}
+          banks={banks}
         />
       )}
     </>

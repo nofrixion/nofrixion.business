@@ -1,6 +1,8 @@
-import { Account, Account as AccountModel } from '@nofrixion/moneymoov'
+import { Account, Account as AccountModel, BankSettings } from '@nofrixion/moneymoov'
+import { useState } from 'react'
 
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
+import { ConnectBankModal } from '../../Modals/ConnectBankModal/ConnectBankModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -10,18 +12,34 @@ export interface CurrentAccountsListProps {
   accounts: AccountModel[] | undefined
   onCreatePaymentAccount?: () => void
   onAccountClick?: (account: Account) => void
-  onConnect: () => void
+  onConnectToBank: (bank: BankSettings) => void
   onMaybeLater: () => void
+  banks?: BankSettings[]
 }
 
 const CurrentAcountsList = ({
   accounts,
   onCreatePaymentAccount,
   onAccountClick,
-  onConnect,
+  onConnectToBank,
   onMaybeLater,
+  banks,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
+  const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
+
+  const handleOnConnectClicked = () => {
+    setIsConnectBankModalOpen(true)
+  }
+
+  const handleOnDismiss = () => {
+    setIsConnectBankModalOpen(false)
+  }
+
+  const handleOnApply = (bank: BankSettings) => {
+    onConnectToBank(bank)
+    setIsConnectBankModalOpen(false)
+  }
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
@@ -44,9 +62,19 @@ const CurrentAcountsList = ({
       )}
 
       {!userSettings?.connectMaybeLater && (
-        <ExternalAccountCard onConnect={onConnect} onMaybeLater={onMaybeLater} />
+        <ExternalAccountCard
+          onConnectClicked={handleOnConnectClicked}
+          onMaybeLater={onMaybeLater}
+        />
       )}
       <Toaster positionY="top" positionX="right" duration={3000} />
+
+      <ConnectBankModal
+        banks={banks}
+        onApply={handleOnApply}
+        open={isConnectBankModalOpen}
+        onDismiss={handleOnDismiss}
+      />
     </div>
   )
 }

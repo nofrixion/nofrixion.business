@@ -4,11 +4,11 @@ import bankLogos from '../../../../assets/images/bank_logos.svg'
 import { Button } from '../../atoms'
 
 export interface ExternalAccountCardProps {
-  onConnect: () => void
+  onConnectClicked: () => void
   onMaybeLater: () => void
 }
 
-const ExternalAccountCard = ({ onConnect, onMaybeLater }: ExternalAccountCardProps) => {
+const ExternalAccountCard = ({ onConnectClicked, onMaybeLater }: ExternalAccountCardProps) => {
   return (
     <div
       className="flex flex-col p-10 bg-white justify-between rounded-lg w-full bg-no-repeat bg-right bg-gradient-to-r from-transparent to-main-grey"
@@ -24,7 +24,7 @@ const ExternalAccountCard = ({ onConnect, onMaybeLater }: ExternalAccountCardPro
         control over your finances.
       </div>
       <div className="flex flex-row mt-7">
-        <Button variant="primary" size="big" className="w-fit" onClick={onConnect}>
+        <Button variant="primary" size="big" className="w-fit" onClick={onConnectClicked}>
           Connect account
         </Button>
         <div
