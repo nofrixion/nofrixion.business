@@ -12,7 +12,7 @@ export interface ConnectBankModalProps extends BaseModalProps {
   onDismiss: () => void
 }
 
-export const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalProps) => {
+const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalProps) => {
   const [selectedBank, setSelectedBank] = useState<BankSettings | undefined>()
 
   const handleOnApply = () => {
@@ -72,3 +72,5 @@ export const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBan
     </CustomModal>
   )
 }
+
+export default ConnectBankModal

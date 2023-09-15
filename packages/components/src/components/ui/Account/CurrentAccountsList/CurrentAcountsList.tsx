@@ -2,7 +2,7 @@ import { Account, Account as AccountModel, BankSettings } from '@nofrixion/money
 import { useState } from 'react'
 
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
-import { ConnectBankModal } from '../../Modals/ConnectBankModal/ConnectBankModal'
+import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
