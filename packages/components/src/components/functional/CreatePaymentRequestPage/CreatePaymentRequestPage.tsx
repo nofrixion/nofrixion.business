@@ -13,8 +13,15 @@ import {
 } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import { useStore } from 'zustand'
 
-import { LocalPaymentRequest, LocalPaymentRequestCreate } from '../../../types/LocalTypes'
+import useAutoSuggestionsStore from '../../../lib/stores/useAutoSuggestionsStore'
+import { FieldID } from '../../../types/LocalEnums'
+import {
+  AutoSuggestion,
+  LocalPaymentRequest,
+  LocalPaymentRequestCreate,
+} from '../../../types/LocalTypes'
 import { defaultUserPaymentDefaults } from '../../../utils/constants'
 import { remotePaymentRequestToLocalPaymentRequest } from '../../../utils/parsers'
 import UICreatePaymentRequestPage from '../../ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
@@ -72,6 +79,13 @@ const CreatePaymentRequestPageMain = ({
     apiUrl: apiUrl,
     authToken: token,
   })
+
+  const { autoSuggestions, setAutoSuggestions } = useStore(
+    useAutoSuggestionsStore,
+    (state) => state,
+  ) ?? {
+    autoSuggestions: undefined,
+  }
 
   const { data: banksResponse } = useBanks(
     { merchantId: merchantId },
@@ -171,6 +185,19 @@ const CreatePaymentRequestPageMain = ({
     }
 
     if (response.data) {
+      const autosuggestions: AutoSuggestion[] = []
+
+      if (paymentRequestToCreate.productOrService) {
+        if (autoSuggestions?.length === 5) {
+          autoSuggestions.shift()
+        }
+
+        autosuggestions.push({
+          fieldId: FieldID.ProductOrService,
+          last5Values: [{ value: paymentRequestToCreate.productOrService, inserted: new Date() }],
+        })
+      }
+      setAutoSuggestions && setAutoSuggestions(autosuggestions)
       onPaymentRequestCreated(remotePaymentRequestToLocalPaymentRequest(response.data))
     }
   }

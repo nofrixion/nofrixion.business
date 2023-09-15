@@ -235,3 +235,13 @@ export enum ApproveType {
   PAYOUT = 'Payout',
   BATCH_PAYOUT = 'BatchPayout',
 }
+
+export interface AutoSuggestion {
+  fieldId: string
+  last5Values: AutoSuggestionValues[]
+}
+
+export interface AutoSuggestionValues {
+  value: string
+  inserted: Date
+}

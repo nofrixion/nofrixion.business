@@ -47,3 +47,7 @@ export enum LocalAccountIdentifierType {
   IBAN = 'IBAN',
   DD = 'DD',
 }
+
+export enum FieldID {
+  ProductOrService = 'ProductOrService',
+}
