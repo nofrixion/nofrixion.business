@@ -77,26 +77,22 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
   }, [isOpen])
 
-  const [currency, setCurrency] = useState<Currency>()
+  const singleCurrency =
+    accounts
+      .map((item) => item.currency)
+      .filter((value, index, self) => self.indexOf(value) === index).length === 1
+      ? accounts
+          .map((item) => item.currency)
+          .filter((value, index, self) => self.indexOf(value) === index)[0]
+      : undefined
 
-  useEffect(() => {
-    const singleCurrency =
-      accounts
-        .map((item) => item.currency)
-        .filter((value, index, self) => self.indexOf(value) === index).length === 1
-        ? accounts
-            .map((item) => item.currency)
-            .filter((value, index, self) => self.indexOf(value) === index)[0]
-        : undefined
+  const [currency, setCurrency] = useState<Currency | undefined>(
+    singleCurrency != undefined ? singleCurrency : Currency.EUR,
+  )
 
-    setCurrency(singleCurrency != undefined ? singleCurrency : Currency.EUR)
-  }, [accounts])
-
-  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>()
-
-  useEffect(() => {
-    setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
-  }, [accounts, currency])
+  const [selectedAccount, setSelectedAccount] = useState<LocalAccount | undefined>(
+    accounts?.filter((x) => x.currency === currency)[0],
+  )
 
   const theirReferenceMaxLength = currency === Currency.EUR ? 139 : 17
 
@@ -168,12 +164,14 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
       validationFailed = true
     }
 
-    const validateAccountIBANMessage = onValidateDestinationAccountIBAN(
-      destinationAccountIBAN ?? '',
-    )
+    if (currency === Currency.EUR) {
+      const validateAccountIBANMessage = onValidateDestinationAccountIBAN(
+        destinationAccountIBAN ?? '',
+      )
 
-    if (validateAccountIBANMessage) {
-      validationFailed = true
+      if (validateAccountIBANMessage) {
+        validationFailed = true
+      }
     }
 
     const validateTheirReferenceMessage = onValidateTheirReference(theirReference ?? '')
@@ -338,6 +336,12 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   }
 
   const onCurrencyChange = (currency: string) => {
+    if (!selectedBeneficiary) {
+      setDestinationAccountName('')
+      setDestinationAccountIBAN('')
+      setDestinationAccountNumber('')
+      setDestinationAccountSortCode('')
+    }
     setCurrency(currency as Currency.EUR | Currency.GBP)
     setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
     payoutAmount &&
