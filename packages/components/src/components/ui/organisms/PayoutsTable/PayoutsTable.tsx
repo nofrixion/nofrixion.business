@@ -104,7 +104,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
             <TableHeader>
               <TableRow className="hover:bg-transparent cursor-auto">
                 {status && status === PayoutStatus.PENDING_APPROVAL && (
-                  <TableHead className="w-0">
+                  <TableHead
+                    className="w-0"
+                    onClick={() => toggleAllPayoutApproveStatuses(!allPayoutsSelected)}
+                  >
                     <Checkbox
                       value={allPayoutsSelected}
                       onChange={(value) => {
@@ -199,7 +202,12 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     onClick={(event) => onPayoutClickedHandler(event, payout)}
                   >
                     {status && status === PayoutStatus.PENDING_APPROVAL && (
-                      <TableCell onClick={(event) => event.stopPropagation()}>
+                      <TableCell
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          togglePayoutApproveStatus(payout.id, !selectedPayouts.includes(payout.id))
+                        }}
+                      >
                         <Checkbox
                           value={selectedPayouts.includes(payout.id)}
                           onChange={(value) => {
