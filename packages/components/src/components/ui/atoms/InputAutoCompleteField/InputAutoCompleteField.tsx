@@ -14,7 +14,7 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
 
     const [showAll, setShowAll] = useState<boolean>(false)
 
-    const filterPeople = (query: string) => {
+    const filterSuggestions = (query: string) => {
       if (query === '') {
         setFilteredSuggestions(autoSuggestions)
       } else if (query === 'all') {
@@ -45,20 +45,20 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
               <div className="relative w-full ">
                 <Combobox.Input
                   className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
-                  displayValue={(person: string) => person}
+                  displayValue={(value: string) => value}
                   onChange={(event) => {
                     setShowAll(false)
                     onSelected && onSelected(event.target.value)
-                    filterPeople(event.target.value)
+                    filterSuggestions(event.target.value)
                     onChange && onChange(event)
                   }}
                   onClick={() => {
                     if (!value) {
                       setShowAll(true)
-                      filterPeople('all')
+                      filterSuggestions('all')
                     } else {
                       setShowAll(true)
-                      filterPeople(String(value))
+                      filterSuggestions(String(value))
                     }
                   }}
                   onBlur={(event) => {
@@ -92,15 +92,15 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                 >
                   {filteredSuggestions &&
                     filteredSuggestions.length !== 0 &&
-                    filteredSuggestions.map((person) => (
+                    filteredSuggestions.map((suggestion) => (
                       <Combobox.Option
-                        key={person}
+                        key={suggestion}
                         className={({ active }) =>
                           `relative cursor-default select-none py-2 px-6 ${
                             active ? 'bg-grey-bg ' : 'text-gray-900'
                           }`
                         }
-                        value={person}
+                        value={suggestion}
                       >
                         {({ selected }) => (
                           <>
@@ -109,7 +109,7 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                                 selected ? 'font-medium' : 'font-normal'
                               }`}
                             >
-                              {person}
+                              {suggestion}
                             </span>
                           </>
                         )}
