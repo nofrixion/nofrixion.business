@@ -49,5 +49,8 @@ export enum LocalAccountIdentifierType {
 }
 
 export enum FieldID {
-  ProductOrService = 'ProductOrService',
+  PaymentRequestProductOrService = 'PaymentRequestProductOrService',
+  PaymentRequestFirstName = 'PaymentRequestFirstName',
+  PaymentRequestLastName = 'PaymentRequestLastName',
+  PaymentRequestEmail = 'PaymentRequestEmail',
 }

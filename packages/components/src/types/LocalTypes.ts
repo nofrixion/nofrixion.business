@@ -1,6 +1,7 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
+  FieldID,
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
@@ -236,12 +237,17 @@ export enum ApproveType {
   BATCH_PAYOUT = 'BatchPayout',
 }
 
-export interface AutoSuggestion {
+export interface AutoSuggestions {
   fieldId: string
-  last5Values: AutoSuggestionValues[]
+  values: AutoSuggestionValue[]
 }
 
-export interface AutoSuggestionValues {
+export interface AutoSuggestionValue {
   value: string
   inserted: Date
+}
+
+export interface AutoSuggestionAdd {
+  fieldId: FieldID
+  value: string
 }

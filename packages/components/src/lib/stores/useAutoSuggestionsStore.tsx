@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { AutoSuggestion } from '../../types/LocalTypes'
+import { AutoSuggestions } from '../../types/LocalTypes'
 
 type AutoSuggestionStore = {
-  autoSuggestions?: AutoSuggestion[]
-  setAutoSuggestions: (autoSuggestions: AutoSuggestion[]) => void
+  autoSuggestions?: AutoSuggestions[]
+  setAutoSuggestions: (autoSuggestions: AutoSuggestions[]) => void
 }
 
 // This is a store that persists the autosuggestions in the local storage
@@ -13,7 +13,7 @@ const useAutoSuggestionsStore = create<AutoSuggestionStore>()(
   persist(
     (set) => ({
       autoSuggestions: undefined,
-      setAutoSuggestions: (autoSuggestions: AutoSuggestion[]) => set(() => ({ autoSuggestions })),
+      setAutoSuggestions: (autoSuggestions: AutoSuggestions[]) => set(() => ({ autoSuggestions })),
     }),
     {
       name: 'autosuggestions-storage',

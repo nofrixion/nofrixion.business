@@ -18,12 +18,13 @@ import { useStore } from 'zustand'
 import useAutoSuggestionsStore from '../../../lib/stores/useAutoSuggestionsStore'
 import { FieldID } from '../../../types/LocalEnums'
 import {
-  AutoSuggestion,
+  AutoSuggestionAdd,
   LocalPaymentRequest,
   LocalPaymentRequestCreate,
 } from '../../../types/LocalTypes'
 import { defaultUserPaymentDefaults } from '../../../utils/constants'
 import { remotePaymentRequestToLocalPaymentRequest } from '../../../utils/parsers'
+import { addAutoSuggestions } from '../../../utils/utils'
 import UICreatePaymentRequestPage from '../../ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
 import { makeToast } from '../../ui/Toast/Toast'
 
@@ -185,21 +186,45 @@ const CreatePaymentRequestPageMain = ({
     }
 
     if (response.data) {
-      const autosuggestions: AutoSuggestion[] = []
-
-      if (paymentRequestToCreate.productOrService) {
-        if (autoSuggestions?.length === 5) {
-          autoSuggestions.shift()
-        }
-
-        autosuggestions.push({
-          fieldId: FieldID.ProductOrService,
-          last5Values: [{ value: paymentRequestToCreate.productOrService, inserted: new Date() }],
-        })
-      }
-      setAutoSuggestions && setAutoSuggestions(autosuggestions)
+      addFieldAutoSuggestions(paymentRequestToCreate)
       onPaymentRequestCreated(remotePaymentRequestToLocalPaymentRequest(response.data))
     }
+  }
+
+  const addFieldAutoSuggestions = (paymentRequestToCreate: LocalPaymentRequestCreate) => {
+    const autoSuggestionsToAdd: AutoSuggestionAdd[] = []
+
+    if (paymentRequestToCreate.productOrService) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestProductOrService,
+        value: paymentRequestToCreate.productOrService,
+      })
+    }
+
+    if (paymentRequestToCreate.firstName) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestFirstName,
+        value: paymentRequestToCreate.firstName,
+      })
+    }
+
+    if (paymentRequestToCreate.lastName) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestLastName,
+        value: paymentRequestToCreate.lastName,
+      })
+    }
+
+    if (paymentRequestToCreate.email) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestEmail,
+        value: paymentRequestToCreate.email,
+      })
+    }
+
+    const newAutoSuggestions = addAutoSuggestions(autoSuggestionsToAdd, autoSuggestions)
+
+    setAutoSuggestions && setAutoSuggestions(newAutoSuggestions)
   }
 
   const onSaveUserPaymentDefaults = async (userPaymentDefaults: UserPaymentDefaults) => {
@@ -227,6 +252,7 @@ const CreatePaymentRequestPageMain = ({
         onDefaultsChanged={onSaveUserPaymentDefaults}
         isUserPaymentDefaultsLoading={isUserPaymentDefaultsLoading}
         prefilledData={prefilledPaymentRequest}
+        autoSuggestions={autoSuggestions}
       />
     </>
   )
