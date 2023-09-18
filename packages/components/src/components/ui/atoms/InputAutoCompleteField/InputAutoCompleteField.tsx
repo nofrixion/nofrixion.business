@@ -9,7 +9,6 @@ export interface InputAutoCompleteFieldProps extends React.InputHTMLAttributes<H
 const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFieldProps>(
   ({ autoSuggestions, maxLength, type, value, onChange, onBlur, placeholder, onSelected }, ref) => {
     const textId = useId()
-    //const [selected, setSelected] = useState<string | undefined>('')
 
     const [filteredPeople, setFilteredPeople] = useState<string[] | undefined>(undefined)
 
@@ -48,7 +47,6 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                   className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
                   displayValue={(person: string) => person}
                   onChange={(event) => {
-                    console.log('event.target.value', event.target.value)
                     setShowAll(false)
                     onSelected && onSelected(event.target.value)
                     filterPeople(event.target.value)
