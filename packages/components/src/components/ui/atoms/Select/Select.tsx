@@ -73,7 +73,7 @@ const SelectContent = React.forwardRef<
 >(({ className, children, position = 'popper', ...props }, ref) => {
   return (
     <SelectPrimitive.Portal>
-      <SelectPrimitive.Content ref={ref} position={position} asChild {...props} sideOffset={5}>
+      <SelectPrimitive.Content ref={ref} position={position} asChild {...props} sideOffset={5} className="h-[var(--radix-select-content-available-height)]">
         <motion.div
           className={cn(
             'relative min-w-[8rem] overflow-hidden rounded-md border bg-white px-3 py-3 shadow-[0px_0px_8px_rgba(4,_41,_49,_0.1)]',
