@@ -15,7 +15,9 @@ import { Fragment, useEffect, useState } from 'react'
 import AlertIcon from '../../../assets/icons/alert-icon.svg'
 import NextIcon from '../../../assets/icons/next-icon.svg'
 import RedAlertIcon from '../../../assets/icons/red-alert-icon.svg'
+import { FieldID } from '../../../types/LocalEnums'
 import {
+  AutoSuggestions,
   LocalPaymentConditionsFormValue,
   LocalPaymentMethodsFormValue,
   LocalPaymentNotificationsFormValue,
@@ -26,10 +28,10 @@ import { formatAmountAndDecimals } from '../../../utils/formatters'
 import { formatEmailAddressesForSummary, parseBoldText } from '../../../utils/uiFormaters'
 import { validateEmail } from '../../../utils/validation'
 import { Button } from '../../ui/atoms/Button/Button'
+import InputTextField from '../atoms/InputTextField/InputTextField'
 import EditOptionCard from '../EditOptionCard/EditOptionCard'
 import InputAmountField from '../InputAmountField/InputAmountField'
 import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
-import InputTextField from '../InputTextField/InputTextField'
 import { Loader } from '../Loader/Loader'
 import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
 import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal'
@@ -48,6 +50,7 @@ export interface CreatePaymentRequestPageProps {
   onDefaultsChanged: (data: UserPaymentDefaults) => void
   isUserPaymentDefaultsLoading: boolean
   prefilledData?: LocalPaymentRequestCreate
+  autoSuggestions?: AutoSuggestions[]
 }
 
 const durationAnimationWidth = 0.3
@@ -61,6 +64,7 @@ const CreatePaymentRequestPage = ({
   onDefaultsChanged,
   isUserPaymentDefaultsLoading,
   prefilledData,
+  autoSuggestions,
 }: CreatePaymentRequestPageProps) => {
   const [amount, setAmount] = useState(prefilledData?.amount.toString() ?? '')
   const [currency, setCurrency] = useState<'EUR' | 'GBP'>(
@@ -828,8 +832,13 @@ const CreatePaymentRequestPage = ({
                                   label="Product or service"
                                   maxLength={40}
                                   value={productOrService}
-                                  onChange={(e) => setProductOrService(e.target.value)}
+                                  onChange={(value) => setProductOrService(value)}
                                   required
+                                  autoSuggestions={autoSuggestions
+                                    ?.find(
+                                      (x) => x.fieldId === FieldID.PaymentRequestProductOrService,
+                                    )
+                                    ?.values?.map((value) => value.value)}
                                 />
                               </div>
 
@@ -851,7 +860,10 @@ const CreatePaymentRequestPage = ({
                                     label="First name"
                                     autoComplete="given-name"
                                     value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
+                                    onChange={(value) => setFirstName(value)}
+                                    autoSuggestions={autoSuggestions
+                                      ?.find((x) => x.fieldId === FieldID.PaymentRequestFirstName)
+                                      ?.values?.map((value) => value.value)}
                                   />
                                 </div>
 
@@ -860,7 +872,10 @@ const CreatePaymentRequestPage = ({
                                     label="Last name"
                                     autoComplete="family-name"
                                     value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
+                                    onChange={(value) => setLastName(value)}
+                                    autoSuggestions={autoSuggestions
+                                      ?.find((x) => x.fieldId === FieldID.PaymentRequestLastName)
+                                      ?.values?.map((value) => value.value)}
                                   />
                                 </div>
 
@@ -870,8 +885,11 @@ const CreatePaymentRequestPage = ({
                                     autoComplete="email"
                                     value={email}
                                     type="email"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    validation={onValidateEmail}
+                                    onChange={(value) => setEmail(value)}
+                                    warningValidation={onValidateEmail}
+                                    autoSuggestions={autoSuggestions
+                                      ?.find((x) => x.fieldId === FieldID.PaymentRequestEmail)
+                                      ?.values?.map((value) => value.value)}
                                   />
                                 </div>
                               </div>

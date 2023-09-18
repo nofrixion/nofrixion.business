@@ -1,98 +1,106 @@
 import { Combobox, Transition } from '@headlessui/react'
-import { forwardRef, Fragment, useState } from 'react'
+import { forwardRef, Fragment, InputHTMLAttributes, useId, useState } from 'react'
 
-import { InputTextFieldProps } from '../InputTextField/InputTextField'
+export interface InputAutoCompleteFieldProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  autoSuggestions: string[]
+  onChange?: (value: string) => void
+}
 
-const people: string[] = [
-  'Wade Cooper',
-  'Arlene Mccoy',
-  'Devon Webb',
-  'Tom Cook',
-  'Tanya Fox',
-  'Hellen Schmidt',
-]
+const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFieldProps>(
+  ({ autoSuggestions, maxLength, type, value, onChange, onBlur, placeholder }, ref) => {
+    const textId = useId()
 
-const InputAutoCompleteField = forwardRef<HTMLInputElement, InputTextFieldProps>(() => {
-  const [selected, setSelected] = useState<string | undefined>()
+    const [filteredSuggestions, setFilteredSuggestions] = useState<string[] | undefined>(undefined)
 
-  const [filteredPeople, setFilteredPeople] = useState<string[] | undefined>(undefined)
+    const [showAll, setShowAll] = useState<boolean>(false)
 
-  const [showAll, setShowAll] = useState<boolean>(false)
-
-  const filterPeople = (query: string) => {
-    if (query === '') {
-      setFilteredPeople(people)
-    } else if (query === 'all') {
-      setFilteredPeople(people)
-    } else {
-      query &&
-        setFilteredPeople(
-          people.filter((person) =>
-            person
-              .toLowerCase()
-              .replace(/\s+/g, '')
-              .includes(query.toLowerCase().replace(/\s+/g, '')),
-          ),
-        )
+    const filterSuggestions = (query: string) => {
+      if (query === '') {
+        setFilteredSuggestions(autoSuggestions)
+      } else if (query === 'all') {
+        setFilteredSuggestions(autoSuggestions)
+      } else {
+        query &&
+          setFilteredSuggestions(
+            autoSuggestions.filter((autoSuggestion) =>
+              autoSuggestion
+                .toLowerCase()
+                .replace(/\s+/g, '')
+                .includes(query.toString().toLowerCase().replace(/\s+/g, '')),
+            ),
+          )
+      }
     }
-  }
 
-  return (
-    <div className="fixed top-16 w-72">
-      <Combobox value={selected ?? ''} onChange={setSelected}>
-        {({ open }) => (
-          <div>
-            <Combobox.Input
-              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
-              displayValue={(person: string) => person}
-              onChange={(event) => {
-                setShowAll(false)
-                setSelected(event.target.value)
-                filterPeople(event.target.value)
-              }}
-              onClick={() => {
-                console.log('selected', selected)
-                if (!selected) {
-                  setShowAll(true)
-                  filterPeople('all')
-                } else {
-                  setShowAll(true)
-                  filterPeople(selected)
+    return (
+      <div>
+        <Combobox
+          value={value ?? ''}
+          onChange={(selectedValue) => {
+            onChange && onChange(String(selectedValue))
+          }}
+        >
+          {({ open }) => (
+            <div className="relative">
+              <div className="relative w-full ">
+                <Combobox.Input
+                  className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
+                  displayValue={(value: string) => value}
+                  onChange={(event) => {
+                    setShowAll(false)
+                    filterSuggestions(event.target.value)
+                    onChange && onChange(event.target.value)
+                  }}
+                  onClick={() => {
+                    if (!value) {
+                      setShowAll(true)
+                      filterSuggestions('all')
+                    } else {
+                      setShowAll(true)
+                      filterSuggestions(String(value))
+                    }
+                  }}
+                  onBlur={(event) => {
+                    if (!value && showAll) {
+                      setShowAll(false)
+                    }
+                    onBlur && onBlur(event)
+                  }}
+                  maxLength={maxLength}
+                  ref={ref}
+                  id={textId}
+                  type={type}
+                  value={value}
+                  placeholder={placeholder}
+                />
+              </div>
+              <Transition
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+                show={
+                  open === true || (showAll && !value)
+                    ? filteredSuggestions && filteredSuggestions.length !== 0
+                    : open
                 }
-              }}
-              onBlur={() => {
-                if (!selected && showAll) {
-                  setShowAll(false)
-                }
-              }}
-            />
-            <Transition
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              show={
-                open === true || (showAll && !selected)
-                  ? filteredPeople && filteredPeople.length !== 0
-                  : open
-              }
-            >
-              <div>
+              >
                 <Combobox.Options
                   static
-                  className=" mt-1 max-h-fit w-full overflow-auto rounded-lg bg-white py-[5px] text-base shadow-[0_10px_20px_0_rgba(0,0,0,0.1)] text-default-text focus:outline-none"
+                  className="absolute z-[100] mt-1 max-h-fit w-full overflow-auto rounded-lg bg-white py-[5px] text-base shadow-[0_10px_20px_0_rgba(0,0,0,0.1)] text-default-text focus:outline-none"
                 >
-                  {filteredPeople &&
-                    filteredPeople.length !== 0 &&
-                    filteredPeople.map((person) => (
+                  {filteredSuggestions &&
+                    filteredSuggestions.length !== 0 &&
+                    filteredSuggestions.map((suggestion) => (
                       <Combobox.Option
-                        key={person}
+                        key={suggestion}
                         className={({ active }) =>
                           `relative cursor-default select-none py-2 px-6 ${
                             active ? 'bg-grey-bg ' : 'text-gray-900'
                           }`
                         }
-                        value={person}
+                        value={suggestion}
                       >
                         {({ selected }) => (
                           <>
@@ -101,21 +109,21 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputTextFieldProps>
                                 selected ? 'font-medium' : 'font-normal'
                               }`}
                             >
-                              {person}
+                              {suggestion}
                             </span>
                           </>
                         )}
                       </Combobox.Option>
                     ))}
                 </Combobox.Options>
-              </div>
-            </Transition>
-          </div>
-        )}
-      </Combobox>
-    </div>
-  )
-})
+              </Transition>
+            </div>
+          )}
+        </Combobox>
+      </div>
+    )
+  },
+)
 
 InputAutoCompleteField.displayName = 'InputAutoCompleteField'
 

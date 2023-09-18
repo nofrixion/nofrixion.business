@@ -494,7 +494,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                               label="Account name"
                               maxLength={40}
                               value={destinationAccountName ?? ''}
-                              onChange={(e) => setDestinationAccountName(e.target.value)}
+                              onChange={(value) => setDestinationAccountName(value)}
                               warningValidation={onValidateDestinationAccountName}
                               placeholder="The person or company that owns the account"
                               required
@@ -514,8 +514,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                 <InputTextField
                                   label="Account IBAN"
                                   value={destinationAccountIBAN ?? ''}
-                                  onChange={(e) =>
-                                    setDestinationAccountIBAN(e.target.value.toUpperCase())
+                                  onChange={(value) =>
+                                    setDestinationAccountIBAN(value.toUpperCase())
                                   }
                                   warningValidation={onValidateDestinationAccountIBAN}
                                   placeholder='e.g. "GB29NWBK60161331926819"'
@@ -540,7 +540,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                   label="Account number"
                                   maxLength={8}
                                   value={destinationAccountNumber ?? ''}
-                                  onChange={(e) => setDestinationAccountNumber(e.target.value)}
+                                  onChange={(value) => setDestinationAccountNumber(value)}
                                   placeholder='e.g. "12345678"'
                                   required
                                   formSubmitted={createPayoutClicked}
@@ -553,7 +553,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                   label="Account sort code"
                                   maxLength={6}
                                   value={destinationAccountSortCode ?? ''}
-                                  onChange={(e) => setDestinationAccountSortCode(e.target.value)}
+                                  onChange={(value) => setDestinationAccountSortCode(value)}
                                   placeholder='e.g. "123456"'
                                   required
                                   formSubmitted={createPayoutClicked}
@@ -586,7 +586,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         label="Their reference"
                         maxLength={currency === Currency.EUR ? 139 : 17}
                         value={theirReference ?? ''}
-                        onChange={(e) => setTheirReference(e.target.value)}
+                        onChange={(value) => setTheirReference(value)}
                         warningValidation={onValidateTheirReference}
                         subText="This is what the recipient is going to see."
                         required
@@ -601,7 +601,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         label="Your reference"
                         maxLength={50}
                         value={yourReference ?? ''}
-                        onChange={(e) => setYourReference(e.target.value)}
+                        onChange={(value) => setYourReference(value)}
                         warningValidation={onValidateYourReference}
                         subText="For internal use only."
                       />
