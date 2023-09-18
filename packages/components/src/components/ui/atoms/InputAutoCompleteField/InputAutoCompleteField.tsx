@@ -1,13 +1,14 @@
 import { Combobox, Transition } from '@headlessui/react'
-import { forwardRef, Fragment, useId, useState } from 'react'
+import { forwardRef, Fragment, InputHTMLAttributes, useId, useState } from 'react'
 
-export interface InputAutoCompleteFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputAutoCompleteFieldProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   autoSuggestions: string[]
-  onSelected?: (value: string) => void
+  onChange?: (value: string) => void
 }
 
 const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFieldProps>(
-  ({ autoSuggestions, maxLength, type, value, onChange, onBlur, placeholder, onSelected }, ref) => {
+  ({ autoSuggestions, maxLength, type, value, onChange, onBlur, placeholder }, ref) => {
     const textId = useId()
 
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[] | undefined>(undefined)
@@ -37,7 +38,7 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
         <Combobox
           value={value ?? ''}
           onChange={(selectedValue) => {
-            onSelected && onSelected(String(selectedValue))
+            onChange && onChange(String(selectedValue))
           }}
         >
           {({ open }) => (
@@ -48,9 +49,8 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                   displayValue={(value: string) => value}
                   onChange={(event) => {
                     setShowAll(false)
-                    onSelected && onSelected(event.target.value)
                     filterSuggestions(event.target.value)
-                    onChange && onChange(event)
+                    onChange && onChange(event.target.value)
                   }}
                   onClick={() => {
                     if (!value) {

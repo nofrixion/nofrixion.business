@@ -832,8 +832,7 @@ const CreatePaymentRequestPage = ({
                                   label="Product or service"
                                   maxLength={40}
                                   value={productOrService}
-                                  onSelected={(value) => setProductOrService(value)}
-                                  onChange={(e) => setProductOrService(e.target.value)}
+                                  onChange={(value) => setProductOrService(value)}
                                   required
                                   autoSuggestions={autoSuggestions
                                     ?.find(
@@ -861,8 +860,7 @@ const CreatePaymentRequestPage = ({
                                     label="First name"
                                     autoComplete="given-name"
                                     value={firstName}
-                                    onSelected={(value) => setFirstName(value)}
-                                    onChange={(e) => setFirstName(e.target.value)}
+                                    onChange={(value) => setFirstName(value)}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestFirstName)
                                       ?.values?.map((value) => value.value)}
@@ -874,8 +872,7 @@ const CreatePaymentRequestPage = ({
                                     label="Last name"
                                     autoComplete="family-name"
                                     value={lastName}
-                                    onSelected={(value) => setLastName(value)}
-                                    onChange={(e) => setLastName(e.target.value)}
+                                    onChange={(value) => setLastName(value)}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestLastName)
                                       ?.values?.map((value) => value.value)}
@@ -888,8 +885,7 @@ const CreatePaymentRequestPage = ({
                                     autoComplete="email"
                                     value={email}
                                     type="email"
-                                    onSelected={(value) => setEmail(value)}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(value) => setEmail(value)}
                                     warningValidation={onValidateEmail}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestEmail)
