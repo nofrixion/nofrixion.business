@@ -79,7 +79,7 @@ const SelectContent = React.forwardRef<
         asChild
         {...props}
         sideOffset={5}
-        className="h-[var(--radix-select-content-available-height)]"
+        className="max-h-[var(--radix-select-content-available-height)]"
       >
         <motion.div
           className={cn(
