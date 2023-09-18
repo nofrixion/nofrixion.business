@@ -10,18 +10,18 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
   ({ autoSuggestions, maxLength, type, value, onChange, onBlur, placeholder, onSelected }, ref) => {
     const textId = useId()
 
-    const [filteredPeople, setFilteredPeople] = useState<string[] | undefined>(undefined)
+    const [filteredSuggestions, setFilteredSuggestions] = useState<string[] | undefined>(undefined)
 
     const [showAll, setShowAll] = useState<boolean>(false)
 
     const filterPeople = (query: string) => {
       if (query === '') {
-        setFilteredPeople(autoSuggestions)
+        setFilteredSuggestions(autoSuggestions)
       } else if (query === 'all') {
-        setFilteredPeople(autoSuggestions)
+        setFilteredSuggestions(autoSuggestions)
       } else {
         query &&
-          setFilteredPeople(
+          setFilteredSuggestions(
             autoSuggestions.filter((autoSuggestion) =>
               autoSuggestion
                 .toLowerCase()
@@ -82,7 +82,7 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                 leaveTo="opacity-0"
                 show={
                   open === true || (showAll && !value)
-                    ? filteredPeople && filteredPeople.length !== 0
+                    ? filteredSuggestions && filteredSuggestions.length !== 0
                     : open
                 }
               >
@@ -90,9 +90,9 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                   static
                   className="absolute z-[100] mt-1 max-h-fit w-full overflow-auto rounded-lg bg-white py-[5px] text-base shadow-[0_10px_20px_0_rgba(0,0,0,0.1)] text-default-text focus:outline-none"
                 >
-                  {filteredPeople &&
-                    filteredPeople.length !== 0 &&
-                    filteredPeople.map((person) => (
+                  {filteredSuggestions &&
+                    filteredSuggestions.length !== 0 &&
+                    filteredSuggestions.map((person) => (
                       <Combobox.Option
                         key={person}
                         className={({ active }) =>
