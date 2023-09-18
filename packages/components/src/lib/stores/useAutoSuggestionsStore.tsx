@@ -16,7 +16,7 @@ const useAutoSuggestionsStore = create<AutoSuggestionStore>()(
       setAutoSuggestions: (autoSuggestions: AutoSuggestions[]) => set(() => ({ autoSuggestions })),
     }),
     {
-      name: 'autosuggestions-storage',
+      name: 'mm4b-autosuggestions-storage',
     },
   ),
 )
