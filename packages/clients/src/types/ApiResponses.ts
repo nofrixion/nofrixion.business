@@ -244,6 +244,7 @@ export interface Account {
   summary: string
   identifier: AccountIdentifier
   isDefault: boolean
+  isConnectedAccount: boolean
 }
 
 export interface AccountIdentifier {

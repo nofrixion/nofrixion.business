@@ -1,9 +1,16 @@
-import { Account, BankSettings, useAccounts, useBanks } from '@nofrixion/moneymoov'
+import {
+  Account,
+  BankSettings,
+  OpenBankingClient,
+  useAccounts,
+  useBanks,
+} from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
+import { makeToast } from '../../ui/Toast/Toast'
 
 export interface CurrentAccountsListProps {
   merchantId: string
@@ -65,8 +72,28 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const onConnectBank = (bank: BankSettings) => {
-    console.log(bank)
+  const onConnectBank = async (bank: BankSettings) => {
+    // TODO: Fix this. Which one should we use?
+    if (bank.personalInstitutionID) {
+      const client = new OpenBankingClient({ apiUrl, authToken: token })
+
+      const response = await client.createConsent({
+        institutionID: bank.personalInstitutionID,
+        merchantID: merchantId,
+        IsConnectedAccounts: true,
+      })
+
+      if (response.status === 'error') {
+        console.error(response.error)
+        makeToast('error', 'Could not connect to bank.')
+        return
+      }
+
+      if (response.data.authorisationUrl) {
+        // Redirect to the banks authorisation url
+        window.location.href = response.data.authorisationUrl
+      }
+    }
   }
 
   const onMaybeLater = () => {

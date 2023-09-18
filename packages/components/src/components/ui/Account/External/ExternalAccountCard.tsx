@@ -6,9 +6,14 @@ import { Button } from '../../atoms'
 export interface ExternalAccountCardProps {
   onConnectClicked: () => void
   onMaybeLater: () => void
+  disabled?: boolean
 }
 
-const ExternalAccountCard = ({ onConnectClicked, onMaybeLater }: ExternalAccountCardProps) => {
+const ExternalAccountCard = ({
+  onConnectClicked,
+  onMaybeLater,
+  disabled,
+}: ExternalAccountCardProps) => {
   return (
     <div
       className="flex flex-col p-10 bg-white justify-between rounded-lg w-full bg-no-repeat bg-right bg-gradient-to-r from-transparent to-main-grey"
@@ -24,7 +29,13 @@ const ExternalAccountCard = ({ onConnectClicked, onMaybeLater }: ExternalAccount
         control over your finances.
       </div>
       <div className="flex flex-row mt-7">
-        <Button variant="primary" size="big" className="w-fit" onClick={onConnectClicked}>
+        <Button
+          variant="primary"
+          size="big"
+          className="w-fit"
+          onClick={onConnectClicked}
+          disabled={disabled}
+        >
           Connect account
         </Button>
         <div

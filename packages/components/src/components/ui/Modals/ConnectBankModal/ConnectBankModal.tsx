@@ -1,6 +1,6 @@
 import { BankSettings } from '@nofrixion/moneymoov'
 import { AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
 import Select from '../../Select/Select'
@@ -14,6 +14,12 @@ export interface ConnectBankModalProps extends BaseModalProps {
 
 const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalProps) => {
   const [selectedBank, setSelectedBank] = useState<BankSettings | undefined>()
+
+  useEffect(() => {
+    if (banks && banks.length > 0 && !selectedBank) {
+      setSelectedBank(banks[0])
+    }
+  }, [banks])
 
   const handleOnApply = () => {
     if (!selectedBank) return
@@ -31,7 +37,7 @@ const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalP
       buttonText="Continue to your bank"
     >
       <AnimatePresence>
-        {banks && (
+        {banks && banks.length > 0 && (
           <AnimateHeightWrapper layoutId="select-priority-bank">
             <div className="pt-4 md:pt-0">
               <Select
