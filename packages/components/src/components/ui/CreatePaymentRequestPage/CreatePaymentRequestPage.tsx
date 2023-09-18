@@ -839,7 +839,7 @@ const CreatePaymentRequestPage = ({
                                     ?.find(
                                       (x) => x.fieldId === FieldID.PaymentRequestProductOrService,
                                     )
-                                    ?.values.map((value) => value.value)}
+                                    ?.values?.map((value) => value.value)}
                                 />
                               </div>
 
@@ -865,7 +865,7 @@ const CreatePaymentRequestPage = ({
                                     onChange={(e) => setFirstName(e.target.value)}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestFirstName)
-                                      ?.values.map((value) => value.value)}
+                                      ?.values?.map((value) => value.value)}
                                   />
                                 </div>
 
@@ -878,7 +878,7 @@ const CreatePaymentRequestPage = ({
                                     onChange={(e) => setLastName(e.target.value)}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestLastName)
-                                      ?.values.map((value) => value.value)}
+                                      ?.values?.map((value) => value.value)}
                                   />
                                 </div>
 
@@ -893,7 +893,7 @@ const CreatePaymentRequestPage = ({
                                     warningValidation={onValidateEmail}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestEmail)
-                                      ?.values.map((value) => value.value)}
+                                      ?.values?.map((value) => value.value)}
                                   />
                                 </div>
                               </div>

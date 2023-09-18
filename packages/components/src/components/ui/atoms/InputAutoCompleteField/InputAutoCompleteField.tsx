@@ -90,7 +90,7 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
               >
                 <Combobox.Options
                   static
-                  className="absolute mt-1 max-h-fit w-full overflow-auto rounded-lg bg-white py-[5px] text-base shadow-[0_10px_20px_0_rgba(0,0,0,0.1)] text-default-text focus:outline-none"
+                  className="absolute z-[100] mt-1 max-h-fit w-full overflow-auto rounded-lg bg-white py-[5px] text-base shadow-[0_10px_20px_0_rgba(0,0,0,0.1)] text-default-text focus:outline-none"
                 >
                   {filteredPeople &&
                     filteredPeople.length !== 0 &&
