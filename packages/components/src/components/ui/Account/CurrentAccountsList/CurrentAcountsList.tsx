@@ -2,6 +2,7 @@ import { Account, BankSettings } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
+import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
@@ -37,6 +38,7 @@ const CurrentAcountsList = ({
 
   const handleOnDismiss = () => {
     setIsConnectBankModalOpen(false)
+    setExternalAccountConnectDisabled(false)
   }
 
   const handleOnApply = (bank: BankSettings) => {
@@ -58,8 +60,17 @@ const CurrentAcountsList = ({
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
-      <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
-
+      <div className="flex">
+        <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
+        <Button
+          variant={'secondary'}
+          className="h-fit w-fit ml-auto"
+          onClick={handleOnConnectClicked}
+        >
+          <Icon name="bank/16" className="mr-1" />
+          Connect external account
+        </Button>
+      </div>
       {internalAccounts && (
         <div className="flex-row mb-8 md:mb-[68px]">
           {internalAccounts
@@ -78,10 +89,18 @@ const CurrentAcountsList = ({
 
       {externalAccounts && externalAccounts.length > 0 && (
         <div>
-          <div className="ml-3 mb-16">
+          <div className="flex ml-3 mb-16">
             <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
               Connected accounts
             </span>
+            <Button
+              variant={'secondary'}
+              className="h-fit w-fit ml-auto"
+              onClick={handleOnConnectClicked}
+            >
+              <Icon name="bank/16" className="mr-1" />
+              Connect account
+            </Button>
           </div>
           <div className="flex-row mb-8 md:mb-[68px]">
             {externalAccounts
@@ -107,14 +126,12 @@ const CurrentAcountsList = ({
         />
       )}
 
-      {externalAccounts && externalAccounts?.length === 0 && (
-        <ConnectBankModal
-          banks={banks}
-          onApply={handleOnApply}
-          open={isConnectBankModalOpen}
-          onDismiss={handleOnDismiss}
-        />
-      )}
+      <ConnectBankModal
+        banks={banks}
+        onApply={handleOnApply}
+        open={isConnectBankModalOpen}
+        onDismiss={handleOnDismiss}
+      />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
     </div>
