@@ -79,25 +79,19 @@ const SelectContent = React.forwardRef<
         asChild
         {...props}
         sideOffset={5}
-        className="max-h-[var(--radix-select-content-available-height)]"
       >
         <motion.div
           className={cn(
-            'relative min-w-[8rem] overflow-hidden rounded-md border bg-white px-3 py-3 shadow-[0px_0px_8px_rgba(4,_41,_49,_0.1)]',
-            className,
+            'space-y-4 relative min-w-[8rem] rounded-md border bg-white px-3 py-3 shadow-[0px_0px_8px_rgba(4,_41,_49,_0.1)]',
+            className, {
+              'max-h-[var(--radix-select-content-available-height)] overflow-y-auto w-full' :position === 'popper'
+            }
           )}
           initial={{ opacity: 0.5, y: -5, scaleX: 1, scaleY: 1 }}
           animate={{ opacity: 1, y: 0, scaleX: 1, scaleY: 1 }}
-          // transition={{ duration: 2 }}
+          data-scrollable
         >
-          <SelectPrimitive.Viewport
-            className={cn(
-              'space-y-4',
-              position === 'popper' && 'h-[var(--radix-select-trigger-height)] w-full',
-            )}
-          >
-            {children}
-          </SelectPrimitive.Viewport>
+          {children}
         </motion.div>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
