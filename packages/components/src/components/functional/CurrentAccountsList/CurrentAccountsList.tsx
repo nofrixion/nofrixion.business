@@ -57,7 +57,7 @@ const CurrentAccountsMain = ({
   const navigate = useNavigate()
 
   const { data: accounts, isLoading: isAccountsLoading } = useAccounts(
-    { merchantId },
+    { connectedAccounts: true, merchantId: merchantId },
     { apiUrl, authToken: token },
   )
 
