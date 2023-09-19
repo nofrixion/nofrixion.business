@@ -64,7 +64,7 @@ const CurrentAcountsList = ({
             className="h-fit w-fit ml-auto"
             onClick={handleOnConnectClicked}
           >
-            <Icon name="bank/16" className="mr-1" />
+            <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
             Connect external account
           </Button>
         )}
@@ -97,7 +97,7 @@ const CurrentAcountsList = ({
               className="h-fit w-fit ml-auto"
               onClick={handleOnConnectClicked}
             >
-              <Icon name="bank/16" className="mr-1" />
+              <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
               Connect account
             </Button>
           </div>
@@ -111,6 +111,7 @@ const CurrentAcountsList = ({
                   onClick={() => {
                     onAccountClick && onAccountClick(account)
                   }}
+                  bankLogo={banks?.find((bank) => bank.bankName === account.bankName)?.logo}
                 />
               ))}
           </div>

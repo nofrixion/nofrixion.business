@@ -245,6 +245,7 @@ export interface Account {
   identifier: AccountIdentifier
   isDefault: boolean
   isConnectedAccount: boolean
+  bankName: string
 }
 
 export interface AccountIdentifier {
