@@ -3,17 +3,17 @@
 import bankLogos from '../../../../assets/images/bank_logos.svg'
 import { Button } from '../../atoms'
 
-export interface ExternalAccountCardProps {
+export interface ExternalAccountConnectCardProps {
   onConnectClicked: () => void
   onMaybeLater: () => void
   disabled?: boolean
 }
 
-const ExternalAccountCard = ({
+const ExternalAccountConnectCard = ({
   onConnectClicked,
   onMaybeLater,
   disabled,
-}: ExternalAccountCardProps) => {
+}: ExternalAccountConnectCardProps) => {
   return (
     <div
       className="flex flex-col p-10 bg-white justify-between rounded-lg w-full bg-no-repeat bg-right bg-gradient-to-r from-transparent to-main-grey"
@@ -49,4 +49,4 @@ const ExternalAccountCard = ({
   )
 }
 
-export default ExternalAccountCard
+export default ExternalAccountConnectCard

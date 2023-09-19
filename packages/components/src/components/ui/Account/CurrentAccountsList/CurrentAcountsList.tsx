@@ -7,7 +7,7 @@ import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
-import ExternalAccountCard from '../External/ExternalAccountCard'
+import ExternalAccountConnectCard from '../External/ExternalAccountConnectCard'
 
 export interface CurrentAccountsListProps {
   accounts: Account[] | undefined
@@ -54,10 +54,6 @@ const CurrentAcountsList = ({
     }
   }, [accounts])
 
-  useEffect(() => {
-    console.log('external accounts', externalAccounts)
-  }, [externalAccounts])
-
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex">
@@ -89,6 +85,7 @@ const CurrentAcountsList = ({
         </div>
       )}
 
+      {/* External accounts list */}
       {externalAccounts && externalAccounts.length > 0 && (
         <div>
           <div className="flex ml-3 mb-16">
@@ -121,7 +118,7 @@ const CurrentAcountsList = ({
       )}
 
       {!userSettings?.connectMaybeLater && externalAccounts?.length === 0 && (
-        <ExternalAccountCard
+        <ExternalAccountConnectCard
           onConnectClicked={handleOnConnectClicked}
           onMaybeLater={onMaybeLater}
           disabled={externalAccountConnectDisabled}

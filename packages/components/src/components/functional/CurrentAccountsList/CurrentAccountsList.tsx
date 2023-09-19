@@ -7,9 +7,12 @@ import {
 } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
+import { getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
+import { Loader } from '../../ui/Loader/Loader'
 import { makeToast } from '../../ui/Toast/Toast'
 
 export interface CurrentAccountsListProps {
@@ -50,13 +53,25 @@ const CurrentAccountsMain = ({
   onAccountClick,
 }: CurrentAccountsListProps) => {
   const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
-  const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
   const { userSettings, updateUserSettings } = useUserSettings()
+  const navigate = useNavigate()
+
+  const { data: accounts, isLoading: isAccountsLoading } = useAccounts(
+    { merchantId },
+    { apiUrl, authToken: token },
+  )
 
   const { data: banksResponse } = useBanks(
     { merchantId: merchantId },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const businessBaseUrl = () => {
+    // Defaults to local dev if it's not set
+    return import.meta.env.VITE_PUBLIC_APP_BASE_URL ?? 'https://localhost:3001' // Local development
+  }
+
+  const { bankId } = useParams()
 
   useEffect(() => {
     if (banksResponse?.status === 'success') {
@@ -72,6 +87,18 @@ const CurrentAccountsMain = ({
     }
   }
 
+  useEffect(() => {
+    if (bankId) {
+      const bank = banks?.find((bank) => bank.bankID === bankId)
+
+      console.log('bank', bank)
+      if (bank) {
+        makeToast('success', `Connected to ${bank.bankName}`)
+        navigate(getRoute('/home/current-accounts'))
+      }
+    }
+  }, [bankId, banks])
+
   const onConnectBank = async (bank: BankSettings) => {
     // TODO: Fix this. Which one should we use?
     if (bank.personalInstitutionID) {
@@ -81,6 +108,7 @@ const CurrentAccountsMain = ({
         institutionID: bank.personalInstitutionID,
         merchantID: merchantId,
         IsConnectedAccounts: true,
+        callbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts/connected/{bankId}')}`,
       })
 
       if (response.status === 'error') {
@@ -103,6 +131,14 @@ const CurrentAccountsMain = ({
     } else {
       updateUserSettings({ connectMaybeLater: true })
     }
+  }
+
+  if (isAccountsLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader className="flex items-center justify-center p-24 min-h-screen" />
+      </div>
+    )
   }
 
   return (
