@@ -544,14 +544,12 @@ export const Icons = {
     <SVG className={cn(className)} size="16" viewBox="0 0">
       <path
         d="M1.83333 9.30026C1.03333 8.70026 0.5 7.76693 0.5 6.70026C0.5 4.90026 1.96667 3.43359 3.76667 3.43359H8.96667C10.7667 3.43359 12.2333 4.90026 12.2333 6.70026C12.2333 8.50026 10.7667 9.96693 8.96667 9.96693H5.76667"
-        stroke="#ABB3BA"
         strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M14.1667 6.69987C14.9667 7.29987 15.5 8.2332 15.5 9.29987C15.5 11.0999 14.0333 12.5665 12.2333 12.5665H7.03333C5.23333 12.5665 3.76666 11.0999 3.76666 9.29987C3.76666 7.49987 5.23333 6.0332 7.03333 6.0332H10.3"
-        stroke="#ABB3BA"
         strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"

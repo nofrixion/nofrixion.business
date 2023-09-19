@@ -14,7 +14,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
   className,
   animateOnExit = true,
   layout = 'position',
-  duration = 0.2,
+  duration = 2.2,
   delay = 0,
 }) => (
   <motion.div

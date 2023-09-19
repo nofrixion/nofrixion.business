@@ -1,11 +1,12 @@
-import { Account as AccountModel, AccountIdentifierType } from '@nofrixion/moneymoov'
+import { Account, AccountIdentifierType } from '@nofrixion/moneymoov'
 
 import { cn } from '../../../utils'
 import { DisplayAndCopy } from '../atoms'
+import AccountConnection from '../atoms/AccountConnection/AccountConnection'
 import AccountBalance from './AccountBalance/AccountBalance'
 
 export interface AccountCardProps extends React.HTMLAttributes<HTMLButtonElement> {
-  account: AccountModel
+  account: Account
   bankLogo?: string
 }
 
@@ -16,17 +17,17 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, bankLogo, className,
     <button
       {...props}
       className={cn(
-        'flex sm:h-[124px] p-8 mb-6 bg-white gap-8 rounded-lg hover:shadow-[0px_2px_8px_0px_rgba(4,_41,_49,_0.1)] w-full',
+        'flex p-8 mb-6 bg-white gap-8 rounded-lg hover:shadow-[0px_2px_8px_0px_rgba(4,_41,_49,_0.1)] w-full',
         className,
       )}
     >
-      {account.isConnectedAccount && (
+      {account.isConnectedAccount && bankLogo && (
         <div className="">
           <img
             src={`https://cdn.nofrixion.com/nextgen/assets/banks/${bankLogo}`}
             alt="bank logo"
-            width={40}
-            height={40}
+            width={100}
+            height={100}
           />
         </div>
       )}
@@ -51,6 +52,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, bankLogo, className,
               </>
             )}
           </div>
+          {account.expiryDate && <AccountConnection account={account} />}
         </div>
         <div>
           <AccountBalance

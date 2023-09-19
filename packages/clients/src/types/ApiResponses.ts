@@ -246,6 +246,7 @@ export interface Account {
   isDefault: boolean
   isConnectedAccount: boolean
   bankName: string
+  expiryDate?: string
 }
 
 export interface AccountIdentifier {
