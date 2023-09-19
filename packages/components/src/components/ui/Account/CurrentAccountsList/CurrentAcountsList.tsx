@@ -62,14 +62,16 @@ const CurrentAcountsList = ({
     <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex">
         <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
-        <Button
-          variant={'secondary'}
-          className="h-fit w-fit ml-auto"
-          onClick={handleOnConnectClicked}
-        >
-          <Icon name="bank/16" className="mr-1" />
-          Connect external account
-        </Button>
+        {userSettings?.connectMaybeLater && (
+          <Button
+            variant={'secondary'}
+            className="h-fit w-fit ml-auto"
+            onClick={handleOnConnectClicked}
+          >
+            <Icon name="bank/16" className="mr-1" />
+            Connect external account
+          </Button>
+        )}
       </div>
       {internalAccounts && (
         <div className="flex-row mb-8 md:mb-[68px]">

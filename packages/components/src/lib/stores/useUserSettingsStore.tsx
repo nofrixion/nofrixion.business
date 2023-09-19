@@ -17,7 +17,7 @@ export const useUserSettings = create<UserSettingsState>()(
       updateUserSettings: (userSettings: UserSettings) => set(() => ({ userSettings })),
     }),
     {
-      name: 'user-settings',
+      name: 'mm4b-user-settings',
     },
   ),
 )
