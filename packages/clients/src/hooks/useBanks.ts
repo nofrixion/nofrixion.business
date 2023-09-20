@@ -24,7 +24,6 @@ export const useBanks = ({ merchantId }: MerchantProps, { apiUrl, authToken }: A
     () => fetchBanks(apiUrl, merchantId, authToken),
     {
       enabled: !!merchantId,
-      staleTime: 1000 * 60 * 5, // 15 minutes
     },
   )
 }

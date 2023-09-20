@@ -92,7 +92,6 @@ const CurrentAccountsMain = ({
     if (bankId) {
       const bank = banks?.find((bank) => bank.bankID === bankId)
 
-      console.log('bank', bank)
       if (bank) {
         makeToast('success', `Your ${bank.bankName} connection is ready!`)
         navigate(getRoute('/home/current-accounts'))

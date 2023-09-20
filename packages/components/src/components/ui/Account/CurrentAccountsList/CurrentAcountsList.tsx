@@ -47,7 +47,6 @@ const CurrentAcountsList = ({
 
   const handleOnApply = (bank: BankSettings) => {
     onConnectToBank(bank)
-    // setIsConnectBankModalOpen(false)
     setExternalAccountConnectDisabled(true)
   }
 
