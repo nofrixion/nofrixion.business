@@ -660,44 +660,42 @@ const PaymentRequestDashboardMain = ({
           )}
         </AnimatePresence>
 
-        <AnimatePresence initial={false}>
-          {paymentRequestsExists && (
-            <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg">
-              <PaymentRequestTable
-                paymentRequests={localPaymentRequests}
-                pageSize={pageSize}
-                totalRecords={totalRecords}
-                onPageChanged={setPage}
-                setStatusSortDirection={setStatusSortDirection}
-                setCreatedSortDirection={setCreatedSortDirection}
-                setContactSortDirection={setContactSortDirection}
-                setAmountSortDirection={setAmountSortDirection}
-                onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
-                onPaymentRequestDeleteClicked={onDeletePaymentRequest}
-                onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
-                isLoading={isLoadingPaymentRequests}
-                onCreatePaymentRequest={onCreatePaymentRequest}
-                onPaymentRequestClicked={onPaymentRequestRowClicked}
-                onOpenPaymentPage={onOpenPaymentPage}
-                selectedPaymentRequestID={selectedPaymentRequestID}
-              />
+        {paymentRequestsExists && (
+          <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg">
+            <PaymentRequestTable
+              paymentRequests={localPaymentRequests}
+              pageSize={pageSize}
+              totalRecords={totalRecords}
+              onPageChanged={setPage}
+              setStatusSortDirection={setStatusSortDirection}
+              setCreatedSortDirection={setCreatedSortDirection}
+              setContactSortDirection={setContactSortDirection}
+              setAmountSortDirection={setAmountSortDirection}
+              onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
+              onPaymentRequestDeleteClicked={onDeletePaymentRequest}
+              onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
+              isLoading={isLoadingPaymentRequests}
+              onCreatePaymentRequest={onCreatePaymentRequest}
+              onPaymentRequestClicked={onPaymentRequestRowClicked}
+              onOpenPaymentPage={onOpenPaymentPage}
+              selectedPaymentRequestID={selectedPaymentRequestID}
+            />
 
-              {!isInitialState && localPaymentRequests.length < totalRecords && (
-                <div className="flex">
-                  <Button
-                    variant="tertiary"
-                    size="big"
-                    onClick={fetchNextPage}
-                    disabled={isLoadingMore}
-                    className="lg:hidden mx-auto mt-6 mb-2 w-fit"
-                  >
-                    Show more
-                  </Button>
-                </div>
-              )}
-            </LayoutWrapper>
-          )}
-        </AnimatePresence>
+            {!isInitialState && localPaymentRequests.length < totalRecords && (
+              <div className="flex">
+                <Button
+                  variant="tertiary"
+                  size="big"
+                  onClick={fetchNextPage}
+                  disabled={isLoadingMore}
+                  className="lg:hidden mx-auto mt-6 mb-2 w-fit"
+                >
+                  Show more
+                </Button>
+              </div>
+            )}
+          </LayoutWrapper>
+        )}
 
         {/* Show loader until metrics are loaded which will determine whether we have any payment requests or not.*/}
         {isLoadingMetrics && (
