@@ -17,6 +17,7 @@ export interface CurrentAccountsListProps {
   onMaybeLater: () => void
   onRenewConnection?: (account: Account) => void
   banks?: BankSettings[]
+  isConnectingToBank: boolean
 }
 
 const CurrentAcountsList = ({
@@ -27,6 +28,7 @@ const CurrentAcountsList = ({
   onMaybeLater,
   onRenewConnection,
   banks,
+  isConnectingToBank,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
@@ -60,7 +62,7 @@ const CurrentAcountsList = ({
     <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex">
         <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
-        {userSettings?.connectMaybeLater && (
+        {userSettings?.connectMaybeLater && externalAccounts?.length === 0 && (
           <Button
             variant={'secondary'}
             className="h-fit w-fit ml-auto"
@@ -134,6 +136,7 @@ const CurrentAcountsList = ({
         onApply={handleOnApply}
         open={isConnectBankModalOpen}
         onDismiss={handleOnDismiss}
+        isConnectingToBank={isConnectingToBank}
       />
 
       <Toaster positionY="top" positionX="right" duration={3000} />

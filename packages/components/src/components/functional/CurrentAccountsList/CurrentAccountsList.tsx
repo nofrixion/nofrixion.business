@@ -52,6 +52,7 @@ const CurrentAccountsMain = ({
   onUnauthorized,
   onAccountClick,
 }: CurrentAccountsListProps) => {
+  const [isConnectingToBank, setIsConnectingToBank] = useState(false)
   const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
   const { userSettings, updateUserSettings } = useUserSettings()
   const navigate = useNavigate()
@@ -93,7 +94,7 @@ const CurrentAccountsMain = ({
 
       console.log('bank', bank)
       if (bank) {
-        makeToast('success', `Connected to ${bank.bankName}`)
+        makeToast('success', `Your ${bank.bankName} connection is ready!`)
         navigate(getRoute('/home/current-accounts'))
       }
     }
@@ -102,6 +103,8 @@ const CurrentAccountsMain = ({
   const onConnectBank = async (bank: BankSettings) => {
     // TODO: Fix this. Which one should we use?
     if (bank.personalInstitutionID) {
+      setIsConnectingToBank(true)
+
       const client = new OpenBankingClient({ apiUrl, authToken: token })
 
       const response = await client.createConsent({
@@ -114,13 +117,12 @@ const CurrentAccountsMain = ({
       if (response.status === 'error') {
         console.error(response.error)
         makeToast('error', 'Could not connect to bank.')
-        return
-      }
-
-      if (response.data.authorisationUrl) {
+      } else if (response.data.authorisationUrl) {
         // Redirect to the banks authorisation url
         window.location.href = response.data.authorisationUrl
       }
+
+      setIsConnectingToBank(false)
     }
   }
 
@@ -159,6 +161,7 @@ const CurrentAccountsMain = ({
           onMaybeLater={onMaybeLater}
           banks={banks}
           onRenewConnection={handleOnRenewConnection}
+          isConnectingToBank={isConnectingToBank}
         />
       )}
     </>

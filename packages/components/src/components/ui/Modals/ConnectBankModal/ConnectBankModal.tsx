@@ -10,9 +10,16 @@ export interface ConnectBankModalProps extends BaseModalProps {
   banks?: BankSettings[]
   onApply: (bank: BankSettings) => void
   onDismiss: () => void
+  isConnectingToBank: boolean
 }
 
-const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalProps) => {
+const ConnectBankModal = ({
+  banks,
+  onApply,
+  onDismiss,
+  open,
+  isConnectingToBank,
+}: ConnectBankModalProps) => {
   const [selectedBank, setSelectedBank] = useState<BankSettings | undefined>()
 
   useEffect(() => {
@@ -23,7 +30,6 @@ const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalP
 
   const handleOnApply = () => {
     if (!selectedBank) return
-
     onApply(selectedBank)
   }
 
@@ -36,6 +42,7 @@ const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalP
       showDefault={false}
       buttonText="Continue to your bank"
       buttonClaseName="w-full md:w-auto ml-auto"
+      onApplyEnabled={!isConnectingToBank}
     >
       <AnimatePresence>
         {banks && banks.length > 0 && (
