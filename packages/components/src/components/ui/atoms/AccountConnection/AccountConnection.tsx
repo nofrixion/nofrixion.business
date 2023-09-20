@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Account } from '@nofrixion/moneymoov'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -16,7 +14,10 @@ export interface AccountConnectionProps {
 }
 
 const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountConnectionProps) => {
-  const onHandleRenewConnection = (event: React.MouseEvent<HTMLDivElement>, account: Account) => {
+  const onHandleRenewConnection = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    account: Account,
+  ) => {
     onRenewConnection && onRenewConnection(account)
 
     event.stopPropagation()
@@ -43,12 +44,12 @@ const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountCon
             </div>
           )}
 
-          <div
+          <button
             className="text-grey-text text-xs font-normal transition hidden group-hover:block ml-2 underline"
             onClick={(event) => onHandleRenewConnection(event, account)}
           >
             Renew connection
-          </div>
+          </button>
         </div>
       )}
     </>

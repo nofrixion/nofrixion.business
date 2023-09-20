@@ -463,52 +463,25 @@ export const Icons = {
         <path
           id="Vector"
           d="M2 14L2.50629 12.2277C2.52523 12.1614 2.56157 12.1038 2.61018 12.0629C2.65879 12.0221 2.7172 12.0001 2.77714 12H13.2229C13.2828 12.0001 13.3412 12.0221 13.3898 12.0629C13.4384 12.1038 13.4748 12.1614 13.4937 12.2277L14 13.9973"
-          stroke="#454D54"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           id="Vector_2"
           d="M3.33325 6.66602H12.6666V11.9993H3.33325V6.66602Z"
-          stroke="#454D54"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          id="Vector_3"
-          d="M14.6666 14H1.33325"
-          stroke="#454D54"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          id="Vector_4"
-          d="M6 6.66602V11.9993"
-          stroke="#454D54"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          id="Vector_5"
-          d="M10 6.66602V11.9993"
-          stroke="#454D54"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path id="Vector_3" d="M14.6666 14H1.33325" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector_4" d="M6 6.66602V11.9993" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector_5" d="M10 6.66602V11.9993" strokeLinecap="round" strokeLinejoin="round" />
         <path
           id="Vector_6"
           d="M13.9852 5.10775C14.0063 5.04229 14.0048 4.9713 13.981 4.90684C13.9573 4.84237 13.9127 4.78842 13.8548 4.75415L8.14539 1.374C8.10154 1.34778 8.05179 1.33398 8.00115 1.33398C7.95052 1.33398 7.90077 1.34778 7.85692 1.374L2.14518 4.75176C2.08734 4.78603 2.04274 4.83998 2.01897 4.90445C1.9952 4.96891 1.99372 5.0399 2.01479 5.10536L2.45558 6.46304C2.4747 6.52248 2.5114 6.5742 2.56048 6.61086C2.60955 6.64752 2.66853 6.66727 2.72905 6.66732H13.2756C13.3361 6.66727 13.3951 6.64752 13.4441 6.61086C13.4932 6.5742 13.5299 6.52248 13.549 6.46304L13.9852 5.10775Z"
-          stroke="#454D54"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          id="Vector_7"
-          d="M14 5H2"
-          stroke="#454D54"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path id="Vector_7" d="M14 5H2" strokeLinecap="round" strokeLinejoin="round" />
       </g>
     </SVG>
   ),
