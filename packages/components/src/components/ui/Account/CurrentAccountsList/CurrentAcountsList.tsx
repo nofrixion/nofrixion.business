@@ -15,6 +15,7 @@ export interface CurrentAccountsListProps {
   onAccountClick?: (account: Account) => void
   onConnectToBank: (bank: BankSettings) => void
   onMaybeLater: () => void
+  onRenewConnection?: (account: Account) => void
   banks?: BankSettings[]
 }
 
@@ -24,6 +25,7 @@ const CurrentAcountsList = ({
   onAccountClick,
   onConnectToBank,
   onMaybeLater,
+  onRenewConnection,
   banks,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
@@ -112,6 +114,7 @@ const CurrentAcountsList = ({
                     onAccountClick && onAccountClick(account)
                   }}
                   bankLogo={banks?.find((bank) => bank.bankName === account.bankName)?.logo}
+                  onRenewConnection={onRenewConnection}
                 />
               ))}
           </div>

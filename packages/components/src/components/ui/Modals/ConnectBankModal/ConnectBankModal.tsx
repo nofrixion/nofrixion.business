@@ -35,6 +35,7 @@ const ConnectBankModal = ({ banks, onApply, onDismiss, open }: ConnectBankModalP
       onDismiss={onDismiss}
       showDefault={false}
       buttonText="Continue to your bank"
+      buttonClaseName="w-full md:w-auto ml-auto"
     >
       <AnimatePresence>
         {banks && banks.length > 0 && (

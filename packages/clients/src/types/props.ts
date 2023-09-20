@@ -48,7 +48,7 @@ export interface MerchantProps {
 
 export interface getAccountProps {
   merchantId?: string
-  connectedAccounts: boolean
+  connectedAccounts?: boolean
 }
 
 export interface AccountProps {

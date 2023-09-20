@@ -12,6 +12,7 @@ export interface CustomModalProps extends BaseModalProps {
   onApplyEnabled?: boolean
   buttonRowClassName?: string
   buttonText?: string
+  buttonClaseName?: string
 }
 
 export interface BaseModalProps {
@@ -35,6 +36,7 @@ const CustomModal = ({
   buttonRowClassName,
   showDefault = true,
   buttonText = 'Apply',
+  buttonClaseName = 'w-full md:w-auto px-16 ml-auto',
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -114,7 +116,7 @@ const CustomModal = ({
                       size="medium"
                       onClick={onApplyClicked}
                       disabled={!onApplyEnabled}
-                      className="w-full md:w-auto px-16 ml-auto"
+                      className={buttonClaseName}
                     >
                       {buttonText}
                     </Button>

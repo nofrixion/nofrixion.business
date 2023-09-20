@@ -8,11 +8,16 @@ import AccountBalance from './AccountBalance/AccountBalance'
 export interface AccountCardProps extends React.HTMLAttributes<HTMLButtonElement> {
   account: Account
   bankLogo?: string
+  onRenewConnection?: (account: Account) => void
 }
 
-const AccountCard: React.FC<AccountCardProps> = ({ account, bankLogo, className, ...props }) => {
-  console.log('bankLogo', bankLogo)
-
+const AccountCard: React.FC<AccountCardProps> = ({
+  account,
+  bankLogo,
+  onRenewConnection,
+  className,
+  ...props
+}) => {
   return (
     <button
       {...props}
@@ -52,7 +57,12 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, bankLogo, className,
               </>
             )}
           </div>
-          {account.expiryDate && <AccountConnection account={account} />}
+          {account.expiryDate && (
+            <AccountConnection
+              account={account}
+              onRenewConnection={onRenewConnection && onRenewConnection}
+            />
+          )}
         </div>
         <div>
           <AccountBalance

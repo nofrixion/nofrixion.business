@@ -133,6 +133,14 @@ const CurrentAccountsMain = ({
     }
   }
 
+  const handleOnRenewConnection = (account: Account) => {
+    const bank = banks?.find((bank) => bank.bankName === account.bankName)
+
+    if (bank) {
+      onConnectBank(bank)
+    }
+  }
+
   if (isAccountsLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -150,6 +158,7 @@ const CurrentAccountsMain = ({
           onConnectToBank={onConnectBank}
           onMaybeLater={onMaybeLater}
           banks={banks}
+          onRenewConnection={handleOnRenewConnection}
         />
       )}
     </>
