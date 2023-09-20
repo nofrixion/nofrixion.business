@@ -42,6 +42,7 @@ import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/
 import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow'
+import { Loader } from '../../ui/Loader/Loader'
 import EmptyState from '../../ui/PaymentRequestTable/EmptyState'
 import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable'
 import ScrollArea from '../../ui/ScrollArea/ScrollArea'
@@ -543,15 +544,17 @@ const PaymentRequestDashboardMain = ({
 
   const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
+  const paymentRequestsExists = !isLoadingMetrics && firstMetrics && firstMetrics?.all > 0
+
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
-      <div className="flex gap-8 justify-between h-10 items-center mb-8 md:mb-[68px] md:px-4">
-        <span className="leading-8 font-medium text-2xl md:text-[1.75rem] h-10">
+      <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
+        <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
           Accounts Receivable
         </span>
         <LayoutGroup>
           <AnimatePresence initial={false}>
-            {!isInitialState && (
+            {paymentRequestsExists && (
               <LayoutWrapper>
                 <Button
                   size="big"
@@ -568,7 +571,7 @@ const PaymentRequestDashboardMain = ({
       </div>
 
       <AnimatePresence>
-        {!isInitialState && (
+        {paymentRequestsExists && (
           <div className="mb-4">
             <FilterControlsRow
               setDateRange={setDateRange}
@@ -599,7 +602,7 @@ const PaymentRequestDashboardMain = ({
 
       <LayoutGroup>
         <AnimatePresence initial={false}>
-          {!isInitialState && (
+          {paymentRequestsExists && (
             <LayoutWrapper className="h-full">
               <ScrollArea hideScrollbar>
                 <Tabs.Root
@@ -658,7 +661,7 @@ const PaymentRequestDashboardMain = ({
         </AnimatePresence>
 
         <AnimatePresence initial={false}>
-          {!isInitialState && (
+          {paymentRequestsExists && (
             <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg">
               <PaymentRequestTable
                 paymentRequests={localPaymentRequests}
@@ -673,7 +676,6 @@ const PaymentRequestDashboardMain = ({
                 onPaymentRequestDeleteClicked={onDeletePaymentRequest}
                 onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
                 isLoading={isLoadingPaymentRequests}
-                isEmpty={isInitialState}
                 onCreatePaymentRequest={onCreatePaymentRequest}
                 onPaymentRequestClicked={onPaymentRequestRowClicked}
                 onOpenPaymentPage={onOpenPaymentPage}
@@ -696,22 +698,21 @@ const PaymentRequestDashboardMain = ({
             </LayoutWrapper>
           )}
         </AnimatePresence>
-        {/* Show empty state when contet has loaded and no there are no payment requests*/}
-        {/* or also show when isEmpty property comes as `true` */}
+
+        {/* Show loader until metrics are loaded which will determine whether we have any payment requests or not.*/}
+        {isLoadingMetrics && (
+          <div className="lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
       </LayoutGroup>
 
       <div>
         <AnimatePresence>
           {isInitialState && (
-            // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
-            // Else,  there are no payment requests matching the filters
-            <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg">
-              <div>
-                <EmptyState
-                  state={isInitialState ? 'empty' : 'nothingFound'}
-                  onCreatePaymentRequest={onCreatePaymentRequest}
-                />
-              </div>
+            // If `isInitialState` is true means that there're are no payment requests at all, no matter which tab is selected
+            <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6">
+              <EmptyState state="empty" onCreatePaymentRequest={onCreatePaymentRequest} />
             </LayoutWrapper>
           )}
         </AnimatePresence>

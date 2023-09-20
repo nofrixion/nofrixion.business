@@ -23,8 +23,7 @@ export interface PaymentRequestTableProps {
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
   onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
-  isLoading?: boolean
-  isEmpty?: boolean // True when there are no payment requests at all, even when filters are not applied
+  isLoading?: boolean // True when there are no payment requests at all, even when filters are not applied
   selectedPaymentRequestID?: string
 }
 
@@ -44,7 +43,6 @@ const PaymentRequestTable = ({
   setContactSortDirection,
   setAmountSortDirection,
   isLoading = false,
-  isEmpty = false,
   onCreatePaymentRequest,
   onOpenPaymentPage,
   selectedPaymentRequestID,
@@ -224,14 +222,8 @@ const PaymentRequestTable = ({
       </div>
 
       {/* Show empty state when contet has loaded and no there are no payment requests*/}
-      {/* or also show when isEmpty property comes as `true` */}
-      {!isLoading && paymentRequests && paymentRequests.length === 0 && !isEmpty && (
-        // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
-        // Else,  there are no payment requests matching the filters
-        <EmptyState
-          state={isEmpty ? 'empty' : 'nothingFound'}
-          onCreatePaymentRequest={onCreatePaymentRequest}
-        />
+      {!isLoading && paymentRequests && paymentRequests.length === 0 && (
+        <EmptyState state="nothingFound" onCreatePaymentRequest={onCreatePaymentRequest} />
       )}
       <Toaster positionY="top" positionX="right" duration={5000} />
     </>
