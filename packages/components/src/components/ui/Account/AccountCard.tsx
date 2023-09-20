@@ -1,7 +1,7 @@
 import { Account, AccountIdentifierType } from '@nofrixion/moneymoov'
 
 import { cn } from '../../../utils'
-import { DisplayAndCopy } from '../atoms'
+import { Button, DisplayAndCopy } from '../atoms'
 import AccountConnection from '../atoms/AccountConnection/AccountConnection'
 import AccountBalance from './AccountBalance/AccountBalance'
 
@@ -18,6 +18,17 @@ const AccountCard: React.FC<AccountCardProps> = ({
   className,
   ...props
 }) => {
+  const isExpired = account.expiryDate && new Date(account.expiryDate) < new Date() ? true : false
+
+  const onHandleRenewConnection = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    account: Account,
+  ) => {
+    onRenewConnection && onRenewConnection(account)
+
+    event.stopPropagation()
+  }
+
   return (
     <button
       {...props}
@@ -57,20 +68,33 @@ const AccountCard: React.FC<AccountCardProps> = ({
               </>
             )}
           </div>
-          {account.expiryDate && (
+          {account.isConnectedAccount && account.expiryDate && (
             <AccountConnection
               account={account}
+              isExpired={isExpired}
               onRenewConnection={onRenewConnection && onRenewConnection}
             />
           )}
         </div>
-        <div>
-          <AccountBalance
-            currency={account.currency}
-            balance={account.balance}
-            availableBalance={account.availableBalance}
-          />
-        </div>
+        {(!account.isConnectedAccount || (account.isConnectedAccount && !isExpired)) && (
+          <div>
+            <AccountBalance
+              currency={account.currency}
+              balance={account.balance}
+              availableBalance={account.availableBalance}
+            />
+          </div>
+        )}
+        {account.isConnectedAccount && isExpired && (
+          <div className="my-auto">
+            <Button
+              variant="secondary"
+              onClick={(event) => onHandleRenewConnection(event, account)}
+            >
+              Renew connection
+            </Button>
+          </div>
+        )}
       </div>
     </button>
   )
