@@ -225,7 +225,7 @@ const PaymentRequestTable = ({
 
       {/* Show empty state when contet has loaded and no there are no payment requests*/}
       {/* or also show when isEmpty property comes as `true` */}
-      {((!isLoading && paymentRequests && paymentRequests.length === 0) || isEmpty) && (
+      {!isLoading && paymentRequests && paymentRequests.length === 0 && !isEmpty && (
         // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
         // Else,  there are no payment requests matching the filters
         <EmptyState

@@ -42,6 +42,7 @@ import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/
 import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow'
+import EmptyState from '../../ui/PaymentRequestTable/EmptyState'
 import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable'
 import ScrollArea from '../../ui/ScrollArea/ScrollArea'
 import Tab from '../../ui/Tab/Tab'
@@ -544,8 +545,8 @@ const PaymentRequestDashboardMain = ({
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
-      <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
-        <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
+      <div className="flex gap-8 justify-between h-10 items-center mb-8 md:mb-[68px] md:px-4">
+        <span className="leading-8 font-medium text-2xl md:text-[1.75rem] h-10">
           Accounts Receivable
         </span>
         <LayoutGroup>
@@ -656,42 +657,65 @@ const PaymentRequestDashboardMain = ({
           )}
         </AnimatePresence>
 
-        <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6 lg:rounded-lg">
-          <PaymentRequestTable
-            paymentRequests={localPaymentRequests}
-            pageSize={pageSize}
-            totalRecords={totalRecords}
-            onPageChanged={setPage}
-            setStatusSortDirection={setStatusSortDirection}
-            setCreatedSortDirection={setCreatedSortDirection}
-            setContactSortDirection={setContactSortDirection}
-            setAmountSortDirection={setAmountSortDirection}
-            onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
-            onPaymentRequestDeleteClicked={onDeletePaymentRequest}
-            onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
-            isLoading={isLoadingPaymentRequests}
-            isEmpty={isInitialState}
-            onCreatePaymentRequest={onCreatePaymentRequest}
-            onPaymentRequestClicked={onPaymentRequestRowClicked}
-            onOpenPaymentPage={onOpenPaymentPage}
-            selectedPaymentRequestID={selectedPaymentRequestID}
-          />
+        <AnimatePresence initial={false}>
+          {!isInitialState && (
+            <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg">
+              <PaymentRequestTable
+                paymentRequests={localPaymentRequests}
+                pageSize={pageSize}
+                totalRecords={totalRecords}
+                onPageChanged={setPage}
+                setStatusSortDirection={setStatusSortDirection}
+                setCreatedSortDirection={setCreatedSortDirection}
+                setContactSortDirection={setContactSortDirection}
+                setAmountSortDirection={setAmountSortDirection}
+                onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
+                onPaymentRequestDeleteClicked={onDeletePaymentRequest}
+                onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
+                isLoading={isLoadingPaymentRequests}
+                isEmpty={isInitialState}
+                onCreatePaymentRequest={onCreatePaymentRequest}
+                onPaymentRequestClicked={onPaymentRequestRowClicked}
+                onOpenPaymentPage={onOpenPaymentPage}
+                selectedPaymentRequestID={selectedPaymentRequestID}
+              />
 
-          {!isInitialState && localPaymentRequests.length < totalRecords && (
-            <div className="flex">
-              <Button
-                variant="tertiary"
-                size="big"
-                onClick={fetchNextPage}
-                disabled={isLoadingMore}
-                className="lg:hidden mx-auto mt-6 mb-2 w-fit"
-              >
-                Show more
-              </Button>
-            </div>
+              {!isInitialState && localPaymentRequests.length < totalRecords && (
+                <div className="flex">
+                  <Button
+                    variant="tertiary"
+                    size="big"
+                    onClick={fetchNextPage}
+                    disabled={isLoadingMore}
+                    className="lg:hidden mx-auto mt-6 mb-2 w-fit"
+                  >
+                    Show more
+                  </Button>
+                </div>
+              )}
+            </LayoutWrapper>
           )}
-        </LayoutWrapper>
+        </AnimatePresence>
+        {/* Show empty state when contet has loaded and no there are no payment requests*/}
+        {/* or also show when isEmpty property comes as `true` */}
       </LayoutGroup>
+
+      <div>
+        <AnimatePresence>
+          {isInitialState && (
+            // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
+            // Else,  there are no payment requests matching the filters
+            <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6  lg:rounded-lg">
+              <div>
+                <EmptyState
+                  state={isInitialState ? 'empty' : 'nothingFound'}
+                  onCreatePaymentRequest={onCreatePaymentRequest}
+                />
+              </div>
+            </LayoutWrapper>
+          )}
+        </AnimatePresence>
+      </div>
 
       <CreatePaymentRequestPage
         isOpen={isCreatePaymentRequestOpen}
