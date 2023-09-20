@@ -23,7 +23,7 @@ export interface PaymentRequestTableProps {
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
   onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
-  isLoading?: boolean // True when there are no payment requests at all, even when filters are not applied
+  isLoading?: boolean
   selectedPaymentRequestID?: string
 }
 
