@@ -90,3 +90,7 @@ export type PayoutCreate = {
 export type BatchApprove = {
   payoutIDs: string[]
 }
+
+export type AccountUpdate = {
+  accountName: string
+}

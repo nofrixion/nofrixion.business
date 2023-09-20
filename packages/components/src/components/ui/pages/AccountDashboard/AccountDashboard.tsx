@@ -7,11 +7,13 @@ import {
 } from '@nofrixion/moneymoov'
 import { set } from 'date-fns'
 import * as React from 'react'
+import { useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
+import EditableContent from '../../molecules/EditableContent/EditableContent'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
 import { PendingPayments } from '../../PendingPayments/PendingPayments'
 import SearchBar from '../../SearchBar/SearchBar'
@@ -29,6 +31,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
+  onAccountNameChange: (newAccountName: string) => void
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
@@ -43,7 +46,19 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   onPageChange,
   onSort,
   onAllCurrentAccountsClick,
+  onAccountNameChange,
 }) => {
+  const [localAccountName, setLocalAccountName] = useState('')
+
+  React.useEffect(() => {
+    setLocalAccountName(account?.accountName ?? '')
+  }, [account?.accountName])
+
+  const handleOnAccountNameChange = (newAccountName: string) => {
+    setLocalAccountName(newAccountName)
+    onAccountNameChange && onAccountNameChange(newAccountName)
+  }
+
   return (
     <>
       <div className="mb-12 md:px-4">
@@ -69,7 +84,12 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
         {/*  TODO: Use account info from hook */}
         <div className="flex justify-between mt-6">
           <div className="text-[28px]/8 font-semibold">
-            <h2>{account?.accountName}</h2>
+            <div className="flex group items-center space-x-2">
+              <EditableContent
+                initialValue={localAccountName}
+                onChange={handleOnAccountNameChange}
+              />
+            </div>
             <div className="flex gap-6 mt-2">
               {account?.identifier.type === AccountIdentifierType.IBAN &&
               account.identifier.iban ? (
