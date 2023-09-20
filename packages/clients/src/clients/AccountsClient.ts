@@ -78,7 +78,6 @@ export class AccountsClient extends BaseApiClient {
   }
 
   /**
-   * TODO: Updates an Account
    * @param accountId The ID of the Account to update.
    * @param accountUpdate The Account update object with the updated values.
    * @returns The updated Account if successful. An ApiError if not successful.
