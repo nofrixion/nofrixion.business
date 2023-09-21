@@ -29,7 +29,7 @@ const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountCon
         <div className="flex mt-2 items-center group w-fit">
           <Icon
             name="connected/16"
-            className={cn('mr-1 stroke-[#ABB3BA] group-hover:stroke-default-text', {
+            className={cn('mr-1 stroke-[#ABB3BA]', {
               'stroke-negative-red': isExpired,
             })}
           />
@@ -45,7 +45,7 @@ const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountCon
           )}
 
           <button
-            className="text-grey-text text-xs font-normal transition hidden group-hover:block ml-2 underline"
+            className="text-default-text text-xs font-normal transition hidden group-hover:block ml-2 underline hover:no-underline"
             onClick={(event) => onHandleRenewConnection(event, account)}
           >
             Renew connection

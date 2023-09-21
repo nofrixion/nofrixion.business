@@ -77,7 +77,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
           )}
         </div>
         {(!account.isConnectedAccount || (account.isConnectedAccount && !isExpired)) && (
-          <div>
+          <div className="my-auto">
             <AccountBalance
               currency={account.currency}
               balance={account.balance}
