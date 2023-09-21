@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Account } from '@nofrixion/moneymoov'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -14,10 +16,7 @@ export interface AccountConnectionProps {
 }
 
 const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountConnectionProps) => {
-  const onHandleRenewConnection = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    account: Account,
-  ) => {
+  const onHandleRenewConnection = (event: React.MouseEvent<HTMLDivElement>, account: Account) => {
     onRenewConnection && onRenewConnection(account)
 
     event.stopPropagation()
@@ -34,22 +33,22 @@ const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountCon
             })}
           />
           {!isExpired && (
-            <div className="text-grey-text text-xs font-normal transition hover:text-default-text">
+            <div className="text-grey-text text-xs font-normal transition hover:text-default-text cursor-pointer">
               Expires in {formatDistanceToNow(new Date(account.expiryDate))}
             </div>
           )}
           {isExpired && (
-            <div className="text-negative-red text-xs font-normal transition hover:text-default-text">
+            <div className="text-negative-red text-xs font-normal transition hover:text-default-text cursor-pointer">
               Connection expired on {formatDateWithYear(new Date(account.expiryDate))}
             </div>
           )}
 
-          <button
-            className="text-default-text text-xs font-normal transition hidden group-hover:block ml-2 underline hover:no-underline"
+          <div
+            className="text-default-text text-xs font-normal transition hidden group-hover:block ml-2 underline hover:no-underline cursor-pointer"
             onClick={(event) => onHandleRenewConnection(event, account)}
           >
             Renew connection
-          </button>
+          </div>
         </div>
       )}
     </>

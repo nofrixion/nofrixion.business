@@ -38,12 +38,12 @@ const AccountCard: React.FC<AccountCardProps> = ({
       )}
     >
       {account.isConnectedAccount && bankLogo && (
-        <div className="">
+        <div>
           <img
-            src={`https://cdn.nofrixion.com/nextgen/assets/banks/${bankLogo}`}
+            src={`https://cdn.nofrixion.com/img/banks/svg/${bankLogo}`}
             alt="bank logo"
-            width={100}
-            height={100}
+            width={40}
+            height={40}
           />
         </div>
       )}

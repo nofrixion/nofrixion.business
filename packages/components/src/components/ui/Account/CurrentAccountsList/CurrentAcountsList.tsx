@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
 import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
+import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -32,9 +33,11 @@ const CurrentAcountsList = ({
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
+  const [isRenewConnectionModalOpen, setIsRenewConnectionModalOpen] = useState(false)
   const [internalAccounts, setInternalAccounts] = useState<Account[]>([])
   const [externalAccounts, setExternalAccounts] = useState<Account[]>()
   const [externalAccountConnectDisabled, setExternalAccountConnectDisabled] = useState(false)
+  const [selectedAccount, setSelectedAccount] = useState<Account | undefined>(undefined)
 
   const handleOnConnectClicked = () => {
     setIsConnectBankModalOpen(true)
@@ -42,12 +45,23 @@ const CurrentAcountsList = ({
 
   const handleOnDismiss = () => {
     setIsConnectBankModalOpen(false)
+    setIsRenewConnectionModalOpen(false)
     setExternalAccountConnectDisabled(false)
   }
 
   const handleOnApply = (bank: BankSettings) => {
     onConnectToBank(bank)
     setExternalAccountConnectDisabled(true)
+  }
+
+  const handleOnRenewConnectionClicked = (account: Account) => {
+    setSelectedAccount(account)
+    setIsRenewConnectionModalOpen(true)
+  }
+
+  const handleOnRenewConnection = () => {
+    if (!selectedAccount) return
+    onRenewConnection && onRenewConnection(selectedAccount)
   }
 
   useEffect(() => {
@@ -115,7 +129,7 @@ const CurrentAcountsList = ({
                     onAccountClick && onAccountClick(account)
                   }}
                   bankLogo={banks?.find((bank) => bank.bankName === account.bankName)?.logo}
-                  onRenewConnection={onRenewConnection}
+                  onRenewConnection={handleOnRenewConnectionClicked}
                 />
               ))}
           </div>
@@ -134,6 +148,13 @@ const CurrentAcountsList = ({
         banks={banks}
         onApply={handleOnApply}
         open={isConnectBankModalOpen}
+        onDismiss={handleOnDismiss}
+        isConnectingToBank={isConnectingToBank}
+      />
+
+      <RenewConnectionModal
+        onApply={handleOnRenewConnection}
+        open={isRenewConnectionModalOpen}
         onDismiss={handleOnDismiss}
         isConnectingToBank={isConnectingToBank}
       />

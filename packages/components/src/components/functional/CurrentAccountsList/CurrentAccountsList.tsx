@@ -115,7 +115,7 @@ const CurrentAccountsMain = ({
 
       if (response.status === 'error') {
         console.error(response.error)
-        makeToast('error', 'Could not connect to bank.')
+        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
       } else if (response.data.authorisationUrl) {
         // Redirect to the banks authorisation url
         window.location.href = response.data.authorisationUrl
