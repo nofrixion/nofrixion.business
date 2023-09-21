@@ -26,7 +26,7 @@ const AccountConnection = ({ account, isExpired, onRenewConnection }: AccountCon
   return (
     <>
       {account.expiryDate && (
-        <div className="flex mt-2 items-center group">
+        <div className="flex mt-2 items-center group w-fit">
           <Icon
             name="connected/16"
             className={cn('mr-1 stroke-[#ABB3BA] group-hover:stroke-default-text', {
