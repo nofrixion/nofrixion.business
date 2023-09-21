@@ -1,14 +1,12 @@
 import {
   ApiError,
-  Currency,
-  formatSortExpression,
   PaymentRequest,
-  PaymentRequestClient,
   PaymentRequestMetrics,
   PaymentRequestStatus,
   useAccounts,
   useCapture,
   useCreateRefund,
+  useDeletePaymentRequest,
   useMerchant,
   useMerchantTags,
   usePaymentRequestMetrics,
@@ -19,7 +17,6 @@ import {
 import * as Tabs from '@radix-ui/react-tabs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, set, startOfDay } from 'date-fns'
-import { AnimatePresence, LayoutGroup } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 import { Button, Icon } from '../../../components/ui/atoms'
@@ -47,7 +44,6 @@ import ScrollArea from '../../ui/ScrollArea/ScrollArea'
 import Tab from '../../ui/Tab/Tab'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
-import LayoutWrapper from '../../ui/utils/LayoutWrapper'
 import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal'
 
 export interface PaymentRequestDashboardProps {
@@ -88,6 +84,8 @@ const PaymentRequestDashboardMain = ({
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
+
+  const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
   const [contactSortDirection, setContactSortDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
@@ -103,7 +101,7 @@ const PaymentRequestDashboardMain = ({
   const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
   const [tags, setTags] = useState<FilterableTag[]>([])
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
-  const [showMorePage, setShowMorePage] = useState(1)
+  //const [showMorePage, setShowMorePage] = useState(1)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [metrics, setMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
   const [totalRecords, setTotalRecords] = useState<number>(0)
@@ -119,8 +117,6 @@ const PaymentRequestDashboardMain = ({
   >(undefined)
 
   const pageSize = 20
-
-  const client = new PaymentRequestClient({ apiUrl: apiUrl, authToken: token })
 
   const onPaymentRequestRowClicked = (paymentRequest: LocalPaymentRequest) => {
     setSelectedPaymentRequestID(paymentRequest.id)
@@ -167,6 +163,14 @@ const PaymentRequestDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  useEffect(() => {
+    if (isLoadingPaymentRequests) {
+      setPaymentRequests(undefined)
+    }
+  }, [isLoadingPaymentRequests])
+
+  const { deletePaymentRequest } = useDeletePaymentRequest({ apiUrl: apiUrl, authToken: token })
+
   const { processRefund } = useRefund(
     {
       merchantId: merchantId,
@@ -198,9 +202,13 @@ const PaymentRequestDashboardMain = ({
 
   const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
 
-  const [localPaymentRequests, setLocalPaymentRequests] = useState<LocalPaymentRequest[]>([])
+  // const [localPaymentRequests, setLocalPaymentRequests] = useState<
+  //   LocalPaymentRequest[] | undefined
+  // >(undefined)
 
-  const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>()
+  // const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>()
+
+  // const [firstPaymentRequests, setFirstPaymentRequests] = useState<PaymentRequest[] | undefined>()
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePaymentRequestMetrics(
     {
@@ -221,10 +229,18 @@ const PaymentRequestDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  useEffect(() => {
+    if (isLoadingMetrics) {
+      setMetrics(undefined)
+      setFirstMetrics(undefined)
+    }
+  }, [isLoadingMetrics])
+
   const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
 
   useEffect(() => {
     if (paymentRequestsResponse?.status === 'success') {
+      console.log('paymentRequestsResponse', paymentRequestsResponse.data.content)
       setPaymentRequests(paymentRequestsResponse.data.content)
       setTotalRecords(paymentRequestsResponse.data.totalSize)
     } else if (paymentRequestsResponse?.status === 'error') {
@@ -235,14 +251,15 @@ const PaymentRequestDashboardMain = ({
     }
   }, [paymentRequestsResponse])
 
-  useEffect(() => {
-    setShowMorePage(1)
-    setLocalPaymentRequests(
-      paymentRequests?.map((paymentRequest) =>
-        remotePaymentRequestToLocalPaymentRequest(paymentRequest),
-      ) ?? [],
-    )
-  }, [paymentRequests])
+  // useEffect(() => {
+  //   //setShowMorePage(1)
+  //   console.log('paymentRequests', paymentRequests)
+  //   setLocalPaymentRequests(
+  //     paymentRequests?.map((paymentRequest) =>
+  //       remotePaymentRequestToLocalPaymentRequest(paymentRequest),
+  //     ),
+  //   )
+  // }, [paymentRequests])
 
   useEffect(() => {
     const tempTagArray = getSelectedTagFilters()
@@ -278,7 +295,7 @@ const PaymentRequestDashboardMain = ({
   }, [metricsResponse])
 
   const onDeletePaymentRequest = async (paymentRequest: LocalPaymentRequest) => {
-    const response = await client.delete(paymentRequest.id)
+    const response = await deletePaymentRequest(paymentRequest.id)
 
     if (response.error) {
       makeToast('error', response.error.title)
@@ -289,17 +306,6 @@ const PaymentRequestDashboardMain = ({
     }
 
     makeToast('success', 'Payment request successfully deleted.')
-
-    // Remove the payment request from the local list.
-    setLocalPaymentRequests(localPaymentRequests.filter((pr) => pr.id !== paymentRequest.id))
-
-    // Update the metrics
-    if (metrics) {
-      metrics.all--
-      metrics.unpaid--
-
-      updateMetricTotals(paymentRequest.currency, paymentRequest.amount * -1)
-    }
   }
 
   const onCopyPaymentRequestLink = async (paymentRequest: LocalPaymentRequest) => {
@@ -361,34 +367,10 @@ const PaymentRequestDashboardMain = ({
     setIsCreatePaymentRequestOpen(false)
   }
 
-  const updateMetricTotals = (currency: Currency, amount: number) => {
-    if (metrics) {
-      const currencyField: 'eur' | 'gbp' | undefined =
-        currency === Currency.EUR ? 'eur' : currency === Currency.GBP ? 'gbp' : undefined
-
-      if (currencyField) {
-        if (metrics.totalAmountsByCurrency?.all?.[currencyField]) {
-          metrics.totalAmountsByCurrency.all[currencyField]! += amount
-        }
-        if (metrics.totalAmountsByCurrency?.unpaid?.[currencyField]) {
-          metrics.totalAmountsByCurrency.unpaid[currencyField]! += amount
-        }
-      }
-    }
-  }
-
   // Adds the newly created payment request to the top of the list
   // Increments the metrics all and unpaid counts
   // Sets the newly created payment request as the selected one
   const onPaymentRequestCreated = async (paymentRequest: LocalPaymentRequest) => {
-    localPaymentRequests.splice(0, 0, paymentRequest)
-    if (metrics) {
-      metrics.all++
-      metrics.unpaid++
-
-      updateMetricTotals(paymentRequest.currency, paymentRequest.amount)
-    }
-
     setIsCreatePaymentRequestOpen(false)
 
     setSelectedPaymentRequestID(paymentRequest.id)
@@ -480,35 +462,44 @@ const PaymentRequestDashboardMain = ({
   const fetchNextPage = async () => {
     setIsLoadingMore(true)
 
-    const sort = formatSortExpression({
-      statusSortDirection,
-      createdSortDirection,
-      contactSortDirection,
-      amountSortDirection,
-    })
+    // const sort = formatSortExpression({
+    //   statusSortDirection,
+    //   createdSortDirection,
+    //   contactSortDirection,
+    //   amountSortDirection,
+    // })
 
-    const paymentRequests = await client.getAll({
-      pageNumber: showMorePage + 1,
-      pageSize: pageSize,
-      sort: sort,
-      tags: tagsFilter,
-      status: status,
-      fromDate: dateRange.fromDate,
-      toDate: dateRange.toDate,
-      search: searchFilter?.length >= 3 ? searchFilter : undefined,
-      currency: currencyFilter,
-      minAmount: minAmountFilter,
-      maxAmount: maxAmountFilter,
-      merchantId: merchantId,
-    })
+    setPage(page + 1)
 
-    if (paymentRequests.status === 'success') {
-      setLocalPaymentRequests((prev) => [
-        ...prev,
-        ...paymentRequests.data.content.map((pr) => remotePaymentRequestToLocalPaymentRequest(pr)),
-      ])
-      setShowMorePage(showMorePage + 1)
-    }
+    // const paymentRequests = await client.getAll({
+    //   pageNumber: showMorePage + 1,
+    //   pageSize: pageSize,
+    //   sort: sort,
+    //   tags: tagsFilter,
+    //   status: status,
+    //   fromDate: dateRange.fromDate,
+    //   toDate: dateRange.toDate,
+    //   search: searchFilter?.length >= 3 ? searchFilter : undefined,
+    //   currency: currencyFilter,
+    //   minAmount: minAmountFilter,
+    //   maxAmount: maxAmountFilter,
+    //   merchantId: merchantId,
+    // })
+
+    // if (paymentRequests.status === 'success') {
+    //   console.log('paymentRequests', paymentRequests.data.content)
+    //   setLocalPaymentRequests((prev) =>
+    //     prev !== undefined && paymentRequests.data.content.length > 0
+    //       ? [
+    //           ...prev,
+    //           ...paymentRequests.data.content.map((pr) =>
+    //             remotePaymentRequestToLocalPaymentRequest(pr),
+    //           ),
+    //         ]
+    //       : undefined,
+    //   )
+    //   setShowMorePage(showMorePage + 1)
+    // }
     setIsLoadingMore(false)
   }
 
@@ -535,163 +526,161 @@ const PaymentRequestDashboardMain = ({
   // This way, when they change the dates
   // we don't see the metrics disappear
   useEffect(() => {
-    if (metrics && (!firstMetrics || firstMetrics?.all === 0)) {
+    if (!isLoadingMetrics && metrics && !firstMetrics) {
       setFirstMetrics(metrics)
     }
   }, [metrics])
 
-  const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
+  const paymentRequestsExists = !isLoadingMetrics && metrics && metrics.all > 0
+  const isInitialState = !isLoadingMetrics && firstMetrics && firstMetrics?.all === 0
 
+  // console.log('localPaymentRequests', localPaymentRequests)
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
         <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
           Accounts Receivable
         </span>
-        <LayoutGroup>
+        {/* <LayoutGroup>
           <AnimatePresence initial={false}>
-            {!isInitialState && (
-              <LayoutWrapper>
-                <Button
-                  size="big"
-                  onClick={onCreatePaymentRequest}
-                  className="w-10 h-10 md:w-full md:h-full"
-                >
-                  <span className="hidden md:inline-block">Create payment request</span>
-                  <Icon name="add/16" className="md:hidden" />
-                </Button>
-              </LayoutWrapper>
-            )}
+            <LayoutWrapper> */}
+        <div>
+          <Button
+            size="big"
+            onClick={onCreatePaymentRequest}
+            className="w-10 h-10 md:w-full md:h-full"
+          >
+            <span className="hidden md:inline-block">Create payment request</span>
+            <Icon name="add/16" className="md:hidden" />
+          </Button>
+        </div>
+        {/* </LayoutWrapper>
           </AnimatePresence>
-        </LayoutGroup>
+        </LayoutGroup> */}
       </div>
 
-      <AnimatePresence>
-        {!isInitialState && (
-          <div className="mb-4">
-            <FilterControlsRow
-              setDateRange={setDateRange}
-              searchFilter={searchFilter}
-              setSearchFilter={setSearchFilter}
-              currency={currencyFilter}
-              setCurrency={setCurrencyFilter}
-              minAmount={minAmountFilter}
-              setMinAmount={setMinAmountFilter}
-              maxAmount={maxAmountFilter}
-              setMaxAmount={setMaxAmountFilter}
-              tags={tags}
-              setTags={setTags}
-              createdSortDirection={createdSortDirection}
-              setCreatedSortDirection={setCreatedSortDirection}
-              amountSortDirection={amountSortDirection}
-              setAmountSortDirection={setAmountSortDirection}
-              firstDate={
-                // Set first date to the first day of the year the merchant was created
-                merchant?.status == 'success'
-                  ? set(new Date(merchant?.data.inserted), { month: 0, date: 1 })
-                  : undefined
-              }
-            />
-          </div>
-        )}
-      </AnimatePresence>
+      {/* <AnimatePresence> */}
+      <div className="mb-4">
+        <FilterControlsRow
+          setDateRange={setDateRange}
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          currency={currencyFilter}
+          setCurrency={setCurrencyFilter}
+          minAmount={minAmountFilter}
+          setMinAmount={setMinAmountFilter}
+          maxAmount={maxAmountFilter}
+          setMaxAmount={setMaxAmountFilter}
+          tags={tags}
+          setTags={setTags}
+          createdSortDirection={createdSortDirection}
+          setCreatedSortDirection={setCreatedSortDirection}
+          amountSortDirection={amountSortDirection}
+          setAmountSortDirection={setAmountSortDirection}
+          firstDate={
+            // Set first date to the first day of the year the merchant was created
+            merchant?.status == 'success'
+              ? set(new Date(merchant?.data.inserted), { month: 0, date: 1 })
+              : undefined
+          }
+        />
+      </div>
+      {/* </AnimatePresence> */}
 
-      <LayoutGroup>
+      {/* <LayoutGroup>
         <AnimatePresence initial={false}>
-          {!isInitialState && (
-            <LayoutWrapper className="h-full">
-              <ScrollArea hideScrollbar>
-                <Tabs.Root
-                  defaultValue={PaymentRequestStatus.All}
-                  onValueChange={(value) => setStatus(value as PaymentRequestStatus)}
-                >
-                  {/* Keep the Tab to still get accessibility functions through the keyboard */}
-                  <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-                    <Tab
-                      status={PaymentRequestStatus.All}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={metrics?.all ?? 0}
-                      totalAmountInEuros={metrics?.totalAmountsByCurrency?.all?.eur}
-                      totalAmountInPounds={metrics?.totalAmountsByCurrency?.all?.gbp}
-                    />
-                    <Tab
-                      status={PaymentRequestStatus.None}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={metrics?.unpaid ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'unpaid')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'unpaid')}
-                    />
-                    <Tab
-                      status={PaymentRequestStatus.Authorized}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={metrics?.authorized ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'authorized')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'authorized')}
-                    />
-                    <Tab
-                      status={PaymentRequestStatus.PartiallyPaid}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={metrics?.partiallyPaid ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus(
-                        'eur',
-                        'partiallyPaid',
-                      )}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus(
-                        'gbp',
-                        'partiallyPaid',
-                      )}
-                    />
-                    <Tab
-                      status={PaymentRequestStatus.FullyPaid}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={metrics?.paid ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'paid')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'paid')}
-                    />
-                  </Tabs.List>
-                  <Tabs.Content value=""></Tabs.Content>
-                </Tabs.Root>
-              </ScrollArea>
-            </LayoutWrapper>
-          )}
-        </AnimatePresence>
+          <LayoutWrapper className="h-full"> */}
+      <ScrollArea hideScrollbar>
+        <Tabs.Root
+          defaultValue={PaymentRequestStatus.All}
+          onValueChange={(value) => setStatus(value as PaymentRequestStatus)}
+        >
+          {/* Keep the Tab to still get accessibility functions through the keyboard */}
+          <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
+            <Tab
+              status={PaymentRequestStatus.All}
+              isLoading={isLoadingMetrics}
+              totalRecords={metrics?.all ?? 0}
+              totalAmountInEuros={metrics?.totalAmountsByCurrency?.all?.eur}
+              totalAmountInPounds={metrics?.totalAmountsByCurrency?.all?.gbp}
+            />
+            <Tab
+              status={PaymentRequestStatus.None}
+              isLoading={isLoadingMetrics}
+              totalRecords={metrics?.unpaid ?? 0}
+              totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'unpaid')}
+              totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'unpaid')}
+            />
+            <Tab
+              status={PaymentRequestStatus.Authorized}
+              isLoading={isLoadingMetrics}
+              totalRecords={metrics?.authorized ?? 0}
+              totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'authorized')}
+              totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'authorized')}
+            />
+            <Tab
+              status={PaymentRequestStatus.PartiallyPaid}
+              isLoading={isLoadingMetrics}
+              totalRecords={metrics?.partiallyPaid ?? 0}
+              totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'partiallyPaid')}
+              totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'partiallyPaid')}
+            />
+            <Tab
+              status={PaymentRequestStatus.FullyPaid}
+              isLoading={isLoadingMetrics}
+              totalRecords={metrics?.paid ?? 0}
+              totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'paid')}
+              totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'paid')}
+            />
+          </Tabs.List>
+          <Tabs.Content value=""></Tabs.Content>
+        </Tabs.Root>
+      </ScrollArea>
+      {/* </LayoutWrapper>
+        </AnimatePresence> */}
 
-        <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6 lg:rounded-lg">
-          <PaymentRequestTable
-            paymentRequests={localPaymentRequests}
-            pageSize={pageSize}
-            totalRecords={totalRecords}
-            onPageChanged={setPage}
-            setStatusSortDirection={setStatusSortDirection}
-            setCreatedSortDirection={setCreatedSortDirection}
-            setContactSortDirection={setContactSortDirection}
-            setAmountSortDirection={setAmountSortDirection}
-            onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
-            onPaymentRequestDeleteClicked={onDeletePaymentRequest}
-            onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
-            isLoading={isLoadingPaymentRequests}
-            isEmpty={isInitialState}
-            onCreatePaymentRequest={onCreatePaymentRequest}
-            onPaymentRequestClicked={onPaymentRequestRowClicked}
-            onOpenPaymentPage={onOpenPaymentPage}
-            selectedPaymentRequestID={selectedPaymentRequestID}
-          />
-
-          {!isInitialState && localPaymentRequests.length < totalRecords && (
-            <div className="flex">
-              <Button
-                variant="tertiary"
-                size="big"
-                onClick={fetchNextPage}
-                disabled={isLoadingMore}
-                className="lg:hidden mx-auto mt-6 mb-2 w-fit"
-              >
-                Show more
-              </Button>
-            </div>
+      {/* <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6 lg:rounded-lg"> */}
+      <div className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6 lg:rounded-lg">
+        <PaymentRequestTable
+          paymentRequests={paymentRequests?.map((paymentRequest) =>
+            remotePaymentRequestToLocalPaymentRequest(paymentRequest),
           )}
-        </LayoutWrapper>
-      </LayoutGroup>
+          pageSize={pageSize}
+          totalRecords={totalRecords}
+          onPageChanged={setPage}
+          setStatusSortDirection={setStatusSortDirection}
+          setCreatedSortDirection={setCreatedSortDirection}
+          setContactSortDirection={setContactSortDirection}
+          setAmountSortDirection={setAmountSortDirection}
+          onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
+          onPaymentRequestDeleteClicked={onDeletePaymentRequest}
+          onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
+          isLoading={isLoadingPaymentRequests}
+          isEmpty={isInitialState}
+          onCreatePaymentRequest={onCreatePaymentRequest}
+          onPaymentRequestClicked={onPaymentRequestRowClicked}
+          onOpenPaymentPage={onOpenPaymentPage}
+          selectedPaymentRequestID={selectedPaymentRequestID}
+          paymentRequestsExist={paymentRequestsExists}
+          isLoadingMetrics={isLoadingMetrics}
+        />
+      </div>
+
+      {paymentRequests && paymentRequests.length < totalRecords && (
+        <div className="flex">
+          <Button
+            variant="tertiary"
+            size="big"
+            onClick={fetchNextPage}
+            disabled={isLoadingMore}
+            className="lg:hidden mx-auto mt-6 mb-2 w-fit"
+          >
+            Show more
+          </Button>
+        </div>
+      )}
+      {/* </LayoutWrapper>
+      </LayoutGroup> */}
 
       <CreatePaymentRequestPage
         isOpen={isCreatePaymentRequestOpen}
@@ -708,11 +697,12 @@ const PaymentRequestDashboardMain = ({
         merchantId={merchantId}
         selectedPaymentRequestID={selectedPaymentRequestID ?? ''}
         merchantTags={localMerchantTags}
-        paymentRequests={localPaymentRequests}
+        paymentRequests={paymentRequests?.map((paymentRequest) =>
+          remotePaymentRequestToLocalPaymentRequest(paymentRequest),
+        )}
         open={!!selectedPaymentRequestID}
         onDismiss={onPaymentRequestDetailsModalDismiss}
         setMerchantTags={setLocalMerchantTags}
-        setPaymentRequests={setLocalPaymentRequests}
         onCardRefund={onCardRefundClick}
         onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
