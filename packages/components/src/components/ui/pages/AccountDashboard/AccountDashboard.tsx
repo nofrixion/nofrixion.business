@@ -85,10 +85,12 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
         <div className="flex justify-between mt-6">
           <div className="text-[28px]/8 font-semibold">
             <div className="flex group items-center space-x-2">
-              <EditableContent
-                initialValue={localAccountName}
-                onChange={handleOnAccountNameChange}
-              />
+              {localAccountName && (
+                <EditableContent
+                  initialValue={localAccountName}
+                  onChange={handleOnAccountNameChange}
+                />
+              )}
             </div>
             <div className="flex gap-6 mt-2">
               {account?.identifier.type === AccountIdentifierType.IBAN &&

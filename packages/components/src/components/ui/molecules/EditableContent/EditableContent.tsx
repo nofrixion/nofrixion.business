@@ -11,12 +11,9 @@ export interface EditableContentProps {
 }
 
 const EditableContent = ({ initialValue, onChange, className }: EditableContentProps) => {
+  const contentEditable = useRef(null)
   const text = useRef(initialValue)
-  const [isEditing, setIsEditing] = useState(false)
-
-  const handleOnFocus = () => {
-    setIsEditing(true)
-  }
+  const [isEditing, setIsEditing] = useState<boolean>(false)
 
   useEffect(() => {
     text.current = initialValue
@@ -26,17 +23,22 @@ const EditableContent = ({ initialValue, onChange, className }: EditableContentP
     text.current = evt.target.value
   }
 
-  // Handle enter key otherwise the
-  // contentEditable div will create a new line
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>) => {
     if (evt.key === 'Enter') {
+      evt.preventDefault()
+      handleSubmit()
+    } else if (evt.key === 'Escape') {
       evt.preventDefault()
       evt.currentTarget.blur()
     }
   }
 
-  //
   const handleBlur = () => {
+    text.current = initialValue
+    setIsEditing(false)
+  }
+
+  const handleSubmit = () => {
     setIsEditing(false)
 
     // Trim whitespace at the start and end of the string if present
@@ -57,13 +59,44 @@ const EditableContent = ({ initialValue, onChange, className }: EditableContentP
 
   return (
     <div className={cn('flex group items-center space-x-2', className)}>
+      {!isEditing && (
+        <button
+          onClick={() => {
+            setIsEditing(true)
+
+            if (!contentEditable.current) {
+              return
+            }
+
+            // Move cursor to the end of the input
+            const range = document.createRange()
+            const selection = window.getSelection()
+            range.selectNodeContents(contentEditable.current)
+            range.collapse(false)
+            selection?.removeAllRanges()
+            selection?.addRange(range)
+
+            // Focus the input
+            ;(contentEditable.current as any).focus()
+          }}
+        >
+          {text.current.replace(/&nbsp;/g, ' ')}
+        </button>
+      )}
+
       <ContentEditable
+        innerRef={contentEditable}
         html={text.current}
         onBlur={handleBlur}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onFocus={handleOnFocus}
-        className="outline-none"
+        className={cn('outline-none', {
+          // Have to hide the input when not editing because if not
+          // the input will be visible on top of the button
+          // and we need to have this element in the DOM
+          // as if not, it won't be possible to focus it
+          'absolute -z-50': !isEditing,
+        })}
       />
       {!isEditing && (
         <Icon
