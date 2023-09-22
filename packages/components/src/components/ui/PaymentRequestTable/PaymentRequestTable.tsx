@@ -66,7 +66,7 @@ const PaymentRequestTable = ({
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-full">
       {/* Show table when loading so the skeletons are visible */}
       {/* or else show the table when has payment requests */}
       {(paymentRequestsExist || (paymentRequests && paymentRequests.length > 0)) && (
@@ -206,7 +206,7 @@ const PaymentRequestTable = ({
         </table>
       )}
 
-      <div className="lg:hidden space-y-2">
+      <div className="lg:hidden space-y-2 w-full">
         {paymentRequests &&
           paymentRequests.length > 0 &&
           paymentRequests.map((paymentRequest, index) => (
@@ -231,7 +231,11 @@ const PaymentRequestTable = ({
           ))}
       </div>
 
-      {isLoadingMetrics && <Loader className="mt-12" />}
+      {isLoadingMetrics && !paymentRequests && (
+        <div className="w-full flex justify-center items-center">
+          <Loader className="mt-12" />
+        </div>
+      )}
 
       {isEmpty && <EmptyState state="empty" onCreatePaymentRequest={onCreatePaymentRequest} />}
 

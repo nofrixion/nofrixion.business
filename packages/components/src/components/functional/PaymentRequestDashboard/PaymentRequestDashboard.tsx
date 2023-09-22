@@ -114,6 +114,7 @@ const PaymentRequestDashboardMain = ({
   const [prefilledPaymentRequest, setPrefilledPaymentRequest] = useState<
     LocalPaymentRequestCreate | undefined
   >(undefined)
+  const [showMoreClicked, setShowMoreClicked] = useState(false)
 
   const pageSize = 20
 
@@ -158,12 +159,13 @@ const PaymentRequestDashboardMain = ({
       minAmount: minAmountFilter,
       maxAmount: maxAmountFilter,
       tags: tagsFilter,
+      preservePreviousPageData: showMoreClicked,
     },
     { apiUrl: apiUrl, authToken: token },
   )
 
   useEffect(() => {
-    if (isLoadingPaymentRequests) {
+    if (isLoadingPaymentRequests && !showMoreClicked) {
       setPaymentRequests(undefined)
     } else {
       isLoadingMore && setIsLoadingMore(false)
@@ -450,6 +452,7 @@ const PaymentRequestDashboardMain = ({
    * Fetches the next page of payment requests and adds them to the local list.
    */
   const fetchNextPage = async () => {
+    setShowMoreClicked(true)
     setIsLoadingMore(true)
     setPage((prev) => prev + 1)
   }
