@@ -1,11 +1,17 @@
 import {
   AccountIdentifierType,
   AddressType,
+  AISAccountBalanceType,
+  AISAccountIdentificationType,
+  AISAccountType,
+  AISCreditLineType,
+  AISUsageType,
   CardTokenCreateModes,
   Currency,
   PartialPaymentMethods,
   PaymentMethodTypes,
   PaymentProcessor,
+  PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
   Wallets,
@@ -238,6 +244,9 @@ export interface Account {
   summary: string
   identifier: AccountIdentifier
   isDefault: boolean
+  isConnectedAccount: boolean
+  bankName: string
+  expiryDate?: string
 }
 
 export interface AccountIdentifier {
@@ -386,4 +395,70 @@ export type BeneficiaryPageResponse = PageResponse<Beneficiary>
 export type BatchPayout = {
   id: string
   payouts: Payout[]
+}
+
+export type ConsentResponse = {
+  consentId: string
+  authorisationUrl: string
+}
+
+export type Consent = {
+  id: string
+  institutionId: string
+  emailAddress: string
+  isEnabled: boolean
+  callbackUrl: string
+  successWebHookUrl: string
+  expiryDate: Date
+  inserted: Date
+  provider: PaymentProcessorsEnum
+}
+
+export type AISAccount = {
+  id: string
+  usageType: AISUsageType
+  accountType: AISAccountType
+  type: string
+  description: string
+  balance: number
+  currency: string
+  nickname: string
+  details: string
+  accountNames: AISAccountName[]
+  aAccountIdentifications: AISAccountIdentification[]
+  accountBalances: AISAccountBalance[]
+  consolidatedAccountInformation: AISConsolidatedAccountInformation
+}
+
+export type AISAccountName = {
+  name: string
+}
+
+export type AISAccountIdentification = {
+  type: AISAccountIdentificationType
+  identification: string
+  accountBalances: AISAccountBalance[]
+}
+
+export type AISAccountBalance = {
+  type: AISAccountBalanceType
+  dateTime: Date
+  balanceAmount: AISAmount
+  creditLineIncluded: boolean
+  creditLines: AISCreditLine[]
+}
+
+export type AISAmount = {
+  amount: number
+  currency: string
+}
+
+export type AISCreditLine = {
+  type: AISCreditLineType
+  creditLineAmount: AISAmount
+}
+
+export type AISConsolidatedAccountInformation = {
+  id: string
+  accountBalances: AISAccountBalance[]
 }

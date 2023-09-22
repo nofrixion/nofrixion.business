@@ -34,7 +34,12 @@ const Template: StoryFn<typeof PaymoutDetailsModal> = (args) => {
           I am a payout row. Click me.
         </button>
       </div>
-      <PaymoutDetailsModal {...args} open={isOpen} onDismiss={onClose}></PaymoutDetailsModal>
+      <PaymoutDetailsModal
+        {...args}
+        open={isOpen}
+        onDismiss={onClose}
+        merchantTags={[]}
+      ></PaymoutDetailsModal>
     </>
   )
 }

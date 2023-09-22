@@ -1,5 +1,5 @@
 import { Account, ApiResponse, HttpMethod, PayoutPageResponse } from '../types'
-import { AccountProps, ApiProps, MerchantProps, PayoutsProps } from '../types/props'
+import { AccountProps, ApiProps, getAccountProps, PayoutsProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -34,11 +34,15 @@ export class AccountsClient extends BaseApiClient {
   /**
    * Get a list of accounts.
    * @param merchantId Optional. The merchant id to filter by.
+   * @param connectedAccounts Optional. Fetch connected accounts as well.
    * @returns A list of accounts by merchantId or user if successful. An ApiError if not successful.
    */
-  async getAccounts({ merchantId }: MerchantProps): Promise<ApiResponse<Account[]>> {
+  async getAccounts({
+    merchantId,
+    connectedAccounts,
+  }: getAccountProps): Promise<ApiResponse<Account[]>> {
     const response = await this.httpRequest<Account[]>(
-      `${this.url}/?merchantID=${merchantId}`,
+      `${this.url}/?merchantID=${merchantId}&connectedAccounts=${connectedAccounts}`,
       HttpMethod.GET,
     )
 
