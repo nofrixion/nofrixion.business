@@ -403,10 +403,12 @@ const PayoutDashboardMain = ({
         merchantTags={localMerchantTags}
       />
 
-      {accounts && (
+      {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
         <CreatePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
-          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
+          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(
+            beneficiaries?.filter((x) => x.merchantID === merchantId),
+          )}
           apiUrl={apiUrl}
           token={token}
           isOpen={createPayoutClicked}

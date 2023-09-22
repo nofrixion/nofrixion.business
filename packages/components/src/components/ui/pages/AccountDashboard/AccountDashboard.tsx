@@ -1,6 +1,7 @@
 import {
   Account,
   AccountIdentifierType,
+  BankSettings,
   Currency,
   Pagination,
   SortDirection,
@@ -12,7 +13,9 @@ import { useState } from 'react'
 import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
+import AccountConnection from '../../atoms/AccountConnection/AccountConnection'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
+import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
 import EditableContent from '../../molecules/EditableContent/EditableContent'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
 import { PendingPayments } from '../../PendingPayments/PendingPayments'
@@ -32,6 +35,9 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
   onAccountNameChange: (newAccountName: string) => void
+  onRenewConnection?: (account: Account) => void
+  banks?: BankSettings[]
+  isConnectingToBank: boolean
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
@@ -47,8 +53,31 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   onSort,
   onAllCurrentAccountsClick,
   onAccountNameChange,
+  onRenewConnection,
+  banks,
+  isConnectingToBank,
 }) => {
   const [localAccountName, setLocalAccountName] = useState('')
+
+  const isExpired = account?.expiryDate && new Date(account.expiryDate) < new Date() ? true : false
+
+  const bankLogo = banks?.find((bank) => bank.bankName === account?.bankName)?.logo
+
+  const [isRenewConnectionModalOpen, setIsRenewConnectionModalOpen] = useState(false)
+
+  const handleOnRenewConnectionClicked = () => {
+    setIsRenewConnectionModalOpen(true)
+  }
+
+  const handleOnRenewConnection = () => {
+    if (account) {
+      onRenewConnection && onRenewConnection(account)
+    }
+  }
+
+  const handleOnDismiss = () => {
+    setIsRenewConnectionModalOpen(false)
+  }
 
   React.useEffect(() => {
     setLocalAccountName(account?.accountName ?? '')
@@ -82,7 +111,18 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
         </div>
 
         {/*  TODO: Use account info from hook */}
-        <div className="flex justify-between mt-6">
+
+        <div className="flex mt-6">
+          {account && account.isConnectedAccount && bankLogo && (
+            <div className="p-4 rounded-full bg-white h-fit mr-4">
+              <img
+                src={`https://cdn.nofrixion.com/img/banks/svg/${bankLogo}`}
+                alt="bank logo"
+                width={32}
+                height={32}
+              />
+            </div>
+          )}
           <div className="text-[28px]/8 font-semibold">
             <div className="flex group items-center space-x-2">
               {localAccountName && (
@@ -95,7 +135,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
             <div className="flex gap-6 mt-2">
               {account?.identifier.type === AccountIdentifierType.IBAN &&
               account.identifier.iban ? (
-                <DisplayAndCopy name="IBAN" value={account.identifier.iban} />
+                <DisplayAndCopy name="IBAN" value={account.identifier.iban} className="mt-0" />
               ) : account?.identifier.type === AccountIdentifierType.SCAN ? (
                 <>
                   {account?.identifier.sortCode && (
@@ -109,9 +149,16 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
                 <></>
               )}
             </div>
+            {account && account.isConnectedAccount && account.expiryDate && (
+              <AccountConnection
+                account={account}
+                isExpired={isExpired}
+                onRenewConnection={handleOnRenewConnectionClicked}
+              />
+            )}
           </div>
 
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end ml-auto">
             <AccountBalance
               availableBalance={account?.availableBalance ?? 0}
               balance={account?.balance ?? 0}
@@ -146,6 +193,13 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           onSort={onSort}
         />
       </div>
+
+      <RenewConnectionModal
+        onApply={handleOnRenewConnection}
+        open={isRenewConnectionModalOpen}
+        onDismiss={handleOnDismiss}
+        isConnectingToBank={isConnectingToBank}
+      />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
     </>

@@ -94,3 +94,12 @@ export type BatchApprove = {
 export type AccountUpdate = {
   accountName: string
 }
+
+export type ConsentRequest = {
+  emailAddress?: string
+  institutionID: string
+  merchantID: string
+  callbackUrl?: string
+  successWebHookUrl?: string
+  IsConnectedAccounts: boolean
+}

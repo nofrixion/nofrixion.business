@@ -1,10 +1,12 @@
-import { forwardRef, useEffect, useId, useState } from 'react'
+import { forwardRef, InputHTMLAttributes, useEffect, useId, useState } from 'react'
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
+import InputAutoCompleteField from '../InputAutoCompleteField/InputAutoCompleteField'
 import { ValidationMessage } from '../ValidationMessage/ValidationMessage'
 
-export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputTextFieldProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   variant?: 'default' | 'numeric'
   label: string
   required?: boolean
@@ -12,6 +14,8 @@ export interface InputTextFieldProps extends React.InputHTMLAttributes<HTMLInput
   error?: string
   formSubmitted?: boolean
   subText?: string
+  autoSuggestions?: string[]
+  onChange?: (value: string) => void
 }
 
 const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
@@ -28,6 +32,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
       onChange,
       onBlur,
       warningValidation,
+      autoSuggestions,
       ...props
     },
     ref,
@@ -53,9 +58,12 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
       }
     }, [formSubmitted])
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange && onChange(e)
+    const handleOnChange = (value: string) => {
+      onChange && onChange(value)
+      validateInputOnChange(value)
+    }
 
+    const validateInputOnChange = (value: string) => {
       if (required && value) {
         setRequiredErrorPrompt(false)
       }
@@ -64,7 +72,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
         return
       }
 
-      setWarning(warningValidation(e.target.value))
+      setWarning(warningValidation(value))
     }
 
     const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -118,14 +126,28 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
                 const masked = e.target.value
                 // eslint-disable-next-line no-useless-escape
                 e.target.value = e.target.value.replace(/[^\d\.\-]/g, '')
-                handleOnChange && handleOnChange(e)
+                handleOnChange && handleOnChange(e.target.value)
                 e.target.value = masked
               }}
               {...props}
             />
           )}
-          {variant === 'default' && (
+          {variant === 'default' && !autoSuggestions && (
             <input
+              ref={ref}
+              id={textId}
+              maxLength={maxLength}
+              type="text"
+              value={value}
+              onChange={(e) => handleOnChange(e.target.value)}
+              onBlur={handleOnBlur}
+              placeholder={placeholder}
+              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
+              {...props}
+            />
+          )}
+          {variant === 'default' && autoSuggestions && (
+            <InputAutoCompleteField
               ref={ref}
               id={textId}
               maxLength={maxLength}
@@ -134,7 +156,7 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
               onChange={handleOnChange}
               onBlur={handleOnBlur}
               placeholder={placeholder}
-              className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
+              autoSuggestions={autoSuggestions}
               {...props}
             />
           )}

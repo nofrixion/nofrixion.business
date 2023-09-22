@@ -1,7 +1,11 @@
 import {
+  Account,
+  BankSettings,
+  OpenBankingClient,
   PayoutStatus,
   SortDirection,
   useAccount,
+  useBanks,
   useMerchant,
   usePendingPayments,
   useTransactions,
@@ -13,8 +17,10 @@ import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
 import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
+import { getRoute } from '../../../utils/utils'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
+import { makeToast } from '../../ui/Toast/Toast'
 
 export interface AccountDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -72,7 +78,7 @@ const AccountDashboardMain = ({
   )
 
   const [searchFilter, setSearchFilter] = useState<string>('')
-
+  const [isConnectingToBank, setIsConnectingToBank] = useState(false)
   const [transactionDateSortDirection, setTransactionDateDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
@@ -83,6 +89,11 @@ const AccountDashboardMain = ({
       accountId: accountId,
       accountName: newAccountName,
     })
+  }
+
+  const businessBaseUrl = () => {
+    // Defaults to local dev if it's not set
+    return import.meta.env.VITE_PUBLIC_APP_BASE_URL ?? 'https://localhost:3001' // Local development
   }
 
   const { data: transactionsResponse } = useTransactions(
@@ -117,6 +128,20 @@ const AccountDashboardMain = ({
   )
 
   const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
+
+  const { data: banksResponse } = useBanks(
+    { merchantId: merchantId },
+    { apiUrl: apiUrl, authToken: token },
+  )
+  const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
+
+  useEffect(() => {
+    if (banksResponse?.status === 'success') {
+      setBanks(banksResponse.data.payByBankSettings)
+    } else if (banksResponse?.status === 'error') {
+      console.warn(banksResponse.error)
+    }
+  }, [banksResponse])
 
   //When switching merchants, go back to current accounts page
   useEffect(() => {
@@ -171,6 +196,40 @@ const AccountDashboardMain = ({
     setDateRange(dateRange)
   }
 
+  const onConnectBank = async (bank: BankSettings) => {
+    // TODO: Fix this. Which one should we use?
+    if (bank.personalInstitutionID) {
+      setIsConnectingToBank(true)
+
+      const client = new OpenBankingClient({ apiUrl, authToken: token })
+
+      const response = await client.createConsent({
+        institutionID: bank.personalInstitutionID,
+        merchantID: merchantId,
+        IsConnectedAccounts: true,
+        callbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts/connected/{bankId}')}`,
+      })
+
+      if (response.status === 'error') {
+        console.error(response.error)
+        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+      } else if (response.data.authorisationUrl) {
+        // Redirect to the banks authorisation url
+        window.location.href = response.data.authorisationUrl
+      }
+
+      setIsConnectingToBank(false)
+    }
+  }
+
+  const handleOnRenewConnection = (account: Account) => {
+    const bank = banks?.find((bank) => bank.bankName === account.bankName)
+
+    if (bank) {
+      onConnectBank(bank)
+    }
+  }
+
   return (
     <UIAccountDashboard
       transactions={transactions}
@@ -190,6 +249,9 @@ const AccountDashboardMain = ({
       onSearch={setSearchFilter}
       searchFilter={searchFilter}
       onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+      banks={banks}
+      onRenewConnection={handleOnRenewConnection}
+      isConnectingToBank={isConnectingToBank}
     />
   )
 }
