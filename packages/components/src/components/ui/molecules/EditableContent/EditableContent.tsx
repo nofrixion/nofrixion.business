@@ -57,31 +57,29 @@ const EditableContent = ({ initialValue, onChange, className }: EditableContentP
     onChange(text.current)
   }
 
+  const changeToEditMode = () => {
+    setIsEditing(true)
+
+    if (!contentEditable.current) {
+      return
+    }
+
+    // Move cursor to the end of the input
+    const range = document.createRange()
+    const selection = window.getSelection()
+    range.selectNodeContents(contentEditable.current)
+    range.collapse(false)
+    selection?.removeAllRanges()
+    selection?.addRange(range)
+
+    // Focus the input
+    ;(contentEditable.current as any).focus()
+  }
+
   return (
-    <div className={cn('flex group items-center space-x-2', className)}>
+    <div className={cn('flex group items-center', className)}>
       {!isEditing && (
-        <button
-          onClick={() => {
-            setIsEditing(true)
-
-            if (!contentEditable.current) {
-              return
-            }
-
-            // Move cursor to the end of the input
-            const range = document.createRange()
-            const selection = window.getSelection()
-            range.selectNodeContents(contentEditable.current)
-            range.collapse(false)
-            selection?.removeAllRanges()
-            selection?.addRange(range)
-
-            // Focus the input
-            ;(contentEditable.current as any).focus()
-          }}
-        >
-          {text.current.replace(/&nbsp;/g, ' ')}
-        </button>
+        <button onClick={changeToEditMode}>{text.current.replace(/&nbsp;/g, ' ')}</button>
       )}
 
       <ContentEditable
@@ -98,15 +96,18 @@ const EditableContent = ({ initialValue, onChange, className }: EditableContentP
           'absolute -z-50': !isEditing,
         })}
       />
+
       {!isEditing && (
-        <Icon
-          name="edit/16"
-          className="text-border-grey-highlighted opacity-0 transition group-hover:opacity-100"
-        />
+        <button onClick={changeToEditMode} className="pl-2">
+          <Icon
+            name="edit/16"
+            className="text-border-grey-highlighted opacity-0 transition group-hover:opacity-100"
+          />
+        </button>
       )}
       {isEditing && (
         <>
-          <Icon name="keyboard-return/16" className="text-disabled-icon transition" />
+          <Icon name="keyboard-return/16" className="text-disabled-icon transition mx-2" />
           <span className="text-grey-text text-[11px]/8 font-normal">Press Enter to confirm</span>
         </>
       )}
