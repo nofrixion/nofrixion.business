@@ -166,6 +166,8 @@ const PaymentRequestDashboardMain = ({
   useEffect(() => {
     if (isLoadingPaymentRequests) {
       setPaymentRequests(undefined)
+    } else {
+      isLoadingMore && setIsLoadingMore(false)
     }
   }, [isLoadingPaymentRequests])
 
@@ -240,7 +242,6 @@ const PaymentRequestDashboardMain = ({
 
   useEffect(() => {
     if (paymentRequestsResponse?.status === 'success') {
-      console.log('paymentRequestsResponse', paymentRequestsResponse.data.content)
       setPaymentRequests(paymentRequestsResponse.data.content)
       setTotalRecords(paymentRequestsResponse.data.totalSize)
     } else if (paymentRequestsResponse?.status === 'error') {
@@ -251,15 +252,13 @@ const PaymentRequestDashboardMain = ({
     }
   }, [paymentRequestsResponse])
 
-  // useEffect(() => {
-  //   //setShowMorePage(1)
-  //   console.log('paymentRequests', paymentRequests)
-  //   setLocalPaymentRequests(
-  //     paymentRequests?.map((paymentRequest) =>
-  //       remotePaymentRequestToLocalPaymentRequest(paymentRequest),
-  //     ),
-  //   )
-  // }, [paymentRequests])
+  useEffect(() => {
+    setMetrics(undefined)
+    setFirstMetrics(undefined)
+    setPage(1)
+    setPaymentRequests(undefined)
+    setStatus(PaymentRequestStatus.All)
+  }, [merchantId])
 
   useEffect(() => {
     const tempTagArray = getSelectedTagFilters()
@@ -461,46 +460,7 @@ const PaymentRequestDashboardMain = ({
    */
   const fetchNextPage = async () => {
     setIsLoadingMore(true)
-
-    // const sort = formatSortExpression({
-    //   statusSortDirection,
-    //   createdSortDirection,
-    //   contactSortDirection,
-    //   amountSortDirection,
-    // })
-
-    setPage(page + 1)
-
-    // const paymentRequests = await client.getAll({
-    //   pageNumber: showMorePage + 1,
-    //   pageSize: pageSize,
-    //   sort: sort,
-    //   tags: tagsFilter,
-    //   status: status,
-    //   fromDate: dateRange.fromDate,
-    //   toDate: dateRange.toDate,
-    //   search: searchFilter?.length >= 3 ? searchFilter : undefined,
-    //   currency: currencyFilter,
-    //   minAmount: minAmountFilter,
-    //   maxAmount: maxAmountFilter,
-    //   merchantId: merchantId,
-    // })
-
-    // if (paymentRequests.status === 'success') {
-    //   console.log('paymentRequests', paymentRequests.data.content)
-    //   setLocalPaymentRequests((prev) =>
-    //     prev !== undefined && paymentRequests.data.content.length > 0
-    //       ? [
-    //           ...prev,
-    //           ...paymentRequests.data.content.map((pr) =>
-    //             remotePaymentRequestToLocalPaymentRequest(pr),
-    //           ),
-    //         ]
-    //       : undefined,
-    //   )
-    //   setShowMorePage(showMorePage + 1)
-    // }
-    setIsLoadingMore(false)
+    setPage((prev) => prev + 1)
   }
 
   /// Only show the total amount if there are payment requests
@@ -531,19 +491,39 @@ const PaymentRequestDashboardMain = ({
     }
   }, [metrics])
 
-  const paymentRequestsExists = !isLoadingMetrics && metrics && metrics.all > 0
+  const paymentRequestStatusToMetricsStatus = (
+    status: PaymentRequestStatus,
+  ): 'paid' | 'partiallyPaid' | 'unpaid' | 'authorized' | 'all' => {
+    switch (status) {
+      case PaymentRequestStatus.All:
+        return 'all'
+      case PaymentRequestStatus.Authorized:
+        return 'authorized'
+      case PaymentRequestStatus.FullyPaid:
+        return 'paid'
+      case PaymentRequestStatus.None:
+        return 'unpaid'
+      case PaymentRequestStatus.PartiallyPaid:
+        return 'partiallyPaid'
+      default:
+        return 'all'
+    }
+  }
+
+  const paymentRequestsExists =
+    !isLoadingMetrics &&
+    metrics &&
+    status &&
+    metrics[paymentRequestStatusToMetricsStatus(status)] > 0
+
   const isInitialState = !isLoadingMetrics && firstMetrics && firstMetrics?.all === 0
 
-  // console.log('localPaymentRequests', localPaymentRequests)
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
         <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
           Accounts Receivable
         </span>
-        {/* <LayoutGroup>
-          <AnimatePresence initial={false}>
-            <LayoutWrapper> */}
         <div>
           <Button
             size="big"
@@ -554,12 +534,8 @@ const PaymentRequestDashboardMain = ({
             <Icon name="add/16" className="md:hidden" />
           </Button>
         </div>
-        {/* </LayoutWrapper>
-          </AnimatePresence>
-        </LayoutGroup> */}
       </div>
 
-      {/* <AnimatePresence> */}
       <div className="mb-4">
         <FilterControlsRow
           setDateRange={setDateRange}
@@ -585,15 +561,11 @@ const PaymentRequestDashboardMain = ({
           }
         />
       </div>
-      {/* </AnimatePresence> */}
-
-      {/* <LayoutGroup>
-        <AnimatePresence initial={false}>
-          <LayoutWrapper className="h-full"> */}
       <ScrollArea hideScrollbar>
         <Tabs.Root
           defaultValue={PaymentRequestStatus.All}
           onValueChange={(value) => setStatus(value as PaymentRequestStatus)}
+          value={status}
         >
           {/* Keep the Tab to still get accessibility functions through the keyboard */}
           <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
@@ -636,10 +608,7 @@ const PaymentRequestDashboardMain = ({
           <Tabs.Content value=""></Tabs.Content>
         </Tabs.Root>
       </ScrollArea>
-      {/* </LayoutWrapper>
-        </AnimatePresence> */}
 
-      {/* <LayoutWrapper className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6 lg:rounded-lg"> */}
       <div className="lg:bg-white lg:min-h-[18rem] lg:py-10 lg:px-6 lg:rounded-lg">
         <PaymentRequestTable
           paymentRequests={paymentRequests?.map((paymentRequest) =>
@@ -679,8 +648,6 @@ const PaymentRequestDashboardMain = ({
           </Button>
         </div>
       )}
-      {/* </LayoutWrapper>
-      </LayoutGroup> */}
 
       <CreatePaymentRequestPage
         isOpen={isCreatePaymentRequestOpen}

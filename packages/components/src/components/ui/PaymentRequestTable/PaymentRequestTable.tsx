@@ -65,159 +65,146 @@ const PaymentRequestTable = ({
     }
   }
 
-  console.log('pr', paymentRequests)
-  console.log('prlength', paymentRequests?.length)
-  console.log('isloading', isLoading)
-  console.log('isloadingmetrics', isLoadingMetrics)
-  console.log('isempty', isEmpty)
-  console.log(
-    'show',
-    !isLoading &&
-      !isLoadingMetrics &&
-      paymentRequests !== undefined &&
-      paymentRequests?.length === 0 &&
-      !isEmpty,
-  )
-
   return (
-    <>
+    <div className="flex justify-center">
       {/* Show table when loading so the skeletons are visible */}
       {/* or else show the table when has payment requests */}
-      {/* {((isLoading && paymentRequestsExist) || (paymentRequests && paymentRequests.length > 0)) && ( */}
-      <table className="hidden lg:table table-fixed text-left w-full">
-        <colgroup>
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col className="w-8" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th className={classNames(commonThClasses, 'w-44 text-left')}>
-              <ColumnHeader
-                label="Status"
-                onSort={(sortDirection) =>
-                  setStatusSortDirection && setStatusSortDirection(sortDirection)
-                }
-              />
-            </th>
-            <th className={classNames(commonThClasses, 'w-44 text-left')}>
-              <ColumnHeader
-                label="Created"
-                onSort={(sortDirection) =>
-                  setCreatedSortDirection && setCreatedSortDirection(sortDirection)
-                }
-              />
-            </th>
-            <th className={classNames(commonThClasses, 'w-44 text-left')}>
-              <ColumnHeader
-                label="Contact"
-                onSort={(sortDirection) =>
-                  setContactSortDirection && setContactSortDirection(sortDirection)
-                }
-              />
-            </th>
-            <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
-              <ColumnHeader
-                label="Amount"
-                onSort={(sortDirection) =>
-                  setAmountSortDirection && setAmountSortDirection(sortDirection)
-                }
-              />
-            </th>
+      {(paymentRequestsExist || (paymentRequests && paymentRequests.length > 0)) && (
+        <table className="hidden lg:table table-fixed text-left w-full">
+          <colgroup>
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col className="w-8" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+                <ColumnHeader
+                  label="Status"
+                  onSort={(sortDirection) =>
+                    setStatusSortDirection && setStatusSortDirection(sortDirection)
+                  }
+                />
+              </th>
+              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+                <ColumnHeader
+                  label="Created"
+                  onSort={(sortDirection) =>
+                    setCreatedSortDirection && setCreatedSortDirection(sortDirection)
+                  }
+                />
+              </th>
+              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+                <ColumnHeader
+                  label="Contact"
+                  onSort={(sortDirection) =>
+                    setContactSortDirection && setContactSortDirection(sortDirection)
+                  }
+                />
+              </th>
+              <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
+                <ColumnHeader
+                  label="Amount"
+                  onSort={(sortDirection) =>
+                    setAmountSortDirection && setAmountSortDirection(sortDirection)
+                  }
+                />
+              </th>
 
-            {/* Currency */}
-            <th className={classNames('pb-11 w-20')}></th>
+              {/* Currency */}
+              <th className={classNames('pb-11 w-20')}></th>
 
-            {/* 
+              {/* 
               Tags column 
               However, it's used to display the
               pagination component in the table header
             */}
-            <th colSpan={2} className={commonThClasses}>
-              <Pager
-                pageSize={pageSize}
-                totalRecords={totalRecords}
-                onPageChange={(newPage) => onPageChanged && onPageChanged(newPage)}
-              />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {isLoading &&
-            paymentRequestsExist &&
-            // Create array of 12 empty rows
-            // to display a loading skeleton
-            // while the data is being fetched
-            // from the server
-            Array.from(Array(12)).map((_, index) => (
-              <tr
-                key={`pr-placeholder-${index}`}
-                className="animate-pulse border-b border-[#F1F2F3]"
-              >
-                {/* Status */}
-                <td className="py-6">
-                  <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                </td>
+              <th colSpan={2} className={commonThClasses}>
+                <Pager
+                  pageSize={pageSize}
+                  totalRecords={totalRecords}
+                  onPageChange={(newPage) => onPageChanged && onPageChanged(newPage)}
+                />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading &&
+              paymentRequestsExist &&
+              // Create array of 12 empty rows
+              // to display a loading skeleton
+              // while the data is being fetched
+              // from the server
+              Array.from(Array(12)).map((_, index) => (
+                <tr
+                  key={`pr-placeholder-${index}`}
+                  className="animate-pulse border-b border-[#F1F2F3]"
+                >
+                  {/* Status */}
+                  <td className="py-6">
+                    <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                  </td>
 
-                {/* Created */}
-                <td>
-                  <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                </td>
+                  {/* Created */}
+                  <td>
+                    <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                  </td>
 
-                {/* Contact */}
-                <td>
-                  <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                </td>
+                  {/* Contact */}
+                  <td>
+                    <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                  </td>
 
-                {/* Amount */}
-                <td className="p-0">
-                  <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
-                </td>
+                  {/* Amount */}
+                  <td className="p-0">
+                    <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                  </td>
 
-                <td className="p-0">
-                  <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
-                </td>
+                  <td className="p-0">
+                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
+                  </td>
 
-                {/* Extra */}
-                <td>
-                  <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
-                </td>
-              </tr>
-            ))}
+                  {/* Extra */}
+                  <td>
+                    <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
+                  </td>
+                </tr>
+              ))}
 
-          {!isLoading &&
-            paymentRequests &&
-            paymentRequests.length > 0 &&
-            paymentRequests?.map((paymentRequest, index) => (
-              <PaymentRequestRow
-                key={`pr-${index}`}
-                {...paymentRequest}
-                onClick={(event) => onPaymentRequestClickedHandler(event, paymentRequest)}
-                onDuplicate={() =>
-                  onPaymentRequestDuplicateClicked &&
-                  onPaymentRequestDuplicateClicked(paymentRequest)
-                }
-                onDelete={
-                  paymentRequest.paymentAttempts && paymentRequest.paymentAttempts.length > 0
-                    ? undefined
-                    : () =>
-                        onPaymentRequestDeleteClicked &&
-                        onPaymentRequestDeleteClicked(paymentRequest)
-                }
-                onCopyLink={() =>
-                  onPaymentRequestCopyLinkClicked && onPaymentRequestCopyLinkClicked(paymentRequest)
-                }
-                onOpenPaymentPage={() => onOpenPaymentPage && onOpenPaymentPage(paymentRequest)}
-                selected={selectedPaymentRequestID === paymentRequest.id}
-              />
-            ))}
-        </tbody>
-      </table>
-      {/* )} */}
+            {!isLoading &&
+              paymentRequests &&
+              paymentRequests.length > 0 &&
+              paymentRequests?.map((paymentRequest, index) => (
+                <PaymentRequestRow
+                  key={`pr-${index}`}
+                  {...paymentRequest}
+                  onClick={(event) => onPaymentRequestClickedHandler(event, paymentRequest)}
+                  onDuplicate={() =>
+                    onPaymentRequestDuplicateClicked &&
+                    onPaymentRequestDuplicateClicked(paymentRequest)
+                  }
+                  onDelete={
+                    paymentRequest.paymentAttempts && paymentRequest.paymentAttempts.length > 0
+                      ? undefined
+                      : () =>
+                          onPaymentRequestDeleteClicked &&
+                          onPaymentRequestDeleteClicked(paymentRequest)
+                  }
+                  onCopyLink={() =>
+                    onPaymentRequestCopyLinkClicked &&
+                    onPaymentRequestCopyLinkClicked(paymentRequest)
+                  }
+                  onOpenPaymentPage={() => onOpenPaymentPage && onOpenPaymentPage(paymentRequest)}
+                  selected={selectedPaymentRequestID === paymentRequest.id}
+                />
+              ))}
+          </tbody>
+        </table>
+      )}
 
       <div className="lg:hidden space-y-2">
         {paymentRequests &&
@@ -244,14 +231,13 @@ const PaymentRequestTable = ({
           ))}
       </div>
 
-      {isLoadingMetrics && <Loader />}
+      {isLoadingMetrics && <Loader className="mt-12" />}
 
       {isEmpty && <EmptyState state="empty" onCreatePaymentRequest={onCreatePaymentRequest} />}
 
       {/* Show empty state when contet has loaded and no there are no payment requests*/}
       {/* or also show when isEmpty property comes as `true` */}
-      {!isLoading &&
-        !isLoadingMetrics &&
+      {!isLoadingMetrics &&
         paymentRequests !== undefined &&
         paymentRequests?.length === 0 &&
         !isEmpty && (
@@ -260,7 +246,7 @@ const PaymentRequestTable = ({
           <EmptyState state="nothingFound" onCreatePaymentRequest={onCreatePaymentRequest} />
         )}
       <Toaster positionY="top" positionX="right" duration={5000} />
-    </>
+    </div>
   )
 }
 
