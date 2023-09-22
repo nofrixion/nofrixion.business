@@ -101,7 +101,6 @@ const PaymentRequestDashboardMain = ({
   const [maxAmountFilter, setMaxAmountFilter] = useState<number | undefined>()
   const [tags, setTags] = useState<FilterableTag[]>([])
   const [tagsFilter, setTagsFilter] = useState<string[]>([])
-  //const [showMorePage, setShowMorePage] = useState(1)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [metrics, setMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
   const [totalRecords, setTotalRecords] = useState<number>(0)
@@ -203,14 +202,6 @@ const PaymentRequestDashboardMain = ({
   )
 
   const { data: accounts } = useAccounts({ merchantId }, { apiUrl, authToken: token })
-
-  // const [localPaymentRequests, setLocalPaymentRequests] = useState<
-  //   LocalPaymentRequest[] | undefined
-  // >(undefined)
-
-  // const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>()
-
-  // const [firstPaymentRequests, setFirstPaymentRequests] = useState<PaymentRequest[] | undefined>()
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePaymentRequestMetrics(
     {
