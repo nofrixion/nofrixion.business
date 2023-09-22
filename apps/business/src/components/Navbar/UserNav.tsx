@@ -1,11 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { useLocation, useNavigate } from 'react-router-dom'
-
-import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
-import IconLogout from '../../assets/icons/logout.svg'
-import PricingIcon from '../../assets/icons/pricing.svg'
-import IconSort from '../../assets/icons/sort.svg'
-import UsersIcon from '../../assets/icons/users.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +7,15 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '../../components/ui/DropDown'
+} from '@nofrixion/components/src/components/ui/atoms/DropDown/DropDown'
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
+import IconLogout from '../../assets/icons/logout.svg'
+import PricingIcon from '../../assets/icons/pricing.svg'
+import IconSort from '../../assets/icons/sort.svg'
+import UsersIcon from '../../assets/icons/users.svg'
 import { AuthContextType } from '../../lib/auth/AuthProvider'
 import { useAuth } from '../../lib/auth/useAuth'
 import { getAvatarName } from '../../lib/formatters'

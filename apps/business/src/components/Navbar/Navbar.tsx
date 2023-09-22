@@ -1,15 +1,15 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-
-import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
-import IconSort from '../../assets/icons/sort.svg'
-import UserNav from '../../components/Navbar/UserNav'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-} from '../../components/ui/DropDown'
+} from '@nofrixion/components/src/components/ui/atoms/DropDown/DropDown'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
+import IconSort from '../../assets/icons/sort.svg'
+import UserNav from '../../components/Navbar/UserNav'
 import { navItems } from '../../lib/constants'
 import { cn } from '../../lib/utils/utils'
 import { PRReview } from '../ui/PRReview'
