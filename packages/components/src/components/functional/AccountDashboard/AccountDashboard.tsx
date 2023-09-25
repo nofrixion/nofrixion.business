@@ -9,6 +9,7 @@ import {
   useMerchant,
   usePendingPayments,
   useTransactions,
+  useUpdateAccountName,
 } from '@nofrixion/moneymoov'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
@@ -69,6 +70,12 @@ const AccountDashboardMain = ({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
     toDate: endOfDay(new Date()),
   })
+  const { updateAccountName } = useUpdateAccountName(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
 
   const [searchFilter, setSearchFilter] = useState<string>('')
   const [isConnectingToBank, setIsConnectingToBank] = useState(false)
@@ -76,6 +83,13 @@ const AccountDashboardMain = ({
     SortDirection.NONE,
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+
+  const onAccountNameChange = async (newAccountName: string) => {
+    await updateAccountName({
+      accountId: accountId,
+      accountName: newAccountName,
+    })
+  }
 
   const businessBaseUrl = () => {
     // Defaults to local dev if it's not set
@@ -221,6 +235,7 @@ const AccountDashboardMain = ({
       transactions={transactions}
       pendingPayments={payouts}
       account={accountResponse?.status == 'success' ? accountResponse?.data : undefined}
+      onAccountNameChange={onAccountNameChange}
       pagination={{
         pageSize: pageSize,
         totalSize: totalRecords,

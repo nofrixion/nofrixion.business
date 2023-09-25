@@ -198,6 +198,33 @@ export const Icons = {
       <path d="M11.9973 9.50269V9.16669H12.3333V9.50269H11.9973Z" />
     </SVG>
   ),
+  'edit/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M14.7933 1.2066C14.5663 0.980492 14.2967 0.801613 14.0001 0.6803C13.7036 0.558986 13.3859 0.497642 13.0655 0.499811C12.7451 0.501981 12.4282 0.567621 12.1333 0.69294C11.8384 0.818259 11.5713 1.00077 11.3473 1.22993L1.68067 10.8966L0.5 15.4999L5.10333 14.3193L14.77 4.6526C14.9992 4.42864 15.1817 4.1615 15.307 3.8666C15.4323 3.57169 15.498 3.25488 15.5001 2.93447C15.5023 2.61405 15.4409 2.29638 15.3196 1.9998C15.1983 1.70323 15.0194 1.43364 14.7933 1.2066Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M11.0708 1.50659L14.4935 4.92926" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.6748 2.90259L13.0975 6.32525" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M1.68066 10.8967L5.10666 14.3161" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'keyboard-return/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M4 9.43254H9C9.79565 9.43254 10.5587 9.11647 11.1213 8.55386C11.6839 7.99125 12 7.22819 12 6.43254V4.93054"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6.5 6.93054L4 9.43054L6.5 11.9305" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M3 1.43054H13C13 1.43054 15 1.43054 15 3.43054V13.4305C15 13.4305 15 15.4305 13 15.4305H3C3 15.4305 1 15.4305 1 13.4305V3.43054C1 3.43054 1 1.43054 3 1.43054Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
   'back/12': (className: string) => (
     <SVG className={className} size="12">
       <path d="M6 11L0.999999 6L6 1" strokeLinecap="round" strokeLinejoin="round" />

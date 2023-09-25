@@ -16,6 +16,7 @@ import { DisplayAndCopy, Icon } from '../../atoms'
 import AccountConnection from '../../atoms/AccountConnection/AccountConnection'
 import DateRangePicker, { DateRange } from '../../DateRangePicker/DateRangePicker'
 import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
+import EditableContent from '../../molecules/EditableContent/EditableContent'
 import { TransactionsTable } from '../../organisms/TransactionsTable/TransactionsTable'
 import { PendingPayments } from '../../PendingPayments/PendingPayments'
 import SearchBar from '../../SearchBar/SearchBar'
@@ -33,6 +34,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
+  onAccountNameChange: (newAccountName: string) => void
   onRenewConnection?: (account: Account) => void
   banks?: BankSettings[]
   isConnectingToBank: boolean
@@ -50,10 +52,13 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   onPageChange,
   onSort,
   onAllCurrentAccountsClick,
+  onAccountNameChange,
   onRenewConnection,
   banks,
   isConnectingToBank,
 }) => {
+  const [localAccountName, setLocalAccountName] = useState('')
+
   const isExpired = account?.expiryDate && new Date(account.expiryDate) < new Date() ? true : false
 
   const bankLogo = banks?.find((bank) => bank.bankName === account?.bankName)?.logo
@@ -72,6 +77,15 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
 
   const handleOnDismiss = () => {
     setIsRenewConnectionModalOpen(false)
+  }
+
+  React.useEffect(() => {
+    setLocalAccountName(account?.accountName ?? '')
+  }, [account?.accountName])
+
+  const handleOnAccountNameChange = (newAccountName: string) => {
+    setLocalAccountName(newAccountName)
+    onAccountNameChange && onAccountNameChange(newAccountName)
   }
 
   return (
@@ -110,7 +124,14 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
             </div>
           )}
           <div className="text-[28px]/8 font-semibold">
-            <h2>{account?.accountName}</h2>
+            <div className="flex group items-center space-x-2">
+              {localAccountName && (
+                <EditableContent
+                  initialValue={localAccountName}
+                  onChange={handleOnAccountNameChange}
+                />
+              )}
+            </div>
             <div className="flex gap-6 mt-2">
               {account?.identifier.type === AccountIdentifierType.IBAN &&
               account.identifier.iban ? (
