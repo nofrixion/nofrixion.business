@@ -91,6 +91,10 @@ export type BatchApprove = {
   payoutIDs: string[]
 }
 
+export type AccountUpdate = {
+  accountName: string
+}
+
 export type ConsentRequest = {
   emailAddress?: string
   institutionID: string
