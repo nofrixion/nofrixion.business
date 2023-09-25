@@ -31,8 +31,8 @@ const RenewConnectionModal = ({
             I hereby give my consent for NoFrixion to receive data from my bank. NoFrixion will
             receive access to information regarding the accounts you connect, their transactions and
             daily updates.This consent remains valid for 90 days or until you in writing withdraw
-            your consent through NoFrixion. For further information please consult our Privacy
-            Policy.
+            your consent through NoFrixion. For further information please consult our{' '}
+            <span className="underline cursor-pointer hover:no-underline">Privacy Policy.</span>
           </div>
         </AnimateHeightWrapper>
       </AnimatePresence>
