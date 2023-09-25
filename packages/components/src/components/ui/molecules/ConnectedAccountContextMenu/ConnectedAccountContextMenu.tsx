@@ -1,4 +1,5 @@
 import { Account } from '@nofrixion/moneymoov'
+import { motion } from 'framer-motion'
 
 import { Icon } from '../../atoms'
 import {
@@ -31,33 +32,35 @@ const ConnectedAccountContextMenu = ({
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuContent
-          sideOffset={10}
-          align="center"
-          className="mx-4 bg-white rounded-lg shadow-[0px_0px_8px_rgba(4,_41,_49,_0.1)] py-4 pl-6 pr-6"
-        >
-          <DropdownMenuItem
-            key="refresh-menu"
-            onSelect={() => {
-              onRenewConnection && onRenewConnection(account)
-            }}
-            className="text-default-text hover:text-control-grey-hover"
+        <DropdownMenuContent sideOffset={5} align="center">
+          <motion.div
+            className="mx-4 bg-white rounded-lg shadow-[0px_0px_8px_rgba(4,_41,_49,_0.1)] py-4 pl-6 pr-6"
+            initial={{ opacity: 0.5, y: -5, scaleX: 1, scaleY: 1 }}
+            animate={{ opacity: 1, y: 0, scaleX: 1, scaleY: 1 }}
           >
-            <div className="flex">
-              <Icon name="reload/16" className="mr-2 my-auto" />
-              Refresh
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            key="revoke-menu"
-            onSelect={() => onRevokeConnection && onRevokeConnection(account)}
-            className="text-negative-red hover:text-highlighted-negative-red"
-          >
-            <div className="flex">
-              <Icon name="void/16" className="mr-2 my-auto" />
-              Revoke connection
-            </div>
-          </DropdownMenuItem>
+            <DropdownMenuItem
+              key="refresh-menu"
+              onSelect={() => {
+                onRenewConnection && onRenewConnection(account)
+              }}
+              className="text-default-text hover:text-control-grey-hover"
+            >
+              <div className="flex">
+                <Icon name="reload/16" className="mr-2 my-auto" />
+                Refresh
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              key="revoke-menu"
+              onSelect={() => onRevokeConnection && onRevokeConnection(account)}
+              className="text-negative-red hover:text-highlighted-negative-red"
+            >
+              <div className="flex">
+                <Icon name="void/16" className="mr-2 my-auto" />
+                Revoke connection
+              </div>
+            </DropdownMenuItem>
+          </motion.div>
         </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenu>
