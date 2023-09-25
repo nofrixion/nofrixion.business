@@ -205,11 +205,9 @@ const PaymentRequestTable = ({
           </tbody>
         </table>
       )}
-
-      <div className="lg:hidden space-y-2 w-full">
-        {paymentRequests &&
-          paymentRequests.length > 0 &&
-          paymentRequests.map((paymentRequest, index) => (
+      {paymentRequests && paymentRequests.length > 0 && (
+        <div className="lg:hidden space-y-2 w-full">
+          {paymentRequests.map((paymentRequest, index) => (
             <PaymentRequestMobileCard
               {...paymentRequest}
               key={`pr-mobile-${index}`}
@@ -229,15 +227,18 @@ const PaymentRequestTable = ({
               onOpenPaymentPage={() => onOpenPaymentPage && onOpenPaymentPage(paymentRequest)}
             />
           ))}
-      </div>
+        </div>
+      )}
 
       {isLoadingMetrics && !paymentRequests && (
-        <div className="w-full flex justify-center items-center">
+        <div className=" justify-center items-center">
           <Loader className="mt-12" />
         </div>
       )}
 
-      {isEmpty && <EmptyState state="empty" onCreatePaymentRequest={onCreatePaymentRequest} />}
+      {isEmpty && paymentRequests && paymentRequests.length === 0 && (
+        <EmptyState state="empty" onCreatePaymentRequest={onCreatePaymentRequest} />
+      )}
 
       {/* Show empty state when contet has loaded and no there are no payment requests*/}
       {/* or also show when isEmpty property comes as `true` */}
