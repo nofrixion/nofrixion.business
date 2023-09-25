@@ -47,7 +47,7 @@ const ConnectedAccountContextMenu = ({
           >
             <div className="flex">
               <Icon name="reload/16" className="mr-2 my-auto" />
-              <span>Refresh</span>
+              Refresh
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -58,7 +58,7 @@ const ConnectedAccountContextMenu = ({
           >
             <div className="flex">
               <Icon name="void/16" className="mr-2 my-auto" />
-              <span>Revoke connection</span>
+              Revoke connection
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
