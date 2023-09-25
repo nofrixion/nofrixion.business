@@ -38,11 +38,9 @@ const ConnectedAccountContextMenu = ({
         >
           <DropdownMenuItem
             key="refresh-menu"
-            onSelect={(event) => {
-              event.stopPropagation()
+            onSelect={() => {
               onRenewConnection && onRenewConnection(account)
             }}
-            onClick={(event) => event.stopPropagation()}
             className="text-default-text hover:text-control-grey-hover"
           >
             <div className="flex">
@@ -53,7 +51,6 @@ const ConnectedAccountContextMenu = ({
           <DropdownMenuItem
             key="revoke-menu"
             onSelect={() => onRevokeConnection && onRevokeConnection(account)}
-            onClick={(event) => event.stopPropagation()}
             className="text-negative-red hover:text-highlighted-negative-red"
           >
             <div className="flex">

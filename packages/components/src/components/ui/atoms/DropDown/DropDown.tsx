@@ -70,7 +70,12 @@ const DropdownMenuItem = React.forwardRef<
     }
   }
 >(({ className, icon, children, ...props }, ref) => (
-  <DropdownMenuPrimitive.Item ref={ref} className={cn(itemClassname, className)} {...props}>
+  <DropdownMenuPrimitive.Item
+    ref={ref}
+    className={cn(itemClassname, className)}
+    {...props}
+    onClick={(event) => event.stopPropagation()}
+  >
     <>
       {icon && (
         <div className="mr-3 my-auto">
