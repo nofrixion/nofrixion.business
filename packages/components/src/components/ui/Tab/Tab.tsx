@@ -84,11 +84,11 @@ const Tab = ({
     <Tabs.Trigger
       value={status}
       className={classNames(
-        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 lg:px-8 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
+        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 xl:px-8 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
         getSpecificStatusClasses(status),
       )}
     >
-      <span className="text-sm/6 font-normal flex items-center mb-2 leading-6">
+      <span className="text-xs/6 lg:text-sm/6 font-normal flex items-center mb-2 leading-6">
         {showIndicator(status) && (
           <div className="items-center whitespace-nowrap inline-block mr-1.5">
             <svg
