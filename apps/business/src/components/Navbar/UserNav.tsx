@@ -39,6 +39,8 @@ const UserNav = () => {
   const merchants = useStore(useMerchantsStore, (state) => state.merchants)
   const user = useStore(useUserStore, (state) => state.user)
 
+  const commonCss = 'data-[highlighted]:text-nav-accent focus:text-nav-accent'
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,7 +75,11 @@ const UserNav = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>
-        <DropdownMenuContent sideOffset={30} align="end">
+        <DropdownMenuContent
+          sideOffset={30}
+          align="end"
+          className="min-w-[140px] bg-dark-bg rounded-lg text-white"
+        >
           {merchants && merchants.length > 1 && (
             <DropdownMenuSub>
               <DropdownMenuSubTrigger
@@ -81,11 +87,15 @@ const UserNav = () => {
                   src: IconDoubleArrows,
                   alt: 'Switch merchants',
                 }}
+                className={commonCss}
               >
                 Switch merchant
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
-                <DropdownMenuSubContent sideOffset={40}>
+                <DropdownMenuSubContent
+                  sideOffset={40}
+                  className="bg-dark-bg rounded-lg text-white"
+                >
                   {merchants
                     .filter((m) => m.id !== merchant?.id)
                     ?.map((merchant) => (
@@ -94,6 +104,7 @@ const UserNav = () => {
                           setMerchant && setMerchant(merchant)
                         }}
                         key={merchant.id}
+                        className={commonCss}
                       >
                         {merchant.name}
                       </DropdownMenuItem>
@@ -109,6 +120,7 @@ const UserNav = () => {
               src: UsersIcon,
               alt: 'Users',
             }}
+            className={commonCss}
           >
             Users
           </DropdownMenuItem>
@@ -119,6 +131,7 @@ const UserNav = () => {
               src: PricingIcon,
               alt: 'Pricing',
             }}
+            className={commonCss}
           >
             Pricing
           </DropdownMenuItem>
@@ -130,6 +143,7 @@ const UserNav = () => {
               src: IconLogout,
               alt: 'Log out',
             }}
+            className={commonCss}
           >
             Log out
           </DropdownMenuItem>
