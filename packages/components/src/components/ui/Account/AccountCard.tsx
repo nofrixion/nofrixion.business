@@ -3,25 +3,28 @@ import { Account, AccountIdentifierType } from '@nofrixion/moneymoov'
 import { cn } from '../../../utils'
 import { Button, DisplayAndCopy } from '../atoms'
 import AccountConnection from '../atoms/AccountConnection/AccountConnection'
+import ConnectedAccountContextMenu from '../molecules/ConnectedAccountContextMenu/ConnectedAccountContextMenu'
 import AccountBalance from './AccountBalance/AccountBalance'
 
 export interface AccountCardProps extends React.HTMLAttributes<HTMLButtonElement> {
   account: Account
   bankLogo?: string
   onRenewConnection?: (account: Account) => void
+  onRevokeConnection?: (account: Account) => void
 }
 
 const AccountCard: React.FC<AccountCardProps> = ({
   account,
   bankLogo,
   onRenewConnection,
+  onRevokeConnection,
   className,
   ...props
 }) => {
   const isExpired = account.expiryDate && new Date(account.expiryDate) < new Date() ? true : false
 
   const onHandleRenewConnection = (
-    event: React.MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement> | Event,
     account: Account,
   ) => {
     onRenewConnection && onRenewConnection(account)
@@ -77,12 +80,23 @@ const AccountCard: React.FC<AccountCardProps> = ({
           )}
         </div>
         {(!account.isConnectedAccount || (account.isConnectedAccount && !isExpired)) && (
-          <div className="my-auto">
-            <AccountBalance
-              currency={account.currency}
-              balance={account.balance}
-              availableBalance={account.availableBalance}
-            />
+          <div className="flex">
+            <div className="my-auto">
+              <AccountBalance
+                currency={account.currency}
+                balance={account.balance}
+                availableBalance={account.availableBalance}
+              />
+            </div>
+            {account.isConnectedAccount && (
+              <div className="my-auto ml-3 mr-0">
+                <ConnectedAccountContextMenu
+                  account={account}
+                  onRenewConnection={onRenewConnection && onRenewConnection}
+                  onRevokeConnection={onRevokeConnection && onRevokeConnection}
+                ></ConnectedAccountContextMenu>
+              </div>
+            )}
           </div>
         )}
         {account.isConnectedAccount && isExpired && (
