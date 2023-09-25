@@ -99,6 +99,7 @@ export interface usePaymentRequestsProps
   amountSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
+  preservePreviousPageData?: boolean
 }
 
 export interface usePayoutsProps extends MerchantProps, PayoutPageProps {

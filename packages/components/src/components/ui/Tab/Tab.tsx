@@ -109,7 +109,7 @@ const Tab = ({
       <div className="relative items-center xl:flex xl:justify-between w-full">
         <div
           className={classNames(
-            'animate-pulse absolute left-1/2 top-0 bottom-0 my-auto -translate-x-1/2 flex items-center',
+            'animate-pulse absolute left-0 pl-8 top-0 bottom-0 my-auto -translate-x-1/2 flex items-center',
             {
               invisible: !isLoading,
             },

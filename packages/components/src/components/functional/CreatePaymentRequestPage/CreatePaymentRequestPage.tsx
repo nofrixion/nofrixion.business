@@ -5,13 +5,13 @@ import {
   CardTokenCreateModes,
   ClientSettingsClient,
   PartialPaymentMethods,
-  PaymentRequestClient,
   PaymentRequestCreate,
   useBanks,
+  useCreatePaymentRequest,
   UserPaymentDefaults,
   useUserPaymentDefaults,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useStore } from 'zustand'
 
@@ -47,7 +47,7 @@ const CreatePaymentRequestPage = ({
   onPaymentRequestCreated,
   prefilledPaymentRequest,
 }: CreatePaymentRequesPageProps) => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -76,10 +76,7 @@ const CreatePaymentRequestPageMain = ({
   onPaymentRequestCreated,
   prefilledPaymentRequest,
 }: CreatePaymentRequesPageProps) => {
-  const paymentRequestClient = new PaymentRequestClient({
-    apiUrl: apiUrl,
-    authToken: token,
-  })
+  const { createPaymentRequest } = useCreatePaymentRequest({ apiUrl: apiUrl, authToken: token })
 
   const { autoSuggestions, setAutoSuggestions } = useStore(
     useAutoSuggestionsStore,
@@ -176,7 +173,7 @@ const CreatePaymentRequestPageMain = ({
       paymentRequestToCreate,
     )
 
-    const response = await paymentRequestClient.create(parsedPaymentRequestToCreate)
+    const response = await createPaymentRequest(parsedPaymentRequestToCreate)
 
     // TODO: Toasts are not working - however, we need to figure out how to handle errors & success cases
     // Maybe we should have a redirectUrl that we can redirect to? This could be a parameter in the web-component

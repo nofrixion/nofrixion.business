@@ -7,6 +7,7 @@ interface LayoutWrapperProps {
   layout?: boolean | 'position' | 'size' | 'preserve-aspect'
   duration?: number
   delay?: number
+  layoutId?: string
 }
 
 const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
@@ -16,8 +17,10 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
   layout = 'position',
   duration = 0.2,
   delay = 0,
+  layoutId,
 }) => (
   <motion.div
+    layoutId={layoutId}
     layout={layout}
     initial={{ opacity: 0 }}
     animate={{
