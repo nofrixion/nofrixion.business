@@ -6,7 +6,7 @@ import { ApiProps, getAccountProps } from '../types/props'
 
 const fetchAccounts = async (
   apiUrl: string,
-  connectedAccounts: boolean,
+  connectedAccounts?: boolean,
   merchantId?: string,
   authToken?: string,
 ): Promise<ApiResponse<Account[]>> => {
