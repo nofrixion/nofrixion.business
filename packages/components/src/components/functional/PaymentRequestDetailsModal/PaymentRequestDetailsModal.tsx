@@ -27,12 +27,11 @@ interface PaymentRequestDetailsModalProps extends usePaymentRequestsProps {
   merchantId: string
   selectedPaymentRequestID: string
   merchantTags: LocalTag[]
-  paymentRequests: LocalPaymentRequest[]
+  paymentRequests: LocalPaymentRequest[] | undefined
   open: boolean
   accounts: LocalAccount[]
   onDismiss: () => void
   setMerchantTags: (merchantTags: LocalTag[]) => void
-  setPaymentRequests: (paymentRequests: LocalPaymentRequest[]) => void
   onCardRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
   onBankRefund: (
     sourceAccount: LocalAccount,
