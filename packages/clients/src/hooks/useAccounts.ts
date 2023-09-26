@@ -20,7 +20,7 @@ const fetchAccounts = async (
 }
 
 export const useAccounts = (
-  { merchantId, connectedAccounts }: getAccountProps,
+  { merchantId, connectedAccounts = false }: getAccountProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
   const QUERY_KEY = ['Accounts', merchantId, apiUrl, authToken, connectedAccounts]
