@@ -43,7 +43,7 @@ const ConnectedAccountContextMenu = ({
               onSelect={() => {
                 onRenewConnection && onRenewConnection(account)
               }}
-              className="text-default-text hover:text-control-grey-hover text-xs font-normal"
+              className="text-default-text hover:text-control-grey-hover data-[highlighted]:text-control-grey-hover text-xs font-normal"
             >
               <div className="flex">
                 <Icon name="reload/16" className="mr-2 my-auto" />
@@ -53,7 +53,7 @@ const ConnectedAccountContextMenu = ({
             <DropdownMenuItem
               key="revoke-menu"
               onSelect={() => onRevokeConnection && onRevokeConnection(account)}
-              className="text-negative-red hover:text-highlighted-negative-red text-xs font-normal"
+              className="text-negative-red hover:text-highlighted-negative-red data-[highlighted]:text-highlighted-negative-red text-xs font-normal"
             >
               <div className="flex">
                 <Icon name="void/16" className="mr-2 my-auto" />
