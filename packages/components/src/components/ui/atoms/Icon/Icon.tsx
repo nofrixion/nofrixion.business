@@ -155,8 +155,8 @@ export const Icons = {
     </SVG>
   ),
   'void/16': (className: string) => (
-    <SVG className={className} size="16">
-      <g clipPath="url(#clip0_8366_22698)">
+    <SVG className={cn(className, 'fill-none stroke-current')} size="16">
+      <g clipPath="url(#clip0_8414_22698)">
         <path
           d="M0.5 8C0.5 9.98912 1.29018 11.8968 2.6967 13.3033C4.10322 14.7098 6.01088 15.5 8 15.5C9.98912 15.5 11.8968 14.7098 13.3033 13.3033C14.7098 11.8968 15.5 9.98912 15.5 8C15.5 6.01088 14.7098 4.10322 13.3033 2.6967C11.8968 1.29018 9.98912 0.5 8 0.5C6.01088 0.5 4.10322 1.29018 2.6967 2.6967C1.29018 4.10322 0.5 6.01088 0.5 8Z"
           strokeLinecap="round"
@@ -165,7 +165,7 @@ export const Icons = {
         <path d="M13 3L3 13" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <defs>
-        <clipPath id="clip0_8366_22698">
+        <clipPath id="clip0_8414_22698">
           <rect width="16" height="16" fill="white" />
         </clipPath>
       </defs>

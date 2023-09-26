@@ -24,6 +24,7 @@ const RenewConnectionModal = ({
       showDefault={false}
       buttonText="Continue"
       onApplyEnabled={!isConnectingToBank}
+      buttonClaseName="w-full md:w-auto ml-auto px-11 py-3"
     >
       <AnimatePresence>
         <AnimateHeightWrapper layoutId="select-priority-bank">
@@ -32,7 +33,14 @@ const RenewConnectionModal = ({
             receive access to information regarding the accounts you connect, their transactions and
             daily updates.This consent remains valid for 90 days or until you in writing withdraw
             your consent through NoFrixion. For further information please consult our{' '}
-            <span className="underline cursor-pointer hover:no-underline">Privacy Policy.</span>
+            <a
+              className="underline hover:no-underline"
+              href="https://nofrixion.com/privacy-policy"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Privacy policy
+            </a>
           </div>
         </AnimateHeightWrapper>
       </AnimatePresence>

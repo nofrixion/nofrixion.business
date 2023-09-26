@@ -90,7 +90,7 @@ const CustomModal = ({
               >
                 <div className="flex flex-col min-h-full justify-center overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
                   <Dialog.Title asChild>
-                    <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-2 mt-12">
+                    <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-0 mt-12">
                       {title}
                     </h3>
                   </Dialog.Title>
