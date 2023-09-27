@@ -64,7 +64,9 @@ const UserNav = () => {
 
           {/* Merchant name */}
           <div className="ml-4 flex flex-col items-start mr-2 md:mr-11">
-            <p className="font-semibold whitespace-nowrap">{merchant?.name ?? 'Merchant unknown'}</p>
+            <p className="font-semibold whitespace-nowrap">
+              {merchant?.name ?? 'Merchant unknown'}
+            </p>
             <p className="text-nav-accent text-xs">
               {user?.firstName} {user?.lastName}
             </p>

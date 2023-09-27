@@ -1,16 +1,11 @@
 export interface NavItemProps {
-  leftIcon: any;
-  label: string;
-  href: string;
-  isActive?: boolean;
+  leftIcon: any
+  label: string
+  href: string
+  isActive?: boolean
 }
 
-const NavItem: React.FC<NavItemProps> = ({
-    leftIcon,
-    label,
-    href,
-    isActive = false,
-  }) => {
+const NavItem: React.FC<NavItemProps> = ({ leftIcon, label, href, isActive = false }) => {
   return (
     <a
       href={href}
@@ -24,7 +19,7 @@ const NavItem: React.FC<NavItemProps> = ({
 
       {isActive && <div className="h-1 bg-nav-accent w-full absolute left-0 bottom-0"></div>}
     </a>
-  );
-};
+  )
+}
 
-export default NavItem;
+export default NavItem
