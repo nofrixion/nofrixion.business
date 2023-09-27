@@ -637,7 +637,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     {isCreateAndApproveButtonDisabled ? (
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
-                      <span>Create and approve</span>
+                      <span>Create and authorise</span>
                     )}
                   </Button>
                   <Button
@@ -650,7 +650,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     {isCreatePayoutButtonDisabled ? (
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
-                      <span>Save for later approval</span>
+                      <span>Save for later authorisation</span>
                     )}
                   </Button>
                 </div>

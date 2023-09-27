@@ -29,7 +29,7 @@ import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
-import { PayoutApproveForm } from '../../ui/utils/PayoutApproveForm'
+import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 
@@ -102,7 +102,7 @@ const PayoutDashboardMain = ({
   const [firstMetrics, setFirstMetrics] = useState<PayoutMetrics | undefined>()
   const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
-  const approveFormRef = useRef<HTMLFormElement>(null)
+  const authoriseFormRef = useRef<HTMLFormElement>(null)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -250,7 +250,7 @@ const PayoutDashboardMain = ({
 
   useEffect(() => {
     if (batchId !== undefined) {
-      approveFormRef.current?.submit()
+      authoriseFormRef.current?.submit()
     }
   }, [batchId])
 
@@ -312,13 +312,13 @@ const PayoutDashboardMain = ({
 
   const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
 
-  const addPayoutForApproval = (payoutId: string) => {
+  const addPayoutForAuthorise = (payoutId: string) => {
     if (!selectedPayouts.includes(payoutId)) {
       setSelectedPayouts((prev) => [...prev, payoutId])
     }
   }
 
-  const removePayoutForApproval = (payoutId: string) => {
+  const removePayoutForAuthorise = (payoutId: string) => {
     setSelectedPayouts((prev) => prev.filter((id) => id !== payoutId))
   }
 
@@ -375,8 +375,8 @@ const PayoutDashboardMain = ({
         amountSortDirection={amountSortDirection}
         setAmountSortDirection={setAmountSortDirection}
         status={status}
-        onAddPayoutForApproval={addPayoutForApproval}
-        onRemovePayoutForApproval={removePayoutForApproval}
+        onAddPayoutForAuthorise={addPayoutForAuthorise}
+        onRemovePayoutForAuthorise={removePayoutForAuthorise}
         selectedPayouts={selectedPayouts}
         onApproveBatchPayouts={onApproveBatchPayouts}
       />
@@ -420,10 +420,10 @@ const PayoutDashboardMain = ({
       )}
 
       {batchId && (
-        <PayoutApproveForm
+        <PayoutAuthoriseForm
           id={batchId}
           size="x-small"
-          formRef={approveFormRef}
+          formRef={authoriseFormRef}
           className="hidden"
           approveType={ApproveType.BATCH_PAYOUT}
         />
