@@ -8,7 +8,7 @@ import { Button, Sheet, SheetContent } from '../../../ui/atoms'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
 import TagManager from '../../Tags/TagManager/TagManager'
-import { PayoutApproveForm } from '../../utils/PayoutApproveForm'
+import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
 
 export interface PayoutDetailsModalProps {
   payout?: LocalPayout
@@ -55,7 +55,7 @@ const PayoutDetailsModal = ({
                   </Button>
                 </div>
                 <div className="mt-4 mr-8">
-                  {payout && <PayoutApproveForm id={payout?.id} size={'medium'} />}
+                  {payout && <PayoutAuthoriseForm id={payout?.id} size={'medium'} />}
                 </div>
               </div>
             )}
