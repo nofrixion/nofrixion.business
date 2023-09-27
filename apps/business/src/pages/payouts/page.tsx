@@ -22,7 +22,7 @@ const PayoutsPage = () => {
 
   if (result) {
     if (result === 'success') {
-      makeToast('success', 'Payout approved')
+      makeToast('success', 'Payout authorised')
     } else if (result === 'error') {
       const error = errors.find(
         (payoutError) => payoutError.type === ErrorType.PAYOUT && payoutError.id === payoutId,
