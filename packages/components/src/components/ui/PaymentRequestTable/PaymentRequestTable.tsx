@@ -69,7 +69,8 @@ const PaymentRequestTable = ({
     <div className="flex justify-center w-full">
       {/* Show table when loading so the skeletons are visible */}
       {/* or else show the table when has payment requests */}
-      {(paymentRequestsExist || (paymentRequests && paymentRequests.length > 0)) && (
+      {((paymentRequestsExist && !paymentRequests) ||
+        (paymentRequests && paymentRequests.length > 0)) && (
         <table className="hidden lg:table table-fixed text-left w-full">
           <colgroup>
             <col />
@@ -133,8 +134,7 @@ const PaymentRequestTable = ({
             </tr>
           </thead>
           <tbody>
-            {isLoading &&
-              paymentRequestsExist &&
+            {((isLoading && paymentRequestsExist) || (paymentRequestsExist && !paymentRequests)) &&
               // Create array of 12 empty rows
               // to display a loading skeleton
               // while the data is being fetched
@@ -230,7 +230,7 @@ const PaymentRequestTable = ({
         </div>
       )}
 
-      {isLoadingMetrics && !paymentRequests && (
+      {((isLoadingMetrics && !paymentRequests) || (!paymentRequests && !paymentRequestsExist)) && (
         <div className=" justify-center items-center">
           <Loader className="mt-12" />
         </div>

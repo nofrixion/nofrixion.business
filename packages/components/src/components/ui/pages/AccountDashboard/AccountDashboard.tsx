@@ -38,6 +38,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   onRenewConnection?: (account: Account) => void
   banks?: BankSettings[]
   isConnectingToBank: boolean
+  isLoadingTransactions?: boolean
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
@@ -56,8 +57,9 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   onRenewConnection,
   banks,
   isConnectingToBank,
+  isLoadingTransactions,
 }) => {
-  const [localAccountName, setLocalAccountName] = useState('')
+  const [localAccountName, setLocalAccountName] = useState(account?.accountName ?? '')
 
   const isExpired = account?.expiryDate && new Date(account.expiryDate) < new Date() ? true : false
 
@@ -191,6 +193,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           }}
           onPageChange={onPageChange}
           onSort={onSort}
+          isLoading={isLoadingTransactions}
         />
       </div>
 

@@ -44,7 +44,7 @@ const getDisplayTextForStatus = (status: string) => {
     case PayoutStatus.PENDING:
       return 'In progress'
     case PayoutStatus.PENDING_APPROVAL:
-      return 'Pending approval'
+      return 'Pending authorisation'
     case PayoutStatus.PROCESSED:
       return 'Paid'
     default:
