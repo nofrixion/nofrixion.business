@@ -11,7 +11,7 @@ import {
   useTransactions,
   useUpdateAccountName,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
@@ -37,8 +37,7 @@ const AccountDashboard = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
 }: AccountDashboardProps) => {
-  const queryClient = new QueryClient()
-
+  const queryClient = useQueryClient()
   return (
     <QueryClientProvider client={queryClient}>
       <AccountDashboardMain
@@ -96,7 +95,7 @@ const AccountDashboardMain = ({
     return import.meta.env.VITE_PUBLIC_APP_BASE_URL ?? 'https://localhost:3001' // Local development
   }
 
-  const { data: transactionsResponse } = useTransactions(
+  const { data: transactionsResponse, isLoading: isLoadingTransactions } = useTransactions(
     {
       accountId,
       pageNumber: page,
@@ -111,6 +110,7 @@ const AccountDashboardMain = ({
   )
 
   const { data: accountResponse } = useAccount(
+    { merchantId: merchantId, connectedAccounts: true },
     {
       accountId,
     },
@@ -252,6 +252,7 @@ const AccountDashboardMain = ({
       banks={banks}
       onRenewConnection={handleOnRenewConnection}
       isConnectingToBank={isConnectingToBank}
+      isLoadingTransactions={isLoadingTransactions}
     />
   )
 }

@@ -5,7 +5,7 @@ import {
   useAccounts,
   useBanks,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -23,8 +23,6 @@ export interface CurrentAccountsListProps {
   onAccountClick?: (account: Account) => void
 }
 
-const queryClient = new QueryClient()
-
 const CurrentAccountsList = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
@@ -32,6 +30,7 @@ const CurrentAccountsList = ({
   onUnauthorized,
   onAccountClick,
 }: CurrentAccountsListProps) => {
+  const queryClient = useQueryClient()
   return (
     <QueryClientProvider client={queryClient}>
       <CurrentAccountsMain
