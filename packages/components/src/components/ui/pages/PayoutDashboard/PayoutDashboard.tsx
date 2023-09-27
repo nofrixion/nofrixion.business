@@ -49,8 +49,8 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   amountSortDirection: SortDirection
   setAmountSortDirection?: (direction: SortDirection) => void
   status: PayoutStatus
-  onAddPayoutForApproval: (payoutId: string) => void
-  onRemovePayoutForApproval: (payoutId: string) => void
+  onAddPayoutForAuthorise: (payoutId: string) => void
+  onRemovePayoutForAuthorise: (payoutId: string) => void
   selectedPayouts: string[]
   onApproveBatchPayouts: () => void
   payoutsExist: boolean
@@ -85,8 +85,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   amountSortDirection,
   setAmountSortDirection,
   status,
-  onAddPayoutForApproval,
-  onRemovePayoutForApproval,
+  onAddPayoutForAuthorise,
+  onRemovePayoutForAuthorise,
   selectedPayouts,
   onApproveBatchPayouts,
   payoutsExist,
@@ -239,8 +239,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             onPayoutClicked={onPayoutClicked}
             selectedPayoutId={selectedPayoutId}
             status={status}
-            onAddPayoutForApproval={onAddPayoutForApproval}
-            onRemovePayoutForApproval={onRemovePayoutForApproval}
+            onAddPayoutForAuthorise={onAddPayoutForAuthorise}
+            onRemovePayoutForAuthorise={onRemovePayoutForAuthorise}
             selectedPayouts={selectedPayouts}
             payoutsExist={payoutsExist}
             isLoadingMetrics={isLoadingMetrics}

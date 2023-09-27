@@ -20,7 +20,7 @@ import { Loader } from '../../Loader/Loader'
 import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
 import EmptyState from '../../PaymentRequestTable/EmptyState'
-import { PayoutApproveForm } from '../../utils/PayoutApproveForm'
+import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
 
 export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> {
   payouts: LocalPayout[] | undefined
@@ -34,8 +34,8 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   isLoading?: boolean
   selectedPayoutId: string | undefined
   status: PayoutStatus
-  onAddPayoutForApproval: (payoutId: string) => void
-  onRemovePayoutForApproval: (payoutId: string) => void
+  onAddPayoutForAuthorise: (payoutId: string) => void
+  onRemovePayoutForAuthorise: (payoutId: string) => void
   selectedPayouts: string[]
   isLoadingMetrics: boolean
   payoutsExist: boolean
@@ -50,8 +50,8 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   isLoading = false,
   selectedPayoutId,
   status,
-  onAddPayoutForApproval,
-  onRemovePayoutForApproval,
+  onAddPayoutForAuthorise,
+  onRemovePayoutForAuthorise,
   selectedPayouts,
   isLoadingMetrics,
   payoutsExist,
@@ -66,28 +66,28 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
     onPayoutClicked && onPayoutClicked(payout)
   }
 
-  const togglePayoutApproveStatus = (payoutId: string, checked: boolean) => {
+  const togglePayoutAuthoriseStatus = (payoutId: string, checked: boolean) => {
     if (checked) {
-      onAddPayoutForApproval(payoutId)
+      onAddPayoutForAuthorise(payoutId)
     } else {
       setAllPayoutsSelected(false)
-      onRemovePayoutForApproval(payoutId)
+      onRemovePayoutForAuthorise(payoutId)
     }
   }
 
-  const toggleAllPayoutApproveStatuses = (checked: boolean) => {
+  const toggleAllPayoutAuthoriseStatuses = (checked: boolean) => {
     if (checked) {
       setAllPayoutsSelected(true)
 
       payouts &&
         payouts.map((payout) => {
-          onAddPayoutForApproval(payout.id)
+          onAddPayoutForAuthorise(payout.id)
         })
     } else {
       setAllPayoutsSelected(false)
       payouts &&
         payouts.map((payout) => {
-          onRemovePayoutForApproval(payout.id)
+          onRemovePayoutForAuthorise(payout.id)
         })
     }
   }
@@ -114,12 +114,12 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                 {status && status === PayoutStatus.PENDING_APPROVAL && (
                   <TableHead
                     className="w-0"
-                    onClick={() => toggleAllPayoutApproveStatuses(!allPayoutsSelected)}
+                    onClick={() => toggleAllPayoutAuthoriseStatuses(!allPayoutsSelected)}
                   >
                     <Checkbox
                       value={allPayoutsSelected}
                       onChange={(value) => {
-                        toggleAllPayoutApproveStatuses(value)
+                        toggleAllPayoutAuthoriseStatuses(value)
                       }}
                     />
                   </TableHead>
@@ -215,13 +215,16 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                       <TableCell
                         onClick={(event) => {
                           event.stopPropagation()
-                          togglePayoutApproveStatus(payout.id, !selectedPayouts.includes(payout.id))
+                          togglePayoutAuthoriseStatus(
+                            payout.id,
+                            !selectedPayouts.includes(payout.id),
+                          )
                         }}
                       >
                         <Checkbox
                           value={selectedPayouts.includes(payout.id)}
                           onChange={(value) => {
-                            togglePayoutApproveStatus(payout.id, value)
+                            togglePayoutAuthoriseStatus(payout.id, value)
                           }}
                         />
                       </TableCell>
@@ -250,7 +253,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </TableCell>
                     <TableCell className="text-center w-0">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                        <PayoutApproveForm id={payout.id} size="x-small" />
+                        <PayoutAuthoriseForm id={payout.id} size="x-small" />
                       )}
                     </TableCell>
                   </TableRow>

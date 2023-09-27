@@ -14,8 +14,8 @@ const pricingCards: PricingCardProps[] = [
     price: 40,
     items: [
       'Manage your accounts',
-      'Create and approve manual payouts',
-      'Approve multiple payouts',
+      'Create and authorise manual payouts',
+      'Authorise multiple payouts',
       '*50 free* monthly SEPA transactions+',
     ],
   },

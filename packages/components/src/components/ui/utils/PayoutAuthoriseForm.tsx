@@ -2,7 +2,7 @@ import { ApproveType } from '../../../types/LocalTypes'
 import { getRoute } from '../../../utils/utils'
 import { Button } from '../atoms'
 
-export interface PayoutApproveFormProps {
+export interface PayoutAuthoriseFormProps {
   id: string
   size: 'big' | 'medium' | 'small' | 'x-small'
   formRef?: React.RefObject<HTMLFormElement>
@@ -10,13 +10,13 @@ export interface PayoutApproveFormProps {
   approveType?: ApproveType
 }
 
-export const PayoutApproveForm = ({
+export const PayoutAuthoriseForm = ({
   id,
   size,
   formRef,
   className,
   approveType = ApproveType.PAYOUT,
-}: PayoutApproveFormProps) => {
+}: PayoutAuthoriseFormProps) => {
   return (
     <form action="/approve/initiate" ref={formRef} className={className}>
       <input type="hidden" name="approveType" value={approveType} />
@@ -28,7 +28,7 @@ export const PayoutApproveForm = ({
         className="w-fit"
         onClick={(event) => event.stopPropagation()}
       >
-        Approve
+        Authorise
       </Button>
     </form>
   )
