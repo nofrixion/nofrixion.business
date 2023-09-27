@@ -23,6 +23,7 @@ export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElem
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  isLoading?: boolean
 }
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
@@ -30,6 +31,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   pagination,
   onPageChange,
   onSort,
+  isLoading,
   ...props
 }) => {
   const renderBasicInfoLayout = (
@@ -47,7 +49,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
   return (
     <div {...props}>
-      {transactions.length > 0 && (
+      {(isLoading || (!isLoading && transactions && transactions.length > 0)) && (
         <>
           <Table {...props}>
             <TableHeader>
@@ -77,63 +79,97 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.map((transaction, index) => (
-                <TableRow
-                  className="cursor-auto hover:bg-inherit hover:border-inherit"
-                  key={`${transaction}-${index}`}
-                >
-                  <TableCell>
-                    {renderBasicInfoLayout(
-                      format(transaction.date, 'MMM dd, yyyy'),
-                      format(transaction.date, 'H:mm'),
-                      'w-[100px] truncate',
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {renderBasicInfoLayout(
-                      transaction.counterParty.name,
-                      transaction.counterParty.accountInfo,
-                      'w-[200px] truncate',
-                    )}
-                  </TableCell>
-                  <TableCell
-                    className={cn({
-                      'text-positive-green': transaction.amount > 0,
-                      'text-negative-red': transaction.amount < 0,
-                    })}
+              {(isLoading || !transactions) &&
+                Array.from(Array(12)).map((_, index) => (
+                  <TableRow
+                    key={`pr-placeholder-${index}`}
+                    className="animate-pulse border-b border-[#F1F2F3]"
                   >
-                    <div className="flex flex-col justify-center h-full items-end mr-5">
-                      <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
-                        {formatAmount(transaction.amount)}
-                        <div className="ml-1">
-                          {transaction.amount < 0 ? (
-                            <Icon name="outgoing/8" />
-                          ) : (
-                            <Icon name="incoming/8" />
-                          )}
-                        </div>
-                      </div>
-                      {transaction.balanceAfterTx != undefined && (
-                        <div className="text-[11px] leading-4 text-grey-text mr-3">
-                          {formatAmount(transaction.balanceAfterTx)}
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="truncate w-36">{transaction.reference}</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="truncate w-56">{transaction.description}</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="truncate w-36">{transaction.type}</div>
-                  </TableCell>
+                    <TableCell className="py-6">
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
 
-                  {/* Fill empty space */}
-                  <TableCell className="p-0"></TableCell>
-                </TableRow>
-              ))}
+                    <TableCell>
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-1/3 ml-auto mr-5 h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {!isLoading &&
+                transactions &&
+                transactions.length > 0 &&
+                transactions.map((transaction, index) => (
+                  <TableRow
+                    className="cursor-auto hover:bg-inherit hover:border-inherit"
+                    key={`${transaction}-${index}`}
+                  >
+                    <TableCell>
+                      {renderBasicInfoLayout(
+                        format(transaction.date, 'MMM dd, yyyy'),
+                        format(transaction.date, 'H:mm'),
+                        'w-[100px] truncate',
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {renderBasicInfoLayout(
+                        transaction.counterParty.name,
+                        transaction.counterParty.accountInfo,
+                        'w-[200px] truncate',
+                      )}
+                    </TableCell>
+                    <TableCell
+                      className={cn({
+                        'text-positive-green': transaction.amount > 0,
+                        'text-negative-red': transaction.amount < 0,
+                      })}
+                    >
+                      <div className="flex flex-col justify-center h-full items-end mr-5">
+                        <div className="flex items-center h-full justify-end font-medium text-base/5 tabular-nums">
+                          {formatAmount(transaction.amount)}
+                          <div className="ml-1">
+                            {transaction.amount < 0 ? (
+                              <Icon name="outgoing/8" />
+                            ) : (
+                              <Icon name="incoming/8" />
+                            )}
+                          </div>
+                        </div>
+                        {transaction.balanceAfterTx != undefined && (
+                          <div className="text-[11px] leading-4 text-grey-text mr-3">
+                            {formatAmount(transaction.balanceAfterTx)}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="truncate w-36">{transaction.reference}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="truncate w-56">{transaction.description}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="truncate w-36">{transaction.type}</div>
+                    </TableCell>
+
+                    {/* Fill empty space */}
+                    <TableCell className="p-0"></TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
 
@@ -146,7 +182,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
           </div>
         </>
       )}
-      {transactions.length === 0 && (
+      {!isLoading && transactions && transactions.length === 0 && (
         <EmptyState state="nothingFound" description="No transactions were found" />
       )}
     </div>

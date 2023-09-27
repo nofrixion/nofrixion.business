@@ -15,7 +15,7 @@ import {
   useVoid,
 } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, set, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
@@ -53,14 +53,13 @@ export interface PaymentRequestDashboardProps {
   onUnauthorized: () => void
 }
 
-const queryClient = new QueryClient()
-
 const PaymentRequestDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
 }: PaymentRequestDashboardProps) => {
+  const queryClient = useQueryClient()
   return (
     <QueryClientProvider client={queryClient}>
       <PaymentRequestDashboardMain
@@ -510,7 +509,7 @@ const PaymentRequestDashboardMain = ({
     status &&
     metrics[paymentRequestStatusToMetricsStatus(status)] > 0
 
-  const isInitialState = !isLoadingMetrics && firstMetrics && firstMetrics?.all === 0
+  const isInitialState = !isLoadingMetrics && firstMetrics !== undefined && firstMetrics?.all === 0
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">

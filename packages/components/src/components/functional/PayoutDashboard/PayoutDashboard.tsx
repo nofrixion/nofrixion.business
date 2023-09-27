@@ -14,7 +14,7 @@ import {
   usePayoutMetrics,
   usePayouts,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useRef, useState } from 'react'
 
@@ -40,14 +40,14 @@ export interface PayoutDashboardProps {
   onUnauthorized: () => void
 }
 
-const queryClient = new QueryClient()
-
 const PayoutDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
 }: PayoutDashboardProps) => {
+  const queryClient = useQueryClient()
+
   return (
     <QueryClientProvider client={queryClient}>
       <PayoutDashboardMain
