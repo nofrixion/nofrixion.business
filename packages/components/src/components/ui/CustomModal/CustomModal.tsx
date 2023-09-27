@@ -90,7 +90,7 @@ const CustomModal = ({
               >
                 <div className="flex flex-col min-h-full justify-center overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
                   <Dialog.Title asChild>
-                    <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pt-2 mt-7">
+                    <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-0 mt-12">
                       {title}
                     </h3>
                   </Dialog.Title>
@@ -98,7 +98,7 @@ const CustomModal = ({
                   <div
                     className={cn(
                       buttonRowClassName,
-                      'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-12',
+                      'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-10',
                     )}
                   >
                     {showDefault && (

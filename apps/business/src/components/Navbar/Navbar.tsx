@@ -1,15 +1,15 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-
-import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
-import IconSort from '../../assets/icons/sort.svg'
-import UserNav from '../../components/Navbar/UserNav'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-} from '../../components/ui/DropDown'
+} from '@nofrixion/components/src/components/ui/atoms/DropDown/DropDown'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
+import IconSort from '../../assets/icons/sort.svg'
+import UserNav from '../../components/Navbar/UserNav'
 import { navItems } from '../../lib/constants'
 import { cn } from '../../lib/utils/utils'
 import { PRReview } from '../ui/PRReview'
@@ -17,6 +17,8 @@ import { PRReview } from '../ui/PRReview'
 const Navbar = () => {
   const currentRoute = useLocation().pathname
   const navigate = useNavigate()
+
+  const commonCss = 'data-[highlighted]:text-nav-accent focus:text-nav-accent'
 
   return (
     <nav className="flex text-white bg-dark-bg h-20 pl-8 md:pl-14 w-full">
@@ -33,7 +35,11 @@ const Navbar = () => {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
-          <DropdownMenuContent sideOffset={10} align="center" className="mx-6">
+          <DropdownMenuContent
+            sideOffset={10}
+            align="center"
+            className="mx-6 min-w-[140px] bg-dark-bg rounded-lg text-white"
+          >
             {navItems
               .filter((item) => !item.isHidden)
               .map((item) => {
@@ -49,6 +55,7 @@ const Navbar = () => {
                       (currentRoute.endsWith('/home') && item.isHome) ||
                       (currentRoute.indexOf(item.href) !== -1 && !item.isHome)
                     }
+                    className={commonCss}
                   >
                     {item.label}
                   </DropdownMenuItem>

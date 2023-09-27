@@ -17,6 +17,7 @@ export interface CurrentAccountsListProps {
   onConnectToBank: (bank: BankSettings) => void
   onMaybeLater: () => void
   onRenewConnection?: (account: Account) => void
+  onRevokeConnection?: (account: Account) => void
   banks?: BankSettings[]
   isConnectingToBank: boolean
 }
@@ -28,6 +29,7 @@ const CurrentAcountsList = ({
   onConnectToBank,
   onMaybeLater,
   onRenewConnection,
+  onRevokeConnection,
   banks,
   isConnectingToBank,
 }: CurrentAccountsListProps) => {
@@ -130,6 +132,8 @@ const CurrentAcountsList = ({
                   }}
                   bankLogo={banks?.find((bank) => bank.bankName === account.bankName)?.logo}
                   onRenewConnection={handleOnRenewConnectionClicked}
+                  onRevokeConnection={onRevokeConnection}
+                  className="pr-3"
                 />
               ))}
           </div>

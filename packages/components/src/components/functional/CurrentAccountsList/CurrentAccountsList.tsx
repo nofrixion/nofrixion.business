@@ -141,6 +141,10 @@ const CurrentAccountsMain = ({
     }
   }
 
+  const handleOnRevokeConnection = async (account: Account) => {
+    console.log('TODO: Revoke connection', account)
+  }
+
   if (isAccountsLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -160,6 +164,7 @@ const CurrentAccountsMain = ({
           banks={banks}
           onRenewConnection={handleOnRenewConnection}
           isConnectingToBank={isConnectingToBank}
+          onRevokeConnection={handleOnRevokeConnection}
         />
       )}
     </>
