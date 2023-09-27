@@ -17,7 +17,7 @@ import { Toaster } from '../../Toast/Toast'
 import LayoutWrapper from '../../utils/LayoutWrapper'
 
 export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
-  payouts: LocalPayout[]
+  payouts: LocalPayout[] | undefined
   payoutMetrics?: PayoutMetrics
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   searchFilter: string
@@ -53,6 +53,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onRemovePayoutForAuthorise: (payoutId: string) => void
   selectedPayouts: string[]
   onApproveBatchPayouts: () => void
+  payoutsExist: boolean
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -75,7 +76,6 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   setMaxAmount,
   isLoading = false,
   isLoadingMetrics = false,
-  isInitialState = false,
   onPayoutClicked,
   selectedPayoutId,
   tags,
@@ -89,6 +89,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   onRemovePayoutForAuthorise,
   selectedPayouts,
   onApproveBatchPayouts,
+  payoutsExist,
 }) => {
   const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
 
@@ -154,91 +155,76 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
           </div>
         </div>
 
-        <AnimatePresence>
-          {!isInitialState && (
-            <div className="mb-4">
-              <FilterControlsRow
-                setDateRange={onDateChange}
-                searchFilter={searchFilter}
-                setSearchFilter={onSearch}
-                currency={currency}
-                setCurrency={setCurrency}
-                minAmount={minAmount}
-                setMinAmount={setMinAmount}
-                maxAmount={maxAmount}
-                setMaxAmount={setMaxAmount}
-                tags={tags}
-                setTags={setTags}
-                createdSortDirection={createdSortDirection}
-                setCreatedSortDirection={setCreatedSortDirection}
-                amountSortDirection={amountSortDirection}
-                setAmountSortDirection={setAmountSortDirection}
-                firstDate={
-                  merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
-                }
-              />
-            </div>
-          )}
-        </AnimatePresence>
+        <div className="mb-4">
+          <FilterControlsRow
+            setDateRange={onDateChange}
+            searchFilter={searchFilter}
+            setSearchFilter={onSearch}
+            currency={currency}
+            setCurrency={setCurrency}
+            minAmount={minAmount}
+            setMinAmount={setMinAmount}
+            maxAmount={maxAmount}
+            setMaxAmount={setMaxAmount}
+            tags={tags}
+            setTags={setTags}
+            createdSortDirection={createdSortDirection}
+            setCreatedSortDirection={setCreatedSortDirection}
+            amountSortDirection={amountSortDirection}
+            setAmountSortDirection={setAmountSortDirection}
+            firstDate={
+              merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
+            }
+          />
+        </div>
 
-        <AnimatePresence initial={false}>
-          {!isInitialState && (
-            <LayoutWrapper>
-              <ScrollArea hideScrollbar>
-                <Tabs.Root
-                  defaultValue={PayoutStatus.All}
-                  onValueChange={(value) => setStatus && setStatus(value as PayoutStatus)}
-                >
-                  {/* Keep the Tab to still get accessibility functions through the keyboard */}
-                  <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-                    <Tab
-                      status={PayoutStatus.All}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={payoutMetrics?.all ?? 0}
-                      totalAmountInEuros={payoutMetrics?.totalAmountsByCurrency?.all?.eur}
-                      totalAmountInPounds={payoutMetrics?.totalAmountsByCurrency?.all?.gbp}
-                    />
-                    <Tab
-                      status={PayoutStatus.PENDING_APPROVAL}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={payoutMetrics?.pendingApproval ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus(
-                        'eur',
-                        'pendingApproval',
-                      )}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus(
-                        'gbp',
-                        'pendingApproval',
-                      )}
-                    />
-                    <Tab
-                      status={PayoutStatus.PENDING}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={payoutMetrics?.inProgress ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'inProgress')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'inProgress')}
-                    />
-                    <Tab
-                      status={PayoutStatus.FAILED}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={payoutMetrics?.failed ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'failed')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'failed')}
-                    />
-                    <Tab
-                      status={PayoutStatus.PROCESSED}
-                      isLoading={isLoadingMetrics}
-                      totalRecords={payoutMetrics?.paid ?? 0}
-                      totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'paid')}
-                      totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'paid')}
-                    />
-                  </Tabs.List>
-                  <Tabs.Content value=""></Tabs.Content>
-                </Tabs.Root>
-              </ScrollArea>
-            </LayoutWrapper>
-          )}
-        </AnimatePresence>
+        <ScrollArea hideScrollbar>
+          <Tabs.Root
+            defaultValue={PayoutStatus.All}
+            onValueChange={(value) => setStatus && setStatus(value as PayoutStatus)}
+            value={status}
+          >
+            {/* Keep the Tab to still get accessibility functions through the keyboard */}
+            <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
+              <Tab
+                status={PayoutStatus.All}
+                isLoading={isLoadingMetrics}
+                totalRecords={payoutMetrics?.all ?? 0}
+                totalAmountInEuros={payoutMetrics?.totalAmountsByCurrency?.all?.eur}
+                totalAmountInPounds={payoutMetrics?.totalAmountsByCurrency?.all?.gbp}
+              />
+              <Tab
+                status={PayoutStatus.PENDING_APPROVAL}
+                isLoading={isLoadingMetrics}
+                totalRecords={payoutMetrics?.pendingApproval ?? 0}
+                totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'pendingApproval')}
+                totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'pendingApproval')}
+              />
+              <Tab
+                status={PayoutStatus.PENDING}
+                isLoading={isLoadingMetrics}
+                totalRecords={payoutMetrics?.inProgress ?? 0}
+                totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'inProgress')}
+                totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'inProgress')}
+              />
+              <Tab
+                status={PayoutStatus.FAILED}
+                isLoading={isLoadingMetrics}
+                totalRecords={payoutMetrics?.failed ?? 0}
+                totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'failed')}
+                totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'failed')}
+              />
+              <Tab
+                status={PayoutStatus.PROCESSED}
+                isLoading={isLoadingMetrics}
+                totalRecords={payoutMetrics?.paid ?? 0}
+                totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'paid')}
+                totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'paid')}
+              />
+            </Tabs.List>
+            <Tabs.Content value=""></Tabs.Content>
+          </Tabs.Root>
+        </ScrollArea>
 
         <div className="flex-row bg-white rounded-lg px-7 py-8">
           <PayoutsTable
@@ -256,6 +242,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             onAddPayoutForAuthorise={onAddPayoutForAuthorise}
             onRemovePayoutForAuthorise={onRemovePayoutForAuthorise}
             selectedPayouts={selectedPayouts}
+            payoutsExist={payoutsExist}
+            isLoadingMetrics={isLoadingMetrics}
           />
         </div>
 
