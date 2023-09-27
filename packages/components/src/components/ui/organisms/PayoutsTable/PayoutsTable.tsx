@@ -106,7 +106,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
 
   return (
     <div className="flex justify-center w-full" {...props}>
-      {payoutsExist && (
+      {((payoutsExist && !payouts) || (payouts && payouts.length > 0)) && (
         <>
           <Table {...props}>
             <TableHeader>
@@ -160,8 +160,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading &&
-                payoutsExist &&
+              {((isLoading && payoutsExist) || (payoutsExist && !payouts)) &&
                 Array.from(Array(12)).map((_, index) => (
                   <TableRow
                     key={`pr-placeholder-${index}`}
@@ -261,13 +260,13 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
         </>
       )}
 
-      {(isLoadingMetrics || (!isLoadingMetrics && !payoutsExist && isLoading)) && (
+      {((isLoadingMetrics && !payouts) || (!payouts && !payoutsExist)) && (
         <div className=" justify-center items-center">
           <Loader className="mt-12" />
         </div>
       )}
 
-      {!payoutsExist && !isLoading && (
+      {!isLoadingMetrics && payouts !== undefined && payouts?.length === 0 && (
         <EmptyState state="nothingFound" description="No payouts were found" />
       )}
     </div>
