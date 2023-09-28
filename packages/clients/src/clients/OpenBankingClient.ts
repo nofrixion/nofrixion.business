@@ -64,6 +64,20 @@ export class OpenBankingClient extends BaseApiClient {
   }
 
   /**
+   * Creates a re-authorisation to a financial institution of a consent that has
+   * already been authorised as it may have been expired.
+   * @param consentId  The ID of the consent that is to be re-authorised.
+   * @returns The newly created re-authorisation url to the financial institution if successful.
+   * An ApiError if not successful.
+   */
+  async reAuthoriseConsent({ consentId }: ConsentProps): Promise<ApiResponse<ConsentResponse>> {
+    return await this.httpRequest<ConsentResponse>(
+      `${this.apiUrl}/consents/${consentId}`,
+      HttpMethod.PATCH,
+    )
+  }
+
+  /**
    * Deletes a Consent
    * @param consentId The Consent Id
    * @returns True if successfull. An ApiError if not successful.
