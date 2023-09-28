@@ -133,11 +133,23 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const handleOnRenewConnection = (account: Account) => {
-    const bank = banks?.find((bank) => bank.bankName === account.bankName)
+  const handleOnRenewConnection = async (account: Account) => {
+    if (account && account.consentID) {
+      setIsConnectingToBank(true)
+      const client = new OpenBankingClient({ apiUrl, authToken: token })
 
-    if (bank) {
-      onConnectBank(bank)
+      const response = await client.reAuthoriseConsent({
+        consentId: account.consentID,
+      })
+
+      if (response.status === 'error') {
+        console.error(response.error)
+        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+      } else if (response.data.authorisationUrl) {
+        window.location.href = response.data.authorisationUrl
+      }
+
+      setIsConnectingToBank(false)
     }
   }
 

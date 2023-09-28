@@ -196,37 +196,23 @@ const AccountDashboardMain = ({
     setDateRange(dateRange)
   }
 
-  const onConnectBank = async (bank: BankSettings) => {
-    // TODO: Fix this. Which one should we use?
-    if (bank.personalInstitutionID) {
+  const handleOnRenewConnection = async (account: Account) => {
+    if (account && account.consentID) {
       setIsConnectingToBank(true)
-
       const client = new OpenBankingClient({ apiUrl, authToken: token })
 
-      const response = await client.createConsent({
-        institutionID: bank.personalInstitutionID,
-        merchantID: merchantId,
-        IsConnectedAccounts: true,
-        callbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts/connected/{bankId}')}`,
+      const response = await client.reAuthoriseConsent({
+        consentId: account.consentID,
       })
 
       if (response.status === 'error') {
         console.error(response.error)
         makeToast('error', `Could not connect to bank. ${response.error.detail}`)
       } else if (response.data.authorisationUrl) {
-        // Redirect to the banks authorisation url
         window.location.href = response.data.authorisationUrl
       }
 
       setIsConnectingToBank(false)
-    }
-  }
-
-  const handleOnRenewConnection = (account: Account) => {
-    const bank = banks?.find((bank) => bank.bankName === account.bankName)
-
-    if (bank) {
-      onConnectBank(bank)
     }
   }
 
