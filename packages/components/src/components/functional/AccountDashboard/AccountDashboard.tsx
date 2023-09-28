@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
 import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
-import { getRoute } from '../../../utils/utils'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -88,11 +87,6 @@ const AccountDashboardMain = ({
       accountId: accountId,
       accountName: newAccountName,
     })
-  }
-
-  const businessBaseUrl = () => {
-    // Defaults to local dev if it's not set
-    return import.meta.env.VITE_PUBLIC_APP_BASE_URL ?? 'https://localhost:3001' // Local development
   }
 
   const { data: transactionsResponse, isLoading: isLoadingTransactions } = useTransactions(
