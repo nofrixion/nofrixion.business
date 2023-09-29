@@ -11,7 +11,7 @@ const NavItem: React.FC<NavItemProps> = ({ leftIcon, label, href, isActive = fal
   return (
     <Link
       to={href}
-      className="relative text-xs px-4 pt-2 pb-2 flex items-center 2xl:text-sm 2xl:px-6"
+      className="relative text-sm px-4 pt-2 pb-2 flex items-center 2xl:px-6 hover:text-nav-accent"
     >
       <div className="w-4 h-4">
         <img src={leftIcon} alt={`${label} icon`} />
