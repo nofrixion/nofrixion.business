@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
 
 import { users } from '../../../../utils/mockedData'
-import UserDashboard from './UserDashboard'
+import { UserDashboard } from './UserDashboard'
 
 export default {
   title: 'Pages/User Dashboard',

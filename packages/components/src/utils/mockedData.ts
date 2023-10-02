@@ -1,4 +1,5 @@
 import {
+  Account,
   AccountIdentifierType,
   Currency,
   PayoutStatus,
@@ -112,7 +113,7 @@ export const mockRefundAttempts = [
   },
 ]
 
-export const mockAccounts = [
+export const mockAccounts: Account[] = [
   {
     id: 'BE270F6F-04F1-4DE9-836C-035C5B7EC409',
     merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
@@ -134,6 +135,8 @@ export const mockAccounts = [
       sortCode: '',
     },
     isDefault: true,
+    isConnectedAccount: false,
+    bankName: 'Mock Bank',
   },
   {
     id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
@@ -156,6 +159,8 @@ export const mockAccounts = [
       sortCode: '123456',
     },
     isDefault: false,
+    isConnectedAccount: false,
+    bankName: 'Mock Bank',
   },
   {
     id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
@@ -178,6 +183,8 @@ export const mockAccounts = [
       sortCode: '123456',
     },
     isDefault: false,
+    isConnectedAccount: false,
+    bankName: 'Mock Bank',
   },
 ]
 
