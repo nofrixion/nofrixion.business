@@ -11,7 +11,6 @@ export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement>
   selectedUserId: string | undefined
   onPageChange: (page: number) => void
   onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
-  isInitialState: boolean
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   onInviteUser: () => void
 }
