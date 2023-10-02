@@ -98,18 +98,16 @@ const UserTable: React.FC<UserTableProps> = ({
                     </TableCell>
 
                     <TableCell className="w-48">
-                      <div className="w-1/4 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
+                      <div className="w-full ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell className="p-0"></TableCell>
-
-                    <TableCell className="w-0">
-                      <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
+                    <TableCell className="pl-0">
+                      <div className="w-1/3 h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
-                    <TableCell className="w-0">
-                      <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
-                    </TableCell>
+                    <TableCell className="w-0"></TableCell>
+
+                    <TableCell className="w-0"></TableCell>
                   </TableRow>
                 ))}
 
