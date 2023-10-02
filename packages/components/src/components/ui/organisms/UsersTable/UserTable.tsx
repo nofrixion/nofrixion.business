@@ -17,7 +17,7 @@ import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
 import EmptyState from '../../PaymentRequestTable/EmptyState'
 
-export interface UsersTableProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface UserTableProps extends React.HTMLAttributes<HTMLDivElement> {
   users: UserRoleAndUserInvite[] | undefined
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
@@ -27,7 +27,7 @@ export interface UsersTableProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedUserId: string | undefined
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({
+const UserTable: React.FC<UserTableProps> = ({
   users,
   pagination,
   onPageChange,
@@ -36,7 +36,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
   isLoading,
   selectedUserId,
   ...props
-}: UsersTableProps) => {
+}: UserTableProps) => {
   const onUserClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
     user: UserRoleAndUserInvite,
@@ -157,4 +157,4 @@ const UsersTable: React.FC<UsersTableProps> = ({
   )
 }
 
-export default UsersTable
+export default UserTable

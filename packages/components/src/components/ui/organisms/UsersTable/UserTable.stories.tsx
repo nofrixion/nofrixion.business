@@ -1,11 +1,11 @@
 import { Meta, StoryFn } from '@storybook/react'
 
 import { users } from '../../../../utils/mockedData'
-import UsersTable from './UsersTable'
+import UserTable from './UserTable'
 
 export default {
-  title: 'Organisms/Users Table',
-  component: UsersTable,
+  title: 'Organisms/User Table',
+  component: UserTable,
   args: {},
   argTypes: {
     transactions: {
@@ -14,9 +14,9 @@ export default {
       },
     },
   },
-} as Meta<typeof UsersTable>
+} as Meta<typeof UserTable>
 
-const Template: StoryFn<typeof UsersTable> = (args) => <UsersTable {...args} />
+const Template: StoryFn<typeof UserTable> = (args) => <UserTable {...args} />
 
 export const Showcase = Template.bind({})
 Showcase.args = {
