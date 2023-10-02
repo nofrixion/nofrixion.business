@@ -21,7 +21,7 @@ export interface UserTableProps extends React.HTMLAttributes<HTMLDivElement> {
   users: UserRoleAndUserInvite[] | undefined
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  onSort: (name: 'lastmodified' | 'username' | 'status' | 'role', direction: SortDirection) => void
+  onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   isLoading?: boolean
   selectedUserId: string | undefined
@@ -60,7 +60,7 @@ const UserTable: React.FC<UserTableProps> = ({
                 <TableHead>
                   <ColumnHeader
                     label={'User Name'}
-                    onSort={(direction) => onSort('username', direction)}
+                    onSort={(direction) => onSort('name', direction)}
                   />
                 </TableHead>
                 <TableHead>

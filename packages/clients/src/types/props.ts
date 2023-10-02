@@ -118,7 +118,7 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
 export interface useUsersAndInvitesProps extends MerchantProps, PayoutPageProps {
   merchantId: string
   statusSortDirection: SortDirection
-  modifiedSortDirection: SortDirection
+  lastModifiedSortDirection: SortDirection
   nameSortDirection: SortDirection
   roleSortDirection: SortDirection
 }
