@@ -1,4 +1,11 @@
-import { AccountIdentifierType, Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import {
+  AccountIdentifierType,
+  Currency,
+  PayoutStatus,
+  UserRoleAndUserInvite,
+  UserRolesEnum,
+  UserStatusFilterEnum,
+} from '@nofrixion/moneymoov'
 
 import {
   LocalAccountIdentifierType,
@@ -1340,6 +1347,54 @@ const beneficiaries: LocalBeneficiary[] = [
   },
 ]
 
+export const users: UserRoleAndUserInvite[] = [
+  {
+    userID: '1',
+    merchantID: '1',
+    emailAddress: 'user1@user.com',
+    name: 'John Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.AdminApprover,
+    status: UserStatusFilterEnum.Active,
+  },
+  {
+    userID: '2',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Jane Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.NewlyRegistered,
+    status: UserStatusFilterEnum.Invited,
+  },
+  {
+    userID: '3',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Joe Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.NewlyRegistered,
+    status: UserStatusFilterEnum.RolePending,
+  },
+  {
+    userID: '4',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Joe Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.PaymentRequestor,
+    status: UserStatusFilterEnum.Active,
+  },
+  {
+    userID: '4',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Joe Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.User,
+    status: UserStatusFilterEnum.Active,
+  },
+]
+
 export default {
   fewPaymentRequests,
   paymentRequest: {
@@ -1359,4 +1414,5 @@ export default {
     processed: mockPayouts.find((p) => p.status === PayoutStatus.PROCESSED),
     failed: mockPayouts.find((p) => p.status === PayoutStatus.FAILED),
   },
+  users,
 }

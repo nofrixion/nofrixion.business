@@ -14,6 +14,8 @@ import {
   PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  UserRolesEnum,
+  UserStatusFilterEnum,
   Wallets,
 } from './Enums'
 
@@ -461,4 +463,15 @@ export type AISCreditLine = {
 export type AISConsolidatedAccountInformation = {
   id: string
   accountBalances: AISAccountBalance[]
+}
+
+export type UserRoleAndUserInvite = {
+  userID?: string
+  merchantID: string
+  emailAddress: string
+  name: string
+  inviteID?: string
+  lastModified: Date
+  roleType: UserRolesEnum
+  status: UserStatusFilterEnum
 }

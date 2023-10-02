@@ -576,6 +576,16 @@ export const Icons = {
       />
     </SVG>
   ),
+  'invited/12': (className: string) => (
+    <SVG className={cn(className, 'fill-current stroke-none')} size="12">
+      <circle cx="6" cy="6" r="4" />
+    </SVG>
+  ),
+  'invited/16': (className: string) => (
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16">
+      <circle cx="6" cy="6" r="4" />
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons

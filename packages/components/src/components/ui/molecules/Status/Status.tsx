@@ -18,6 +18,9 @@ const statusVariants = cva(
         failed: ['bg-[#FEE7EB]', 'text-[#4D000D]'],
         inprogress: ['bg-main-grey'],
         authorise: ['text-[#454D54]'],
+        invited: ['bg-main-grey'],
+        role_pending: ['bg-warning-yellow', 'text-[#663300]'],
+        active: ['bg-[#D8F2EA]', 'text-[#004D33]'],
       },
       size: {
         small: ['text-xs', 'font-normal', 'py-1', 'px-2', 'h-fit'],
@@ -42,6 +45,9 @@ const iconVariants = cva('w-auto mb-0.5', {
       failed: ['text-[#F32448]'],
       inprogress: ['text-grey-text'],
       authorise: ['text-[#454D54]'],
+      invited: ['text-[#C8D0D0]'],
+      role_pending: ['text-[#B25900]'],
+      active: ['text-[#29A37A]'],
     },
   },
   defaultVariants: {
@@ -91,6 +97,18 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     small: 'pending-approval/12',
     large: 'pending-approval/16',
   },
+  invited: {
+    small: 'invited/12',
+    large: 'invited/16',
+  },
+  role_pending: {
+    small: 'pending/12',
+    large: 'pending/12',
+  },
+  active: {
+    small: 'done/12',
+    large: 'done/16',
+  },
 }
 
 const Status: React.FC<StatusProps> = ({
@@ -110,6 +128,8 @@ const Status: React.FC<StatusProps> = ({
         ? 'in progress'
         : variant === 'pending_approval'
         ? 'pending'
+        : variant === 'role_pending'
+        ? 'role pending'
         : variant}
     </span>
   </div>
