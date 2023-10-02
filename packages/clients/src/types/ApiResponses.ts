@@ -382,6 +382,8 @@ export type PayoutMetrics = {
 
 export type PayoutPageResponse = PageResponse<Payout>
 
+export type UserRoleAndUserInvitePageResponse = PageResponse<UserRoleAndUserInvite>
+
 export type Beneficiary = {
   id: string
   merchantID: string
