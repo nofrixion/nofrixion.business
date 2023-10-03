@@ -13,6 +13,8 @@ export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement>
   onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   onInviteUser: () => void
+  onResendInvitation?: (inviteID?: string) => void
+  onSetUserRole?: (userId?: string) => void
 }
 
 const UserDashboard: React.FC<UserDashboardProps> = ({
@@ -24,6 +26,8 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
   onSort,
   onInviteUser,
   onUserClicked,
+  onResendInvitation,
+  onSetUserRole,
 }) => {
   return (
     <>
@@ -50,6 +54,8 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
             isLoading={isLoading}
             onUserClicked={onUserClicked}
             selectedUserId={selectedUserId}
+            onResendInvitation={onResendInvitation}
+            onSetUserRole={onSetUserRole}
           />
         </div>
 

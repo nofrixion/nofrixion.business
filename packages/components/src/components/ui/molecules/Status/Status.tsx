@@ -21,6 +21,7 @@ const statusVariants = cva(
         invited: ['bg-main-grey'],
         role_pending: ['bg-warning-yellow', 'text-[#663300]'],
         active: ['bg-[#D8F2EA]', 'text-[#004D33]'],
+        expired_link: ['bg-error-bg', 'text-negative-red'],
       },
       size: {
         small: ['text-xs', 'font-normal', 'py-1', 'px-2', 'h-fit'],
@@ -48,6 +49,7 @@ const iconVariants = cva('w-auto mb-0.5', {
       invited: ['text-[#C8D0D0]'],
       role_pending: ['text-[#B25900]'],
       active: ['text-[#29A37A]'],
+      expired_link: ['text-negative-red fill-none'],
     },
   },
   defaultVariants: {
@@ -109,6 +111,10 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
     small: 'done/12',
     large: 'done/16',
   },
+  expired_link: {
+    small: 'expired/12',
+    large: 'expired/16',
+  },
 }
 
 const Status: React.FC<StatusProps> = ({
@@ -116,24 +122,28 @@ const Status: React.FC<StatusProps> = ({
   size = 'small',
   variant = 'unpaid',
   ...props
-}) => (
-  <div className={cn(statusVariants({ variant, size }), className)} {...props}>
-    {variant && (
-      <Icon name={iconName[variant][size ?? 'small']} className={cn(iconVariants({ variant }))} />
-    )}
-    <span className="uppercase">
-      {size === 'large' && variant === 'partial'
-        ? 'partially paid'
-        : variant === 'inprogress'
-        ? 'in progress'
-        : variant === 'pending_approval'
-        ? 'pending'
-        : variant === 'role_pending'
-        ? 'role pending'
-        : variant}
-    </span>
-  </div>
-)
+}) => {
+  return (
+    <div className={cn(statusVariants({ variant, size }), className)} {...props}>
+      {variant && (
+        <Icon name={iconName[variant][size ?? 'small']} className={cn(iconVariants({ variant }))} />
+      )}
+      <span className={variant === 'expired_link' ? '' : 'uppercase'}>
+        {size === 'large' && variant === 'partial'
+          ? 'partially paid'
+          : variant === 'inprogress'
+          ? 'in progress'
+          : variant === 'pending_approval'
+          ? 'pending'
+          : variant === 'role_pending'
+          ? 'role pending'
+          : variant === 'expired_link'
+          ? 'Expired link'
+          : variant}
+      </span>
+    </div>
+  )
+}
 
 Status.displayName = 'Status'
 

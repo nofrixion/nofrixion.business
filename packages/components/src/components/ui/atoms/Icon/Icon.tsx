@@ -586,6 +586,28 @@ export const Icons = {
       <circle cx="6" cy="6" r="4" />
     </SVG>
   ),
+  'expired/12': (className: string) => (
+    <SVG className={cn(className, 'fill-none stroke-current')} size="12" viewBox="0 -0.5">
+      <path
+        d="M1.32056 6C1.32056 7.39239 1.87368 8.72774 2.85825 9.71231C3.84281 10.6969 5.17817 11.25 6.57056 11.25C7.96294 11.25 9.2983 10.6969 10.2829 9.71231C11.2674 8.72774 11.8206 7.39239 11.8206 6C11.8206 4.60761 11.2674 3.27226 10.2829 2.28769C9.2983 1.30312 7.96294 0.75 6.57056 0.75C5.17817 0.75 3.84281 1.30312 2.85825 2.28769C1.87368 3.27226 1.32056 4.60761 1.32056 6Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6.57056 6V4.125" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.57056 6L8.91406 8.344" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'expired/16': (className: string) => (
+    <SVG className={cn(className, 'fill-none stroke-current')} size="16" viewBox="0 -1">
+      <path
+        d="M1.32056 6C1.32056 7.39239 1.87368 8.72774 2.85825 9.71231C3.84281 10.6969 5.17817 11.25 6.57056 11.25C7.96294 11.25 9.2983 10.6969 10.2829 9.71231C11.2674 8.72774 11.8206 7.39239 11.8206 6C11.8206 4.60761 11.2674 3.27226 10.2829 2.28769C9.2983 1.30312 7.96294 0.75 6.57056 0.75C5.17817 0.75 3.84281 1.30312 2.85825 2.28769C1.87368 3.27226 1.32056 4.60761 1.32056 6Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6.57056 6V4.125" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.57056 6L8.91406 8.344" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons

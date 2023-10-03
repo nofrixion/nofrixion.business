@@ -212,3 +212,7 @@ export interface ConsentProps {
   merchantId?: string
   emailAddress?: string
 }
+
+export interface UserInviteProps {
+  inviteId?: string
+}

@@ -1,8 +1,15 @@
-import { Pagination, SortDirection, UserRoleAndUserInvite } from '@nofrixion/moneymoov'
+import {
+  Pagination,
+  SortDirection,
+  UserRoleAndUserInvite,
+  UserStatusFilterEnum,
+} from '@nofrixion/moneymoov'
+import { sub } from 'date-fns'
 
 import { cn } from '../../../../utils'
 import { formatDateWithYearAndTime } from '../../../../utils/formatters'
 import { userRoleToDisplay, userStatusToStatus } from '../../../../utils/parsers'
+import { Button } from '../../atoms'
 import {
   Table,
   TableBody,
@@ -16,6 +23,7 @@ import { Loader } from '../../Loader/Loader'
 import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
 import EmptyState from '../../PaymentRequestTable/EmptyState'
+import { makeToast } from '../../Toast/Toast'
 
 export interface UserTableProps extends React.HTMLAttributes<HTMLDivElement> {
   users: UserRoleAndUserInvite[] | undefined
@@ -23,6 +31,8 @@ export interface UserTableProps extends React.HTMLAttributes<HTMLDivElement> {
   onPageChange: (page: number) => void
   onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
+  onResendInvitation?: (inviteID?: string) => void
+  onSetUserRole?: (userId?: string) => void
   isLoading?: boolean
   selectedUserId: string | undefined
 }
@@ -35,6 +45,8 @@ const UserTable: React.FC<UserTableProps> = ({
   onUserClicked,
   isLoading,
   selectedUserId,
+  onResendInvitation,
+  onSetUserRole,
   ...props
 }: UserTableProps) => {
   const onUserClickedHandler = (
@@ -44,6 +56,17 @@ const UserTable: React.FC<UserTableProps> = ({
     onUserClicked && onUserClicked(user)
   }
 
+  const isExpired = (date: Date) => {
+    return new Date(date).getTime() < new Date(sub(new Date(), { days: 3 })).getTime()
+      ? true
+      : false
+  }
+
+  const copyLink = (inviteId?: string) => {
+    const url = `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Home/Register?userInviteID=${inviteId}`
+    navigator.clipboard.writeText(url)
+    makeToast('success', 'Link copied to clipboard')
+  }
   return (
     <div className="flex justify-center w-full" {...props}>
       {users && users.length > 0 && (
@@ -136,8 +159,46 @@ const UserTable: React.FC<UserTableProps> = ({
                     <TableCell>
                       {user.lastModified && formatDateWithYearAndTime(new Date(user.lastModified))}
                     </TableCell>
-                    <TableCell className="pl-0 text-grey-text font-normal text-sm text-right"></TableCell>
-                    <TableCell className="text-center w-0"></TableCell>
+                    <TableCell className="pl-0 text-grey-text font-normal text-sm text-right">
+                      {user.status === UserStatusFilterEnum.Invited &&
+                        user.inviteID &&
+                        isExpired(user.lastModified) && (
+                          <Status variant="expired_link" className="stroke-none" />
+                        )}
+                      {user.status === UserStatusFilterEnum.Invited &&
+                        user.inviteID &&
+                        !isExpired(user.lastModified) && (
+                          <Button
+                            variant="secondary"
+                            size="small"
+                            className="w-fit"
+                            onClick={() => copyLink(user.inviteID)}
+                          >
+                            Copy link
+                          </Button>
+                        )}
+                    </TableCell>
+                    <TableCell className="text-right w-0">
+                      {user.status === UserStatusFilterEnum.Invited && user.inviteID && (
+                        <Button
+                          variant="primary"
+                          size="small"
+                          onClick={() => onResendInvitation && onResendInvitation(user.inviteID)}
+                        >
+                          Resend invitation
+                        </Button>
+                      )}
+                      {user.status === UserStatusFilterEnum.RolePending && (
+                        <Button
+                          variant="primary"
+                          size="small"
+                          onClick={() => onSetUserRole && onSetUserRole(user.userID)}
+                          className="w-fit"
+                        >
+                          Set role
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

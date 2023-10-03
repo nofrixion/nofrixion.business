@@ -1,6 +1,7 @@
 import {
   ApiError,
   SortDirection,
+  UserInvitesClient,
   UserRoleAndUserInvite,
   useUsersAndInvites,
 } from '@nofrixion/moneymoov'
@@ -124,6 +125,27 @@ const UserDashboardMain = ({
     console.log('Invite user')
   }
 
+  const onResendInvitation = async (inviteID?: string) => {
+    if (!inviteID) {
+      return
+    }
+
+    const client = new UserInvitesClient({ apiUrl: apiUrl, authToken: token })
+
+    const response = await client.resendUserInvite({ inviteId: inviteID })
+
+    if (response.status === 'success') {
+      makeToast('success', 'Invitation resent successfully.')
+    } else if (response.status === 'error') {
+      makeToast('error', 'Error resending invitation. ' + response.error.detail)
+      console.error(response.error)
+    }
+  }
+
+  const onSetUserRole = async (userId?: string) => {
+    console.log('Set user role', userId)
+  }
+
   return (
     <div>
       <UIUserDashboard
@@ -138,6 +160,8 @@ const UserDashboardMain = ({
         onUserClicked={onUserRowClicked}
         selectedUserId={selectedUserId}
         onInviteUser={onInviteUser}
+        onResendInvitation={onResendInvitation}
+        onSetUserRole={onSetUserRole}
       />
     </div>
   )
