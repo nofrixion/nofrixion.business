@@ -123,6 +123,11 @@ export interface useUsersAndInvitesProps extends MerchantProps, PayoutPageProps 
   roleSortDirection: SortDirection
 }
 
+export interface useUsersAndInvitesMetricsProps extends MerchantProps, PayoutPageProps {
+  merchantId: string
+  search?: string
+}
+
 export interface usePaymentRequestMetricsProps extends MetricsProps {
   fromDateMS?: number
   toDateMS?: number

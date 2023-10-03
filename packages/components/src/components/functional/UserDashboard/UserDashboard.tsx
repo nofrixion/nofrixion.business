@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ApiError,
   SortDirection,
   UserInvitesClient,
+  UserMetrics,
   UserRoleAndUserInvite,
   UserStatusFilterEnum,
   useUsersAndInvites,
+  useUsersAndInvitesMetrics,
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -60,6 +63,7 @@ const UserDashboardMain = ({
   const [nameSortDirection, setNameSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
+  const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
 
   const { data: usersResponse, isLoading: isLoadingUsers } = useUsersAndInvites(
     {
@@ -75,6 +79,13 @@ const UserDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  const { data: metricsResponse, isLoading: isLoadingMetrics } = useUsersAndInvitesMetrics(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
   useEffect(() => {
     setPage(1)
     setUsers(undefined)
@@ -85,11 +96,21 @@ const UserDashboardMain = ({
       setUsers(usersResponse.data.content)
       setTotalRecords(usersResponse.data.totalSize)
     } else if (usersResponse?.status === 'error') {
-      makeToast('error', 'Error fetching payment requests.')
+      makeToast('error', 'Error fetching users.')
       console.error(usersResponse.error)
       handleApiError(usersResponse.error)
     }
   }, [usersResponse])
+
+  useEffect(() => {
+    if (metricsResponse?.status === 'success') {
+      setMetrics(metricsResponse.data)
+    } else if (metricsResponse?.status === 'error') {
+      makeToast('error', 'Error fetching user metrics.')
+      console.error(metricsResponse.error)
+      handleApiError(metricsResponse.error)
+    }
+  }, [metricsResponse])
 
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {

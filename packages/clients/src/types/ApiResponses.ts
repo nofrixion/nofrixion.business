@@ -478,3 +478,10 @@ export type UserRoleAndUserInvite = {
   roleType: UserRolesEnum
   status: UserStatusFilterEnum
 }
+
+export type UserMetrics = {
+  all: number
+  invited: number
+  rolePending: number
+  active: number
+}
