@@ -119,7 +119,8 @@ const UserTable: React.FC<UserTableProps> = ({
                     className={cn(
                       'cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]',
                       {
-                        'bg-[#F6F8F9] border-[#E1E5EA]': selectedUserId === user.userID,
+                        'bg-[#F6F8F9] border-[#E1E5EA]':
+                          selectedUserId && selectedUserId === user.userID,
                       },
                     )}
                     key={`${user}-${index}`}
@@ -128,7 +129,9 @@ const UserTable: React.FC<UserTableProps> = ({
                     <TableCell className="w-48">
                       <Status size="small" variant={userStatusToStatus(user.status)} />
                     </TableCell>
-                    <TableCell className="w-48">{user.name}</TableCell>
+                    <TableCell className="w-48">
+                      {user.name !== '' ? user.name : user.emailAddress}
+                    </TableCell>
                     <TableCell className="w-48">{userRoleToDisplay(user.roleType)}</TableCell>
                     <TableCell>
                       {user.lastModified && formatDateWithYearAndTime(new Date(user.lastModified))}
