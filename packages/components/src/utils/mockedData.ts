@@ -1,4 +1,12 @@
-import { AccountIdentifierType, Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import {
+  Account,
+  AccountIdentifierType,
+  Currency,
+  PayoutStatus,
+  UserRoleAndUserInvite,
+  UserRolesEnum,
+  UserStatusFilterEnum,
+} from '@nofrixion/moneymoov'
 
 import {
   LocalAccountIdentifierType,
@@ -105,7 +113,7 @@ export const mockRefundAttempts = [
   },
 ]
 
-export const mockAccounts = [
+export const mockAccounts: Account[] = [
   {
     id: 'BE270F6F-04F1-4DE9-836C-035C5B7EC409',
     merchantID: '8A45B3B8-7428-4BA2-8228-37204B43AC0E',
@@ -1352,6 +1360,54 @@ const beneficiaries: LocalBeneficiary[] = [
   },
 ]
 
+export const users: UserRoleAndUserInvite[] = [
+  {
+    userID: '1',
+    merchantID: '1',
+    emailAddress: 'user1@user.com',
+    name: 'John Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.AdminApprover,
+    status: UserStatusFilterEnum.Active,
+  },
+  {
+    userID: '2',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Jane Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.NewlyRegistered,
+    status: UserStatusFilterEnum.Invited,
+  },
+  {
+    userID: '3',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Joe Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.NewlyRegistered,
+    status: UserStatusFilterEnum.RolePending,
+  },
+  {
+    userID: '4',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Joe Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.PaymentRequestor,
+    status: UserStatusFilterEnum.Active,
+  },
+  {
+    userID: '4',
+    merchantID: '1',
+    emailAddress: 'user2@user.com',
+    name: 'Joe Doe',
+    lastModified: new Date(),
+    roleType: UserRolesEnum.User,
+    status: UserStatusFilterEnum.Active,
+  },
+]
+
 export default {
   fewPaymentRequests,
   paymentRequest: {
@@ -1371,4 +1427,5 @@ export default {
     processed: mockPayouts.find((p) => p.status === PayoutStatus.PROCESSED),
     failed: mockPayouts.find((p) => p.status === PayoutStatus.FAILED),
   },
+  users,
 }

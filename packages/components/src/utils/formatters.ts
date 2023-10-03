@@ -39,6 +39,14 @@ const formatDateWithYear = (date: Date): string => {
   }
 }
 
+const formatDateWithYearAndTime = (date: Date): string => {
+  if (isSameYear(date, new Date())) {
+    return format(date, 'MMM do, H:mm')
+  } else {
+    return format(date, 'MMM do, yyyy, H:mm')
+  }
+}
+
 // Formats the given amount into a currency string.
 // For example:
 // - 10.5 -> '10.50'
@@ -153,6 +161,7 @@ export {
   formatAmountAndDecimals,
   formatDate,
   formatDateWithYear,
+  formatDateWithYearAndTime,
   formatPaymentRequestSortExpression,
   getDateFormat,
   getSelectRangeText,

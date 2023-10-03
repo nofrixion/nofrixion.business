@@ -1,12 +1,12 @@
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
 
-import { mockPayouts } from '../../../../utils/mockedData'
-import { PayoutDashboard } from './PayoutDashboard'
+import { users } from '../../../../utils/mockedData'
+import { UserDashboard } from './UserDashboard'
 
 export default {
-  title: 'Pages/Payout Dashboard',
-  component: PayoutDashboard,
+  title: 'Pages/User Dashboard',
+  component: UserDashboard,
   args: {
     onSearch: action('onSearch'),
     onDateChange: action('onDateChange'),
@@ -15,19 +15,19 @@ export default {
     selectedPayouts: [],
     tags: [],
   },
-} as Meta<typeof PayoutDashboard>
+} as Meta<typeof UserDashboard>
 
-const Template: StoryFn<typeof PayoutDashboard> = (args) => {
+const Template: StoryFn<typeof UserDashboard> = (args) => {
   return (
     <div className="px-14 py-10 bg-main-grey">
-      <PayoutDashboard {...args} />
+      <UserDashboard {...args} />
     </div>
   )
 }
 
 export const Showcase = Template.bind({})
 Showcase.args = {
-  payouts: mockPayouts,
+  users: users,
   pagination: {
     pageSize: 10,
     totalSize: 100,

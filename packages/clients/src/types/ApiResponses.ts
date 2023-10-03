@@ -14,6 +14,8 @@ import {
   PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  UserRolesEnum,
+  UserStatusFilterEnum,
   Wallets,
 } from './Enums'
 
@@ -381,6 +383,8 @@ export type PayoutMetrics = {
 
 export type PayoutPageResponse = PageResponse<Payout>
 
+export type UserRoleAndUserInvitePageResponse = PageResponse<UserRoleAndUserInvite>
+
 export type Beneficiary = {
   id: string
   merchantID: string
@@ -462,4 +466,15 @@ export type AISCreditLine = {
 export type AISConsolidatedAccountInformation = {
   id: string
   accountBalances: AISAccountBalance[]
+}
+
+export type UserRoleAndUserInvite = {
+  userID?: string
+  merchantID: string
+  emailAddress: string
+  name: string
+  inviteID?: string
+  lastModified: Date
+  roleType: UserRolesEnum
+  status: UserStatusFilterEnum
 }
