@@ -249,6 +249,7 @@ export interface Account {
   isConnectedAccount: boolean
   bankName: string
   expiryDate?: string
+  consentID?: string
 }
 
 export interface AccountIdentifier {

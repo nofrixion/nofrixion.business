@@ -135,8 +135,10 @@ export const mockAccounts: Account[] = [
       sortCode: '',
     },
     isDefault: true,
+    expiryDate: '',
+    consentID: '',
     isConnectedAccount: false,
-    bankName: 'Mock Bank',
+    bankName: '',
   },
   {
     id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
@@ -159,8 +161,10 @@ export const mockAccounts: Account[] = [
       sortCode: '123456',
     },
     isDefault: false,
+    expiryDate: '',
+    consentID: '',
     isConnectedAccount: false,
-    bankName: 'Mock Bank',
+    bankName: '',
   },
   {
     id: 'C317F3DF-51F5-4EF6-8DDA-41444B90B2D5',
@@ -183,8 +187,10 @@ export const mockAccounts: Account[] = [
       sortCode: '123456',
     },
     isDefault: false,
+    expiryDate: '',
+    consentID: '',
     isConnectedAccount: false,
-    bankName: 'Mock Bank',
+    bankName: '',
   },
 ]
 
