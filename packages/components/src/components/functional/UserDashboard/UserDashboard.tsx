@@ -3,6 +3,7 @@ import {
   SortDirection,
   UserInvitesClient,
   UserRoleAndUserInvite,
+  UserStatusFilterEnum,
   useUsersAndInvites,
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
@@ -46,6 +47,8 @@ const UserDashboardMain = ({
   merchantId,
   onUnauthorized,
 }: UserDashboardProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [status, setStatus] = useState<UserStatusFilterEnum>(UserStatusFilterEnum.All)
   const [users, setUsers] = useState<UserRoleAndUserInvite[] | undefined>(undefined)
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
@@ -67,6 +70,7 @@ const UserDashboardMain = ({
       nameSortDirection: nameSortDirection,
       statusSortDirection: statusSortDirection,
       lastModifiedSortDirection: lastmodifiedSortDirection,
+      status: status,
     },
     { apiUrl: apiUrl, authToken: token },
   )

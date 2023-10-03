@@ -230,3 +230,10 @@ export const enum UserRolesEnum {
   PaymentRequestor = 'PaymentRequestor',
   NewlyRegistered = 'NewlyRegistered',
 }
+
+export const enum UserStatus {
+  All = 'All',
+  Invited = 'Invited',
+  RolePending = 'RolePending',
+  Active = 'Active',
+}

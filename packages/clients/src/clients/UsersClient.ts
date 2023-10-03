@@ -43,6 +43,7 @@ export class UsersClient extends BaseApiClient {
     sort,
     search,
     merchantId,
+    status,
   }: UserRoleAndUserInvitePageProps): Promise<ApiResponse<UserRoleAndUserInvitePageResponse>> {
     return await this.getPagedResponse<UserRoleAndUserInvitePageResponse>(
       {
@@ -51,6 +52,7 @@ export class UsersClient extends BaseApiClient {
         pageSize: pageSize,
         sort: sort,
         search: search,
+        status: status,
       },
       `${this.url}/${merchantId}/usersWithUserInvites`,
     )

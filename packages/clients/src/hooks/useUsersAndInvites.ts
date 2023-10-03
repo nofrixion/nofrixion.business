@@ -15,6 +15,7 @@ const fetchUsers = async (
   merchantId?: string,
   pageNumber?: number,
   pageSize?: number,
+  status?: string,
 ): Promise<ApiResponse<UserRoleAndUserInvitePageResponse>> => {
   const sortExpression = formatSortExpression({
     statusSortDirection: statusSortDirection,
@@ -30,6 +31,7 @@ const fetchUsers = async (
     pageSize: pageSize,
     sort: sortExpression,
     merchantId: merchantId,
+    status: status,
   })
 
   return response
@@ -44,6 +46,7 @@ export const useUsersAndInvites = (
     roleSortDirection,
     pageNumber,
     pageSize,
+    status,
   }: useUsersAndInvitesProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
@@ -58,6 +61,7 @@ export const useUsersAndInvites = (
     roleSortDirection,
     pageNumber,
     pageSize,
+    status,
   ]
 
   return useQuery<ApiResponse<UserRoleAndUserInvitePageResponse>, Error>(
@@ -73,6 +77,7 @@ export const useUsersAndInvites = (
         merchantId,
         pageNumber,
         pageSize,
+        status,
       ),
     {
       enabled: !!merchantId,
