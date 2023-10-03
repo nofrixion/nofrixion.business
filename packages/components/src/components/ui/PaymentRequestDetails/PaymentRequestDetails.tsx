@@ -52,7 +52,9 @@ const PaymentRequestDetails = ({
         <div className="flex flex-col-reverse mb-4 lg:mb-10 gap-4 lg:gap-0 lg:flex-row lg:justify-between">
           <div className="lg:w-1/3">
             <AmountPaid
-              amountPaid={getTotalAmountPaid(paymentRequest.paymentAttempts)}
+              amountPaid={getTotalAmountPaid(
+                paymentRequest.paymentAttempts.filter((pa) => pa.paymentStatus === 'received'),
+              )}
               totalAmount={paymentRequest.amount}
               currency={paymentRequest.currency === Currency.EUR ? Currency.EUR : Currency.GBP}
               partialPaymentMethod={paymentRequest.partialPaymentMethod}

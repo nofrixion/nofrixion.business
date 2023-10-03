@@ -246,6 +246,25 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
+  const getPaymentAttemptPaymentStatus = (
+    remotePaymentAttempt: PaymentRequestPaymentAttempt,
+  ): 'received' | 'pending' | 'failed' => {
+    if (
+      !remotePaymentAttempt.settledAt &&
+      !remotePaymentAttempt.authorisedAt &&
+      !remotePaymentAttempt.cardAuthorisedAt &&
+      remotePaymentAttempt.status !== PaymentResult.None
+    ) {
+      return 'received'
+    }
+
+    if (remotePaymentAttempt.status === PaymentResult.None) {
+      return 'failed'
+    }
+
+    return 'received'
+  }
+
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
     remotePaymentAttempts: PaymentRequestPaymentAttempt[],
   ): LocalPaymentAttempt[] => {
@@ -258,46 +277,41 @@ const remotePaymentRequestToLocalPaymentRequest = (
           return new Date(b.initiatedAt ?? 0).getTime() - new Date(a.initiatedAt ?? 0).getTime()
         })
         .map((remotePaymentAttempt) => {
-          if (
-            remotePaymentAttempt.settledAt ||
-            remotePaymentAttempt.authorisedAt ||
-            remotePaymentAttempt.cardAuthorisedAt
-          ) {
-            const {
-              attemptKey,
-              authorisedAt,
-              settledAt,
-              attemptedAmount,
-              paymentMethod,
-              settledAmount,
-              captureAttempts,
-              refundAttempts,
-              currency,
-              walletName,
-              status,
-              authorisedAmount,
-              cardAuthorisedAmount,
-              cardAuthorisedAt,
-              reconciledTransactionID,
-            } = remotePaymentAttempt
+          const {
+            attemptKey,
+            authorisedAt,
+            settledAt,
+            attemptedAmount,
+            paymentMethod,
+            settledAmount,
+            captureAttempts,
+            refundAttempts,
+            currency,
+            walletName,
+            status,
+            authorisedAmount,
+            cardAuthorisedAmount,
+            cardAuthorisedAt,
+            reconciledTransactionID,
+          } = remotePaymentAttempt
 
-            localPaymentAttempts.push({
-              attemptKey: attemptKey,
-              occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
-              paymentMethod: parseApiPaymentMethodTypeToLocalMethodType(paymentMethod),
-              amount: attemptedAmount,
-              currency: currency,
-              processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
-              settledAmount: settledAmount,
-              captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
-              refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
-              authorisedAmount: authorisedAmount,
-              cardAuthorisedAmount: cardAuthorisedAmount,
-              wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
-              status: parseApiStatusToLocalStatus(status),
-              reconciledTransactionID: reconciledTransactionID,
-            })
-          }
+          localPaymentAttempts.push({
+            attemptKey: attemptKey,
+            occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
+            paymentMethod: parseApiPaymentMethodTypeToLocalMethodType(paymentMethod),
+            amount: attemptedAmount,
+            currency: currency,
+            processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
+            settledAmount: settledAmount,
+            captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
+            refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
+            authorisedAmount: authorisedAmount,
+            cardAuthorisedAmount: cardAuthorisedAmount,
+            wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
+            status: parseApiStatusToLocalStatus(status),
+            reconciledTransactionID: reconciledTransactionID,
+            paymentStatus: getPaymentAttemptPaymentStatus(remotePaymentAttempt),
+          })
         })
       return localPaymentAttempts
     }

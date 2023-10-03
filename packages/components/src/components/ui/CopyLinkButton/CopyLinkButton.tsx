@@ -40,7 +40,8 @@ const CopyLinkButton: React.FC<CopyLinkButtonProps> = ({ variant, link, classNam
     }
   }, [copied])
 
-  const copyLink = () => {
+  const copyLink = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     navigator.clipboard.writeText(link)
     setCopied(true)
   }

@@ -74,6 +74,7 @@ export interface LocalPaymentAttempt {
   wallet?: LocalWallets | undefined
   status: LocalPaymentStatus
   reconciledTransactionID?: string
+  paymentStatus: 'received' | 'pending' | 'failed'
 }
 
 export interface SubTransaction {

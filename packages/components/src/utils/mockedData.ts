@@ -202,6 +202,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.02,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -218,6 +219,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 30.57,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'ca2eb453-9c12-4f8f-b8b2-7c1c6af842ba',
@@ -234,6 +236,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 0,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: '43535f79-a9f2-4331-9a78-db731e467c49',
@@ -250,6 +253,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 0,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'a9f6c19a-0172-47a6-803a-c3f59899cafc',
@@ -265,6 +269,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 15.39,
     wallet: LocalWallets.ApplePay,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: '7bbb2998-8d78-4b2a-9334-84444c9915c8',
@@ -280,6 +285,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.78,
     wallet: LocalWallets.GooglePay,
     status: 'paid',
+    paymentStatus: 'received',
   },
   // Add more transactions as needed
 ]
@@ -300,6 +306,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.02,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -316,6 +323,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 30.57,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   // Add more transactions as needed
 ]
@@ -335,6 +343,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.02,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -351,6 +360,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 90.57,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   // Add more transactions as needed
 ]
