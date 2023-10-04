@@ -1,33 +1,26 @@
-﻿// import { action } from '@storybook/addon-actions'
-// import { Meta, StoryFn } from '@storybook/react'
+﻿import { action } from '@storybook/addon-actions'
+import { Meta, StoryFn } from '@storybook/react'
 
-// import mockedData from '../../../utils/mockedData'
-// import BankRefundModal, { BankRefundModalProps } from './BankRefundModal'
+import InviteUserModal, { InviteUserModalProps } from './InviteUserModal'
 
-// const meta: Meta<typeof BankRefundModal> = {
-//   title: 'UI/Bank Refund Modal',
-//   component: BankRefundModal,
-//   argTypes: {
-//     onRefund: { control: { type: 'action' } },
-//     onDismiss: { control: { type: 'action' } },
-//   },
-// }
+const meta: Meta<typeof InviteUserModal> = {
+  title: 'UI/Invite User Modal',
+  component: InviteUserModal,
+  argTypes: {
+    onInvite: { control: { type: 'action' } },
+  },
+}
 
-// const Template: StoryFn<BankRefundModalProps> = (args) => {
-//   return <BankRefundModal {...args} />
-// }
+const Template: StoryFn<InviteUserModalProps> = (args) => {
+  return <InviteUserModal {...args} />
+}
 
-// export const Showcase = Template.bind({})
+export const Showcase = Template.bind({})
 
-// Showcase.args = {
-//   onDismiss: action('Dismissed'),
-//   accounts: mockedData.accounts,
-// }
+Showcase.args = {
+  onDismiss: action('Dismissed'),
+  merchantID: 'F1D1E2D3-4C5B-6A7D-8E9F-0',
+  isOpen: true,
+}
 
-// export const GBPInput = Template.bind({})
-
-// GBPInput.args = {
-//   onDismiss: action('Dismissed'),
-// }
-
-// export default meta
+export default meta
