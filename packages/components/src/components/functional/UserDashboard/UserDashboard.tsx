@@ -5,7 +5,7 @@ import {
   UserInvitesClient,
   UserMetrics,
   UserRoleAndUserInvite,
-  UserStatusFilterEnum,
+  UserStatus,
   useUsersAndInvites,
   useUsersAndInvitesMetrics,
 } from '@nofrixion/moneymoov'
@@ -51,7 +51,7 @@ const UserDashboardMain = ({
   onUnauthorized,
 }: UserDashboardProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [status, setStatus] = useState<UserStatusFilterEnum>(UserStatusFilterEnum.All)
+  const [status, setStatus] = useState<UserStatus>(UserStatus.All)
   const [users, setUsers] = useState<UserRoleAndUserInvite[] | undefined>(undefined)
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
@@ -187,6 +187,10 @@ const UserDashboardMain = ({
         onInviteUser={onInviteUser}
         onResendInvitation={onResendInvitation}
         onSetUserRole={onSetUserRole}
+        metrics={metrics}
+        isLoadingMetrics={isLoadingMetrics}
+        status={status}
+        setStatus={setStatus}
       />
     </div>
   )
