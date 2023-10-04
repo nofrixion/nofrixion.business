@@ -14,6 +14,7 @@ import {
   PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  UserInviteStatusEnum,
   UserRolesEnum,
   UserStatus,
   Wallets,
@@ -484,4 +485,20 @@ export type UserMetrics = {
   invited: number
   rolePending: number
   active: number
+}
+
+export type UserInvite = {
+  id: string
+  inviteeEmailAddress: string
+  inviteeFirstName?: string
+  inviteeLastName?: string
+  inviterEmailAddress: string
+  inviterFirstName: string
+  inviterLastName: string
+  merchantID: string
+  registrationUrl: string
+  lastInvited: Date
+  merchantName: string
+  message: string
+  status: UserInviteStatusEnum
 }
