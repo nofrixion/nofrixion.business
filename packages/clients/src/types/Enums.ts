@@ -230,3 +230,8 @@ export const enum UserStatus {
   RolePending = 'RolePending',
   Active = 'Active',
 }
+
+export const enum UserInviteStatusEnum {
+  Active = 'Active',
+  Expired = 'Expired',
+}

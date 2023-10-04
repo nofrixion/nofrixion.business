@@ -12,7 +12,7 @@ export interface InviteUserModalProps {
     merchantID: string,
     firstName: string | undefined,
     lastName: string | undefined,
-    emailAddress: string | undefined,
+    emailAddress: string,
   ) => Promise<void>
   onDismiss: () => void
   isOpen: boolean
@@ -50,11 +50,12 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
   }
 
   const onInviteClick = async () => {
+    setIsInviteButtonDisabled(true)
     setSendInviteClicked(true)
     if (handleValidation()) {
       return
     } else {
-      await onInvite(merchantID, firstName, lastName, emailAddress)
+      await onInvite(merchantID, firstName, lastName, emailAddress!)
 
       setIsInviteButtonDisabled(false)
     }

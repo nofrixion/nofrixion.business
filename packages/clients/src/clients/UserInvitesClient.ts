@@ -1,4 +1,4 @@
-import { ApiResponse, HttpMethod } from '../types'
+import { ApiResponse, HttpMethod, UserInvite, UserInviteCreate } from '../types'
 import { ApiProps, UserInviteProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
@@ -18,6 +18,15 @@ export class UserInvitesClient extends BaseApiClient {
   constructor({ ...props }: ApiProps) {
     super(props.authToken)
     this.url = `${props.apiUrl}/userinvites`
+  }
+
+  /**
+   * Creates a new user invite and optionally sends the invitee an email with the details.
+   * @param userInviteCreate The user invite to create.
+   * @returns UserInvite if successful. An ApiError if not successful.
+   */
+  async sendUserInvite(userInviteCreate: UserInviteCreate): Promise<ApiResponse<UserInvite>> {
+    return await this.httpRequest<UserInvite>(this.url, HttpMethod.POST, userInviteCreate)
   }
 
   /**
