@@ -215,3 +215,18 @@ export enum AISCreditLineType {
   OTHER = 6,
   UNKNOWN = 7,
 }
+
+export const enum UserRolesEnum {
+  User = 'User',
+  Approver = 'Approver',
+  AdminApprover = 'AdminApprover',
+  PaymentRequestor = 'PaymentRequestor',
+  NewlyRegistered = 'NewlyRegistered',
+}
+
+export const enum UserStatus {
+  All = 'All',
+  Invited = 'Invited',
+  RolePending = 'RolePending',
+  Active = 'Active',
+}

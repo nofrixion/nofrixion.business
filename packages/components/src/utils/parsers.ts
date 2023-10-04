@@ -17,6 +17,8 @@ import {
   type Tag,
   Transaction,
   TransactionTypeValue,
+  UserRolesEnum,
+  UserStatus,
   Wallets,
 } from '@nofrixion/moneymoov'
 
@@ -557,6 +559,32 @@ const payoutStatusToStatus = (
   }
 }
 
+const userStatusToStatus = (status: UserStatus) => {
+  switch (status) {
+    case UserStatus.Active:
+      return 'active'
+    case UserStatus.Invited:
+      return 'invited'
+    case UserStatus.RolePending:
+      return 'role_pending'
+  }
+}
+
+const userRoleToDisplay = (status: UserRolesEnum) => {
+  switch (status) {
+    case UserRolesEnum.AdminApprover:
+      return 'Admin Approver'
+    case UserRolesEnum.Approver:
+      return 'Approver'
+    case UserRolesEnum.NewlyRegistered:
+      return 'Newly Registered'
+    case UserRolesEnum.User:
+      return 'User'
+    case UserRolesEnum.PaymentRequestor:
+      return 'Payment Requestor'
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -570,4 +598,6 @@ export {
   remotePayoutsToLocal,
   remotePayoutToLocal,
   remoteTransactionsToLocal,
+  userRoleToDisplay,
+  userStatusToStatus,
 }

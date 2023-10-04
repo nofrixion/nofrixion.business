@@ -3,8 +3,6 @@ import IconAccountsReceivable from '../assets/icons/accounts-receivable.svg'
 import IconCurrentAccounts from '../assets/icons/current-accounts.svg'
 import IconDashboard from '../assets/icons/dashboard.svg'
 import IconPayouts from '../assets/icons/payouts.svg'
-import IconPricing from '../assets/icons/pricing.svg'
-import IconUsers from '../assets/icons/users.svg'
 import { getRoute } from './utils/utils'
 
 const NOFRIXION_API_URL = '/api'
@@ -47,18 +45,6 @@ const navItems: INavItem[] = [
     leftIcon: IconPayouts,
     label: 'Payouts',
     href: 'payouts',
-  },
-  {
-    leftIcon: IconUsers,
-    label: 'Users',
-    href: 'users',
-    isHidden: true,
-  },
-  {
-    leftIcon: IconPricing,
-    label: 'Pricing',
-    href: 'pricing',
-    isHidden: true,
   },
 ]
 
