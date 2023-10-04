@@ -1,7 +1,6 @@
 import { Currency } from '@nofrixion/moneymoov'
 
 import { LocalPaymentAttempt, LocalPaymentRequest, LocalTag } from '../../../types/LocalTypes'
-import { getTotalAmountPaid } from '../../../utils/paymentAttemptsHelper'
 import AmountPaid from '../AmountPaid/AmountPaid'
 import Contact from '../Contact/Contact'
 import { CopyLink } from '../CopyLink/CopyLink'
@@ -52,9 +51,7 @@ const PaymentRequestDetails = ({
         <div className="flex flex-col-reverse mb-4 lg:mb-10 gap-4 lg:gap-0 lg:flex-row lg:justify-between">
           <div className="lg:w-1/3">
             <AmountPaid
-              amountPaid={getTotalAmountPaid(
-                paymentRequest.paymentAttempts.filter((pa) => pa.paymentStatus === 'received'),
-              )}
+              amountPaid={paymentRequest.amountReceived - paymentRequest.amountRefunded}
               totalAmount={paymentRequest.amount}
               currency={paymentRequest.currency === Currency.EUR ? Currency.EUR : Currency.GBP}
               partialPaymentMethod={paymentRequest.partialPaymentMethod}

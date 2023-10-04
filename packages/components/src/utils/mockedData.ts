@@ -368,6 +368,9 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
 const regular: LocalPaymentRequest = {
   id: 'fa14171f-5fe6-4326-8c09-a9b59bbf6e7b',
   amount: 100.0,
+  amountReceived: 0,
+  amountRefunded: 0,
+  amountPending: 0,
   currency: Currency.EUR,
   paymentMethodTypes: [
     LocalPaymentMethodTypes.Card,
@@ -425,6 +428,9 @@ const overpaidPaymentRequest: LocalPaymentRequest = {
 const noShippingAddress: LocalPaymentRequest = {
   id: '5cb6f5c8-ce16-411f-9f55-29fb022bb444',
   amount: 285.0,
+  amountReceived: 0,
+  amountRefunded: 0,
+  amountPending: 0,
   currency: Currency.EUR,
   paymentMethodTypes: [
     LocalPaymentMethodTypes.Pisp,
@@ -458,6 +464,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'lukas.mueller@email.de',
     },
     amount: 900,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -493,6 +502,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'miguel.garcia@email.es',
     },
     amount: 1800,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -535,6 +547,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'lucas.jones@email.co.uk',
     },
     amount: 2700,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -577,6 +592,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'sophie.smith@email.co.uk',
     },
     amount: 2500,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -619,6 +637,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'oliver.johnson@email.co.uk',
     },
     amount: 3000,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -661,6 +682,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'ava.wilson@email.co.uk',
     },
     amount: 1500,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -696,6 +720,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'emily.brown@email.co.uk',
     },
     amount: 1200,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -738,6 +765,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'giuseppe.bianchi@email.it',
     },
     amount: 2300,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -780,6 +810,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'francois.dubois@email.fr',
     },
     amount: 1000,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -822,6 +855,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'isabella.lewis@email.co.uk',
     },
     amount: 3500,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -864,6 +900,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'lily.taylor@email.co.uk',
     },
     amount: 4200,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -906,6 +945,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'maria.silva@email.pt',
     },
     amount: 2200,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {

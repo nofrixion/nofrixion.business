@@ -2,9 +2,8 @@ import { cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-import CopyLinkIcon from '../../../assets/icons/copy-link-icon.svg'
-import TickMarkIcon from '../../../assets/icons/tick-mark-icon.svg'
 import { cn } from '../../../utils'
+import { Icon } from '../atoms'
 
 export interface CopyLinkButtonProps {
   variant: 'hoverable' | 'filled'
@@ -63,7 +62,7 @@ const CopyLinkButton: React.FC<CopyLinkButtonProps> = ({ variant, link, classNam
               }),
             )}
           >
-            <img src={CopyLinkIcon} alt="copyLink" />
+            <Icon name="copy-link/16" className="stroke-[#454D54]" />
             <span className="text-xs">Copy link</span>
           </motion.button>
         ) : (
@@ -74,7 +73,7 @@ const CopyLinkButton: React.FC<CopyLinkButtonProps> = ({ variant, link, classNam
             exit={{ opacity: 0 }}
             className={cn(baseButtonClassNames, 'gap-[0.354rem] px-4 bg-[#CFFCED] z-50')}
           >
-            <img src={TickMarkIcon} alt="linkCopied" />
+            <Icon name="tick-mark/12" className="stroke-[#454D54]" />
             <span className="text-xs">Copied</span>
           </motion.div>
         )}

@@ -66,8 +66,18 @@ const parseLocalTagToApiTag = (tag: LocalTag): Tag => {
 const remotePaymentRequestToLocalPaymentRequest = (
   remotePaymentRequest: PaymentRequest,
 ): LocalPaymentRequest => {
-  const { addresses, inserted, customerEmailAddress, amount, currency, status, tags } =
-    remotePaymentRequest
+  const {
+    addresses,
+    inserted,
+    customerEmailAddress,
+    amount,
+    currency,
+    status,
+    tags,
+    amountReceived,
+    amountRefunded,
+    amountPending,
+  } = remotePaymentRequest
 
   const parseApiStatusToLocalStatus = (status: PaymentResult): LocalPaymentStatus => {
     switch (status) {
@@ -255,7 +265,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
       !remotePaymentAttempt.cardAuthorisedAt &&
       remotePaymentAttempt.status !== PaymentResult.None
     ) {
-      return 'received'
+      return 'pending'
     }
 
     if (remotePaymentAttempt.status === PaymentResult.None) {
@@ -328,6 +338,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
       email: customerEmailAddress ?? undefined,
     },
     amount: amount,
+    amountReceived: amountReceived,
+    amountRefunded: amountRefunded,
+    amountPending: amountPending,
     currency: currency,
     tags: tags.map((tag) => parseApiTagToLocalTag(tag)),
     paymentMethodTypes: parseApiPaymentMethodTypesToLocalPaymentMethodTypes(

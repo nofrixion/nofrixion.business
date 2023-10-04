@@ -23,6 +23,9 @@ export interface LocalPaymentRequest {
   createdAt: Date
   contact: LocalContact
   amount: number
+  amountReceived: number
+  amountRefunded: number
+  amountPending: number
   currency: Currency
   tags: LocalTag[]
   paymentMethodTypes: LocalPaymentMethodTypes[]
