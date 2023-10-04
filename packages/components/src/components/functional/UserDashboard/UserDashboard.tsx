@@ -171,10 +171,6 @@ const UserDashboardMain = ({
     }
   }
 
-  const onSetUserRole = async (userId?: string) => {
-    console.log('Set user role', userId)
-  }
-
   const onDismissUserDetailsModal = () => {
     setSelectedUser(undefined)
     setSelectedUserId(undefined)
@@ -195,7 +191,6 @@ const UserDashboardMain = ({
         selectedUserId={selectedUserId}
         onInviteUser={onInviteUser}
         onResendInvitation={onResendInvitation}
-        onSetUserRole={onSetUserRole}
         metrics={metrics}
         isLoadingMetrics={isLoadingMetrics}
         status={status}
