@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
+import InviteUserModal from '../InviteUserModal/InviteUserModal'
 
 export interface UserDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -64,6 +65,7 @@ const UserDashboardMain = ({
 
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
+  const [inviteUserClicked, setInviteUserClicked] = useState(false)
 
   const { data: usersResponse, isLoading: isLoadingUsers } = useUsersAndInvites(
     {
@@ -147,7 +149,7 @@ const UserDashboardMain = ({
   }
 
   const onInviteUser = () => {
-    console.log('Invite user')
+    setInviteUserClicked(true)
   }
 
   const onResendInvitation = async (inviteID?: string) => {
@@ -192,6 +194,18 @@ const UserDashboardMain = ({
         status={status}
         setStatus={setStatus}
       />
+
+      {merchantId && (
+        <InviteUserModal
+          merchantID={merchantId}
+          apiUrl={apiUrl}
+          token={token}
+          isOpen={inviteUserClicked}
+          onDismiss={() => {
+            setInviteUserClicked(false)
+          }}
+        />
+      )}
     </div>
   )
 }
