@@ -1,4 +1,12 @@
-import { ApiError, ApiResponse, Merchant, MerchantBankSettings, Tag } from '../types/ApiResponses'
+import { UserRoleCreate } from '../types'
+import {
+  ApiError,
+  ApiResponse,
+  Merchant,
+  MerchantBankSettings,
+  Tag,
+  UserRole,
+} from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
 import { ApiProps, MerchantProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
@@ -90,5 +98,16 @@ export class MerchantClient extends BaseApiClient {
     return response.status === 'success'
       ? { success: true }
       : { success: false, error: response.error }
+  }
+
+  /**
+   * Assigns a user role to a user
+   * @param userRoleCreate The UserRoleCreate to create a user role
+   * @returns A UserRole response if successful. An ApiError if not successful.
+   */
+  async assignUserRole(userRoleCreate: UserRoleCreate): Promise<ApiResponse<UserRole>> {
+    const url = `${this.apiUrl}/userroles`
+
+    return await this.httpRequest<UserRole>(url, HttpMethod.POST, userRoleCreate)
   }
 }

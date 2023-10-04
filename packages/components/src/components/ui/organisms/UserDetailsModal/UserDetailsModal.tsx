@@ -1,4 +1,4 @@
-import { UserRoleAndUserInvite, UserRolesEnum } from '@nofrixion/moneymoov'
+import { UserRoleAndUserInvite, UserRoles } from '@nofrixion/moneymoov'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -10,34 +10,50 @@ import Select from '../../Select/Select'
 export interface UserDetailsModalProps {
   user?: UserRoleAndUserInvite
   open: boolean
+  merchantId: string
   onDismiss: () => void
+  onUpdateUserRole: (merchantId: string, emailAddress: string, userRole: UserRoles) => void
 }
 
-const UserDetailsModal = ({ user, open, onDismiss }: UserDetailsModalProps) => {
+const UserDetailsModal = ({
+  user,
+  open,
+  merchantId,
+  onDismiss,
+  onUpdateUserRole,
+}: UserDetailsModalProps) => {
   const [roleChanged, setRoleChanged] = useState(false)
-  const [selectedRole, setSelectedRole] = useState<UserRolesEnum | undefined>(user?.roleType)
+  const [selectedRole, setSelectedRole] = useState<UserRoles | undefined>(user?.roleType)
+  const [disabled, setDisabled] = useState(false)
 
   useEffect(() => {
     if (user) {
-      setSelectedRole(user.roleType)
+      if (user.roleType === UserRoles.NewlyRegistered) {
+        setSelectedRole(UserRoles.User)
+      } else {
+        setSelectedRole(user.roleType)
+      }
+
+      setDisabled(false)
+      setRoleChanged(false)
     }
   }, [user])
 
   const userRoles = [
-    { value: UserRolesEnum.User as string, label: 'User' },
-    { value: UserRolesEnum.Approver as string, label: 'Approver' },
-    { value: UserRolesEnum.AdminApprover as string, label: 'Admin Approver' },
-    { value: UserRolesEnum.PaymentRequestor as string, label: 'Payment Requester' },
-    { value: UserRolesEnum.NewlyRegistered as string, label: 'Newly Registered' },
+    { value: UserRoles.User as string, label: 'User' },
+    { value: UserRoles.Approver as string, label: 'Approver' },
+    { value: UserRoles.AdminApprover as string, label: 'Admin Approver' },
+    { value: UserRoles.PaymentRequestor as string, label: 'Payment Requester' },
   ]
 
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
       onDismiss()
+      setDisabled(false)
     }
   }
 
-  const handleRoleChange = (role: UserRolesEnum) => {
+  const handleRoleChange = (role: UserRoles) => {
     if (role !== user?.roleType) {
       setSelectedRole(role)
       setRoleChanged(true)
@@ -45,6 +61,11 @@ const UserDetailsModal = ({ user, open, onDismiss }: UserDetailsModalProps) => {
       setSelectedRole(role)
       setRoleChanged(false)
     }
+  }
+
+  const handleUpdateUserRole = () => {
+    setDisabled(true)
+    onUpdateUserRole(merchantId, user?.emailAddress ?? '', selectedRole ?? UserRoles.User)
   }
 
   return (
@@ -57,7 +78,7 @@ const UserDetailsModal = ({ user, open, onDismiss }: UserDetailsModalProps) => {
       >
         {user && (
           <div className="bg-white max-h-full h-full">
-            {roleChanged && (
+            {(roleChanged || user.roleType === UserRoles.NewlyRegistered) && (
               <motion.div
                 layout
                 initial={{ opacity: 0 }}
@@ -72,7 +93,12 @@ const UserDetailsModal = ({ user, open, onDismiss }: UserDetailsModalProps) => {
                 className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8"
               >
                 <div className="my-auto">
-                  <Button variant="primary" size={'medium'} onClick={onDismiss}>
+                  <Button
+                    variant="primary"
+                    size={'medium'}
+                    onClick={handleUpdateUserRole}
+                    disabled={disabled}
+                  >
                     Confirm new role
                   </Button>
                 </div>
@@ -101,7 +127,7 @@ const UserDetailsModal = ({ user, open, onDismiss }: UserDetailsModalProps) => {
                       }
                     })}
                     onChange={(selectedOption) => {
-                      handleRoleChange(selectedOption.value as UserRolesEnum)
+                      handleRoleChange(selectedOption.value as UserRoles)
                     }}
                     selected={userRoles.find((role) => role.value === selectedRole) ?? userRoles[0]}
                   />

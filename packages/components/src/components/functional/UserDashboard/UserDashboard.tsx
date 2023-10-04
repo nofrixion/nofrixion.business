@@ -11,10 +11,10 @@ import {
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
-import UserDetailsModal from '../../ui/organisms/UserDetailsModal/UserDetailsModal'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
+import UserDetailsModal from '../UserDetailsModal/UserDetailsModal'
 
 export interface UserDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -175,6 +175,11 @@ const UserDashboardMain = ({
     console.log('Set user role', userId)
   }
 
+  const onDismissUserDetailsModal = () => {
+    setSelectedUser(undefined)
+    setSelectedUserId(undefined)
+  }
+
   return (
     <div>
       <UIUserDashboard
@@ -209,11 +214,16 @@ const UserDashboardMain = ({
         />
       )}
 
-      <UserDetailsModal
-        user={selectedUser}
-        open={!!selectedUser}
-        onDismiss={() => setSelectedUser(undefined)}
-      />
+      {merchantId && (
+        <UserDetailsModal
+          merchantId={merchantId}
+          apiUrl={apiUrl}
+          token={token}
+          user={selectedUser}
+          open={!!selectedUser}
+          onDismiss={onDismissUserDetailsModal}
+        />
+      )}
     </div>
   )
 }

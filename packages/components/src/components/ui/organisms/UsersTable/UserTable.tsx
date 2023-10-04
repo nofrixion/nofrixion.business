@@ -27,7 +27,6 @@ export interface UserTableProps extends React.HTMLAttributes<HTMLDivElement> {
   onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   onResendInvitation?: (inviteID?: string) => void
-  onSetUserRole?: (userId?: string) => void
   isLoading?: boolean
   selectedUserId: string | undefined
 }
@@ -41,14 +40,15 @@ const UserTable: React.FC<UserTableProps> = ({
   isLoading,
   selectedUserId,
   onResendInvitation,
-  onSetUserRole,
   ...props
 }: UserTableProps) => {
   const onUserClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
     user: UserRoleAndUserInvite,
   ) => {
-    onUserClicked && onUserClicked(user)
+    if (user.status !== UserStatus.Invited) {
+      onUserClicked && onUserClicked(user)
+    }
   }
 
   const isExpired = (date: Date) => {
@@ -57,11 +57,16 @@ const UserTable: React.FC<UserTableProps> = ({
       : false
   }
 
-  const copyLink = (inviteId?: string) => {
+  const onCopyLinkClickedHandler = (
+    event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
+    inviteId?: string,
+  ) => {
+    event.stopPropagation()
     const url = `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Home/Register?userInviteID=${inviteId}`
     navigator.clipboard.writeText(url)
     makeToast('success', 'Link copied to clipboard')
   }
+
   return (
     <div className="flex justify-center w-full" {...props}>
       {users && users.length > 0 && (
@@ -139,6 +144,7 @@ const UserTable: React.FC<UserTableProps> = ({
                       {
                         'bg-[#F6F8F9] border-[#E1E5EA]':
                           selectedUserId && selectedUserId === user.userID,
+                        'cursor-default': user.status === UserStatus.Invited,
                       },
                     )}
                     key={`${user}-${index}`}
@@ -167,7 +173,7 @@ const UserTable: React.FC<UserTableProps> = ({
                             variant="secondary"
                             size="small"
                             className="w-fit"
-                            onClick={() => copyLink(user.inviteID)}
+                            onClick={(event) => onCopyLinkClickedHandler(event, user.inviteID)}
                           >
                             Copy link
                           </Button>
@@ -184,12 +190,7 @@ const UserTable: React.FC<UserTableProps> = ({
                         </Button>
                       )}
                       {user.status === UserStatus.RolePending && (
-                        <Button
-                          variant="primary"
-                          size="small"
-                          onClick={() => onSetUserRole && onSetUserRole(user.userID)}
-                          className="w-fit"
-                        >
+                        <Button variant="primary" size="small" className="w-fit">
                           Set role
                         </Button>
                       )}

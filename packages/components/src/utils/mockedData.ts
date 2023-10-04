@@ -4,7 +4,7 @@ import {
   Currency,
   PayoutStatus,
   UserRoleAndUserInvite,
-  UserRolesEnum,
+  UserRoles,
   UserStatus,
 } from '@nofrixion/moneymoov'
 
@@ -1367,7 +1367,7 @@ export const users: UserRoleAndUserInvite[] = [
     emailAddress: 'user1@user.com',
     name: 'John Doe',
     lastModified: new Date(),
-    roleType: UserRolesEnum.AdminApprover,
+    roleType: UserRoles.AdminApprover,
     status: UserStatus.Active,
   },
   {
@@ -1376,7 +1376,7 @@ export const users: UserRoleAndUserInvite[] = [
     emailAddress: 'user2@user.com',
     name: 'Jane Doe',
     lastModified: new Date(),
-    roleType: UserRolesEnum.NewlyRegistered,
+    roleType: UserRoles.NewlyRegistered,
     status: UserStatus.Invited,
   },
   {
@@ -1385,7 +1385,7 @@ export const users: UserRoleAndUserInvite[] = [
     emailAddress: 'user2@user.com',
     name: 'Joe Doe',
     lastModified: new Date(),
-    roleType: UserRolesEnum.NewlyRegistered,
+    roleType: UserRoles.NewlyRegistered,
     status: UserStatus.RolePending,
   },
   {
@@ -1394,7 +1394,7 @@ export const users: UserRoleAndUserInvite[] = [
     emailAddress: 'user2@user.com',
     name: 'Joe Doe',
     lastModified: new Date(),
-    roleType: UserRolesEnum.PaymentRequestor,
+    roleType: UserRoles.PaymentRequestor,
     status: UserStatus.Active,
   },
   {
@@ -1403,7 +1403,7 @@ export const users: UserRoleAndUserInvite[] = [
     emailAddress: 'user2@user.com',
     name: 'Joe Doe',
     lastModified: new Date(),
-    roleType: UserRolesEnum.User,
+    roleType: UserRoles.User,
     status: UserStatus.Active,
   },
 ]
