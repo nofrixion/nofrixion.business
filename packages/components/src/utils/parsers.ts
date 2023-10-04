@@ -18,7 +18,7 @@ import {
   Transaction,
   TransactionTypeValue,
   UserRolesEnum,
-  UserStatusFilterEnum,
+  UserStatus,
   Wallets,
 } from '@nofrixion/moneymoov'
 
@@ -559,13 +559,13 @@ const payoutStatusToStatus = (
   }
 }
 
-const userStatusToStatus = (status: UserStatusFilterEnum) => {
+const userStatusToStatus = (status: UserStatus) => {
   switch (status) {
-    case UserStatusFilterEnum.Active:
+    case UserStatus.Active:
       return 'active'
-    case UserStatusFilterEnum.Invited:
+    case UserStatus.Invited:
       return 'invited'
-    case UserStatusFilterEnum.RolePending:
+    case UserStatus.RolePending:
       return 'role_pending'
   }
 }

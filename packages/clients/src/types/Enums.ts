@@ -216,13 +216,6 @@ export enum AISCreditLineType {
   UNKNOWN = 7,
 }
 
-export enum UserStatusFilterEnum {
-  All = 'All',
-  Active = 'Active',
-  Invited = 'Invited',
-  RolePending = 'RolePending',
-}
-
 export const enum UserRolesEnum {
   User = 'User',
   Approver = 'Approver',

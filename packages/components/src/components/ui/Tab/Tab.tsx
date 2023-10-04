@@ -1,4 +1,4 @@
-import { PaymentRequestStatus, PayoutStatus } from '@nofrixion/moneymoov'
+import { PaymentRequestStatus, PayoutStatus, UserStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import classNames from 'classnames'
 
@@ -15,13 +15,20 @@ const getSpecificStatusClasses = (status: string) => {
     "fill-[#ABB2BA] [&>span]:text-defaultText data-[state='active']:border-[#73808C]":
       status === PaymentRequestStatus.None ||
       status === PaymentRequestStatus.Authorized ||
-      status === PayoutStatus.PENDING,
+      status === PayoutStatus.PENDING ||
+      status === UserStatus.Invited,
     "fill-[#ABB2BA] [&>span]:text-defaultText data-[state='active']:border-[#40BFBF]":
-      status === PaymentRequestStatus.All || status === PayoutStatus.All,
+      status === PaymentRequestStatus.All ||
+      status === PayoutStatus.All ||
+      status === UserStatus.All,
     "fill-[#E88C30] [&>span]:text-[#B25900] data-[state='active']:border-[#E88C30]":
-      status === PaymentRequestStatus.PartiallyPaid || status === PayoutStatus.PENDING_APPROVAL,
+      status === PaymentRequestStatus.PartiallyPaid ||
+      status === PayoutStatus.PENDING_APPROVAL ||
+      status === UserStatus.RolePending,
     "fill-[#00CC88] [&>span]:text-positive-green data-[state='active']:border-[#29A37A]":
-      status === PaymentRequestStatus.FullyPaid || status === PayoutStatus.PROCESSED,
+      status === PaymentRequestStatus.FullyPaid ||
+      status === PayoutStatus.PROCESSED ||
+      status === UserStatus.Active,
     "fill-negative-red [&>span]:text-negative-red data-[state='active']:border-[#DA0C30]":
       status === PayoutStatus.FAILED,
   })
@@ -47,6 +54,12 @@ const getDisplayTextForStatus = (status: string) => {
       return 'Pending authorisation'
     case PayoutStatus.PROCESSED:
       return 'Paid'
+    case UserStatus.Invited:
+      return 'Invited'
+    case UserStatus.Active:
+      return 'Active'
+    case UserStatus.RolePending:
+      return 'Role pending'
     default:
       return 'All'
   }
@@ -62,6 +75,9 @@ const showIndicator = (status: string) => {
     case PayoutStatus.PENDING_APPROVAL:
     case PayoutStatus.PROCESSED:
     case PayoutStatus.FAILED:
+    case UserStatus.Invited:
+    case UserStatus.Active:
+    case UserStatus.RolePending:
       return true
     default:
       return false

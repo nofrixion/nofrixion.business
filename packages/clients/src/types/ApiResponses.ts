@@ -15,7 +15,7 @@ import {
   PaymentResult,
   PayoutStatus,
   UserRolesEnum,
-  UserStatusFilterEnum,
+  UserStatus,
   Wallets,
 } from './Enums'
 
@@ -476,5 +476,12 @@ export type UserRoleAndUserInvite = {
   inviteID?: string
   lastModified: Date
   roleType: UserRolesEnum
-  status: UserStatusFilterEnum
+  status: UserStatus
+}
+
+export type UserMetrics = {
+  all: number
+  invited: number
+  rolePending: number
+  active: number
 }

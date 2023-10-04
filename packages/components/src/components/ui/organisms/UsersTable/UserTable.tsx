@@ -1,9 +1,4 @@
-import {
-  Pagination,
-  SortDirection,
-  UserRoleAndUserInvite,
-  UserStatusFilterEnum,
-} from '@nofrixion/moneymoov'
+import { Pagination, SortDirection, UserRoleAndUserInvite, UserStatus } from '@nofrixion/moneymoov'
 import { sub } from 'date-fns'
 
 import { cn } from '../../../../utils'
@@ -160,12 +155,12 @@ const UserTable: React.FC<UserTableProps> = ({
                       {user.lastModified && formatDateWithYearAndTime(new Date(user.lastModified))}
                     </TableCell>
                     <TableCell className="pl-0 text-grey-text font-normal text-sm text-right">
-                      {user.status === UserStatusFilterEnum.Invited &&
+                      {user.status === UserStatus.Invited &&
                         user.inviteID &&
                         isExpired(user.lastModified) && (
                           <Status variant="expired_link" className="stroke-none" />
                         )}
-                      {user.status === UserStatusFilterEnum.Invited &&
+                      {user.status === UserStatus.Invited &&
                         user.inviteID &&
                         !isExpired(user.lastModified) && (
                           <Button
@@ -179,7 +174,7 @@ const UserTable: React.FC<UserTableProps> = ({
                         )}
                     </TableCell>
                     <TableCell className="text-right w-0">
-                      {user.status === UserStatusFilterEnum.Invited && user.inviteID && (
+                      {user.status === UserStatus.Invited && user.inviteID && (
                         <Button
                           variant="primary"
                           size="small"
@@ -188,7 +183,7 @@ const UserTable: React.FC<UserTableProps> = ({
                           Resend invitation
                         </Button>
                       )}
-                      {user.status === UserStatusFilterEnum.RolePending && (
+                      {user.status === UserStatus.RolePending && (
                         <Button
                           variant="primary"
                           size="small"

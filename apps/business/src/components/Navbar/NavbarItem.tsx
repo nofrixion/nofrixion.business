@@ -24,7 +24,7 @@ const NavItem: React.FC<NavItemProps> = ({ leftIcon, label, href, isActive = fal
 
   if (isActive) {
     return (
-      <div className="relative text-sm px-4 pt-2 pb-2 flex items-center 2xl:px-6 cursor-not-allowed text-nav-accent">
+      <div className="relative text-sm px-4 pt-2 pb-2 flex items-center 2xl:px-6 cursor-default text-nav-accent">
         <NavItemContent />
       </div>
     )

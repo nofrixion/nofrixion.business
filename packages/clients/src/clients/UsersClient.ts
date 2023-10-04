@@ -1,5 +1,11 @@
-import { ApiResponse, HttpMethod, User, UserRoleAndUserInvitePageResponse } from '../types'
-import { ApiProps, UserRoleAndUserInvitePageProps } from '../types/props'
+import {
+  ApiResponse,
+  HttpMethod,
+  User,
+  UserMetrics,
+  UserRoleAndUserInvitePageResponse,
+} from '../types'
+import { ApiProps, MetricsProps, UserRoleAndUserInvitePageProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -56,5 +62,15 @@ export class UsersClient extends BaseApiClient {
       },
       `${this.url}/${merchantId}/usersWithUserInvites`,
     )
+  }
+
+  /**
+   * Gets the metrics for Users
+   * @returns A UserMetrics response if successful. An ApiError if not successful.
+   */
+  async metrics({ merchantId }: MetricsProps): Promise<ApiResponse<UserMetrics>> {
+    const url = `${this.url}/${merchantId}/metrics`
+
+    return await this.httpRequest<UserMetrics>(url, HttpMethod.GET)
   }
 }
