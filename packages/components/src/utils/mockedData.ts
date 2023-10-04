@@ -1427,5 +1427,10 @@ export default {
     processed: mockPayouts.find((p) => p.status === PayoutStatus.PROCESSED),
     failed: mockPayouts.find((p) => p.status === PayoutStatus.FAILED),
   },
-  users,
+  user: {
+    all: users,
+    active: users.filter((u) => u.status === UserStatus.Active),
+    invited: users.filter((u) => u.status === UserStatus.Invited),
+    rolePending: users.filter((u) => u.status === UserStatus.RolePending),
+  },
 }

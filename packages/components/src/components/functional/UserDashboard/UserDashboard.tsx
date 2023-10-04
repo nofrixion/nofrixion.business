@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ApiError,
   SortDirection,
@@ -12,6 +11,7 @@ import {
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
+import UserDetailsModal from '../../ui/organisms/UserDetailsModal/UserDetailsModal'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
 
@@ -62,6 +62,7 @@ const UserDashboardMain = ({
   const [roleSortDirection, setRoleSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [nameSortDirection, setNameSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
+  const [selectedUser, setSelectedUser] = useState<UserRoleAndUserInvite | undefined>(undefined)
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
 
@@ -143,6 +144,7 @@ const UserDashboardMain = ({
   }
 
   const onUserRowClicked = (user: UserRoleAndUserInvite) => {
+    setSelectedUser(user)
     setSelectedUserId(user.userID)
   }
 
@@ -191,6 +193,12 @@ const UserDashboardMain = ({
         isLoadingMetrics={isLoadingMetrics}
         status={status}
         setStatus={setStatus}
+      />
+
+      <UserDetailsModal
+        user={selectedUser}
+        open={!!selectedUser}
+        onDismiss={() => setSelectedUser(undefined)}
       />
     </div>
   )
