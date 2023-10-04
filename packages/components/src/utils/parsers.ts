@@ -260,10 +260,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
     remotePaymentAttempt: PaymentRequestPaymentAttempt,
   ): 'received' | 'pending' | 'failed' => {
     if (
-      !remotePaymentAttempt.settledAt &&
-      !remotePaymentAttempt.authorisedAt &&
-      !remotePaymentAttempt.cardAuthorisedAt &&
-      remotePaymentAttempt.status !== PaymentResult.None
+      remotePaymentAttempt.status !== PaymentResult.None &&
+      remotePaymentAttempt.authorisedAt &&
+      !remotePaymentAttempt.settledAt
     ) {
       return 'pending'
     }
