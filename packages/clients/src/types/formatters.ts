@@ -14,6 +14,7 @@ interface SortExpressionProps {
   lastModifiedSortDirection?: SortDirection
   nameSortDirection?: SortDirection
   roleSortDirection?: SortDirection
+  forSortDirection?: SortDirection
 }
 
 /**
@@ -89,6 +90,11 @@ const formatSortExpression = ({ ...props }: SortExpressionProps): string => {
   if (props.roleSortDirection && props.roleSortDirection !== SortDirection.NONE) {
     sortExpression += sortExpression.length > 0 ? ',' : ''
     sortExpression += `RoleType ${props.roleSortDirection}`
+  }
+
+  if (props.forSortDirection && props.forSortDirection !== SortDirection.NONE) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `Title ${props.forSortDirection}`
   }
 
   return sortExpression

@@ -89,6 +89,8 @@ const PaymentRequestDashboardMain = ({
     SortDirection.NONE,
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [forSortDirection, setForSortDirection] = useState<SortDirection>(SortDirection.NONE)
+
   const [status, setStatus] = useState<PaymentRequestStatus>(PaymentRequestStatus.All)
   const [dateRange, setDateRange] = useState<DateRange>({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
@@ -147,6 +149,7 @@ const PaymentRequestDashboardMain = ({
       statusSortDirection: statusSortDirection,
       createdSortDirection: createdSortDirection,
       contactSortDirection: contactSortDirection,
+      forSortDirection: forSortDirection,
       merchantId: merchantId,
       pageNumber: page,
       pageSize: pageSize,
@@ -614,6 +617,7 @@ const PaymentRequestDashboardMain = ({
           setCreatedSortDirection={setCreatedSortDirection}
           setContactSortDirection={setContactSortDirection}
           setAmountSortDirection={setAmountSortDirection}
+          setForSortDirection={setForSortDirection}
           onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
           onPaymentRequestDeleteClicked={onDeletePaymentRequest}
           onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
@@ -670,6 +674,7 @@ const PaymentRequestDashboardMain = ({
         createdSortDirection={createdSortDirection}
         contactSortDirection={contactSortDirection}
         amountSortDirection={amountSortDirection}
+        forSortDirection={forSortDirection}
         pageNumber={page}
         pageSize={pageSize}
         fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}
