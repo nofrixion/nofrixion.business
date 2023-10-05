@@ -481,6 +481,12 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     paymentAttempts: [],
     productOrService: '',
     captureFunds: true,
+    createdByUser: {
+      id: '1',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'johndoe@email.com',
+    },
   },
   {
     id: '2',
@@ -523,6 +529,12 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     paymentAttempts: [],
     productOrService: '',
     captureFunds: true,
+    createdByUser: {
+      id: '1',
+      firstName: 'JohnVeryLognNameThatWillBeTruncated',
+      lastName: 'Doe',
+      email: 'johndoe@email.com',
+    },
   },
   {
     id: '3',
@@ -565,6 +577,7 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
     paymentAttempts: [],
     productOrService: '',
     captureFunds: true,
+    merchantTokenDescription: 'Test merchant token description',
   },
   {
     id: '4',
