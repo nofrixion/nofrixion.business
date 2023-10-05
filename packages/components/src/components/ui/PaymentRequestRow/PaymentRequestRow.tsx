@@ -34,6 +34,8 @@ const Row = ({
   onDelete,
   onOpenPaymentPage,
   selected,
+  customerName,
+  title,
 }: PaymentRequestRowProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -97,6 +99,10 @@ const Row = ({
 
       <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
         {formatDate(createdAt)}
+      </td>
+
+      <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
+        <Contact name={customerName} email={title} size="small" />
       </td>
 
       <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>

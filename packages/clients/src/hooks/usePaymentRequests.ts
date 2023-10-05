@@ -11,6 +11,7 @@ const fetchPaymentRequests = async (
   createdSortDirection: SortDirection,
   contactSortDirection: SortDirection,
   amountSortDirection: SortDirection,
+  titleSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
   pageNumber?: number,
@@ -29,6 +30,7 @@ const fetchPaymentRequests = async (
     createdSortDirection: createdSortDirection,
     contactSortDirection: contactSortDirection,
     amountSortDirection: amountSortDirection,
+    titleSortDirection: titleSortDirection,
   })
 
   const client = new PaymentRequestClient({ apiUrl, authToken })
@@ -58,6 +60,7 @@ export const usePaymentRequests = (
     createdSortDirection,
     contactSortDirection,
     amountSortDirection,
+    titleSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -83,6 +86,7 @@ export const usePaymentRequests = (
     createdSortDirection,
     contactSortDirection,
     amountSortDirection,
+    titleSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -107,6 +111,7 @@ export const usePaymentRequests = (
         createdSortDirection,
         contactSortDirection,
         amountSortDirection,
+        titleSortDirection,
         pageNumber && pageNumber - 1,
         pageSize,
         fromDateMS,
@@ -128,6 +133,7 @@ export const usePaymentRequests = (
         createdSortDirection,
         contactSortDirection,
         amountSortDirection,
+        titleSortDirection,
         authToken,
         merchantId,
         pageNumber,
