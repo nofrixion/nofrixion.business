@@ -110,4 +110,14 @@ export class MerchantClient extends BaseApiClient {
 
     return await this.httpRequest<UserRole>(url, HttpMethod.POST, userRoleCreate)
   }
+
+  /**
+   * Delete a user role.
+   * @param userRoleId The user role id to delete.
+   * @returns OK if successful. An ApiError if not successful.
+   */
+  async deleteUserRole(userRoleId: string): Promise<ApiResponse<undefined>> {
+    const url = `${this.apiUrl}/userroles`
+    return await this.httpRequest<undefined>(`${url}/${userRoleId}`, HttpMethod.DELETE)
+  }
 }

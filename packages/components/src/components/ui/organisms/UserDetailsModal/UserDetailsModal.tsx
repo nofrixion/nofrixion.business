@@ -13,6 +13,7 @@ export interface UserDetailsModalProps {
   merchantId: string
   onDismiss: () => void
   onUpdateUserRole: (merchantId: string, emailAddress: string, userRole: UserRoles) => void
+  onDeleteUserRole: (userRoleId: string) => void
 }
 
 const UserDetailsModal = ({

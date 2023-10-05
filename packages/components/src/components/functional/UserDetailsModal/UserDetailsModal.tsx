@@ -1,4 +1,5 @@
 import {
+  useDeleteUserRole,
   UserRoleAndUserInvite,
   UserRoleCreate,
   UserRoles,
@@ -26,6 +27,7 @@ const UserDetailsModal = ({
   merchantId,
 }: UserDetailsModalProps) => {
   const { updateUserRole } = useUpdateUserRole({ apiUrl: apiUrl, authToken: token })
+  const { deleteUserRole } = useDeleteUserRole({ apiUrl: apiUrl, authToken: token })
 
   const onUpdateUserRole = async (
     merchantId: string,
@@ -49,6 +51,18 @@ const UserDetailsModal = ({
     }
   }
 
+  const onDeleteUserRole = async (userRoleId: string) => {
+    const response = await deleteUserRole(userRoleId)
+
+    if (response.status === 'error') {
+      makeToast('error', 'Could not delete user role. ' + response.error.detail)
+    } else {
+      makeToast('success', 'User role deleted.')
+
+      onDismiss()
+    }
+  }
+
   return (
     <>
       <UIUserDetailsModal
@@ -57,6 +71,7 @@ const UserDetailsModal = ({
         open={open}
         user={user}
         onUpdateUserRole={onUpdateUserRole}
+        onDeleteUserRole={onDeleteUserRole}
       />
     </>
   )
