@@ -62,6 +62,8 @@ export type PaymentRequest = {
   paymentAttempts: PaymentRequestPaymentAttempt[]
   notificationEmailAddresses?: string
   transactions: Transaction[]
+  createdByUser?: User
+  merchantTokenDescription?: string
 }
 
 export type PaymentRequestPaymentAttempt = {

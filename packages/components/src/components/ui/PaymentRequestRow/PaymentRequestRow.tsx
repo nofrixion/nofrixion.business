@@ -3,9 +3,10 @@ import { animate, AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
-import { formatAmount, formatDate } from '../../../utils/formatters'
+import { formatAmount } from '../../../utils/formatters'
 import Chip from '../Chip/Chip'
 import Contact from '../Contact/Contact'
+import Created from '../Created/Created'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
 import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
@@ -34,6 +35,8 @@ const Row = ({
   onDelete,
   onOpenPaymentPage,
   selected,
+  createdByUser,
+  merchantTokenDescription,
 }: PaymentRequestRowProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -96,7 +99,11 @@ const Row = ({
       </td>
 
       <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
-        {formatDate(createdAt)}
+        <Created
+          createdAt={createdAt}
+          createdByMerchantTokenDescription={merchantTokenDescription}
+          createdByUser={createdByUser}
+        />
       </td>
 
       <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>
