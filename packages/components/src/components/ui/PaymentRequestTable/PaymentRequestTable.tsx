@@ -81,7 +81,6 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
-            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
@@ -120,15 +119,12 @@ const PaymentRequestTable = ({
               </th>
               <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
                 <ColumnHeader
-                  label="Amount"
+                  label="Requested"
                   onSort={(sortDirection) =>
                     setAmountSortDirection && setAmountSortDirection(sortDirection)
                   }
                 />
               </th>
-
-              {/* Currency */}
-              <th className={classNames('pb-11 w-20')}></th>
 
               {/* 
               Tags column 
@@ -178,10 +174,6 @@ const PaymentRequestTable = ({
                   {/* Amount */}
                   <td className="p-0">
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
-                  </td>
-
-                  <td className="p-0">
-                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
                   </td>
 
                   {/* Extra */}

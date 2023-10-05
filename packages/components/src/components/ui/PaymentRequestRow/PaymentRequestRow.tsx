@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import { formatAmount } from '../../../utils/formatters'
+import { formatCurrency } from '../../../utils/uiFormaters'
 import Chip from '../Chip/Chip'
 import Contact from '../Contact/Contact'
 import Created from '../Created/Created'
@@ -122,11 +123,9 @@ const Row = ({
           `text-right truncate tabular-nums custom-backdrop-blur-${id}`,
         )}
       >
-        <span className="font-medium">{formatAmount(amount)}</span>
-      </td>
-
-      <td className={`py-3 custom-backdrop-blur-${id}`}>
-        <span className="text-grey-text text-sm block">{currency}</span>
+        <span className="font-medium">
+          {formatCurrency(currency)} {formatAmount(amount)}
+        </span>
       </td>
 
       <td className={classNames(commonTdClasses, `text-right pr-1.5 custom-backdrop-blur-${id}`)}>
