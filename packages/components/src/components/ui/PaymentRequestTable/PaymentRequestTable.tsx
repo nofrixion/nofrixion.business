@@ -82,6 +82,7 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
+            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
@@ -102,7 +103,7 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-40 text-left')}>
+              <th className={classNames(commonThClasses, 'w-36 text-left')}>
                 <ColumnHeader
                   label="For"
                   onSort={(sortDirection) =>
@@ -110,7 +111,7 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+              <th className={classNames(commonThClasses, 'w-36 text-left')}>
                 <ColumnHeader
                   label="Contact"
                   onSort={(sortDirection) =>
@@ -128,7 +129,7 @@ const PaymentRequestTable = ({
               </th>
 
               {/* Currency */}
-              <th className={classNames('pb-11 w-20')}></th>
+              <th className={classNames('pb-11 w-10')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
                 <ColumnHeader label="Payment Attempts" />

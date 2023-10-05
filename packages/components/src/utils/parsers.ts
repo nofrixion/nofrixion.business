@@ -271,7 +271,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
       remotePaymentAttempt.status === PaymentResult.None &&
       (remotePaymentAttempt.settleFailedAt ||
         remotePaymentAttempt.cardAuthoriseFailedAt ||
-        remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt)
+        remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt ||
+        (remotePaymentAttempt.paymentMethod === PaymentMethodTypes.Pisp &&
+          !remotePaymentAttempt.settledAt))
     ) {
       return 'failed'
     }
