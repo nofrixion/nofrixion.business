@@ -63,6 +63,8 @@ export type PaymentRequest = {
   notificationEmailAddresses?: string
   transactions: Transaction[]
   customerName?: string
+  createdByUser?: User
+  merchantTokenDescription?: string
 }
 
 export type PaymentRequestPaymentAttempt = {

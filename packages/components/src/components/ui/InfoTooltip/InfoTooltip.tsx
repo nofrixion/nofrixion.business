@@ -10,15 +10,30 @@ export interface InfoTooltipProps {
   children?: React.ReactNode
   side?: 'top' | 'bottom' | 'left' | 'right'
   className?: string
+  disableHover?: boolean
 }
 
-const InfoTooltip = ({ content, children, side = 'top', className }: InfoTooltipProps) => {
+const InfoTooltip = ({
+  content,
+  children,
+  side = 'top',
+  className,
+  disableHover,
+}: InfoTooltipProps) => {
   const [open, setOpen] = useState(false)
 
   return (
     <Tooltip.Provider delayDuration={0}>
       <Tooltip.Root open={open} onOpenChange={setOpen}>
-        <Tooltip.Trigger className={cn('w-4 h-4 min-w-[1rem] min-h-[1rem] inline-flex', className)}>
+        <Tooltip.Trigger
+          className={cn(
+            'w-4 h-4 min-w-[1rem] min-h-[1rem] inline-flex',
+            {
+              'pointer-events-none': disableHover,
+            },
+            className,
+          )}
+        >
           <>
             {/* If no children show img */}
             {!children && (
@@ -33,7 +48,12 @@ const InfoTooltip = ({ content, children, side = 'top', className }: InfoTooltip
             <Tooltip.Portal forceMount>
               <Tooltip.Content sideOffset={5} side={side} asChild>
                 <motion.div
-                  className="rounded-lg p-4 bg-white select-none max-w-xs shadow-[0px_0px_16px_rgba(4,_41,_49,_0.15)] text-sm z-50"
+                  className={cn(
+                    'rounded-lg p-4 bg-white select-none max-w-xs shadow-[0px_0px_16px_rgba(4,_41,_49,_0.15)] text-sm z-50',
+                    {
+                      'pointer-events-none': disableHover,
+                    },
+                  )}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

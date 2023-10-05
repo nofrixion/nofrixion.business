@@ -17,6 +17,7 @@ import {
   type Tag,
   Transaction,
   TransactionTypeValue,
+  User,
   UserRolesEnum,
   UserStatus,
   Wallets,
@@ -43,6 +44,7 @@ import {
   LocalPayout,
   LocalTag,
   LocalTransaction,
+  LocalUser,
 } from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
@@ -305,6 +307,16 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
+  const parseApiUserToLocalUser = (remoteUser: User): LocalUser => {
+    const { id, emailAddress, firstName, lastName } = remoteUser
+    return {
+      id: id,
+      email: emailAddress,
+      firstName: firstName,
+      lastName: lastName,
+    }
+  }
+
   return {
     id: remotePaymentRequest.id,
     status: parseApiStatusToLocalStatus(status),
@@ -338,6 +350,10 @@ const remotePaymentRequestToLocalPaymentRequest = (
     pispAccountID: remotePaymentRequest.pispAccountID,
     title: remotePaymentRequest.title,
     customerName: remotePaymentRequest.customerName,
+    createdByUser: remotePaymentRequest.createdByUser
+      ? parseApiUserToLocalUser(remotePaymentRequest.createdByUser)
+      : undefined,
+    merchantTokenDescription: remotePaymentRequest.merchantTokenDescription,
   }
 }
 
