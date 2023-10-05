@@ -99,6 +99,7 @@ export interface usePaymentRequestsProps
   createdSortDirection: SortDirection
   contactSortDirection: SortDirection
   amountSortDirection: SortDirection
+  titleSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   preservePreviousPageData?: boolean
