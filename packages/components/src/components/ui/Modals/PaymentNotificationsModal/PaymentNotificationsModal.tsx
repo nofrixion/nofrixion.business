@@ -19,10 +19,12 @@ const PaymentNotificationsModal = ({
   userDefaults,
   onDismiss,
   onApply,
+  isPrefilledData = false,
 }: NotificationEmailsModalProps) => {
   const [email, setEmail] = useState(userDefaults ? userDefaults.emailAddresses : '')
   const [hasEmailError, setHasEmailError] = useState(false)
   const [currentState, setCurrentState] = useState<LocalPaymentNotificationsFormValue>()
+  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
 
   // When the user clicks on the Apply button, we need to send the data to the parent component
   const onApplyClicked = (data: any) => {
@@ -63,6 +65,7 @@ const PaymentNotificationsModal = ({
 
     // Reset to initial state
     if (currentState) {
+      setIsDefault(currentState.isDefault)
       setEmail(currentState.emailAddresses)
       setHasEmailError(false)
     } else {
@@ -78,6 +81,7 @@ const PaymentNotificationsModal = ({
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
       onApplyEnabled={!hasEmailError}
+      defaultChecked={isDefault}
     >
       <div className="text-default-text font-normal text-sm mb-6">
         Send a notification to the specified email addresses when the payment is completed.

@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { cn } from '../../../utils'
 import { Button, Icon } from '../../ui/atoms'
@@ -13,6 +13,7 @@ export interface CustomModalProps extends BaseModalProps {
   buttonRowClassName?: string
   buttonText?: string
   buttonClaseName?: string
+  defaultChecked: boolean
 }
 
 export interface BaseModalProps {
@@ -37,8 +38,9 @@ const CustomModal = ({
   showDefault = true,
   buttonText = 'Apply',
   buttonClaseName = 'w-full md:w-auto px-16 ml-auto',
+  defaultChecked,
 }: CustomModalProps) => {
-  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
+  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(defaultChecked)
   const [currentState, setCurrentState] = useState<CustomModalState>()
 
   const onApplyClicked = () => {
@@ -61,6 +63,10 @@ const CustomModal = ({
       setIsDefaultChecked(currentState.isDefaultChecked)
     }
   }
+
+  useEffect(() => {
+    setIsDefaultChecked(defaultChecked)
+  }, [defaultChecked])
 
   return (
     <Dialog.Root open={open}>

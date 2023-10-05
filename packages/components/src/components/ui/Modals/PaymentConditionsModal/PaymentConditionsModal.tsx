@@ -1,5 +1,5 @@
 import { PaymentConditionsDefaults } from '@nofrixion/moneymoov'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalPaymentConditionsFormValue } from '../../../../types/LocalTypes'
 import Checkbox from '../../Checkbox/Checkbox'
@@ -17,10 +17,14 @@ const PaymentConditionsModal = ({
   onDismiss,
   onApply,
 }: PaymentConditionsModalProps) => {
-  const [isAllowPartialEnabled, setIsAllowPartialEnabled] = useState<boolean>(
-    userDefaults ? userDefaults.allowPartialPayments : false,
-  )
+  const [isAllowPartialEnabled, setIsAllowPartialEnabled] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<LocalPaymentConditionsFormValue>()
+
+  useEffect(() => {
+    if (userDefaults) {
+      setIsAllowPartialEnabled(userDefaults.allowPartialPayments)
+    }
+  }, [userDefaults])
 
   // When the user clicks on the Apply button, we need to send the data to the parent component
   const onApplyClicked = (data: any) => {
@@ -52,6 +56,7 @@ const PaymentConditionsModal = ({
       open={open}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
+      defaultChecked={isAllowPartialEnabled}
     >
       <div className="py-1">
         <Checkbox

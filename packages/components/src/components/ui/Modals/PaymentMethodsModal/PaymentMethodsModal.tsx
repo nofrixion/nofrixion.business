@@ -190,6 +190,7 @@ const PaymentMethodsModal = ({
       buttonRowClassName={
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
+      defaultChecked={isDefault}
     >
       <div className="[&>*]:border-b [&>*]:border-solid [&>*]:border-b-border-grey text-sm">
         <Switch
