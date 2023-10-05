@@ -70,6 +70,8 @@ export type PaymentRequestPaymentAttempt = {
   initiatedAt: Date
   authorisedAt?: Date
   cardAuthorisedAt?: Date
+  cardAuthoriseFailedAt?: Date
+  cardPayerAuthenticationSetupFailedAt?: Date
   settledAt?: Date
   refundedAt?: Date
   settleFailedAt?: Date

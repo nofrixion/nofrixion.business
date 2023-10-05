@@ -259,15 +259,16 @@ const remotePaymentRequestToLocalPaymentRequest = (
   const getPaymentAttemptPaymentStatus = (
     remotePaymentAttempt: PaymentRequestPaymentAttempt,
   ): 'received' | 'pending' | 'failed' => {
-    if (
-      remotePaymentAttempt.status !== PaymentResult.None &&
-      remotePaymentAttempt.authorisedAt &&
-      !remotePaymentAttempt.settledAt
-    ) {
+    if (remotePaymentAttempt.status === PaymentResult.Authorized) {
       return 'pending'
     }
 
-    if (remotePaymentAttempt.status === PaymentResult.None) {
+    if (
+      remotePaymentAttempt.status === PaymentResult.None &&
+      (remotePaymentAttempt.settleFailedAt ||
+        remotePaymentAttempt.cardAuthoriseFailedAt ||
+        remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt)
+    ) {
       return 'failed'
     }
 

@@ -21,7 +21,7 @@ const CopyLinkButton: React.FC<CopyLinkButtonProps> = ({ variant, link, classNam
     variants: {
       intent: {
         hoverable: ['bg-white hover:bg-[#DEE5ED]'],
-        filled: ['bg-[#DEE5ED]'],
+        filled: ['bg-[#DEE5ED] transition hover:bg-[#BDCCDB]'],
       },
     },
     defaultVariants: {

@@ -121,12 +121,7 @@ const PaymentRequestTable = ({
               <th className={classNames('pb-11 w-20')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
-                <ColumnHeader
-                  label="Payment Attempts"
-                  onSort={(sortDirection) =>
-                    setAmountSortDirection && setAmountSortDirection(sortDirection)
-                  }
-                />
+                <ColumnHeader label="Payment Attempts" />
               </th>
 
               {/* 
