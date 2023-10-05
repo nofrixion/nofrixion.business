@@ -339,6 +339,7 @@ const CreatePaymentRequestPage = ({
 
   const handleDefaultsChanged = () => {
     const defaults: UserPaymentDefaults = {}
+    let changed = false
 
     if (paymentMethodsFormValue.isDefault) {
       defaults.paymentMethodsDefaults = {
@@ -350,27 +351,32 @@ const CreatePaymentRequestPage = ({
         pispPriorityBank: paymentMethodsFormValue.priorityBank ? true : false,
         pispPriorityBankID: paymentMethodsFormValue.priorityBank?.id ?? '',
       }
+      changed = true
     } else {
-      defaults.paymentMethodsDefaults = undefined
+      defaults.paymentMethodsDefaults = userPaymentDefaults?.paymentMethodsDefaults
     }
 
     if (paymentConditionsFormValue.isDefault) {
       defaults.paymentConditionsDefaults = {
         allowPartialPayments: paymentConditionsFormValue.allowPartialPayments,
       }
+      changed = true
     } else {
-      defaults.paymentConditionsDefaults = undefined
+      defaults.paymentConditionsDefaults = userPaymentDefaults?.paymentConditionsDefaults
     }
 
     if (paymentNotificationsFormValue.isDefault) {
       defaults.notificationEmailsDefaults = {
         emailAddresses: paymentNotificationsFormValue.emailAddresses,
       }
+      changed = true
     } else {
-      defaults.notificationEmailsDefaults = undefined
+      defaults.notificationEmailsDefaults = userPaymentDefaults?.notificationEmailsDefaults
     }
 
-    onDefaultsChanged(defaults)
+    if (changed) {
+      onDefaultsChanged(defaults)
+    }
   }
 
   const resetStates = () => {
