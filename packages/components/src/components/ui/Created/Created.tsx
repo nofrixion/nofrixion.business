@@ -1,4 +1,5 @@
 import { cva, VariantProps } from 'class-variance-authority'
+import { useEffect, useRef, useState } from 'react'
 
 import { LocalUser } from '../../../types/LocalTypes'
 import { formatDateWithYear } from '../../../utils/formatters'
@@ -41,14 +42,31 @@ const Created = ({
   createdByMerchantTokenDescription,
   size = 'small',
 }: CreatedProps) => {
+  const createdByRef = useRef(null)
+  const [isTruncated, setIsTruncated] = useState(false)
+
+  const compareSize = () => {
+    if (createdByRef.current) {
+      const element: HTMLSpanElement = createdByRef.current
+      setIsTruncated(element.scrollWidth > element.clientWidth)
+    }
+  }
+
+  useEffect(() => {
+    compareSize()
+    window.addEventListener('resize', compareSize)
+    return () => {
+      window.removeEventListener('resize', compareSize)
+    }
+  }, [])
+
   const createdByUserName = createdByUser
     ? `${createdByUser.firstName} ${createdByUser.lastName}`
     : ''
   return (
     <div className="flex flex-col">
       <span className={createdAtVariants({ size: size })}>{formatDateWithYear(createdAt)}</span>
-      {((createdByUser && createdByUserName.length > 21) ||
-        (createdByMerchantTokenDescription && createdByMerchantTokenDescription.length > 21)) && (
+      {(createdByUser || createdByMerchantTokenDescription) && (
         <InfoTooltip
           content={
             createdByUser
@@ -58,30 +76,14 @@ const Created = ({
               : ''
           }
           className="w-full"
+          disableHover={!isTruncated}
         >
-          {createdByUser && (
-            <span className={createdByVariants({ size: size })}>
-              {createdByUser.firstName} {createdByUser.lastName}
-            </span>
-          )}
-          {createdByMerchantTokenDescription && (
-            <span className={createdByVariants({ size: size })}>
-              {createdByMerchantTokenDescription}
-            </span>
-          )}
+          <span className={createdByVariants({ size: size })} ref={createdByRef}>
+            {createdByUser
+              ? createdByUser.firstName + ' ' + createdByUser.lastName
+              : createdByMerchantTokenDescription}
+          </span>
         </InfoTooltip>
-      )}
-
-      {createdByUser && createdByUserName.length <= 21 && (
-        <span className={createdByVariants({ size: size })}>
-          {createdByUser.firstName} {createdByUser.lastName}
-        </span>
-      )}
-
-      {createdByMerchantTokenDescription && createdByMerchantTokenDescription.length <= 21 && (
-        <span className={createdByVariants({ size: size })}>
-          {createdByMerchantTokenDescription}
-        </span>
       )}
     </div>
   )

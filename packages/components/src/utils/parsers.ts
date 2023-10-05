@@ -348,6 +348,8 @@ const remotePaymentRequestToLocalPaymentRequest = (
     captureFunds: !remotePaymentRequest.cardAuthorizeOnly,
     transactions: remoteTransactionsToLocal(remotePaymentRequest.transactions),
     pispAccountID: remotePaymentRequest.pispAccountID,
+    title: remotePaymentRequest.title,
+    customerName: remotePaymentRequest.customerName,
     createdByUser: remotePaymentRequest.createdByUser
       ? parseApiUserToLocalUser(remotePaymentRequest.createdByUser)
       : undefined,
