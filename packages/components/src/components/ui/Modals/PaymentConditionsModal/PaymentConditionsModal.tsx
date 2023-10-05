@@ -16,9 +16,11 @@ const PaymentConditionsModal = ({
   userDefaults,
   onDismiss,
   onApply,
+  isPrefilledData = false,
 }: PaymentConditionsModalProps) => {
   const [isAllowPartialEnabled, setIsAllowPartialEnabled] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<LocalPaymentConditionsFormValue>()
+  const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
 
   useEffect(() => {
     if (userDefaults) {
@@ -44,6 +46,7 @@ const PaymentConditionsModal = ({
 
     // Reset to initial state
     if (currentState) {
+      setIsDefault(currentState.isDefault)
       setIsAllowPartialEnabled(currentState.allowPartialPayments)
     } else {
       setIsAllowPartialEnabled(userDefaults ? userDefaults.allowPartialPayments : false)
@@ -56,7 +59,7 @@ const PaymentConditionsModal = ({
       open={open}
       onDismiss={handleOnDismiss}
       onApply={onApplyClicked}
-      defaultChecked={isAllowPartialEnabled}
+      defaultChecked={isDefault}
     >
       <div className="py-1">
         <Checkbox
