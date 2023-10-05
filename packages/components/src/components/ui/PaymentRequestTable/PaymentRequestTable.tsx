@@ -22,7 +22,7 @@ export interface PaymentRequestTableProps {
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
   setContactSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
-  setForSortDirection?: (sortDirection: SortDirection) => void
+  setTitleSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
   onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
   isLoading?: boolean
@@ -47,7 +47,7 @@ const PaymentRequestTable = ({
   setCreatedSortDirection,
   setContactSortDirection,
   setAmountSortDirection,
-  setForSortDirection,
+  setTitleSortDirection,
   isLoading = false,
   isEmpty = false,
   onCreatePaymentRequest,
@@ -106,7 +106,7 @@ const PaymentRequestTable = ({
                 <ColumnHeader
                   label="For"
                   onSort={(sortDirection) =>
-                    setForSortDirection && setForSortDirection(sortDirection)
+                    setTitleSortDirection && setTitleSortDirection(sortDirection)
                   }
                 />
               </th>
