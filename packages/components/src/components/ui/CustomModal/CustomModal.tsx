@@ -13,7 +13,7 @@ export interface CustomModalProps extends BaseModalProps {
   buttonRowClassName?: string
   buttonText?: string
   buttonClaseName?: string
-  defaultChecked: boolean
+  defaultChecked?: boolean
 }
 
 export interface BaseModalProps {
@@ -40,7 +40,7 @@ const CustomModal = ({
   buttonClaseName = 'w-full md:w-auto px-16 ml-auto',
   defaultChecked,
 }: CustomModalProps) => {
-  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(defaultChecked)
+  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(defaultChecked ?? false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
 
   const onApplyClicked = () => {
@@ -65,7 +65,7 @@ const CustomModal = ({
   }
 
   useEffect(() => {
-    setIsDefaultChecked(defaultChecked)
+    setIsDefaultChecked(defaultChecked ?? false)
   }, [defaultChecked])
 
   return (
