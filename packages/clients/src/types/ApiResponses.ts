@@ -14,6 +14,9 @@ import {
   PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  UserInviteStatusEnum,
+  UserRolesEnum,
+  UserStatus,
   Wallets,
 } from './Enums'
 
@@ -59,6 +62,9 @@ export type PaymentRequest = {
   paymentAttempts: PaymentRequestPaymentAttempt[]
   notificationEmailAddresses?: string
   transactions: Transaction[]
+  customerName?: string
+  createdByUser?: User
+  merchantTokenDescription?: string
   amountReceived: number
   amountRefunded: number
   amountPending: number
@@ -386,6 +392,8 @@ export type PayoutMetrics = {
 
 export type PayoutPageResponse = PageResponse<Payout>
 
+export type UserRoleAndUserInvitePageResponse = PageResponse<UserRoleAndUserInvite>
+
 export type Beneficiary = {
   id: string
   merchantID: string
@@ -467,4 +475,38 @@ export type AISCreditLine = {
 export type AISConsolidatedAccountInformation = {
   id: string
   accountBalances: AISAccountBalance[]
+}
+
+export type UserRoleAndUserInvite = {
+  userID?: string
+  merchantID: string
+  emailAddress: string
+  name: string
+  inviteID?: string
+  lastModified: Date
+  roleType: UserRolesEnum
+  status: UserStatus
+}
+
+export type UserMetrics = {
+  all: number
+  invited: number
+  rolePending: number
+  active: number
+}
+
+export type UserInvite = {
+  id: string
+  inviteeEmailAddress: string
+  inviteeFirstName?: string
+  inviteeLastName?: string
+  inviterEmailAddress: string
+  inviterFirstName: string
+  inviterLastName: string
+  merchantID: string
+  registrationUrl: string
+  lastInvited: Date
+  merchantName: string
+  message: string
+  status: UserInviteStatusEnum
 }

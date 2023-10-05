@@ -41,6 +41,10 @@ export interface LocalPaymentRequest {
   captureFunds: boolean
   transactions?: LocalTransaction[]
   pispAccountID?: string
+  title?: string
+  customerName?: string
+  createdByUser?: LocalUser
+  merchantTokenDescription?: string
 }
 
 export interface LocalCounterparty {
@@ -254,4 +258,11 @@ export interface AutoSuggestionValue {
 export interface AutoSuggestionAdd {
   fieldId: FieldID
   value: string
+}
+
+export interface LocalUser {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
 }

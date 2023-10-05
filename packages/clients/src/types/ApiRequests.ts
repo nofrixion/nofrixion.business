@@ -103,3 +103,12 @@ export type ConsentRequest = {
   successWebHookUrl?: string
   IsConnectedAccounts: boolean
 }
+
+export type UserInviteCreate = {
+  merchantID: string
+  inviteeEmailAddress: string
+  inviteeFirstName?: string
+  inviteeLastName?: string
+  registrationUrl?: string
+  sendInviteEmail: boolean
+}

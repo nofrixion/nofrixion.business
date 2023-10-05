@@ -120,6 +120,12 @@ Playground.args = {
   amount: 29,
   currency: Currency.EUR,
   tags: tags,
+  createdByUser: {
+    id: '1',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'johndoe@email.com',
+  },
 }
 
 export const ExampleToday = Template.bind({})
@@ -133,6 +139,12 @@ ExampleToday.args = {
   amount: 29,
   currency: Currency.EUR,
   tags: tags,
+  createdByUser: {
+    id: '1',
+    firstName: 'JohnVeryLongNameWhichWillBeTruncated',
+    lastName: 'Doe',
+    email: 'johndoe@email.com',
+  },
 }
 
 export const ExampleYesterday = Template.bind({})
@@ -146,6 +158,7 @@ ExampleYesterday.args = {
   amount: 115949,
   currency: Currency.EUR,
   tags: tags,
+  merchantTokenDescription: 'This is a very long description which will be truncated',
 }
 
 export const ExampleTwoDaysAgo = Template.bind({})
@@ -159,6 +172,7 @@ ExampleTwoDaysAgo.args = {
   amount: 115.5,
   currency: Currency.EUR,
   tags: tags,
+  merchantTokenDescription: 'This is not very long',
 }
 
 export const ExampleTwoYearsAgo = Template.bind({})
