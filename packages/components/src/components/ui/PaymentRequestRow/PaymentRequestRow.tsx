@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import { formatAmount } from '../../../utils/formatters'
+import { formatCurrency } from '../../../utils/uiFormaters'
 import Chip from '../Chip/Chip'
 import Contact from '../Contact/Contact'
 import Created from '../Created/Created'
@@ -27,7 +28,6 @@ const Row = ({
   id,
   status,
   createdAt,
-  contact,
   amount,
   currency,
   tags,
@@ -132,21 +132,15 @@ const Row = ({
         <Contact name={customerName} email={title} size="small" />
       </td>
 
-      <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>
-        <Contact {...contact} />
-      </td>
-
       <td
         className={classNames(
           commonTdClasses,
           `text-right truncate tabular-nums custom-backdrop-blur-${id}`,
         )}
       >
-        <span className="font-medium">{formatAmount(amount)}</span>
-      </td>
-
-      <td className={`py-3 custom-backdrop-blur-${id}`}>
-        <span className="text-grey-text text-sm block">{currency}</span>
+        <span className="font-medium">
+          {formatCurrency(currency)} {formatAmount(amount)}
+        </span>
       </td>
 
       <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>

@@ -20,7 +20,6 @@ export interface PaymentRequestTableProps {
   onPageChanged?: (newPage: number) => void
   setStatusSortDirection?: (sortDirection: SortDirection) => void
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
-  setContactSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   setTitleSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
@@ -45,7 +44,6 @@ const PaymentRequestTable = ({
   onPageChanged,
   setStatusSortDirection,
   setCreatedSortDirection,
-  setContactSortDirection,
   setAmountSortDirection,
   setTitleSortDirection,
   isLoading = false,
@@ -80,9 +78,6 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
-            <col />
-            <col />
-            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
@@ -111,25 +106,14 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-36 text-left')}>
+              <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
                 <ColumnHeader
-                  label="Contact"
-                  onSort={(sortDirection) =>
-                    setContactSortDirection && setContactSortDirection(sortDirection)
-                  }
-                />
-              </th>
-              <th className={classNames(commonThClasses, 'w-40 text-right pr-0')}>
-                <ColumnHeader
-                  label="Amount"
+                  label="Requested"
                   onSort={(sortDirection) =>
                     setAmountSortDirection && setAmountSortDirection(sortDirection)
                   }
                 />
               </th>
-
-              {/* Currency */}
-              <th className={classNames('pb-11 w-10')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
                 <ColumnHeader label="Payment Attempts" />
@@ -175,19 +159,9 @@ const PaymentRequestTable = ({
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
                   </td>
 
-                  {/* Contact */}
-                  <td>
-                    <div className="w-3/4 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                  </td>
-
                   {/* Amount */}
                   <td className="p-0">
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
-                  </td>
-
-                  {/* Currency */}
-                  <td className="p-0">
-                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
                   </td>
 
                   {/* Payment Attempts */}
