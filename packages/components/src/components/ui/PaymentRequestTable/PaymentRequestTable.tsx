@@ -78,6 +78,7 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
+            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
@@ -98,7 +99,7 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-36 text-left')}>
+              <th className={classNames(commonThClasses, 'w-44 text-left')}>
                 <ColumnHeader
                   label="For"
                   onSort={(sortDirection) =>
