@@ -1,10 +1,13 @@
 import {
   useDeleteUserRole,
+  User,
   UserRoleAndUserInvite,
   UserRoleCreate,
   UserRoles,
   useUpdateUserRole,
+  useUser,
 } from '@nofrixion/moneymoov'
+import { useEffect, useState } from 'react'
 
 import UIUserDetailsModal from '../../ui/organisms/UserDetailsModal/UserDetailsModal'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -28,6 +31,17 @@ const UserDetailsModal = ({
 }: UserDetailsModalProps) => {
   const { updateUserRole } = useUpdateUserRole({ apiUrl: apiUrl, authToken: token })
   const { deleteUserRole } = useDeleteUserRole({ apiUrl: apiUrl, authToken: token })
+  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined)
+
+  const { data: userResponse } = useUser({
+    apiUrl: apiUrl,
+  })
+
+  useEffect(() => {
+    if (userResponse?.status === 'success') {
+      setCurrentUser(userResponse.data)
+    }
+  }, [userResponse])
 
   const onUpdateUserRole = async (
     merchantId: string,
@@ -65,14 +79,17 @@ const UserDetailsModal = ({
 
   return (
     <>
-      <UIUserDetailsModal
-        merchantId={merchantId}
-        onDismiss={onDismiss}
-        open={open}
-        user={user}
-        onUpdateUserRole={onUpdateUserRole}
-        onDeleteUserRole={onDeleteUserRole}
-      />
+      {user && merchantId && (
+        <UIUserDetailsModal
+          merchantId={merchantId}
+          onDismiss={onDismiss}
+          open={open}
+          user={user}
+          currentUser={currentUser}
+          onUpdateUserRole={onUpdateUserRole}
+          onDeleteUserRole={onDeleteUserRole}
+        />
+      )}
     </>
   )
 }

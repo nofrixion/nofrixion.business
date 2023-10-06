@@ -1,4 +1,4 @@
-import { UserRoleAndUserInvite, UserRoles } from '@nofrixion/moneymoov'
+import { User, UserRoleAndUserInvite, UserRoles } from '@nofrixion/moneymoov'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -9,6 +9,7 @@ import Select from '../../Select/Select'
 
 export interface UserDetailsModalProps {
   user?: UserRoleAndUserInvite
+  currentUser?: User
   open: boolean
   merchantId: string
   onDismiss: () => void
@@ -18,6 +19,7 @@ export interface UserDetailsModalProps {
 
 const UserDetailsModal = ({
   user,
+  currentUser,
   open,
   merchantId,
   onDismiss,
@@ -120,18 +122,25 @@ const UserDetailsModal = ({
               <div className="flex text-sm mt-8">
                 <div className="text-grey-text w-1/3">Role</div>
                 <div className="pt-4 md:pt-0 w-1/2">
-                  <Select
-                    options={userRoles.map((role) => {
-                      return {
-                        value: role.value,
-                        label: role.label,
+                  {currentUser?.id === user.userID && (
+                    <span>{userRoles.find((role) => role.value === user.roleType)?.label}</span>
+                  )}
+                  {currentUser?.id !== user.userID && (
+                    <Select
+                      options={userRoles.map((role) => {
+                        return {
+                          value: role.value,
+                          label: role.label,
+                        }
+                      })}
+                      onChange={(selectedOption) => {
+                        handleRoleChange(selectedOption.value as UserRoles)
+                      }}
+                      selected={
+                        userRoles.find((role) => role.value === selectedRole) ?? userRoles[0]
                       }
-                    })}
-                    onChange={(selectedOption) => {
-                      handleRoleChange(selectedOption.value as UserRoles)
-                    }}
-                    selected={userRoles.find((role) => role.value === selectedRole) ?? userRoles[0]}
-                  />
+                    />
+                  )}
                 </div>
               </div>
             </div>
