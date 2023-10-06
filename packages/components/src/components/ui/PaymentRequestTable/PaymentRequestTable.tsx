@@ -20,7 +20,6 @@ export interface PaymentRequestTableProps {
   onPageChanged?: (newPage: number) => void
   setStatusSortDirection?: (sortDirection: SortDirection) => void
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
-  setContactSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   setTitleSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
@@ -45,7 +44,6 @@ const PaymentRequestTable = ({
   onPageChanged,
   setStatusSortDirection,
   setCreatedSortDirection,
-  setContactSortDirection,
   setAmountSortDirection,
   setTitleSortDirection,
   isLoading = false,
@@ -80,7 +78,6 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
-            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
@@ -106,14 +103,6 @@ const PaymentRequestTable = ({
                   label="For"
                   onSort={(sortDirection) =>
                     setTitleSortDirection && setTitleSortDirection(sortDirection)
-                  }
-                />
-              </th>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
-                <ColumnHeader
-                  label="Contact"
-                  onSort={(sortDirection) =>
-                    setContactSortDirection && setContactSortDirection(sortDirection)
                   }
                 />
               </th>
@@ -164,11 +153,6 @@ const PaymentRequestTable = ({
                   {/* For */}
                   <td>
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                  </td>
-
-                  {/* Contact */}
-                  <td>
-                    <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
                   </td>
 
                   {/* Amount */}
