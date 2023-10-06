@@ -139,14 +139,12 @@ const UserTable: React.FC<UserTableProps> = ({
                 users.length > 0 &&
                 users?.map((user, index) => (
                   <TableRow
-                    className={cn(
-                      'cursor-pointer transition-all ease-in-out hover:bg-[#F6F8F9] hover:border-[#E1E5EA]',
-                      {
-                        'bg-[#F6F8F9] border-[#E1E5EA]':
-                          selectedUserId && selectedUserId === user.userID,
-                        'cursor-default': user.status === UserStatus.Invited,
-                      },
-                    )}
+                    className={cn('cursor-pointer transition-all ease-in-out', {
+                      'hover:bg-white': user.status === UserStatus.Invited,
+                      'bg-[#F6F8F9] border-[#E1E5EA]':
+                        selectedUserId && selectedUserId === user.userID,
+                      'cursor-default': user.status === UserStatus.Invited,
+                    })}
                     key={`${user}-${index}`}
                     onClick={(event) => onUserClickedHandler(event, user)}
                   >
