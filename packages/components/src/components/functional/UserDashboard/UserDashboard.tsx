@@ -20,6 +20,7 @@ export interface UserDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
+  merchantName: string
   onUnauthorized: () => void
 }
 
@@ -27,6 +28,7 @@ const UserDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  merchantName,
   onUnauthorized,
 }: UserDashboardProps) => {
   const queryClient = useQueryClient()
@@ -36,6 +38,7 @@ const UserDashboard = ({
       <UserDashboardMain
         token={token}
         merchantId={merchantId}
+        merchantName={merchantName}
         apiUrl={apiUrl}
         onUnauthorized={onUnauthorized}
       />
@@ -49,6 +52,7 @@ const UserDashboardMain = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  merchantName,
   onUnauthorized,
 }: UserDashboardProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -212,6 +216,7 @@ const UserDashboardMain = ({
       {merchantId && (
         <UserDetailsModal
           merchantId={merchantId}
+          merchantName={merchantName}
           apiUrl={apiUrl}
           token={token}
           user={selectedUser}

@@ -155,7 +155,7 @@ const UserDetailsModal = ({
               <div className="flex text-sm mt-8">
                 <div className="text-grey-text w-1/3"></div>
                 <div className="pt-4 md:pt-0 w-1/2">
-                  {user && user.userRoleID && (
+                  {user && user.userRoleID && user.roleType !== UserRoles.NewlyRegistered && (
                     <Button
                       variant={'tertiary_negative'}
                       size={'small'}
