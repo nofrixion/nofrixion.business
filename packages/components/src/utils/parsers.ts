@@ -70,8 +70,18 @@ const parseLocalTagToApiTag = (tag: LocalTag): Tag => {
 const remotePaymentRequestToLocalPaymentRequest = (
   remotePaymentRequest: PaymentRequest,
 ): LocalPaymentRequest => {
-  const { addresses, inserted, customerEmailAddress, amount, currency, status, tags } =
-    remotePaymentRequest
+  const {
+    addresses,
+    inserted,
+    customerEmailAddress,
+    amount,
+    currency,
+    status,
+    tags,
+    amountReceived,
+    amountRefunded,
+    amountPending,
+  } = remotePaymentRequest
 
   const parseApiStatusToLocalStatus = (status: PaymentResult): LocalPaymentStatus => {
     switch (status) {
@@ -250,6 +260,29 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
+  const getPaymentAttemptPaymentStatus = (
+    remotePaymentAttempt: PaymentRequestPaymentAttempt,
+  ): 'received' | 'pending' | 'failed' | 'unknown' => {
+    if (remotePaymentAttempt.status === PaymentResult.Authorized) {
+      return 'pending'
+    }
+
+    if (
+      remotePaymentAttempt.status === PaymentResult.None &&
+      (remotePaymentAttempt.settleFailedAt ||
+        remotePaymentAttempt.cardAuthoriseFailedAt ||
+        remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt)
+    ) {
+      return 'failed'
+    }
+
+    if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
+      return 'received'
+    }
+
+    return 'unknown'
+  }
+
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
     remotePaymentAttempts: PaymentRequestPaymentAttempt[],
   ): LocalPaymentAttempt[] => {
@@ -262,46 +295,41 @@ const remotePaymentRequestToLocalPaymentRequest = (
           return new Date(b.initiatedAt ?? 0).getTime() - new Date(a.initiatedAt ?? 0).getTime()
         })
         .map((remotePaymentAttempt) => {
-          if (
-            remotePaymentAttempt.settledAt ||
-            remotePaymentAttempt.authorisedAt ||
-            remotePaymentAttempt.cardAuthorisedAt
-          ) {
-            const {
-              attemptKey,
-              authorisedAt,
-              settledAt,
-              attemptedAmount,
-              paymentMethod,
-              settledAmount,
-              captureAttempts,
-              refundAttempts,
-              currency,
-              walletName,
-              status,
-              authorisedAmount,
-              cardAuthorisedAmount,
-              cardAuthorisedAt,
-              reconciledTransactionID,
-            } = remotePaymentAttempt
+          const {
+            attemptKey,
+            authorisedAt,
+            settledAt,
+            attemptedAmount,
+            paymentMethod,
+            settledAmount,
+            captureAttempts,
+            refundAttempts,
+            currency,
+            walletName,
+            status,
+            authorisedAmount,
+            cardAuthorisedAmount,
+            cardAuthorisedAt,
+            reconciledTransactionID,
+          } = remotePaymentAttempt
 
-            localPaymentAttempts.push({
-              attemptKey: attemptKey,
-              occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
-              paymentMethod: parseApiPaymentMethodTypeToLocalMethodType(paymentMethod),
-              amount: attemptedAmount,
-              currency: currency,
-              processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
-              settledAmount: settledAmount,
-              captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
-              refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
-              authorisedAmount: authorisedAmount,
-              cardAuthorisedAmount: cardAuthorisedAmount,
-              wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
-              status: parseApiStatusToLocalStatus(status),
-              reconciledTransactionID: reconciledTransactionID,
-            })
-          }
+          localPaymentAttempts.push({
+            attemptKey: attemptKey,
+            occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
+            paymentMethod: parseApiPaymentMethodTypeToLocalMethodType(paymentMethod),
+            amount: attemptedAmount,
+            currency: currency,
+            processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
+            settledAmount: settledAmount,
+            captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
+            refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
+            authorisedAmount: authorisedAmount,
+            cardAuthorisedAmount: cardAuthorisedAmount,
+            wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
+            status: parseApiStatusToLocalStatus(status),
+            reconciledTransactionID: reconciledTransactionID,
+            paymentStatus: getPaymentAttemptPaymentStatus(remotePaymentAttempt),
+          })
         })
       return localPaymentAttempts
     }
@@ -328,6 +356,9 @@ const remotePaymentRequestToLocalPaymentRequest = (
       email: customerEmailAddress ?? undefined,
     },
     amount: amount,
+    amountReceived: amountReceived,
+    amountRefunded: amountRefunded,
+    amountPending: amountPending,
     currency: currency,
     tags: tags.map((tag) => parseApiTagToLocalTag(tag)),
     paymentMethodTypes: parseApiPaymentMethodTypesToLocalPaymentMethodTypes(

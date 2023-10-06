@@ -23,6 +23,9 @@ export interface LocalPaymentRequest {
   createdAt: Date
   contact: LocalContact
   amount: number
+  amountReceived: number
+  amountRefunded: number
+  amountPending: number
   currency: Currency
   tags: LocalTag[]
   paymentMethodTypes: LocalPaymentMethodTypes[]
@@ -78,6 +81,7 @@ export interface LocalPaymentAttempt {
   wallet?: LocalWallets | undefined
   status: LocalPaymentStatus
   reconciledTransactionID?: string
+  paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
 }
 
 export interface SubTransaction {
