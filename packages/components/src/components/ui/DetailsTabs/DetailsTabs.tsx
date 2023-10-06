@@ -85,7 +85,9 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
         <TabContent value={tabs[0]} selectedTab={selectedTab}>
           <ScrollArea>
             <Transactions
-              transactions={paymentRequest.paymentAttempts}
+              transactions={paymentRequest.paymentAttempts.filter(
+                (pa) => pa.paymentStatus === 'received' || pa.paymentStatus === 'pending',
+              )}
               cardAuthoriseOnly={!paymentRequest.captureFunds}
               onRefund={onRefund}
               onVoid={onVoid}

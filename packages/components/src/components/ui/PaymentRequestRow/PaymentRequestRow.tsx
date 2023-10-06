@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { animate, AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
+import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import { formatAmount } from '../../../utils/formatters'
 import { formatCurrency } from '../../../utils/uiFormaters'
@@ -9,6 +10,7 @@ import Chip from '../Chip/Chip'
 import Contact from '../Contact/Contact'
 import Created from '../Created/Created'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
+import PaymentRequestAttemptsCell from '../PaymentRequestAttemptsCell/PaymentRequestAttemptsCell'
 import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 
 export interface PaymentRequestRowProps extends LocalPaymentRequest {
@@ -26,7 +28,6 @@ const Row = ({
   id,
   status,
   createdAt,
-  contact,
   amount,
   currency,
   tags,
@@ -40,6 +41,8 @@ const Row = ({
   title,
   createdByUser,
   merchantTokenDescription,
+  paymentAttempts,
+  hostedPayCheckoutUrl,
 }: PaymentRequestRowProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -56,6 +59,22 @@ const Row = ({
   const onConfirmDeletePaymentRequestClicked = async () => {
     onDelete && onDelete()
     await onCancelDeletingPaymentRequestClicked()
+  }
+
+  const getPaymentAttemptCountByStatus = (paymentStatus: 'received' | 'pending' | 'failed') => {
+    return paymentAttempts.filter((attempt) => attempt.paymentStatus === paymentStatus).length
+  }
+
+  const getPaymentAttemptPaymentMethod = () => {
+    const paymentMethods = paymentAttempts
+      .map((attempt) => attempt.paymentMethod)
+      .filter((paymentMethod, index, array) => {
+        return array.indexOf(paymentMethod) === index
+      })
+
+    return paymentMethods.length > 1 || paymentMethods.length === 0
+      ? LocalPaymentMethodTypes.None
+      : paymentMethods[0]
   }
 
   return (
@@ -113,10 +132,6 @@ const Row = ({
         <Contact name={customerName} email={title} size="small" />
       </td>
 
-      <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>
-        <Contact {...contact} />
-      </td>
-
       <td
         className={classNames(
           commonTdClasses,
@@ -126,6 +141,16 @@ const Row = ({
         <span className="font-medium">
           {formatCurrency(currency)} {formatAmount(amount)}
         </span>
+      </td>
+
+      <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>
+        <PaymentRequestAttemptsCell
+          successfulAttemptsCount={getPaymentAttemptCountByStatus('received')}
+          pendingAttemptsCount={getPaymentAttemptCountByStatus('pending')}
+          failedAttemptsCount={getPaymentAttemptCountByStatus('failed')}
+          hostedPaymentLink={hostedPayCheckoutUrl}
+          paymentMethod={getPaymentAttemptPaymentMethod()}
+        />
       </td>
 
       <td className={classNames(commonTdClasses, `text-right pr-1.5 custom-backdrop-blur-${id}`)}>

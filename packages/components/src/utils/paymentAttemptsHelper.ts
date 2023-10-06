@@ -1,15 +1,6 @@
 import { LocalPaymentMethodTypes, SubTransactionType } from '../types/LocalEnums'
 import { LocalPaymentAttempt, SubTransaction } from '../types/LocalTypes'
 
-/**
- * Calculates the total amount paid in a payment request. It is the sum of amount received minus amount refunded.
- * @param paymentAttempts
- * @returns The total amount paid in a payment request.
- */
-export const getTotalAmountPaid = (paymentAttempts: LocalPaymentAttempt[]): number => {
-  return paymentAttempts.reduce((acc, curr) => acc + getAmountPaid(curr), 0)
-}
-
 export const getMaxCapturableAmount = (paymentAttempt: LocalPaymentAttempt): number => {
   return (
     getAmountReceived(paymentAttempt) -

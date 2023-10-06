@@ -20,7 +20,6 @@ export interface PaymentRequestTableProps {
   onPageChanged?: (newPage: number) => void
   setStatusSortDirection?: (sortDirection: SortDirection) => void
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
-  setContactSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   setTitleSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
@@ -45,7 +44,6 @@ const PaymentRequestTable = ({
   onPageChanged,
   setStatusSortDirection,
   setCreatedSortDirection,
-  setContactSortDirection,
   setAmountSortDirection,
   setTitleSortDirection,
   isLoading = false,
@@ -85,7 +83,7 @@ const PaymentRequestTable = ({
           </colgroup>
           <thead>
             <tr>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+              <th className={classNames(commonThClasses, 'w-36 text-left')}>
                 <ColumnHeader
                   label="Status"
                   onSort={(sortDirection) =>
@@ -93,7 +91,7 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+              <th className={classNames(commonThClasses, 'w-36 text-left')}>
                 <ColumnHeader
                   label="Created"
                   onSort={(sortDirection) =>
@@ -109,14 +107,6 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
-                <ColumnHeader
-                  label="Contact"
-                  onSort={(sortDirection) =>
-                    setContactSortDirection && setContactSortDirection(sortDirection)
-                  }
-                />
-              </th>
               <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
                 <ColumnHeader
                   label="Requested"
@@ -126,12 +116,16 @@ const PaymentRequestTable = ({
                 />
               </th>
 
+              <th className={classNames(commonThClasses, 'w-64')}>
+                <ColumnHeader label="Payment Attempts" />
+              </th>
+
               {/* 
               Tags column 
               However, it's used to display the
               pagination component in the table header
             */}
-              <th colSpan={2} className={commonThClasses}>
+              <th colSpan={2} className={classNames(commonThClasses)}>
                 <Pager
                   pageSize={pageSize}
                   totalRecords={totalRecords}
@@ -166,23 +160,22 @@ const PaymentRequestTable = ({
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
                   </td>
 
-                  {/* Contact */}
-                  <td>
-                    <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                  </td>
-
                   {/* Amount */}
                   <td className="p-0">
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
                   </td>
 
+                  {/* Payment Attempts */}
+                  <td className="p-0">
+                    <div className="w-3/4 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
+                  </td>
+
                   {/* Extra */}
                   <td>
-                    <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
+                    <div className="w-full ml-auto h-2 bg-[#E0E9EB] rounded-lg mr-2" />
                   </td>
                 </tr>
               ))}
-
             {!isLoading &&
               paymentRequests &&
               paymentRequests.length > 0 &&

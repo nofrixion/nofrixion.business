@@ -210,6 +210,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.02,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -226,6 +227,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 30.57,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'ca2eb453-9c12-4f8f-b8b2-7c1c6af842ba',
@@ -242,6 +244,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 0,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: '43535f79-a9f2-4331-9a78-db731e467c49',
@@ -258,6 +261,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 0,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'a9f6c19a-0172-47a6-803a-c3f59899cafc',
@@ -273,6 +277,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 15.39,
     wallet: LocalWallets.ApplePay,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: '7bbb2998-8d78-4b2a-9334-84444c9915c8',
@@ -288,6 +293,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.78,
     wallet: LocalWallets.GooglePay,
     status: 'paid',
+    paymentStatus: 'received',
   },
   // Add more transactions as needed
 ]
@@ -308,6 +314,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.02,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -324,6 +331,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 30.57,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   // Add more transactions as needed
 ]
@@ -343,6 +351,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 20.02,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -359,6 +368,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     cardAuthorisedAmount: 90.57,
     wallet: undefined,
     status: 'paid',
+    paymentStatus: 'received',
   },
   // Add more transactions as needed
 ]
@@ -366,6 +376,9 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
 const regular: LocalPaymentRequest = {
   id: 'fa14171f-5fe6-4326-8c09-a9b59bbf6e7b',
   amount: 100.0,
+  amountReceived: 0,
+  amountRefunded: 0,
+  amountPending: 0,
   currency: Currency.EUR,
   paymentMethodTypes: [
     LocalPaymentMethodTypes.Card,
@@ -423,6 +436,9 @@ const overpaidPaymentRequest: LocalPaymentRequest = {
 const noShippingAddress: LocalPaymentRequest = {
   id: '5cb6f5c8-ce16-411f-9f55-29fb022bb444',
   amount: 285.0,
+  amountReceived: 0,
+  amountRefunded: 0,
+  amountPending: 0,
   currency: Currency.EUR,
   paymentMethodTypes: [
     LocalPaymentMethodTypes.Pisp,
@@ -456,6 +472,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'lukas.mueller@email.de',
     },
     amount: 900,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -497,6 +516,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'miguel.garcia@email.es',
     },
     amount: 1800,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -545,6 +567,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'lucas.jones@email.co.uk',
     },
     amount: 2700,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -588,6 +613,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'sophie.smith@email.co.uk',
     },
     amount: 2500,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -630,6 +658,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'oliver.johnson@email.co.uk',
     },
     amount: 3000,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -672,6 +703,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'ava.wilson@email.co.uk',
     },
     amount: 1500,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -707,6 +741,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'emily.brown@email.co.uk',
     },
     amount: 1200,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -749,6 +786,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'giuseppe.bianchi@email.it',
     },
     amount: 2300,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -791,6 +831,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'francois.dubois@email.fr',
     },
     amount: 1000,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
@@ -833,6 +876,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'isabella.lewis@email.co.uk',
     },
     amount: 3500,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -875,6 +921,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'lily.taylor@email.co.uk',
     },
     amount: 4200,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.GBP,
     tags: [
       {
@@ -917,6 +966,9 @@ const fewPaymentRequests: LocalPaymentRequest[] = [
       email: 'maria.silva@email.pt',
     },
     amount: 2200,
+    amountReceived: 0,
+    amountRefunded: 0,
+    amountPending: 0,
     currency: Currency.EUR,
     tags: [
       {
