@@ -279,7 +279,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
     if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
       return 'received'
     }
-    
+
     return 'unknown'
   }
 
