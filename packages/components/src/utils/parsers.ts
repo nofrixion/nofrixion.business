@@ -262,7 +262,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
 
   const getPaymentAttemptPaymentStatus = (
     remotePaymentAttempt: PaymentRequestPaymentAttempt,
-  ): 'received' | 'pending' | 'failed' => {
+  ): 'received' | 'pending' | 'failed' | 'unknown' => {
     if (remotePaymentAttempt.status === PaymentResult.Authorized) {
       return 'pending'
     }
@@ -271,14 +271,16 @@ const remotePaymentRequestToLocalPaymentRequest = (
       remotePaymentAttempt.status === PaymentResult.None &&
       (remotePaymentAttempt.settleFailedAt ||
         remotePaymentAttempt.cardAuthoriseFailedAt ||
-        remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt ||
-        (remotePaymentAttempt.paymentMethod === PaymentMethodTypes.Pisp &&
-          !remotePaymentAttempt.settledAt))
+        remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt)
     ) {
       return 'failed'
     }
 
-    return 'received'
+    if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
+      return 'received'
+    }
+    
+    return 'unknown'
   }
 
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
