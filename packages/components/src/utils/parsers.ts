@@ -17,6 +17,9 @@ import {
   type Tag,
   Transaction,
   TransactionTypeValue,
+  User,
+  UserRolesEnum,
+  UserStatus,
   Wallets,
 } from '@nofrixion/moneymoov'
 
@@ -41,6 +44,7 @@ import {
   LocalPayout,
   LocalTag,
   LocalTransaction,
+  LocalUser,
 } from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
@@ -303,6 +307,16 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
+  const parseApiUserToLocalUser = (remoteUser: User): LocalUser => {
+    const { id, emailAddress, firstName, lastName } = remoteUser
+    return {
+      id: id,
+      email: emailAddress,
+      firstName: firstName,
+      lastName: lastName,
+    }
+  }
+
   return {
     id: remotePaymentRequest.id,
     status: parseApiStatusToLocalStatus(status),
@@ -334,6 +348,12 @@ const remotePaymentRequestToLocalPaymentRequest = (
     captureFunds: !remotePaymentRequest.cardAuthorizeOnly,
     transactions: remoteTransactionsToLocal(remotePaymentRequest.transactions),
     pispAccountID: remotePaymentRequest.pispAccountID,
+    title: remotePaymentRequest.title,
+    customerName: remotePaymentRequest.customerName,
+    createdByUser: remotePaymentRequest.createdByUser
+      ? parseApiUserToLocalUser(remotePaymentRequest.createdByUser)
+      : undefined,
+    merchantTokenDescription: remotePaymentRequest.merchantTokenDescription,
   }
 }
 
@@ -423,7 +443,10 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
       counterParty: parseApiCounterPartyToLocalCounterParty(transaction.counterparty),
       amount: transaction.amount,
       balanceAfterTx: transaction.balance,
-      reference: transaction.amount > 0 ? transaction.theirReference : transaction.yourReference,
+      reference:
+        transaction.amount > 0
+          ? transaction.yourReference
+          : transaction.yourReference ?? transaction.description,
       description: transaction.description,
       type: TransactionTypeValue[transaction.type],
     }
@@ -554,6 +577,32 @@ const payoutStatusToStatus = (
   }
 }
 
+const userStatusToStatus = (status: UserStatus) => {
+  switch (status) {
+    case UserStatus.Active:
+      return 'active'
+    case UserStatus.Invited:
+      return 'invited'
+    case UserStatus.RolePending:
+      return 'role_pending'
+  }
+}
+
+const userRoleToDisplay = (status: UserRolesEnum) => {
+  switch (status) {
+    case UserRolesEnum.AdminApprover:
+      return 'Admin Approver'
+    case UserRolesEnum.Approver:
+      return 'Approver'
+    case UserRolesEnum.NewlyRegistered:
+      return 'Newly Registered'
+    case UserRolesEnum.User:
+      return 'User'
+    case UserRolesEnum.PaymentRequestor:
+      return 'Payment Requestor'
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -567,4 +616,6 @@ export {
   remotePayoutsToLocal,
   remotePayoutToLocal,
   remoteTransactionsToLocal,
+  userRoleToDisplay,
+  userStatusToStatus,
 }

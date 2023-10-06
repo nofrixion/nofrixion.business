@@ -1,11 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { useLocation, useNavigate } from 'react-router-dom'
-
-import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
-import IconLogout from '../../assets/icons/logout.svg'
-import PricingIcon from '../../assets/icons/pricing.svg'
-import IconSort from '../../assets/icons/sort.svg'
-import UsersIcon from '../../assets/icons/users.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +7,15 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '../../components/ui/DropDown'
+} from '@nofrixion/components/src/components/ui/atoms/DropDown/DropDown'
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import IconDoubleArrows from '../../assets/icons/double-arrow.svg'
+import IconLogout from '../../assets/icons/logout.svg'
+import PricingIcon from '../../assets/icons/pricing.svg'
+import IconSort from '../../assets/icons/sort.svg'
+import UsersIcon from '../../assets/icons/users.svg'
 import { AuthContextType } from '../../lib/auth/AuthProvider'
 import { useAuth } from '../../lib/auth/useAuth'
 import { getAvatarName } from '../../lib/formatters'
@@ -38,6 +38,8 @@ const UserNav = () => {
 
   const merchants = useStore(useMerchantsStore, (state) => state.merchants)
   const user = useStore(useUserStore, (state) => state.user)
+
+  const commonCss = 'data-[highlighted]:text-nav-accent focus:text-nav-accent'
 
   return (
     <DropdownMenu>
@@ -62,7 +64,9 @@ const UserNav = () => {
 
           {/* Merchant name */}
           <div className="ml-4 flex flex-col items-start mr-2 md:mr-11">
-            <p className="font-semibold">{merchant?.name ?? 'Merchant unknown'}</p>
+            <p className="font-semibold whitespace-nowrap">
+              {merchant?.name ?? 'Merchant unknown'}
+            </p>
             <p className="text-nav-accent text-xs">
               {user?.firstName} {user?.lastName}
             </p>
@@ -73,7 +77,11 @@ const UserNav = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>
-        <DropdownMenuContent sideOffset={30} align="end">
+        <DropdownMenuContent
+          sideOffset={30}
+          align="end"
+          className="min-w-[140px] bg-dark-bg rounded-lg text-white"
+        >
           {merchants && merchants.length > 1 && (
             <DropdownMenuSub>
               <DropdownMenuSubTrigger
@@ -81,11 +89,15 @@ const UserNav = () => {
                   src: IconDoubleArrows,
                   alt: 'Switch merchants',
                 }}
+                className={commonCss}
               >
                 Switch merchant
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
-                <DropdownMenuSubContent sideOffset={40}>
+                <DropdownMenuSubContent
+                  sideOffset={40}
+                  className="bg-dark-bg rounded-lg text-white"
+                >
                   {merchants
                     .filter((m) => m.id !== merchant?.id)
                     ?.map((merchant) => (
@@ -94,6 +106,7 @@ const UserNav = () => {
                           setMerchant && setMerchant(merchant)
                         }}
                         key={merchant.id}
+                        className={commonCss}
                       >
                         {merchant.name}
                       </DropdownMenuItem>
@@ -109,6 +122,7 @@ const UserNav = () => {
               src: UsersIcon,
               alt: 'Users',
             }}
+            className={commonCss}
           >
             Users
           </DropdownMenuItem>
@@ -119,6 +133,7 @@ const UserNav = () => {
               src: PricingIcon,
               alt: 'Pricing',
             }}
+            className={commonCss}
           >
             Pricing
           </DropdownMenuItem>
@@ -130,6 +145,7 @@ const UserNav = () => {
               src: IconLogout,
               alt: 'Log out',
             }}
+            className={commonCss}
           >
             Log out
           </DropdownMenuItem>

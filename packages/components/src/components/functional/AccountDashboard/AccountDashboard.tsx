@@ -1,12 +1,17 @@
 import {
+  Account,
+  BankSettings,
+  OpenBankingClient,
   PayoutStatus,
   SortDirection,
   useAccount,
+  useBanks,
   useMerchant,
   usePendingPayments,
   useTransactions,
+  useUpdateAccountName,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
@@ -14,6 +19,7 @@ import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
 import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
+import { makeToast } from '../../ui/Toast/Toast'
 
 export interface AccountDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -30,8 +36,7 @@ const AccountDashboard = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
 }: AccountDashboardProps) => {
-  const queryClient = new QueryClient()
-
+  const queryClient = useQueryClient()
   return (
     <QueryClientProvider client={queryClient}>
       <AccountDashboardMain
@@ -63,15 +68,28 @@ const AccountDashboardMain = ({
     fromDate: startOfDay(add(new Date(), { days: -90 })), // Last 90 days as default
     toDate: endOfDay(new Date()),
   })
+  const { updateAccountName } = useUpdateAccountName(
+    {
+      merchantId: merchantId,
+    },
+    { apiUrl: apiUrl, authToken: token },
+  )
 
   const [searchFilter, setSearchFilter] = useState<string>('')
-
+  const [isConnectingToBank, setIsConnectingToBank] = useState(false)
   const [transactionDateSortDirection, setTransactionDateDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
-  const { data: transactionsResponse } = useTransactions(
+  const onAccountNameChange = async (newAccountName: string) => {
+    await updateAccountName({
+      accountId: accountId,
+      accountName: newAccountName,
+    })
+  }
+
+  const { data: transactionsResponse, isLoading: isLoadingTransactions } = useTransactions(
     {
       accountId,
       pageNumber: page,
@@ -86,6 +104,7 @@ const AccountDashboardMain = ({
   )
 
   const { data: accountResponse } = useAccount(
+    { merchantId: merchantId, connectedAccounts: true },
     {
       accountId,
     },
@@ -103,6 +122,20 @@ const AccountDashboardMain = ({
   )
 
   const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
+
+  const { data: banksResponse } = useBanks(
+    { merchantId: merchantId },
+    { apiUrl: apiUrl, authToken: token },
+  )
+  const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
+
+  useEffect(() => {
+    if (banksResponse?.status === 'success') {
+      setBanks(banksResponse.data.payByBankSettings)
+    } else if (banksResponse?.status === 'error') {
+      console.warn(banksResponse.error)
+    }
+  }, [banksResponse])
 
   //When switching merchants, go back to current accounts page
   useEffect(() => {
@@ -157,11 +190,32 @@ const AccountDashboardMain = ({
     setDateRange(dateRange)
   }
 
+  const handleOnRenewConnection = async (account: Account) => {
+    if (account && account.consentID) {
+      setIsConnectingToBank(true)
+      const client = new OpenBankingClient({ apiUrl, authToken: token })
+
+      const response = await client.reAuthoriseConsent({
+        consentId: account.consentID,
+      })
+
+      if (response.status === 'error') {
+        console.error(response.error)
+        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+      } else if (response.data.authorisationUrl) {
+        window.location.href = response.data.authorisationUrl
+      }
+
+      setIsConnectingToBank(false)
+    }
+  }
+
   return (
     <UIAccountDashboard
       transactions={transactions}
       pendingPayments={payouts}
       account={accountResponse?.status == 'success' ? accountResponse?.data : undefined}
+      onAccountNameChange={onAccountNameChange}
       pagination={{
         pageSize: pageSize,
         totalSize: totalRecords,
@@ -175,6 +229,10 @@ const AccountDashboardMain = ({
       onSearch={setSearchFilter}
       searchFilter={searchFilter}
       onAllCurrentAccountsClick={onAllCurrentAccountsClick}
+      banks={banks}
+      onRenewConnection={handleOnRenewConnection}
+      isConnectingToBank={isConnectingToBank}
+      isLoadingTransactions={isLoadingTransactions}
     />
   )
 }

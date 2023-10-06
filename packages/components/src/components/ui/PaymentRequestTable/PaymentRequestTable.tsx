@@ -2,6 +2,7 @@ import classNames from 'classnames'
 
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import ColumnHeader, { SortDirection } from '../ColumnHeader/ColumnHeader'
+import { Loader } from '../Loader/Loader'
 import Pager from '../Pager/Pager'
 import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard'
 import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow'
@@ -9,7 +10,7 @@ import { Toaster } from '../Toast/Toast'
 import EmptyState from './EmptyState'
 
 export interface PaymentRequestTableProps {
-  paymentRequests: LocalPaymentRequest[]
+  paymentRequests: LocalPaymentRequest[] | undefined
   pageSize: number
   totalRecords: number
   onPaymentRequestClicked?: (paymentRequest: LocalPaymentRequest) => void
@@ -21,11 +22,14 @@ export interface PaymentRequestTableProps {
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
   setContactSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
+  setTitleSortDirection?: (sortDirection: SortDirection) => void
   onCreatePaymentRequest?: () => void
   onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
   isLoading?: boolean
   isEmpty?: boolean // True when there are no payment requests at all, even when filters are not applied
   selectedPaymentRequestID?: string
+  paymentRequestsExist?: boolean
+  isLoadingMetrics?: boolean
 }
 
 const commonThClasses = 'px-4 pb-4 font-normal'
@@ -43,11 +47,14 @@ const PaymentRequestTable = ({
   setCreatedSortDirection,
   setContactSortDirection,
   setAmountSortDirection,
+  setTitleSortDirection,
   isLoading = false,
   isEmpty = false,
   onCreatePaymentRequest,
   onOpenPaymentPage,
   selectedPaymentRequestID,
+  paymentRequestsExist,
+  isLoadingMetrics,
 }: PaymentRequestTableProps) => {
   const onPaymentRequestClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
@@ -61,10 +68,11 @@ const PaymentRequestTable = ({
   }
 
   return (
-    <>
+    <div className="flex justify-center w-full">
       {/* Show table when loading so the skeletons are visible */}
       {/* or else show the table when has payment requests */}
-      {(isLoading || (paymentRequests && paymentRequests.length > 0)) && (
+      {((paymentRequestsExist && !paymentRequests) ||
+        (paymentRequests && paymentRequests.length > 0)) && (
         <table className="hidden lg:table table-fixed text-left w-full">
           <colgroup>
             <col />
@@ -95,6 +103,14 @@ const PaymentRequestTable = ({
               </th>
               <th className={classNames(commonThClasses, 'w-44 text-left')}>
                 <ColumnHeader
+                  label="For"
+                  onSort={(sortDirection) =>
+                    setTitleSortDirection && setTitleSortDirection(sortDirection)
+                  }
+                />
+              </th>
+              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+                <ColumnHeader
                   label="Contact"
                   onSort={(sortDirection) =>
                     setContactSortDirection && setContactSortDirection(sortDirection)
@@ -103,15 +119,12 @@ const PaymentRequestTable = ({
               </th>
               <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
                 <ColumnHeader
-                  label="Amount"
+                  label="Requested"
                   onSort={(sortDirection) =>
                     setAmountSortDirection && setAmountSortDirection(sortDirection)
                   }
                 />
               </th>
-
-              {/* Currency */}
-              <th className={classNames('pb-11 w-20')}></th>
 
               {/* 
               Tags column 
@@ -128,7 +141,7 @@ const PaymentRequestTable = ({
             </tr>
           </thead>
           <tbody>
-            {isLoading &&
+            {((isLoading && paymentRequestsExist) || (paymentRequestsExist && !paymentRequests)) &&
               // Create array of 12 empty rows
               // to display a loading skeleton
               // while the data is being fetched
@@ -148,6 +161,11 @@ const PaymentRequestTable = ({
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
                   </td>
 
+                  {/* For */}
+                  <td>
+                    <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
+                  </td>
+
                   {/* Contact */}
                   <td>
                     <div className="w-full ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
@@ -158,10 +176,6 @@ const PaymentRequestTable = ({
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
                   </td>
 
-                  <td className="p-0">
-                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
-                  </td>
-
                   {/* Extra */}
                   <td>
                     <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
@@ -170,7 +184,9 @@ const PaymentRequestTable = ({
               ))}
 
             {!isLoading &&
-              paymentRequests.map((paymentRequest, index) => (
+              paymentRequests &&
+              paymentRequests.length > 0 &&
+              paymentRequests?.map((paymentRequest, index) => (
                 <PaymentRequestRow
                   key={`pr-${index}`}
                   {...paymentRequest}
@@ -197,11 +213,9 @@ const PaymentRequestTable = ({
           </tbody>
         </table>
       )}
-
-      <div className="lg:hidden space-y-2">
-        {paymentRequests &&
-          paymentRequests.length > 0 &&
-          paymentRequests.map((paymentRequest, index) => (
+      {paymentRequests && paymentRequests.length > 0 && (
+        <div className="lg:hidden space-y-2 w-full">
+          {paymentRequests.map((paymentRequest, index) => (
             <PaymentRequestMobileCard
               {...paymentRequest}
               key={`pr-mobile-${index}`}
@@ -221,20 +235,31 @@ const PaymentRequestTable = ({
               onOpenPaymentPage={() => onOpenPaymentPage && onOpenPaymentPage(paymentRequest)}
             />
           ))}
-      </div>
+        </div>
+      )}
+
+      {((isLoadingMetrics && !paymentRequests) || (!paymentRequests && !paymentRequestsExist)) && (
+        <div className=" justify-center items-center">
+          <Loader className="mt-12" />
+        </div>
+      )}
+
+      {isEmpty && paymentRequests && paymentRequests.length === 0 && (
+        <EmptyState state="empty" onCreatePaymentRequest={onCreatePaymentRequest} />
+      )}
 
       {/* Show empty state when contet has loaded and no there are no payment requests*/}
       {/* or also show when isEmpty property comes as `true` */}
-      {((!isLoading && paymentRequests && paymentRequests.length === 0) || isEmpty) && (
-        // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
-        // Else,  there are no payment requests matching the filters
-        <EmptyState
-          state={isEmpty ? 'empty' : 'nothingFound'}
-          onCreatePaymentRequest={onCreatePaymentRequest}
-        />
-      )}
+      {!isLoadingMetrics &&
+        paymentRequests !== undefined &&
+        paymentRequests?.length === 0 &&
+        !isEmpty && (
+          // If `isEmpty` is true means that there're are no payment requests at all, no matter which tab is selected
+          // Else,  there are no payment requests matching the filters
+          <EmptyState state="nothingFound" onCreatePaymentRequest={onCreatePaymentRequest} />
+        )}
       <Toaster positionY="top" positionX="right" duration={5000} />
-    </>
+    </div>
   )
 }
 

@@ -90,3 +90,25 @@ export type PayoutCreate = {
 export type BatchApprove = {
   payoutIDs: string[]
 }
+
+export type AccountUpdate = {
+  accountName: string
+}
+
+export type ConsentRequest = {
+  emailAddress?: string
+  institutionID: string
+  merchantID: string
+  callbackUrl?: string
+  successWebHookUrl?: string
+  IsConnectedAccounts: boolean
+}
+
+export type UserInviteCreate = {
+  merchantID: string
+  inviteeEmailAddress: string
+  inviteeFirstName?: string
+  inviteeLastName?: string
+  registrationUrl?: string
+  sendInviteEmail: boolean
+}

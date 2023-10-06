@@ -10,7 +10,7 @@ import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../type
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
 import UICreatePayoutModal from '../../ui/CreatePayoutModal/CreatePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
-import { PayoutApproveForm } from '../../ui/utils/PayoutApproveForm'
+import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 
 export interface CreatePayoutModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -104,7 +104,7 @@ const CreatePayoutModal = ({
       />
 
       {payoutID && (
-        <PayoutApproveForm
+        <PayoutAuthoriseForm
           id={payoutID}
           size="x-small"
           formRef={approveFormRef}

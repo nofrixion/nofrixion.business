@@ -1,13 +1,22 @@
 import {
   AccountIdentifierType,
   AddressType,
+  AISAccountBalanceType,
+  AISAccountIdentificationType,
+  AISAccountType,
+  AISCreditLineType,
+  AISUsageType,
   CardTokenCreateModes,
   Currency,
   PartialPaymentMethods,
   PaymentMethodTypes,
   PaymentProcessor,
+  PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  UserInviteStatusEnum,
+  UserRolesEnum,
+  UserStatus,
   Wallets,
 } from './Enums'
 
@@ -53,6 +62,9 @@ export type PaymentRequest = {
   paymentAttempts: PaymentRequestPaymentAttempt[]
   notificationEmailAddresses?: string
   transactions: Transaction[]
+  customerName?: string
+  createdByUser?: User
+  merchantTokenDescription?: string
 }
 
 export type PaymentRequestPaymentAttempt = {
@@ -238,6 +250,10 @@ export interface Account {
   summary: string
   identifier: AccountIdentifier
   isDefault: boolean
+  isConnectedAccount: boolean
+  bankName: string
+  expiryDate?: string
+  consentID?: string
 }
 
 export interface AccountIdentifier {
@@ -371,6 +387,8 @@ export type PayoutMetrics = {
 
 export type PayoutPageResponse = PageResponse<Payout>
 
+export type UserRoleAndUserInvitePageResponse = PageResponse<UserRoleAndUserInvite>
+
 export type Beneficiary = {
   id: string
   merchantID: string
@@ -386,4 +404,104 @@ export type BeneficiaryPageResponse = PageResponse<Beneficiary>
 export type BatchPayout = {
   id: string
   payouts: Payout[]
+}
+
+export type ConsentResponse = {
+  consentId: string
+  authorisationUrl: string
+}
+
+export type Consent = {
+  id: string
+  institutionId: string
+  emailAddress: string
+  isEnabled: boolean
+  callbackUrl: string
+  successWebHookUrl: string
+  expiryDate: Date
+  inserted: Date
+  provider: PaymentProcessorsEnum
+}
+
+export type AISAccount = {
+  id: string
+  usageType: AISUsageType
+  accountType: AISAccountType
+  type: string
+  description: string
+  balance: number
+  currency: string
+  nickname: string
+  details: string
+  accountNames: AISAccountName[]
+  aAccountIdentifications: AISAccountIdentification[]
+  accountBalances: AISAccountBalance[]
+  consolidatedAccountInformation: AISConsolidatedAccountInformation
+}
+
+export type AISAccountName = {
+  name: string
+}
+
+export type AISAccountIdentification = {
+  type: AISAccountIdentificationType
+  identification: string
+  accountBalances: AISAccountBalance[]
+}
+
+export type AISAccountBalance = {
+  type: AISAccountBalanceType
+  dateTime: Date
+  balanceAmount: AISAmount
+  creditLineIncluded: boolean
+  creditLines: AISCreditLine[]
+}
+
+export type AISAmount = {
+  amount: number
+  currency: string
+}
+
+export type AISCreditLine = {
+  type: AISCreditLineType
+  creditLineAmount: AISAmount
+}
+
+export type AISConsolidatedAccountInformation = {
+  id: string
+  accountBalances: AISAccountBalance[]
+}
+
+export type UserRoleAndUserInvite = {
+  userID?: string
+  merchantID: string
+  emailAddress: string
+  name: string
+  inviteID?: string
+  lastModified: Date
+  roleType: UserRolesEnum
+  status: UserStatus
+}
+
+export type UserMetrics = {
+  all: number
+  invited: number
+  rolePending: number
+  active: number
+}
+
+export type UserInvite = {
+  id: string
+  inviteeEmailAddress: string
+  inviteeFirstName?: string
+  inviteeLastName?: string
+  inviterEmailAddress: string
+  inviterFirstName: string
+  inviterLastName: string
+  merchantID: string
+  registrationUrl: string
+  lastInvited: Date
+  merchantName: string
+  message: string
+  status: UserInviteStatusEnum
 }

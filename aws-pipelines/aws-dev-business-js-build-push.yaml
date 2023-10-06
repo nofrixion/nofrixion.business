@@ -57,6 +57,7 @@ steps:
     env:
       VITE_PUBLIC_PORTAL_URL: $(portalUrl)
       VITE_PUBLIC_SLACK_WEBHOOK_URL: $(slackWebhookUrl)
+      VITE_PUBLIC_APP_BASE_URL: $(appBaseUrl)
 
   - script: |
       mkdir dist

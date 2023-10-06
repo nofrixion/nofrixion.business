@@ -248,7 +248,7 @@ const Transactions = ({
                               </span>
                               <span>{subTransaction.awaitingApproval}</span>
                               {subTransaction.awaitingApproval === true ? (
-                                <span>Refund pending approval</span>
+                                <span>Refund pending authorisation</span>
                               ) : (
                                 <span>Refunded</span>
                               )}

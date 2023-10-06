@@ -27,12 +27,11 @@ interface PaymentRequestDetailsModalProps extends usePaymentRequestsProps {
   merchantId: string
   selectedPaymentRequestID: string
   merchantTags: LocalTag[]
-  paymentRequests: LocalPaymentRequest[]
+  paymentRequests: LocalPaymentRequest[] | undefined
   open: boolean
   accounts: LocalAccount[]
   onDismiss: () => void
   setMerchantTags: (merchantTags: LocalTag[]) => void
-  setPaymentRequests: (paymentRequests: LocalPaymentRequest[]) => void
   onCardRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
   onBankRefund: (
     sourceAccount: LocalAccount,
@@ -57,6 +56,7 @@ const PaymentRequestDetailsModal = ({
   createdSortDirection,
   contactSortDirection,
   amountSortDirection,
+  titleSortDirection,
   pageNumber,
   pageSize,
   fromDateMS,
@@ -99,6 +99,7 @@ const PaymentRequestDetailsModal = ({
       createdSortDirection: createdSortDirection,
       contactSortDirection: contactSortDirection,
       amountSortDirection: amountSortDirection,
+      titleSortDirection: titleSortDirection,
       pageNumber: pageNumber,
       pageSize: pageSize,
       fromDateMS: fromDateMS,

@@ -1,4 +1,4 @@
-import { PaymentRequestStatus, PayoutStatus } from '@nofrixion/moneymoov'
+import { PaymentRequestStatus, PayoutStatus, UserStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import classNames from 'classnames'
 
@@ -15,13 +15,20 @@ const getSpecificStatusClasses = (status: string) => {
     "fill-[#ABB2BA] [&>span]:text-defaultText data-[state='active']:border-[#73808C]":
       status === PaymentRequestStatus.None ||
       status === PaymentRequestStatus.Authorized ||
-      status === PayoutStatus.PENDING,
+      status === PayoutStatus.PENDING ||
+      status === UserStatus.Invited,
     "fill-[#ABB2BA] [&>span]:text-defaultText data-[state='active']:border-[#40BFBF]":
-      status === PaymentRequestStatus.All || status === PayoutStatus.All,
+      status === PaymentRequestStatus.All ||
+      status === PayoutStatus.All ||
+      status === UserStatus.All,
     "fill-[#E88C30] [&>span]:text-[#B25900] data-[state='active']:border-[#E88C30]":
-      status === PaymentRequestStatus.PartiallyPaid || status === PayoutStatus.PENDING_APPROVAL,
+      status === PaymentRequestStatus.PartiallyPaid ||
+      status === PayoutStatus.PENDING_APPROVAL ||
+      status === UserStatus.RolePending,
     "fill-[#00CC88] [&>span]:text-positive-green data-[state='active']:border-[#29A37A]":
-      status === PaymentRequestStatus.FullyPaid || status === PayoutStatus.PROCESSED,
+      status === PaymentRequestStatus.FullyPaid ||
+      status === PayoutStatus.PROCESSED ||
+      status === UserStatus.Active,
     "fill-negative-red [&>span]:text-negative-red data-[state='active']:border-[#DA0C30]":
       status === PayoutStatus.FAILED,
   })
@@ -44,9 +51,15 @@ const getDisplayTextForStatus = (status: string) => {
     case PayoutStatus.PENDING:
       return 'In progress'
     case PayoutStatus.PENDING_APPROVAL:
-      return 'Pending approval'
+      return 'Pending authorisation'
     case PayoutStatus.PROCESSED:
       return 'Paid'
+    case UserStatus.Invited:
+      return 'Invited'
+    case UserStatus.Active:
+      return 'Active'
+    case UserStatus.RolePending:
+      return 'Role pending'
     default:
       return 'All'
   }
@@ -62,6 +75,9 @@ const showIndicator = (status: string) => {
     case PayoutStatus.PENDING_APPROVAL:
     case PayoutStatus.PROCESSED:
     case PayoutStatus.FAILED:
+    case UserStatus.Invited:
+    case UserStatus.Active:
+    case UserStatus.RolePending:
       return true
     default:
       return false
@@ -84,11 +100,11 @@ const Tab = ({
     <Tabs.Trigger
       value={status}
       className={classNames(
-        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 lg:px-8 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
+        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 xl:px-8 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
         getSpecificStatusClasses(status),
       )}
     >
-      <span className="text-sm/6 font-normal flex items-center mb-2 leading-6">
+      <span className="text-xs/6 lg:text-sm/6 font-normal flex items-center mb-2 leading-6">
         {showIndicator(status) && (
           <div className="items-center whitespace-nowrap inline-block mr-1.5">
             <svg
@@ -109,7 +125,7 @@ const Tab = ({
       <div className="relative items-center xl:flex xl:justify-between w-full">
         <div
           className={classNames(
-            'animate-pulse absolute left-1/2 top-0 bottom-0 my-auto -translate-x-1/2 flex items-center',
+            'animate-pulse absolute left-0 pl-8 top-0 bottom-0 my-auto -translate-x-1/2 flex items-center',
             {
               invisible: !isLoading,
             },

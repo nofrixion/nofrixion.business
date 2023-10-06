@@ -5,18 +5,26 @@ import {
   CardTokenCreateModes,
   ClientSettingsClient,
   PartialPaymentMethods,
-  PaymentRequestClient,
   PaymentRequestCreate,
   useBanks,
+  useCreatePaymentRequest,
   UserPaymentDefaults,
   useUserPaymentDefaults,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import { useStore } from 'zustand'
 
-import { LocalPaymentRequest, LocalPaymentRequestCreate } from '../../../types/LocalTypes'
+import useAutoSuggestionsStore from '../../../lib/stores/useAutoSuggestionsStore'
+import { FieldID } from '../../../types/LocalEnums'
+import {
+  AutoSuggestionAdd,
+  LocalPaymentRequest,
+  LocalPaymentRequestCreate,
+} from '../../../types/LocalTypes'
 import { defaultUserPaymentDefaults } from '../../../utils/constants'
 import { remotePaymentRequestToLocalPaymentRequest } from '../../../utils/parsers'
+import { addAutoSuggestions } from '../../../utils/utils'
 import UICreatePaymentRequestPage from '../../ui/CreatePaymentRequestPage/CreatePaymentRequestPage'
 import { makeToast } from '../../ui/Toast/Toast'
 
@@ -39,7 +47,7 @@ const CreatePaymentRequestPage = ({
   onPaymentRequestCreated,
   prefilledPaymentRequest,
 }: CreatePaymentRequesPageProps) => {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -68,10 +76,14 @@ const CreatePaymentRequestPageMain = ({
   onPaymentRequestCreated,
   prefilledPaymentRequest,
 }: CreatePaymentRequesPageProps) => {
-  const paymentRequestClient = new PaymentRequestClient({
-    apiUrl: apiUrl,
-    authToken: token,
-  })
+  const { createPaymentRequest } = useCreatePaymentRequest({ apiUrl: apiUrl, authToken: token })
+
+  const { autoSuggestions, setAutoSuggestions } = useStore(
+    useAutoSuggestionsStore,
+    (state) => state,
+  ) ?? {
+    autoSuggestions: undefined,
+  }
 
   const { data: banksResponse } = useBanks(
     { merchantId: merchantId },
@@ -161,7 +173,7 @@ const CreatePaymentRequestPageMain = ({
       paymentRequestToCreate,
     )
 
-    const response = await paymentRequestClient.create(parsedPaymentRequestToCreate)
+    const response = await createPaymentRequest(parsedPaymentRequestToCreate)
 
     // TODO: Toasts are not working - however, we need to figure out how to handle errors & success cases
     // Maybe we should have a redirectUrl that we can redirect to? This could be a parameter in the web-component
@@ -171,8 +183,45 @@ const CreatePaymentRequestPageMain = ({
     }
 
     if (response.data) {
+      addFieldAutoSuggestions(paymentRequestToCreate)
       onPaymentRequestCreated(remotePaymentRequestToLocalPaymentRequest(response.data))
     }
+  }
+
+  const addFieldAutoSuggestions = (paymentRequestToCreate: LocalPaymentRequestCreate) => {
+    const autoSuggestionsToAdd: AutoSuggestionAdd[] = []
+
+    if (paymentRequestToCreate.productOrService) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestProductOrService,
+        value: paymentRequestToCreate.productOrService,
+      })
+    }
+
+    if (paymentRequestToCreate.firstName) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestFirstName,
+        value: paymentRequestToCreate.firstName,
+      })
+    }
+
+    if (paymentRequestToCreate.lastName) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestLastName,
+        value: paymentRequestToCreate.lastName,
+      })
+    }
+
+    if (paymentRequestToCreate.email) {
+      autoSuggestionsToAdd.push({
+        fieldId: FieldID.PaymentRequestEmail,
+        value: paymentRequestToCreate.email,
+      })
+    }
+
+    const newAutoSuggestions = addAutoSuggestions(autoSuggestionsToAdd, autoSuggestions)
+
+    setAutoSuggestions && setAutoSuggestions(newAutoSuggestions)
   }
 
   const onSaveUserPaymentDefaults = async (userPaymentDefaults: UserPaymentDefaults) => {
@@ -200,6 +249,7 @@ const CreatePaymentRequestPageMain = ({
         onDefaultsChanged={onSaveUserPaymentDefaults}
         isUserPaymentDefaultsLoading={isUserPaymentDefaultsLoading}
         prefilledData={prefilledPaymentRequest}
+        autoSuggestions={autoSuggestions}
       />
     </>
   )

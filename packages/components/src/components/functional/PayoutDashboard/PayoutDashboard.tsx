@@ -14,7 +14,7 @@ import {
   usePayoutMetrics,
   usePayouts,
 } from '@nofrixion/moneymoov'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useRef, useState } from 'react'
 
@@ -29,7 +29,7 @@ import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
-import { PayoutApproveForm } from '../../ui/utils/PayoutApproveForm'
+import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 
@@ -40,14 +40,14 @@ export interface PayoutDashboardProps {
   onUnauthorized: () => void
 }
 
-const queryClient = new QueryClient()
-
 const PayoutDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
 }: PayoutDashboardProps) => {
+  const queryClient = useQueryClient()
+
   return (
     <QueryClientProvider client={queryClient}>
       <PayoutDashboardMain
@@ -70,9 +70,8 @@ const PayoutDashboardMain = ({
 }: PayoutDashboardProps) => {
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
-  const [payouts, setPayouts] = useState<Payout[]>([])
+  const [payouts, setPayouts] = useState<Payout[] | undefined>(undefined)
   const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
-  const [localPayouts, setLocalPayouts] = useState<LocalPayout[]>([])
   const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
     SortDirection.NONE,
@@ -102,7 +101,7 @@ const PayoutDashboardMain = ({
   const [firstMetrics, setFirstMetrics] = useState<PayoutMetrics | undefined>()
   const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
-  const approveFormRef = useRef<HTMLFormElement>(null)
+  const authoriseFormRef = useRef<HTMLFormElement>(null)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -117,6 +116,13 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  useEffect(() => {
+    if (isLoadingMetrics) {
+      setMetrics(undefined)
+      setFirstMetrics(undefined)
+    }
+  }, [isLoadingMetrics])
 
   const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
 
@@ -141,6 +147,12 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  useEffect(() => {
+    if (isLoadingPayouts) {
+      setPayouts(undefined)
+    }
+  }, [isLoadingPayouts])
 
   const { data: accountsResponse } = useAccounts({ merchantId }, { apiUrl, authToken: token })
 
@@ -191,11 +203,6 @@ const PayoutDashboardMain = ({
   }, [payoutsResponse])
 
   useEffect(() => {
-    // setShowMorePage(1)
-    setLocalPayouts(remotePayoutsToLocal(payouts))
-  }, [payouts])
-
-  useEffect(() => {
     if (metricsResponse?.status === 'success') {
       setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
@@ -204,6 +211,14 @@ const PayoutDashboardMain = ({
       handleApiError(metricsResponse.error)
     }
   }, [metricsResponse])
+
+  useEffect(() => {
+    setMetrics(undefined)
+    setFirstMetrics(undefined)
+    setPage(1)
+    setPayouts(undefined)
+    setStatus(PayoutStatus.All)
+  }, [merchantId])
 
   useEffect(() => {
     if (merchantTagsResponse?.status === 'success') {
@@ -250,7 +265,7 @@ const PayoutDashboardMain = ({
 
   useEffect(() => {
     if (batchId !== undefined) {
-      approveFormRef.current?.submit()
+      authoriseFormRef.current?.submit()
     }
   }, [batchId])
 
@@ -305,20 +320,45 @@ const PayoutDashboardMain = ({
   // This way, when they change the dates
   // we don't see the metrics disappear
   useEffect(() => {
-    if (metrics && (!firstMetrics || firstMetrics?.all === 0)) {
+    if (!isLoadingMetrics && metrics && !firstMetrics) {
       setFirstMetrics(metrics)
     }
   }, [metrics])
 
-  const isInitialState = !isLoadingMetrics && (!firstMetrics || firstMetrics?.all === 0)
+  const payoutStatusToMetricsStatus = (
+    status: PayoutStatus,
+  ): 'all' | 'paid' | 'inProgress' | 'pendingApproval' | 'failed' => {
+    switch (status) {
+      case PayoutStatus.All:
+        return 'all'
+      case PayoutStatus.PENDING:
+        return 'inProgress'
+      case PayoutStatus.PROCESSED:
+        return 'paid'
+      case PayoutStatus.PENDING_APPROVAL:
+        return 'pendingApproval'
+      case PayoutStatus.FAILED:
+        return 'failed'
+      default:
+        return 'all'
+    }
+  }
 
-  const addPayoutForApproval = (payoutId: string) => {
+  const isInitialState = !isLoadingMetrics && firstMetrics !== undefined && firstMetrics?.all === 0
+
+  const payoutsExists =
+    !isLoadingMetrics &&
+    metrics !== undefined &&
+    status !== undefined &&
+    metrics[payoutStatusToMetricsStatus(status)] > 0
+
+  const addPayoutForAuthorise = (payoutId: string) => {
     if (!selectedPayouts.includes(payoutId)) {
       setSelectedPayouts((prev) => [...prev, payoutId])
     }
   }
 
-  const removePayoutForApproval = (payoutId: string) => {
+  const removePayoutForAuthorise = (payoutId: string) => {
     setSelectedPayouts((prev) => prev.filter((id) => id !== payoutId))
   }
 
@@ -341,7 +381,7 @@ const PayoutDashboardMain = ({
   return (
     <div>
       <UIPayoutDashboard
-        payouts={localPayouts}
+        payouts={payouts ? remotePayoutsToLocal(payouts) : undefined}
         payoutMetrics={metrics}
         pagination={{
           pageSize: pageSize,
@@ -375,10 +415,11 @@ const PayoutDashboardMain = ({
         amountSortDirection={amountSortDirection}
         setAmountSortDirection={setAmountSortDirection}
         status={status}
-        onAddPayoutForApproval={addPayoutForApproval}
-        onRemovePayoutForApproval={removePayoutForApproval}
+        onAddPayoutForAuthorise={addPayoutForAuthorise}
+        onRemovePayoutForAuthorise={removePayoutForAuthorise}
         selectedPayouts={selectedPayouts}
         onApproveBatchPayouts={onApproveBatchPayouts}
+        payoutsExist={payoutsExists}
       />
 
       <PayoutDetailsModal
@@ -403,10 +444,12 @@ const PayoutDashboardMain = ({
         merchantTags={localMerchantTags}
       />
 
-      {accounts && (
+      {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
         <CreatePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
-          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
+          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(
+            beneficiaries?.filter((x) => x.merchantID === merchantId),
+          )}
           apiUrl={apiUrl}
           token={token}
           isOpen={createPayoutClicked}
@@ -418,10 +461,10 @@ const PayoutDashboardMain = ({
       )}
 
       {batchId && (
-        <PayoutApproveForm
+        <PayoutAuthoriseForm
           id={batchId}
           size="x-small"
-          formRef={approveFormRef}
+          formRef={authoriseFormRef}
           className="hidden"
           approveType={ApproveType.BATCH_PAYOUT}
         />

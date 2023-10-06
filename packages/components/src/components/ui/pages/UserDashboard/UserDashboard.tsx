@@ -1,0 +1,118 @@
+import {
+  Pagination,
+  SortDirection,
+  UserMetrics,
+  UserRoleAndUserInvite,
+  UserStatus,
+} from '@nofrixion/moneymoov'
+import * as Tabs from '@radix-ui/react-tabs'
+
+import { Button, Icon } from '../../atoms'
+import UserTable from '../../organisms/UsersTable/UserTable'
+import ScrollArea from '../../ScrollArea/ScrollArea'
+import Tab from '../../Tab/Tab'
+import { Toaster } from '../../Toast/Toast'
+
+export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
+  users: UserRoleAndUserInvite[] | undefined
+  pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
+  isLoading: boolean
+  selectedUserId: string | undefined
+  metrics?: UserMetrics
+  isLoadingMetrics: boolean
+  status: UserStatus
+  onPageChange: (page: number) => void
+  onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
+  onUserClicked?: (user: UserRoleAndUserInvite) => void
+  onInviteUser: () => void
+  onResendInvitation?: (inviteID?: string) => void
+  onSetUserRole?: (userId?: string) => void
+  setStatus?: (status: UserStatus) => void
+}
+
+const UserDashboard: React.FC<UserDashboardProps> = ({
+  users,
+  pagination,
+  isLoading = false,
+  selectedUserId,
+  metrics,
+  isLoadingMetrics,
+  status,
+  onPageChange,
+  onSort,
+  onInviteUser,
+  onUserClicked,
+  onResendInvitation,
+  onSetUserRole,
+  setStatus,
+}) => {
+  return (
+    <>
+      <div className="font-inter bg-main-grey text-default-text h-full">
+        <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
+          <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Users</span>
+          <div className="flex">
+            <Button size="big" onClick={onInviteUser} className="w-10 h-10 md:w-full md:h-full">
+              <span className="hidden md:inline-block">Invite user</span>
+              <Icon name="add/16" className="md:hidden" />
+            </Button>
+          </div>
+        </div>
+
+        <ScrollArea hideScrollbar>
+          <Tabs.Root
+            defaultValue={UserStatus.All}
+            onValueChange={(value) => setStatus && setStatus(value as UserStatus)}
+            value={status}
+          >
+            {/* Keep the Tab to still get accessibility functions through the keyboard */}
+            <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
+              <Tab
+                status={UserStatus.All}
+                isLoading={isLoadingMetrics}
+                totalRecords={metrics?.all ?? 0}
+              />
+              <Tab
+                status={UserStatus.Invited}
+                isLoading={isLoadingMetrics}
+                totalRecords={metrics?.invited ?? 0}
+              />
+              <Tab
+                status={UserStatus.RolePending}
+                isLoading={isLoadingMetrics}
+                totalRecords={metrics?.rolePending ?? 0}
+              />
+              <Tab
+                status={UserStatus.Active}
+                isLoading={isLoadingMetrics}
+                totalRecords={metrics?.active ?? 0}
+              />
+            </Tabs.List>
+            <Tabs.Content value=""></Tabs.Content>
+          </Tabs.Root>
+        </ScrollArea>
+
+        <div className="flex-row bg-white rounded-lg px-7 py-8">
+          <UserTable
+            users={users}
+            pagination={{
+              pageSize: pagination.pageSize,
+              totalSize: pagination.totalSize,
+            }}
+            onPageChange={onPageChange}
+            onSort={onSort}
+            isLoading={isLoading}
+            onUserClicked={onUserClicked}
+            selectedUserId={selectedUserId}
+            onResendInvitation={onResendInvitation}
+            onSetUserRole={onSetUserRole}
+          />
+        </div>
+
+        <Toaster positionY="top" positionX="right" duration={3000} />
+      </div>
+    </>
+  )
+}
+
+export { UserDashboard }

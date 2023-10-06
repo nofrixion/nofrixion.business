@@ -32,6 +32,10 @@ export const App = () => {
                 <Route path="accounts-payable" element={<AccountPayablePage />} />
                 <Route path="accounts-receivable" element={<AccountReceivablePage />} />
                 <Route path="current-accounts" element={<CurrentAccountsPage />} />
+                <Route
+                  path="current-accounts/connected/:bankId"
+                  element={<CurrentAccountsPage />}
+                />
                 <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 <Route path="payouts" element={<PayoutsPage />} />
                 <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />

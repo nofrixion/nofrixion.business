@@ -11,6 +11,10 @@ interface SortExpressionProps {
   descriptionSortDirection?: SortDirection
   typeSortDirection?: SortDirection
   counterPartyNameSortDirection?: SortDirection
+  lastModifiedSortDirection?: SortDirection
+  nameSortDirection?: SortDirection
+  roleSortDirection?: SortDirection
+  titleSortDirection?: SortDirection
 }
 
 /**
@@ -71,6 +75,26 @@ const formatSortExpression = ({ ...props }: SortExpressionProps): string => {
   ) {
     sortExpression += sortExpression.length > 0 ? ',' : ''
     sortExpression += `DestinationAccountName ${props.counterPartyNameSortDirection}`
+  }
+
+  if (props.lastModifiedSortDirection && props.lastModifiedSortDirection !== SortDirection.NONE) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `LastModified ${props.lastModifiedSortDirection}`
+  }
+
+  if (props.nameSortDirection && props.nameSortDirection !== SortDirection.NONE) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `Name ${props.nameSortDirection}`
+  }
+
+  if (props.roleSortDirection && props.roleSortDirection !== SortDirection.NONE) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `RoleType ${props.roleSortDirection}`
+  }
+
+  if (props.titleSortDirection && props.titleSortDirection !== SortDirection.NONE) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `Title ${props.titleSortDirection}`
   }
 
   return sortExpression

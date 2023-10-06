@@ -22,7 +22,7 @@ const PayoutsPage = () => {
 
   if (result) {
     if (result === 'success') {
-      makeToast('success', 'Payout approved')
+      makeToast('success', 'Payout authorised')
     } else if (result === 'error') {
       const error = errors.find(
         (payoutError) => payoutError.type === ErrorType.PAYOUT && payoutError.id === payoutId,
@@ -41,13 +41,15 @@ const PayoutsPage = () => {
   }
 
   return (
-    merchant && (
-      <PayoutDashboard
-        merchantId={merchant.id}
-        apiUrl={NOFRIXION_API_URL}
-        onUnauthorized={onUnauthorized}
-      />
-    )
+    <>
+      {merchant && (
+        <PayoutDashboard
+          merchantId={merchant.id}
+          apiUrl={NOFRIXION_API_URL}
+          onUnauthorized={onUnauthorized}
+        />
+      )}
+    </>
   )
 }
 

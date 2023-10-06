@@ -12,6 +12,8 @@ export default {
     onDateChange: action('onDateChange'),
     onPageChange: action('onPageChange'),
     onSort: action('onSort'),
+    selectedPayouts: [],
+    tags: [],
   },
 } as Meta<typeof PayoutDashboard>
 

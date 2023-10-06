@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority'
 import { LocalContact } from '../../../types/LocalTypes'
 import { defaultAnonymousUserName } from '../../../utils/constants'
 
-const nameVariants = cva('', {
+const nameVariants = cva('truncate', {
   variants: {
     size: {
       small: ['text-13px'],
@@ -15,7 +15,7 @@ const nameVariants = cva('', {
   },
 })
 
-const emailVariants = cva('text-grey-text', {
+const emailVariants = cva('text-grey-text truncate', {
   variants: {
     size: {
       small: ['text-xs'],

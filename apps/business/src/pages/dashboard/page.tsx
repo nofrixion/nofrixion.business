@@ -24,7 +24,7 @@ const DashboardPage = () => {
   const [metrics, setMetrics] = useState<PaymentRequestMetrics>()
 
   const { data: accountsResponse, isLoading: isAccountsLoading } = useAccounts(
-    { merchantId: merchant?.id },
+    { merchantId: merchant?.id, connectedAccounts: true },
     {
       apiUrl: NOFRIXION_API_URL,
     },

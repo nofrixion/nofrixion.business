@@ -1,6 +1,7 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
+  FieldID,
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
@@ -37,6 +38,10 @@ export interface LocalPaymentRequest {
   captureFunds: boolean
   transactions?: LocalTransaction[]
   pispAccountID?: string
+  title?: string
+  customerName?: string
+  createdByUser?: LocalUser
+  merchantTokenDescription?: string
 }
 
 export interface LocalCounterparty {
@@ -234,4 +239,26 @@ export interface LocalBeneficiary {
 export enum ApproveType {
   PAYOUT = 'Payout',
   BATCH_PAYOUT = 'BatchPayout',
+}
+
+export interface AutoSuggestions {
+  fieldId: string
+  values: AutoSuggestionValue[]
+}
+
+export interface AutoSuggestionValue {
+  value: string
+  inserted: Date
+}
+
+export interface AutoSuggestionAdd {
+  fieldId: FieldID
+  value: string
+}
+
+export interface LocalUser {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
 }

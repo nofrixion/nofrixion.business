@@ -47,3 +47,10 @@ export enum LocalAccountIdentifierType {
   IBAN = 'IBAN',
   DD = 'DD',
 }
+
+export enum FieldID {
+  PaymentRequestProductOrService = 'PaymentRequestProductOrService',
+  PaymentRequestFirstName = 'PaymentRequestFirstName',
+  PaymentRequestLastName = 'PaymentRequestLastName',
+  PaymentRequestEmail = 'PaymentRequestEmail',
+}

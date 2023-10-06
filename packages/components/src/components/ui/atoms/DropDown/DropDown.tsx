@@ -1,7 +1,7 @@
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import * as React from 'react'
 
-import { cn } from '../../lib/utils/utils'
+import { cn } from '../../../../utils'
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
@@ -16,7 +16,7 @@ const DropdownMenuSub = DropdownMenuPrimitive.Sub
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
 const itemClassname =
-  'text-sm/8 flex select-none outline-none data-[highlighted]:text-nav-accent focus:text-nav-accent cursor-pointer py-2 data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed'
+  'text-sm/8 flex select-none outline-none cursor-pointer py-2 data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed'
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
@@ -42,11 +42,7 @@ const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
 >(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.SubContent
-    ref={ref}
-    className={cn('bg-dark-bg rounded-lg py-4 px-6 text-white', className)}
-    {...props}
-  />
+  <DropdownMenuPrimitive.SubContent ref={ref} className={cn('py-4 px-6', className)} {...props} />
 ))
 DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName
 
@@ -58,7 +54,7 @@ const DropdownMenuContent = React.forwardRef<
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
-      className={cn('min-w-[140px] bg-dark-bg rounded-lg py-4 pl-8 pr-10 text-white', className)}
+      className={cn('py-4 pl-8 pr-10', className)}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
@@ -74,7 +70,12 @@ const DropdownMenuItem = React.forwardRef<
     }
   }
 >(({ className, icon, children, ...props }, ref) => (
-  <DropdownMenuPrimitive.Item ref={ref} className={cn(itemClassname, className)} {...props}>
+  <DropdownMenuPrimitive.Item
+    ref={ref}
+    className={cn(itemClassname, className)}
+    {...props}
+    onClick={(event) => event.stopPropagation()}
+  >
     <>
       {icon && (
         <div className="mr-3 my-auto">

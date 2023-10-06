@@ -77,26 +77,22 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
   }, [isOpen])
 
-  const [currency, setCurrency] = useState<Currency>()
+  const singleCurrency =
+    accounts
+      .map((item) => item.currency)
+      .filter((value, index, self) => self.indexOf(value) === index).length === 1
+      ? accounts
+          .map((item) => item.currency)
+          .filter((value, index, self) => self.indexOf(value) === index)[0]
+      : undefined
 
-  useEffect(() => {
-    const singleCurrency =
-      accounts
-        .map((item) => item.currency)
-        .filter((value, index, self) => self.indexOf(value) === index).length === 1
-        ? accounts
-            .map((item) => item.currency)
-            .filter((value, index, self) => self.indexOf(value) === index)[0]
-        : undefined
+  const [currency, setCurrency] = useState<Currency | undefined>(
+    singleCurrency != undefined ? singleCurrency : Currency.EUR,
+  )
 
-    setCurrency(singleCurrency != undefined ? singleCurrency : Currency.EUR)
-  }, [accounts])
-
-  const [selectedAccount, setSelectedAccount] = useState<LocalAccount>()
-
-  useEffect(() => {
-    setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
-  }, [accounts, currency])
+  const [selectedAccount, setSelectedAccount] = useState<LocalAccount | undefined>(
+    accounts?.filter((x) => x.currency === currency)[0],
+  )
 
   const theirReferenceMaxLength = currency === Currency.EUR ? 139 : 17
 
@@ -168,12 +164,14 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
       validationFailed = true
     }
 
-    const validateAccountIBANMessage = onValidateDestinationAccountIBAN(
-      destinationAccountIBAN ?? '',
-    )
+    if (currency === Currency.EUR) {
+      const validateAccountIBANMessage = onValidateDestinationAccountIBAN(
+        destinationAccountIBAN ?? '',
+      )
 
-    if (validateAccountIBANMessage) {
-      validationFailed = true
+      if (validateAccountIBANMessage) {
+        validationFailed = true
+      }
     }
 
     const validateTheirReferenceMessage = onValidateTheirReference(theirReference ?? '')
@@ -338,6 +336,12 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   }
 
   const onCurrencyChange = (currency: string) => {
+    if (!selectedBeneficiary) {
+      setDestinationAccountName('')
+      setDestinationAccountIBAN('')
+      setDestinationAccountNumber('')
+      setDestinationAccountSortCode('')
+    }
     setCurrency(currency as Currency.EUR | Currency.GBP)
     setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
     payoutAmount &&
@@ -490,7 +494,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                               label="Account name"
                               maxLength={40}
                               value={destinationAccountName ?? ''}
-                              onChange={(e) => setDestinationAccountName(e.target.value)}
+                              onChange={(value) => setDestinationAccountName(value)}
                               warningValidation={onValidateDestinationAccountName}
                               placeholder="The person or company that owns the account"
                               required
@@ -510,8 +514,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                 <InputTextField
                                   label="Account IBAN"
                                   value={destinationAccountIBAN ?? ''}
-                                  onChange={(e) =>
-                                    setDestinationAccountIBAN(e.target.value.toUpperCase())
+                                  onChange={(value) =>
+                                    setDestinationAccountIBAN(value.toUpperCase())
                                   }
                                   warningValidation={onValidateDestinationAccountIBAN}
                                   placeholder='e.g. "GB29NWBK60161331926819"'
@@ -536,7 +540,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                   label="Account number"
                                   maxLength={8}
                                   value={destinationAccountNumber ?? ''}
-                                  onChange={(e) => setDestinationAccountNumber(e.target.value)}
+                                  onChange={(value) => setDestinationAccountNumber(value)}
                                   placeholder='e.g. "12345678"'
                                   required
                                   formSubmitted={createPayoutClicked}
@@ -549,7 +553,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                                   label="Account sort code"
                                   maxLength={6}
                                   value={destinationAccountSortCode ?? ''}
-                                  onChange={(e) => setDestinationAccountSortCode(e.target.value)}
+                                  onChange={(value) => setDestinationAccountSortCode(value)}
                                   placeholder='e.g. "123456"'
                                   required
                                   formSubmitted={createPayoutClicked}
@@ -582,7 +586,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         label="Their reference"
                         maxLength={currency === Currency.EUR ? 139 : 17}
                         value={theirReference ?? ''}
-                        onChange={(e) => setTheirReference(e.target.value)}
+                        onChange={(value) => setTheirReference(value)}
                         warningValidation={onValidateTheirReference}
                         subText="This is what the recipient is going to see."
                         required
@@ -597,7 +601,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         label="Your reference"
                         maxLength={50}
                         value={yourReference ?? ''}
-                        onChange={(e) => setYourReference(e.target.value)}
+                        onChange={(value) => setYourReference(value)}
                         warningValidation={onValidateYourReference}
                         subText="For internal use only."
                       />
@@ -633,7 +637,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     {isCreateAndApproveButtonDisabled ? (
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
-                      <span>Create and approve</span>
+                      <span>Create and authorise</span>
                     )}
                   </Button>
                   <Button
@@ -646,7 +650,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     {isCreatePayoutButtonDisabled ? (
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
-                      <span>Save for later approval</span>
+                      <span>Save for later authorisation</span>
                     )}
                   </Button>
                 </div>
