@@ -39,6 +39,15 @@ export const buttonVariants = cva(
           'font-normal',
           'leading-6',
         ],
+        tertiary_negative: [
+          'border',
+          'border-negative-red',
+          'text-negative-red',
+          'hover:text-highlighted-negative-red',
+          'hover:border-highlighted-negative-red',
+          'font-normal',
+          'leading-6',
+        ],
         text: [
           'text-grey-text underline underline-offset-2 hover:text-grey-text-hover hover:no-underline',
           'font-normal',
@@ -66,6 +75,7 @@ const icon = cva('w-full h-full', {
       primaryDark: ['text-white'],
       secondary: ['text-[#454D54]'],
       tertiary: ['text-[#454D54]'],
+      tertiary_negative: ['text-negative-red'],
       text: ['text-[#454D54]', 'hover:text-grey-text-hover'],
     },
   },

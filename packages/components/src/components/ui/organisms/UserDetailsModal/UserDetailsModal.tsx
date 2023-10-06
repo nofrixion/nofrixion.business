@@ -24,6 +24,7 @@ const UserDetailsModal = ({
   merchantId,
   onDismiss,
   onUpdateUserRole,
+  onDeleteUserRole,
 }: UserDetailsModalProps) => {
   const [roleChanged, setRoleChanged] = useState(false)
   const [selectedRole, setSelectedRole] = useState<UserRoles | undefined>(user?.roleType)
@@ -69,6 +70,14 @@ const UserDetailsModal = ({
   const handleUpdateUserRole = () => {
     setDisabled(true)
     onUpdateUserRole(merchantId, user?.emailAddress ?? '', selectedRole ?? UserRoles.User)
+  }
+
+  const onRevokeAccessClickedHandler = (
+    event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
+    userRoleId?: string,
+  ) => {
+    event.stopPropagation()
+    userRoleId && onDeleteUserRole(userRoleId)
   }
 
   return (
@@ -140,6 +149,21 @@ const UserDetailsModal = ({
                         userRoles.find((role) => role.value === selectedRole) ?? userRoles[0]
                       }
                     />
+                  )}
+                </div>
+              </div>
+              <div className="flex text-sm mt-8">
+                <div className="text-grey-text w-1/3"></div>
+                <div className="pt-4 md:pt-0 w-1/2">
+                  {user && user.userRoleID && (
+                    <Button
+                      variant={'tertiary_negative'}
+                      size={'small'}
+                      onClick={(event) => onRevokeAccessClickedHandler(event, user.userRoleID)}
+                      className="w-fit"
+                    >
+                      Revoke access
+                    </Button>
                   )}
                 </div>
               </div>

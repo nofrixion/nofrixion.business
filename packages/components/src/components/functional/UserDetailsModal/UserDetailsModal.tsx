@@ -72,7 +72,6 @@ const UserDetailsModal = ({
       makeToast('error', 'Could not delete user role. ' + response.error.detail)
     } else {
       makeToast('success', 'User role deleted.')
-
       onDismiss()
     }
   }

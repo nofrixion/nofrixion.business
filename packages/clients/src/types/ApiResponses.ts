@@ -481,6 +481,7 @@ export type UserRoleAndUserInvite = {
   lastModified: Date
   roleType: UserRoles
   status: UserStatus
+  userRoleID?: string
 }
 
 export type UserMetrics = {
