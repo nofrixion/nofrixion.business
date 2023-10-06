@@ -97,7 +97,6 @@ export interface usePaymentRequestsProps
   merchantId: string
   statusSortDirection: SortDirection
   createdSortDirection: SortDirection
-  contactSortDirection: SortDirection
   amountSortDirection: SortDirection
   titleSortDirection: SortDirection
   fromDateMS?: number

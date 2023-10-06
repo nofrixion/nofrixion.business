@@ -85,9 +85,6 @@ const PaymentRequestDashboardMain = ({
   )
 
   const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
-  const [contactSortDirection, setContactSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [titleSortDirection, setTitleSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
@@ -148,7 +145,6 @@ const PaymentRequestDashboardMain = ({
       amountSortDirection: amountSortDirection,
       statusSortDirection: statusSortDirection,
       createdSortDirection: createdSortDirection,
-      contactSortDirection: contactSortDirection,
       titleSortDirection: titleSortDirection,
       merchantId: merchantId,
       pageNumber: page,
@@ -615,7 +611,6 @@ const PaymentRequestDashboardMain = ({
           onPageChanged={setPage}
           setStatusSortDirection={setStatusSortDirection}
           setCreatedSortDirection={setCreatedSortDirection}
-          setContactSortDirection={setContactSortDirection}
           setAmountSortDirection={setAmountSortDirection}
           setTitleSortDirection={setTitleSortDirection}
           onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
@@ -672,7 +667,6 @@ const PaymentRequestDashboardMain = ({
         onCapture={onCaptureClick}
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
-        contactSortDirection={contactSortDirection}
         amountSortDirection={amountSortDirection}
         titleSortDirection={titleSortDirection}
         pageNumber={page}
