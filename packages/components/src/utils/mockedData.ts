@@ -1387,6 +1387,29 @@ const accounts: LocalAccount[] = [
     availableBalance: 100000,
   },
 ]
+const account: Account = {
+  accountName: 'MARIO ROSSI',
+  accountNumber: '',
+  availableBalance: 5022,
+  balance: 5022,
+  bankName: 'Fineco Sandbox',
+  consentID: 'e91f0b76-6145-4f50-bca0-08dbbdb41968',
+  currency: Currency.EUR,
+  displayName: 'MARIO ROSSI (2ccce116-3dc8-4ad0-83ac-8bf73d252c32)',
+  expiryDate: '2023-12-24T11:41:17.2280342+00:00',
+  iban: 'IT31X0301503200000003517230',
+  id: '2ccce116-3dc8-4ad0-83ac-8bf73d252c32',
+  identifier: {
+    type: AccountIdentifierType.IBAN,
+    iban: 'IT31X0301503200000003517230',
+    currency: Currency.EUR,
+  },
+  isConnectedAccount: true,
+  isDefault: false,
+  merchantID: 'bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d',
+  sortCode: '',
+  summary: 'MARIO ROSSI, IBAN: IT31X0301503200000003517230',
+}
 
 const eurCounterparty: LocalCounterparty = {
   name: 'John Doe',
@@ -1483,6 +1506,7 @@ export default {
     overpaidPaymentRequest,
   },
   merchantTags: mockMerchantTags,
+  account,
   accounts,
   counterparty: eurCounterparty,
   beneficiaries: beneficiaries,

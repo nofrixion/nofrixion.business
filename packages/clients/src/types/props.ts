@@ -212,6 +212,10 @@ export interface PayoutProps {
   payoutId?: string
 }
 
+export interface DeleteConnectedAccountProps {
+  accountId: string
+}
+
 export interface ConsentProps {
   consentId?: string
   merchantId?: string

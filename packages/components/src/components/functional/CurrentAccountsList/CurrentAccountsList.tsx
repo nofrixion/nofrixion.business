@@ -4,6 +4,7 @@ import {
   OpenBankingClient,
   useAccounts,
   useBanks,
+  useDeleteConnectedAccount,
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -65,6 +66,8 @@ const CurrentAccountsMain = ({
     { merchantId: merchantId },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { deleteConnectedAccount } = useDeleteConnectedAccount({ apiUrl: apiUrl, authToken: token })
 
   const businessBaseUrl = () => {
     // Defaults to local dev if it's not set
@@ -153,8 +156,37 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const handleOnRevokeConnection = async (account: Account) => {
-    console.log('TODO: Revoke connection', account)
+  const handleOnRevokeConnection = async (account: Account, revokeOnlyThisAccount: boolean) => {
+    if (revokeOnlyThisAccount) {
+      const response = await deleteConnectedAccount(account.id)
+
+      if (response.error) {
+        makeToast('error', response.error.title)
+        return
+      }
+
+      makeToast('success', 'Account connection successfully revoked.')
+    } else {
+      if (accounts?.status !== 'success') return
+
+      // Revoke all accounts with the same consentID
+      // If any of the promises fail, the toast will not be shown
+      const promises = accounts.data
+        .filter((a) => a.consentID === account.consentID)
+        .map((a) => deleteConnectedAccount(a.id))
+
+      const responses = await Promise.all(promises)
+
+      if (responses.some((r) => r.error)) {
+        makeToast(
+          'error',
+          'Error revoking account connections. Some connections may not have been revoked.',
+        )
+        return
+      }
+
+      makeToast('success', 'All account connections successfully revoked.')
+    }
   }
 
   if (isAccountsLoading) {
