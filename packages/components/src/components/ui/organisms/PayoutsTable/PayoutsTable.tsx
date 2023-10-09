@@ -245,9 +245,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                       {payout.currency}
                     </TableCell>
                     <TableCell className="pl-0 text-grey-text font-normal text-sm text-right">
-                      <div className="hidden xl:block space-x-1 justify-end">
-                        <TagList labels={payout.tags.map((tag) => tag.name)} />
-                      </div>
+                      <TagList labels={payout.tags.map((tag) => tag.name)} />
                     </TableCell>
                     <TableCell className="text-center w-0">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (

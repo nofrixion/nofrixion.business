@@ -154,9 +154,7 @@ const Row = ({
       </td>
 
       <td className={classNames(commonTdClasses, `text-right pr-1.5 custom-backdrop-blur-${id}`)}>
-        <div className="hidden xl:block">
-          <TagList labels={tags.map((tag) => tag.name)} />
-        </div>
+        <TagList labels={tags.map((tag) => tag.name)} />
       </td>
 
       <td className={`pr-2 w-8 custom-backdrop-blur-${id}`}>
