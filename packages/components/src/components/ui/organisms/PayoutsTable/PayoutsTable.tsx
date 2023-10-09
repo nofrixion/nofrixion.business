@@ -14,12 +14,12 @@ import {
   TableRow,
 } from '../../atoms/Table/Table'
 import Checkbox from '../../Checkbox/Checkbox'
-import Chip from '../../Chip/Chip'
 import ColumnHeader from '../../ColumnHeader/ColumnHeader'
 import { Loader } from '../../Loader/Loader'
 import { Status } from '../../molecules'
 import Pager from '../../Pager/Pager'
 import EmptyState from '../../PaymentRequestTable/EmptyState'
+import TagList from '../../Tags/TagList/TagList'
 import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
 
 export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -245,11 +245,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                       {payout.currency}
                     </TableCell>
                     <TableCell className="pl-0 text-grey-text font-normal text-sm text-right">
-                      <div className="hidden xl:block space-x-1 justify-end">
-                        {payout.tags.map((tag, index) => (
-                          <Chip key={`tag-${index}`} label={tag.name} />
-                        ))}
-                      </div>
+                      <TagList labels={payout.tags.map((tag) => tag.name)} />
                     </TableCell>
                     <TableCell className="text-center w-0">
                       {payout.status === PayoutStatus.PENDING_APPROVAL && (
