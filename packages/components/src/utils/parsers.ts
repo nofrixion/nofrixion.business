@@ -18,7 +18,7 @@ import {
   Transaction,
   TransactionTypeValue,
   User,
-  UserRolesEnum,
+  UserRoles,
   UserStatus,
   Wallets,
 } from '@nofrixion/moneymoov'
@@ -619,17 +619,17 @@ const userStatusToStatus = (status: UserStatus) => {
   }
 }
 
-const userRoleToDisplay = (status: UserRolesEnum) => {
+const userRoleToDisplay = (status: UserRoles) => {
   switch (status) {
-    case UserRolesEnum.AdminApprover:
+    case UserRoles.AdminApprover:
       return 'Admin Approver'
-    case UserRolesEnum.Approver:
+    case UserRoles.Approver:
       return 'Approver'
-    case UserRolesEnum.NewlyRegistered:
+    case UserRoles.NewlyRegistered:
       return 'Newly Registered'
-    case UserRolesEnum.User:
+    case UserRoles.User:
       return 'User'
-    case UserRolesEnum.PaymentRequestor:
+    case UserRoles.PaymentRequestor:
       return 'Payment Requestor'
   }
 }

@@ -16,7 +16,7 @@ export default {
     },
     variant: {
       control: { type: 'radio' },
-      options: ['primary', 'primaryDark', 'secondary', 'tertiary', 'text'],
+      options: ['primary', 'primaryDark', 'secondary', 'tertiary', 'tertiary_negative', 'text'],
     },
     previousArrow: {
       control: { type: 'boolean' },
@@ -99,6 +99,32 @@ Tertiary.decorators = [
       <Button {...(Secondary.args, { size: 'medium', variant: 'tertiary' })}>Show more</Button>
       <Button {...(Secondary.args, { size: 'small', variant: 'tertiary' })}>Show more</Button>
       <Button {...(Secondary.args, { size: 'x-small', variant: 'tertiary' })}>Show more</Button>
+    </div>
+  ),
+]
+
+export const TertiaryNegative = Template.bind({})
+TertiaryNegative.args = {
+  children: 'Show more',
+  variant: 'tertiary_negative',
+  size: 'medium',
+}
+
+Tertiary.decorators = [
+  () => (
+    <div className="space-y-2 flex flex-col w-fit">
+      <Button {...(Secondary.args, { size: 'big', variant: 'tertiary_negative' })}>
+        Show more
+      </Button>
+      <Button {...(Secondary.args, { size: 'medium', variant: 'tertiary_negative' })}>
+        Show more
+      </Button>
+      <Button {...(Secondary.args, { size: 'small', variant: 'tertiary_negative' })}>
+        Show more
+      </Button>
+      <Button {...(Secondary.args, { size: 'x-small', variant: 'tertiary_negative' })}>
+        Show more
+      </Button>
     </div>
   ),
 ]

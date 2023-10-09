@@ -20,16 +20,9 @@ const InviteUserModal = ({
 }: InviteUserModalProps) => {
   const { sendUserInvite } = useSendUserInvite({ apiUrl: apiUrl, authToken: token })
 
-  const onInvite = async (
-    merchantID: string,
-    firstName: string | undefined,
-    lastName: string | undefined,
-    emailAddress: string,
-  ) => {
+  const onInvite = async (merchantID: string, emailAddress: string) => {
     const userInviteCreate: UserInviteCreate = {
       merchantID: merchantID,
-      inviteeFirstName: firstName,
-      inviteeLastName: lastName,
       inviteeEmailAddress: emailAddress,
       sendInviteEmail: true,
       registrationUrl: `${import.meta.env.VITE_PUBLIC_PORTAL_URL}/Home/Register?userInviteID={id}`,
