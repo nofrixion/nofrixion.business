@@ -1,7 +1,7 @@
 import {
   ApiError,
   SortDirection,
-  UserInvitesClient,
+  useResendUserInvitation,
   UserMetrics,
   UserRoleAndUserInvite,
   UserStatus,
@@ -93,6 +93,8 @@ const UserDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  const { resendUserInvitation } = useResendUserInvitation({ apiUrl: apiUrl, authToken: token })
+
   useEffect(() => {
     setPage(1)
     setUsers(undefined)
@@ -163,9 +165,7 @@ const UserDashboardMain = ({
       return
     }
 
-    const client = new UserInvitesClient({ apiUrl: apiUrl, authToken: token })
-
-    const response = await client.resendUserInvite({ inviteId: inviteID })
+    const response = await resendUserInvitation(inviteID)
 
     if (response.status === 'success') {
       makeToast('success', 'Invitation resent successfully.')
