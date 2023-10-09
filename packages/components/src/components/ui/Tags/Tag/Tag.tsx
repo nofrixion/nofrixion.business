@@ -6,10 +6,11 @@ import { useOnClickOutside } from 'usehooks-ts'
 export interface TagProps {
   id: string
   label: string
+  readonly?: boolean
   onDelete?: (id: string) => void
 }
 
-const Tag = ({ id, label, onDelete }: TagProps) => {
+const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
   const [deleteMode, setDeleteMode] = useState(false)
   const text = !deleteMode ? label : 'Delete?'
   const ref = useRef(null)
@@ -43,7 +44,8 @@ const Tag = ({ id, label, onDelete }: TagProps) => {
         className={classNames(
           'inline-flex items-center space-x-2 text-[#454D54] min-h-[2.0625rem] max-h-[2.0625rem] px-3 py-2 rounded-[0.25rem] text-sm leading-4 whitespace-nowrap align-middle w-fit select-none',
           {
-            'border-solid border-[#ABB2BA] border-[0.063rem] hover:bg-grey-bg': !deleteMode,
+            'border-solid border-[#ABB2BA] border-[0.063rem]': !deleteMode,
+            'hover:bg-grey-bg': !deleteMode && !readonly,
             'text-negative-red bg-error-bg': deleteMode,
           },
         )}
@@ -61,46 +63,48 @@ const Tag = ({ id, label, onDelete }: TagProps) => {
           {text}
         </motion.span>
 
-        <AnimatePresence>
-          {deleteMode && (
+        {!readonly && (
+          <AnimatePresence>
+            {deleteMode && (
+              <motion.svg
+                key="delete"
+                layout="position"
+                className="hover:cursor-pointer"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={() => onDelete && onDelete(id)}
+              >
+                <circle cx="10" cy="10" r="10" fill="#FFF5F7" />
+                <path
+                  d="M6 10.2369L8.84211 13.079L15 6.92114"
+                  stroke="#F32448"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </motion.svg>
+            )}
+
             <motion.svg
-              key="delete"
+              key="edit"
               layout="position"
-              className="hover:cursor-pointer"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
+              className={classNames('hover:cursor-pointer stroke-[#454D54]', {
+                'stroke-[#A3747C]': deleteMode,
+              })}
+              width="10"
+              height="9"
+              viewBox="0 0 10 9"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={() => onDelete && onDelete(id)}
+              onClick={() => setDeleteMode(!deleteMode)}
             >
-              <circle cx="10" cy="10" r="10" fill="#FFF5F7" />
-              <path
-                d="M6 10.2369L8.84211 13.079L15 6.92114"
-                stroke="#F32448"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M1 0.5L9 8.5" />
+              <path d="M9 0.5L1 8.5" />
             </motion.svg>
-          )}
-
-          <motion.svg
-            key="edit"
-            layout="position"
-            className={classNames('hover:cursor-pointer stroke-[#454D54]', {
-              'stroke-[#A3747C]': deleteMode,
-            })}
-            width="10"
-            height="9"
-            viewBox="0 0 10 9"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            onClick={() => setDeleteMode(!deleteMode)}
-          >
-            <path d="M1 0.5L9 8.5" />
-            <path d="M9 0.5L1 8.5" />
-          </motion.svg>
-        </AnimatePresence>
+          </AnimatePresence>
+        )}
       </motion.div>
     </MotionConfig>
   )

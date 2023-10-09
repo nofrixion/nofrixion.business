@@ -6,12 +6,12 @@ import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
 import { formatAmount } from '../../../utils/formatters'
 import { formatCurrency } from '../../../utils/uiFormaters'
-import Chip from '../Chip/Chip'
 import Contact from '../Contact/Contact'
 import Created from '../Created/Created'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
 import PaymentRequestAttemptsCell from '../PaymentRequestAttemptsCell/PaymentRequestAttemptsCell'
 import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
+import TagList from '../Tags/TagList/TagList'
 
 export interface PaymentRequestRowProps extends LocalPaymentRequest {
   onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
@@ -154,10 +154,8 @@ const Row = ({
       </td>
 
       <td className={classNames(commonTdClasses, `text-right pr-1.5 custom-backdrop-blur-${id}`)}>
-        <div className="hidden xl:block space-x-1">
-          {tags.map((tag, index) => (
-            <Chip key={`tag-${index}`} label={tag.name} />
-          ))}
+        <div className="hidden xl:block">
+          <TagList labels={tags.map((tag) => tag.name)} />
         </div>
       </td>
 
