@@ -118,7 +118,7 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
         <MotionConfig transition={{ duration: animationDuration }}>
           <motion.div
             animate={{ width: width + 8 }}
-            className="relative inline-flex text-default-text min-h-[2.0625rem] max-h-[2.0625rem] py-2 rounded-[0.25rem] border-border-grey border-[0.063rem] border-solid text-sm leading-4 whitespace-nowrap align-middle select-none"
+            className="relative inline-flex text-[#454D54] min-h-[2.0625rem] max-h-[2.0625rem] py-2 rounded-[0.25rem] border-border-grey border-[0.063rem] border-solid text-sm leading-4 whitespace-nowrap align-middle select-none"
             ref={componentRef}
           >
             <div ref={ref} className="inline-flex items-center space-x-1 pl-3">
