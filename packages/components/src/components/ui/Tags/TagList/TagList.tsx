@@ -12,12 +12,12 @@ const TagList = ({ labels }: TagListProps) => {
   }
 
   return (
-    <div className="flex-grid flex-wrap space-x-1 items-center justify-items-end">
+    <div className="hidden xl:block flex-grid flex-wrap space-x-1 items-center justify-items-end">
       {labels.map((label) => (
         <Tag key={label} id={label} label={label} readonly={true} />
       ))}
       {remaining > 0 && (
-        <div className="inline-flex text-sm font-normal text-control-grey-hover">
+        <div className="inline-flex text-xs font-normal text-control-grey-hover">
           {' +'}
           {remaining}
         </div>
