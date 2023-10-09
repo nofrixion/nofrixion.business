@@ -86,7 +86,8 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
           <ScrollArea>
             <Transactions
               transactions={paymentRequest.paymentAttempts.filter(
-                (pa) => pa.paymentStatus === 'received' || pa.paymentStatus === 'pending',
+                (x) =>
+                  (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0) || x.settledAmount > 0,
               )}
               cardAuthoriseOnly={!paymentRequest.captureFunds}
               onRefund={onRefund}

@@ -105,7 +105,7 @@ const iconName: Record<TVariant, Record<'small' | 'large', IconNames>> = {
   },
   role_pending: {
     small: 'pending/12',
-    large: 'pending/12',
+    large: 'pending/16',
   },
   active: {
     small: 'done/12',

@@ -216,7 +216,7 @@ export enum AISCreditLineType {
   UNKNOWN = 7,
 }
 
-export const enum UserRolesEnum {
+export const enum UserRoles {
   User = 'User',
   Approver = 'Approver',
   AdminApprover = 'AdminApprover',

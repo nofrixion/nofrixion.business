@@ -19,6 +19,7 @@ const UserPage = () => {
       {merchant && (
         <UserDashboard
           merchantId={merchant.id}
+          merchantName={merchant.name}
           apiUrl={NOFRIXION_API_URL}
           onUnauthorized={onUnauthorized}
         />

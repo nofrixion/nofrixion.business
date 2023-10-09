@@ -8,12 +8,7 @@ import { Loader } from '../Loader/Loader'
 
 export interface InviteUserModalProps {
   merchantID: string
-  onInvite: (
-    merchantID: string,
-    firstName: string | undefined,
-    lastName: string | undefined,
-    emailAddress: string,
-  ) => Promise<void>
+  onInvite: (merchantID: string, emailAddress: string) => Promise<void>
   onDismiss: () => void
   isOpen: boolean
 }
@@ -27,8 +22,6 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
   const [isInviteButtonDisabled, setIsInviteButtonDisabled] = useState(false)
 
   const [formError, setFormError] = useState<string | undefined>(undefined)
-  const [firstName, setFirstName] = useState<string | undefined>(undefined)
-  const [lastName, setLastName] = useState<string | undefined>(undefined)
   const [emailAddress, setEmailAddress] = useState<string | undefined>(undefined)
 
   const [sendInviteClicked, setSendInviteClicked] = useState(false)
@@ -42,6 +35,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
   const handleValidation = (): boolean => {
     let validationFailed = false
     if (!emailAddress) {
+      setIsInviteButtonDisabled(false)
       setFormError('Please fill all the required fields')
       validationFailed = true
     }
@@ -55,17 +49,16 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     if (handleValidation()) {
       return
     } else {
-      await onInvite(merchantID, firstName, lastName, emailAddress!)
+      await onInvite(merchantID, emailAddress!)
 
       setIsInviteButtonDisabled(false)
     }
   }
   const resetFields = () => {
-    setFirstName(undefined)
-    setLastName(undefined)
     setEmailAddress(undefined)
     setFormError(undefined)
     setSendInviteClicked(false)
+    setIsInviteButtonDisabled(false)
   }
 
   const handleOnOpenChange = (open: boolean) => {
@@ -76,6 +69,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
 
   const onValidateEmail = (email: string) => {
     if (email && !validateEmail(email)) {
+      setIsInviteButtonDisabled(false)
       return 'Make sure the email address is valid.'
     }
   }
@@ -84,26 +78,12 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     <>
       <Sheet open={isOpen} onOpenChange={handleOnOpenChange}>
         <SheetContent className="w-full lg:w-[37.5rem]">
-          <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8">
+          <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8">
             <div className="h-fit mb-[7.5rem] lg:mb-0">
-              <span className="block text-2xl font-semibold text-default-text mt-8 mb-10">
+              <span className="block text-2xl font-semibold text-default-text mt-10 mb-10">
                 Invite user
               </span>
               <div className="lg:w-[27rem]">
-                <div className="text-left mb-10">
-                  <InputTextField
-                    label="First name"
-                    value={firstName ?? ''}
-                    onChange={(value) => setFirstName(value)}
-                  />
-                </div>
-                <div className="text-left mt-2 mb-10">
-                  <InputTextField
-                    label="Last name"
-                    value={lastName ?? ''}
-                    onChange={(value) => setLastName(value)}
-                  />
-                </div>
                 <div className="text-left mt-2">
                   <InputTextField
                     label="Email address"

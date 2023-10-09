@@ -4,6 +4,7 @@ import {
   CardTokenCreateModes,
   Currency,
   PartialPaymentMethods,
+  UserRoles,
 } from './Enums'
 
 export type PaymentRequestCreate = {
@@ -111,4 +112,10 @@ export type UserInviteCreate = {
   inviteeLastName?: string
   registrationUrl?: string
   sendInviteEmail: boolean
+}
+
+export type UserRoleCreate = {
+  merchantID: string
+  emailAddress: string
+  userRole: UserRoles
 }
