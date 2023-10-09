@@ -165,7 +165,13 @@ const PayoutDashboardMain = ({
   }, [accountsResponse])
 
   const { data: beneficiariesResponse } = useBeneficiaries(
-    { pageNumber: page, pageSize, search: searchFilter, currency: currencyFilter },
+    {
+      merchantId: merchantId,
+      pageNumber: page,
+      pageSize,
+      search: searchFilter,
+      currency: currencyFilter,
+    },
     { apiUrl, authToken: token },
   )
 
@@ -447,9 +453,7 @@ const PayoutDashboardMain = ({
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
         <CreatePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
-          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(
-            beneficiaries?.filter((x) => x.merchantID === merchantId),
-          )}
+          beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
           apiUrl={apiUrl}
           token={token}
           isOpen={createPayoutClicked}

@@ -7,6 +7,7 @@ import { ApiProps, useBeneficiaryProps } from '../types/props'
 const fetchBeneficiaries = async (
   apiUrl: string,
   authToken?: string,
+  merchantId?: string,
   pageNumber?: number,
   pageSize?: number,
   search?: string,
@@ -15,6 +16,7 @@ const fetchBeneficiaries = async (
   const client = new BeneficiaryClient({ apiUrl, authToken })
 
   const response = await client.getAll({
+    merchantId: merchantId,
     pageNumber: pageNumber,
     pageSize: pageSize,
     search: search,
@@ -25,12 +27,21 @@ const fetchBeneficiaries = async (
 }
 
 export const useBeneficiaries = (
-  { pageNumber, pageSize, search, currency }: useBeneficiaryProps,
+  { merchantId, pageNumber, pageSize, search, currency }: useBeneficiaryProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
-  const QUERY_KEY = ['Beneficiaries', apiUrl, authToken, pageNumber, pageSize, search, currency]
+  const QUERY_KEY = [
+    'Beneficiaries',
+    apiUrl,
+    authToken,
+    merchantId,
+    pageNumber,
+    pageSize,
+    search,
+    currency,
+  ]
 
   return useQuery<ApiResponse<BeneficiaryPageResponse>, Error>(QUERY_KEY, () =>
-    fetchBeneficiaries(apiUrl, authToken, pageNumber, pageSize, search, currency),
+    fetchBeneficiaries(apiUrl, authToken, merchantId, pageNumber, pageSize, search, currency),
   )
 }
