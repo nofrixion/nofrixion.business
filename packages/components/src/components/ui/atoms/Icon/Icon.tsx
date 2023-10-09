@@ -294,6 +294,17 @@ export const Icons = {
       <path d="M6 6L8.3435 8.344" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'pending/16': (className: string) => (
+    <SVG className={className} size="16" viewBox="0 -2.5">
+      <path
+        d="M0.75 6C0.75 7.39239 1.30312 8.72774 2.28769 9.71231C3.27226 10.6969 4.60761 11.25 6 11.25C7.39239 11.25 8.72774 10.6969 9.71231 9.71231C10.6969 8.72774 11.25 7.39239 11.25 6C11.25 4.60761 10.6969 3.27226 9.71231 2.28769C8.72774 1.30312 7.39239 0.75 6 0.75C4.60761 0.75 3.27226 1.30312 2.28769 2.28769C1.30312 3.27226 0.75 4.60761 0.75 6Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6 6V4.125" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 6L8.3435 8.344" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
   'capture/12': (className: string) => (
     <SVG className={className} size="12">
       <path
@@ -610,13 +621,13 @@ export const Icons = {
     </SVG>
   ),
   'invited/12': (className: string) => (
-    <SVG className={cn(className, 'fill-current stroke-none')} size="12">
-      <circle cx="6" cy="6" r="4" />
+    <SVG className={cn(className, 'fill-current stroke-none')} size="12" viewBox="0 -0.5">
+      <circle cx="6" cy="6" r="5" />
     </SVG>
   ),
   'invited/16': (className: string) => (
-    <SVG className={cn(className, 'fill-current stroke-none')} size="16">
-      <circle cx="6" cy="6" r="4" />
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16" viewBox="0 -2.5">
+      <circle cx="6" cy="6" r="6" />
     </SVG>
   ),
   'expired/12': (className: string) => (

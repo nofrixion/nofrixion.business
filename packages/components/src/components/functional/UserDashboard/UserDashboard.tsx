@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ApiError,
   SortDirection,
-  UserInvitesClient,
+  useResendUserInvitation,
   UserMetrics,
   UserRoleAndUserInvite,
   UserStatus,
@@ -15,11 +14,13 @@ import { useEffect, useState } from 'react'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
+import UserDetailsModal from '../UserDetailsModal/UserDetailsModal'
 
 export interface UserDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
+  merchantName: string
   onUnauthorized: () => void
 }
 
@@ -27,6 +28,7 @@ const UserDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  merchantName,
   onUnauthorized,
 }: UserDashboardProps) => {
   const queryClient = useQueryClient()
@@ -36,6 +38,7 @@ const UserDashboard = ({
       <UserDashboardMain
         token={token}
         merchantId={merchantId}
+        merchantName={merchantName}
         apiUrl={apiUrl}
         onUnauthorized={onUnauthorized}
       />
@@ -49,6 +52,7 @@ const UserDashboardMain = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  merchantName,
   onUnauthorized,
 }: UserDashboardProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,6 +67,7 @@ const UserDashboardMain = ({
   const [roleSortDirection, setRoleSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [nameSortDirection, setNameSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
+  const [selectedUser, setSelectedUser] = useState<UserRoleAndUserInvite | undefined>(undefined)
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
   const [inviteUserClicked, setInviteUserClicked] = useState(false)
@@ -87,6 +92,8 @@ const UserDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { resendUserInvitation } = useResendUserInvitation({ apiUrl: apiUrl, authToken: token })
 
   useEffect(() => {
     setPage(1)
@@ -145,6 +152,7 @@ const UserDashboardMain = ({
   }
 
   const onUserRowClicked = (user: UserRoleAndUserInvite) => {
+    setSelectedUser(user)
     setSelectedUserId(user.userID)
   }
 
@@ -157,9 +165,7 @@ const UserDashboardMain = ({
       return
     }
 
-    const client = new UserInvitesClient({ apiUrl: apiUrl, authToken: token })
-
-    const response = await client.resendUserInvite({ inviteId: inviteID })
+    const response = await resendUserInvitation(inviteID)
 
     if (response.status === 'success') {
       makeToast('success', 'Invitation resent successfully.')
@@ -169,8 +175,9 @@ const UserDashboardMain = ({
     }
   }
 
-  const onSetUserRole = async (userId?: string) => {
-    console.log('Set user role', userId)
+  const onDismissUserDetailsModal = () => {
+    setSelectedUser(undefined)
+    setSelectedUserId(undefined)
   }
 
   return (
@@ -188,7 +195,6 @@ const UserDashboardMain = ({
         selectedUserId={selectedUserId}
         onInviteUser={onInviteUser}
         onResendInvitation={onResendInvitation}
-        onSetUserRole={onSetUserRole}
         metrics={metrics}
         isLoadingMetrics={isLoadingMetrics}
         status={status}
@@ -204,6 +210,18 @@ const UserDashboardMain = ({
           onDismiss={() => {
             setInviteUserClicked(false)
           }}
+        />
+      )}
+
+      {merchantId && (
+        <UserDetailsModal
+          merchantId={merchantId}
+          merchantName={merchantName}
+          apiUrl={apiUrl}
+          token={token}
+          user={selectedUser}
+          open={!!selectedUser}
+          onDismiss={onDismissUserDetailsModal}
         />
       )}
     </div>
