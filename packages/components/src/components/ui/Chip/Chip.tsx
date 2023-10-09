@@ -4,7 +4,7 @@ export interface ChipProps {
 
 const Chip = ({ label }: ChipProps) => {
   return (
-    <span className="text-[#1B2232] bg-grey-bg px-3 py-1 rounded-full text-xs whitespace-nowrap inline-block align-middle">
+    <span className="text-[#454D54] hover:bg-grey-bg px-3 py-1 rounded-[0.25rem] border-[#ABB2BA] border-[0.063rem] border-solid text-xs whitespace-nowrap inline-block align-middle">
       {label}
     </span>
   )
