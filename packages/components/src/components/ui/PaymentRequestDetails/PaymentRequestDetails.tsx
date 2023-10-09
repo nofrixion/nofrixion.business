@@ -35,13 +35,14 @@ const PaymentRequestDetails = ({
   return (
     <>
       <div className="bg-[#F6F9F9] px-6 lg:pl-8 lg:pr-7 relative mb-[4.875rem]">
-        <div className="flex justify-between pb-[2.625rem] pt-6 items-center">
+        <div className="flex justify-between pb-[2.625rem] pt-6">
           <Contact
             name={paymentRequest.contact.name}
             email={paymentRequest.contact.email}
             size="large"
-          ></Contact>
-          <QRCode url={hostedPaymentLink}></QRCode>
+          />
+
+          <QRCode url={hostedPaymentLink} />
         </div>
         <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-opacity-100 w-[92%]">
           <CopyLink link={hostedPaymentLink}></CopyLink>
