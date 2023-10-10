@@ -87,7 +87,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
             <Transactions
               transactions={paymentRequest.paymentAttempts.filter(
                 (x) =>
-                  (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0) || x.settledAmount > 0,
+                  (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0) || x.authorisedAmount > 0,
               )}
               cardAuthoriseOnly={!paymentRequest.captureFunds}
               onRefund={onRefund}
