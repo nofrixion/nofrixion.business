@@ -31,7 +31,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       <p className="text-sm/4 text-grey-text">{customDesc ? customDesc : description}</p>
 
       {state === 'empty' && onCreatePaymentRequest && (
-        <Button size="big" onClick={onCreatePaymentRequest} className="mt-[2.625rem] w-64">
+        <Button size="large" onClick={onCreatePaymentRequest} className="mt-[2.625rem] w-64">
           Create payment request
         </Button>
       )}

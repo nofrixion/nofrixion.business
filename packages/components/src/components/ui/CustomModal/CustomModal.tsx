@@ -36,7 +36,7 @@ const CustomModal = ({
   buttonRowClassName,
   showDefault = true,
   buttonText = 'Apply',
-  buttonClaseName = 'w-full md:w-auto px-16 ml-auto',
+  buttonClaseName = 'w-full md:w-[10.625rem] px-16 ml-auto',
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -113,7 +113,7 @@ const CustomModal = ({
 
                     <Button
                       variant="primaryDark"
-                      size="medium"
+                      size="large"
                       onClick={onApplyClicked}
                       disabled={!onApplyEnabled}
                       className={buttonClaseName}
