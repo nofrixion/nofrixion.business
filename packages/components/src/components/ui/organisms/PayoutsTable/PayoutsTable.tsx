@@ -149,7 +149,6 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   />
                 </TableHead>
                 <TableHead>{/* Currency */}</TableHead>
-                <TableHead>{/* Tags */}</TableHead>
                 <TableHead>
                   <Pager
                     onPageChange={onPageChange}
@@ -183,10 +182,6 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </TableCell>
 
                     <TableCell className="p-0"></TableCell>
-
-                    <TableCell className="w-0">
-                      <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
-                    </TableCell>
 
                     <TableCell className="w-0">
                       <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
@@ -244,13 +239,13 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     <TableCell className="pl-0 text-grey-text font-normal text-sm">
                       {payout.currency}
                     </TableCell>
-                    <TableCell className="pl-0 text-grey-text font-normal text-sm text-right">
-                      <TagList labels={payout.tags.map((tag) => tag.name)} />
-                    </TableCell>
-                    <TableCell className="text-center w-0">
-                      {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                        <PayoutAuthoriseForm id={payout.id} size="x-small" />
-                      )}
+                    <TableCell>
+                      <div className="flex ml-auto justify-items-end items-center w-fit">
+                        <TagList labels={payout.tags.map((tag) => tag.name)} />
+                        {payout.status === PayoutStatus.PENDING_APPROVAL && (
+                          <PayoutAuthoriseForm id={payout.id} size="x-small" className="pl-4" />
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
