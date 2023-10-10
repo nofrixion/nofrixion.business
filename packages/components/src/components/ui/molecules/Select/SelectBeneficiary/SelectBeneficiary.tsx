@@ -56,6 +56,16 @@ const SelectBeneficiary: React.FC<SelectBeneficiaryPros> = ({
         </SelectTrigger>
       }
       <SelectContent className="md:w-[27rem] z-[200] font-normal">
+        <SelectItem
+          key="addManually"
+          value="addManually"
+          isText={false}
+          className="active:bg-white lg:focus:bg-white"
+        >
+          <span className="underline underline-offset-4 cursor-pointer hover:no-underline">
+            Add manually
+          </span>
+        </SelectItem>
         {beneficiaries.map((beneficiary) => (
           <SelectItem key={beneficiary.id} value={beneficiary.id} isText={false}>
             <div className="w-full flex justify-between items-center">
@@ -67,16 +77,6 @@ const SelectBeneficiary: React.FC<SelectBeneficiaryPros> = ({
             </div>
           </SelectItem>
         ))}
-        <SelectItem
-          key="addManually"
-          value="addManually"
-          isText={false}
-          className="active:bg-white lg:focus:bg-white"
-        >
-          <span className="underline underline-offset-4 cursor-pointer hover:no-underline">
-            Add manually
-          </span>
-        </SelectItem>
       </SelectContent>
     </Select>
   )
