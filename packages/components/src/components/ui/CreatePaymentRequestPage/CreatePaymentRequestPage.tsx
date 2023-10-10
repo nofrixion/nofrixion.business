@@ -31,7 +31,6 @@ import { Button } from '../../ui/atoms/Button/Button'
 import InputTextField from '../atoms/InputTextField/InputTextField'
 import EditOptionCard from '../EditOptionCard/EditOptionCard'
 import InputAmountField from '../InputAmountField/InputAmountField'
-import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
 import { Loader } from '../Loader/Loader'
 import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
 import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal'
@@ -269,10 +268,6 @@ const CreatePaymentRequestPage = ({
       return
     }
 
-    if (description && onValidateDescription(description)) {
-      return
-    }
-
     setIsReviewing(true)
   }
 
@@ -422,22 +417,6 @@ const CreatePaymentRequestPage = ({
     }
 
     setHasEmailError(false)
-  }
-
-  const onValidateDescription = (description: string): string | undefined => {
-    // Get invalid characters if any (using the same regex from backend "[a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+")
-    // eslint-disable-next-line no-useless-escape
-    const invalidCharacters = description.match(/[^a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+/g)
-
-    if (description.length > 0 && invalidCharacters) {
-      // Singular
-      if (invalidCharacters.length === 1) {
-        return `The character "${invalidCharacters[0]}" is not allowed in the description`
-      }
-
-      // Plural
-      return `The characters "${invalidCharacters.join('')}" are not allowed in the description`
-    }
   }
 
   const getMinimumAmountPerCurrency = (currency: string) => {
@@ -634,7 +613,6 @@ const CreatePaymentRequestPage = ({
               (!paymentMethodsFormValue?.isBankEnabled ||
                 Number(amount) >= getMinimumAmountPerCurrency(currency)) &&
               productOrService &&
-              (!description || !onValidateDescription(description)) &&
               !hasEmailError && (
                 <LayoutWrapper
                   key="buttons"
@@ -845,17 +823,6 @@ const CreatePaymentRequestPage = ({
                                       (x) => x.fieldId === FieldID.PaymentRequestProductOrService,
                                     )
                                     ?.values?.map((value) => value.value)}
-                                />
-                              </div>
-
-                              <div className="mb-14">
-                                <InputTextAreaField
-                                  label="Description"
-                                  maxLength={140}
-                                  value={description}
-                                  onChange={(e) => setDescription(e.target.value)}
-                                  validation={onValidateDescription}
-                                  enableQuickValidation
                                 />
                               </div>
 
