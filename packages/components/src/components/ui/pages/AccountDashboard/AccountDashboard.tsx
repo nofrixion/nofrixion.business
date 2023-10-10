@@ -194,6 +194,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           onPageChange={onPageChange}
           onSort={onSort}
           isLoading={isLoadingTransactions}
+          isShowingConnectedAccount={account?.isConnectedAccount}
         />
       </div>
 
