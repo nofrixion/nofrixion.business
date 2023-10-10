@@ -19,7 +19,7 @@ const nameVariants = cva('', {
   variants: {
     size: {
       small: ['truncate text-13px'],
-      large: ['text-[1.25rem]', 'font-semibold'],
+      large: ['text-[1.25rem]', 'font-semibold', 'leading-7', 'mb-2'],
     },
   },
   defaultVariants: {
