@@ -518,7 +518,7 @@ const PaymentRequestDashboardMain = ({
         </span>
         <div>
           <Button
-            size="big"
+            size="large"
             onClick={onCreatePaymentRequest}
             className="w-10 h-10 md:w-full md:h-full"
           >
@@ -631,7 +631,7 @@ const PaymentRequestDashboardMain = ({
         <div className="flex">
           <Button
             variant="tertiary"
-            size="big"
+            size="large"
             onClick={fetchNextPage}
             disabled={isLoadingMore}
             className="lg:hidden mx-auto mt-6 mb-2 w-fit"

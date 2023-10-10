@@ -2,9 +2,15 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import QRCodeComponent from 'react-qr-code'
 
+import { cn } from '../../../utils'
 import { Icon, Sheet, SheetContent } from '../atoms'
 
-const QRCode = ({ url }: { url: string }) => {
+interface QRCodeProps {
+  url: string
+  className?: string
+}
+
+const QRCode: React.FC<QRCodeProps> = ({ url, className }) => {
   const [isHovered, setIsHovered] = useState(false)
   const [isQrModalOpen, setIsQrModalOpen] = useState(false)
   const largeQrCodeCanvasRef = useRef<HTMLCanvasElement>(null)
@@ -65,7 +71,7 @@ const QRCode = ({ url }: { url: string }) => {
       <canvas ref={largeQrCodeCanvasRef} height="1024" width="1024" className="hidden"></canvas>
 
       <div
-        className="w-14 lg:w-20 lg:h-20 relative"
+        className={cn('w-14 min-w-[3.5rem] lg:min-w-[5rem] lg:w-20 lg:h-20 relative', className)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

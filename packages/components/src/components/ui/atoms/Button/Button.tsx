@@ -55,15 +55,15 @@ export const buttonVariants = cva(
         ],
       },
       size: {
-        big: ['text-base', 'px-3', 'py-3', 'md:px-6'],
-        medium: ['text-sm', 'px-4', 'py-2'],
+        large: ['text-base', 'px-3', 'py-3', 'md:px-6'],
+        medium: ['text-sm', 'px-4', 'py-2', 'leading-6'],
         small: ['text-[0.813rem]', 'py-1', 'px-3'],
-        'x-small': ['text-[0.813rem]', 'py-1', 'px-3'],
+        'x-small': ['text-[0.813rem]', 'py-1', 'px-3', 'leading-4'],
       },
     },
     defaultVariants: {
       variant: 'primary',
-      size: 'big',
+      size: 'large',
     },
   },
 )
@@ -87,14 +87,14 @@ const icon = cva('w-full h-full', {
 const iconContainer = cva('', {
   variants: {
     size: {
-      big: ['w-4', 'h-4'],
+      large: ['w-4', 'h-4'],
       medium: ['w-4', 'h-4'],
       small: ['w-4', 'h-4'],
       'x-small': ['w-3', 'h-3'],
     },
   },
   defaultVariants: {
-    size: 'big',
+    size: 'large',
   },
 })
 

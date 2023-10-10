@@ -128,7 +128,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
                   <LayoutWrapper layout={'preserve-aspect'}>
                     <Button
                       variant={'secondary'}
-                      size="big"
+                      size="large"
                       onClick={handleApproveBatchPayouts}
                       className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
                       disabled={isApproveButtonDisabled}
@@ -148,7 +148,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
                 )}
               </AnimatePresence>
             </div>
-            <Button size="big" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
+            <Button size="large" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
               <span className="hidden md:inline-block">Create payout</span>
               <Icon name="add/16" className="md:hidden" />
             </Button>

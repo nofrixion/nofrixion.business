@@ -39,6 +39,7 @@ export class BeneficiaryClient extends BaseApiClient {
    * @returns A BeneficiaryPageResponse if successful. An ApiError if not successful.
    */
   async getAll({
+    merchantId,
     pageNumber = 1,
     pageSize = 20,
     search,
@@ -46,6 +47,7 @@ export class BeneficiaryClient extends BaseApiClient {
   }: BeneficiaryProps): Promise<ApiResponse<BeneficiaryPageResponse>> {
     return await this.getPagedResponse<BeneficiaryPageResponse>(
       {
+        merchantId: merchantId,
         pageNumber: pageNumber,
         pageSize: pageSize,
         search: search,

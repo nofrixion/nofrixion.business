@@ -202,7 +202,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
                   <Button
                     variant="primaryDark"
-                    size="big"
+                    size="large"
                     className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
                     onClick={onRefundClick}
                     disabled={isRefundButtonDisabled}

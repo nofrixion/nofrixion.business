@@ -139,6 +139,7 @@ export interface usePayoutMetricsProps extends MetricsProps {
 }
 
 export interface useBeneficiaryProps {
+  merchantId?: string
   pageNumber?: number
   pageSize?: number
   search?: string

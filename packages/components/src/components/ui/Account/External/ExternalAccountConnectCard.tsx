@@ -31,7 +31,7 @@ const ExternalAccountConnectCard = ({
       <div className="flex flex-row mt-7">
         <Button
           variant="primary"
-          size="big"
+          size="large"
           className="w-fit"
           onClick={onConnectClicked}
           disabled={disabled}

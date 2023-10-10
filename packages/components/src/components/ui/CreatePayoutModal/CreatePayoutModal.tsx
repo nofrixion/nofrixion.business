@@ -629,7 +629,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   </div>
                   <Button
                     variant="primaryDark"
-                    size="big"
+                    size="large"
                     className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
                     onClick={() => onCreatePayoutClick(true)}
                     disabled={isCreateAndApproveButtonDisabled}
@@ -642,7 +642,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   </Button>
                   <Button
                     variant="secondary"
-                    size="big"
+                    size="large"
                     className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed mt-4"
                     onClick={() => onCreatePayoutClick(false)}
                     disabled={isCreatePayoutButtonDisabled}
