@@ -183,7 +183,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
                       <span>
-                        Confirm {!isVoid && <span>refund</span>}
+                        Confirm {!isCardVoid && <span>refund</span>}
                         {isCardVoid && <span>void</span>}
                       </span>
                     )}
