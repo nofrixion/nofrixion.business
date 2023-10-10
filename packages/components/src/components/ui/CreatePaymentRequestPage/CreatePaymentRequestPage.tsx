@@ -709,7 +709,7 @@ const CreatePaymentRequestPage = ({
                         )}
                         <Button
                           variant={isSubmitting ? 'text' : 'primaryDark'}
-                          size="big"
+                          size="large"
                           onClick={onConfirmClicked}
                           disabled={isSubmitting}
                           className="disabled:!opacity-100 disabled:!bg-grey-text"
@@ -724,7 +724,7 @@ const CreatePaymentRequestPage = ({
                         {/* Edit button */}
                         <Button
                           variant="secondary"
-                          size="big"
+                          size="large"
                           onClick={() => setIsReviewing(false)}
                         >
                           Edit
@@ -981,7 +981,7 @@ const CreatePaymentRequestPage = ({
                                 >
                                   <Button
                                     variant="secondary"
-                                    size="big"
+                                    size="large"
                                     onClick={onReviewClicked}
                                     nextArrow
                                   >

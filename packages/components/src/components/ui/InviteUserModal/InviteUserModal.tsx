@@ -105,7 +105,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
                   </div>
                   <Button
                     variant="primaryDark"
-                    size="big"
+                    size="large"
                     className="mt-4 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed lg:w-[10.25rem]"
                     onClick={() => onInviteClick()}
                     disabled={isInviteButtonDisabled}

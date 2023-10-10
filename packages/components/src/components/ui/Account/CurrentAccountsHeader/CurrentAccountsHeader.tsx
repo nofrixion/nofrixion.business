@@ -10,7 +10,7 @@ const CurrentAccountsHeader = ({ onCreatePaymentAccount }: CurrentAccountsHeader
       <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Current accounts</span>
       <div className="w-[172px]">
         {onCreatePaymentAccount && (
-          <Button size="big" onClick={onCreatePaymentAccount} variant="secondary">
+          <Button size="large" onClick={onCreatePaymentAccount} variant="secondary">
             <Icon name="add/16" className="text-default-text" />
             <span className="pl-2 md:inline-block">New Account</span>
           </Button>

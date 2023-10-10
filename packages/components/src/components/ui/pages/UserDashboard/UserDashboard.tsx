@@ -50,7 +50,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
         <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
           <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Users</span>
           <div className="flex">
-            <Button size="big" onClick={onInviteUser} className="w-10 h-10 md:w-full md:h-full">
+            <Button size="large" onClick={onInviteUser} className="w-10 h-10 md:w-full md:h-full">
               <span className="hidden md:inline-block">Invite user</span>
               <Icon name="add/16" className="md:hidden" />
             </Button>

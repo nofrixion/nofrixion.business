@@ -107,12 +107,13 @@ const CurrentAcountsList = ({
       {/* External accounts list */}
       {externalAccounts && externalAccounts.length > 0 && (
         <div>
-          <div className="flex ml-3 mb-16">
+          <div className="flex ml-3 mb-16 items-center">
             <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
               Connected accounts
             </span>
             <Button
               variant={'secondary'}
+              size="medium"
               className="h-fit w-fit ml-auto"
               onClick={handleOnConnectClicked}
             >
