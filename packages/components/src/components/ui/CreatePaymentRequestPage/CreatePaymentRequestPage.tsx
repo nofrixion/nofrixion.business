@@ -269,10 +269,6 @@ const CreatePaymentRequestPage = ({
       return
     }
 
-    if (description && onValidateDescription(description)) {
-      return
-    }
-
     setIsReviewing(true)
   }
 
@@ -422,22 +418,6 @@ const CreatePaymentRequestPage = ({
     }
 
     setHasEmailError(false)
-  }
-
-  const onValidateDescription = (description: string): string | undefined => {
-    // Get invalid characters if any (using the same regex from backend "[a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+")
-    // eslint-disable-next-line no-useless-escape
-    const invalidCharacters = description.match(/[^a-zA-Z0-9\-_\.@&\*%\$#!:;'""()\[\] ]+/g)
-
-    if (description.length > 0 && invalidCharacters) {
-      // Singular
-      if (invalidCharacters.length === 1) {
-        return `The character "${invalidCharacters[0]}" is not allowed in the description`
-      }
-
-      // Plural
-      return `The characters "${invalidCharacters.join('')}" are not allowed in the description`
-    }
   }
 
   const getMinimumAmountPerCurrency = (currency: string) => {
@@ -634,7 +614,6 @@ const CreatePaymentRequestPage = ({
               (!paymentMethodsFormValue?.isBankEnabled ||
                 Number(amount) >= getMinimumAmountPerCurrency(currency)) &&
               productOrService &&
-              (!description || !onValidateDescription(description)) &&
               !hasEmailError && (
                 <LayoutWrapper
                   key="buttons"
@@ -854,8 +833,6 @@ const CreatePaymentRequestPage = ({
                                   maxLength={140}
                                   value={description}
                                   onChange={(e) => setDescription(e.target.value)}
-                                  validation={onValidateDescription}
-                                  enableQuickValidation
                                 />
                               </div>
 
