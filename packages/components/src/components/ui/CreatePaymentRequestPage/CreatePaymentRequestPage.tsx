@@ -833,7 +833,6 @@ const CreatePaymentRequestPage = ({
                                   maxLength={140}
                                   value={description}
                                   onChange={(e) => setDescription(e.target.value)}
-                                  enableQuickValidation
                                 />
                               </div>
 
