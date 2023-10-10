@@ -4,7 +4,7 @@ import { Button } from '../atoms'
 
 export interface PayoutAuthoriseFormProps {
   id: string
-  size: 'big' | 'medium' | 'small' | 'x-small'
+  size: 'large' | 'medium' | 'small' | 'x-small'
   formRef?: React.RefObject<HTMLFormElement>
   className?: string
   approveType?: ApproveType
