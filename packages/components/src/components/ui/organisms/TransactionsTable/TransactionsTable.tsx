@@ -23,6 +23,7 @@ export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElem
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
   onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  isShowingConnectedAccount?: boolean
   isLoading?: boolean
 }
 
@@ -32,6 +33,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   onPageChange,
   onSort,
   isLoading,
+  isShowingConnectedAccount = false,
   ...props
 }) => {
   const renderBasicInfoLayout = (
@@ -72,9 +74,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
                 <TableHead className="w-[300px]">
                   <ColumnHeader label={'Description'} />
                 </TableHead>
-                <TableHead>
-                  <ColumnHeader label={'Type'} />
-                </TableHead>
+                {!isShowingConnectedAccount && (
+                  <TableHead>
+                    <ColumnHeader label={'Type'} />
+                  </TableHead>
+                )}
                 <TableHead>{/* Export  Icon + Status */}</TableHead>
               </TableRow>
             </TableHeader>
@@ -162,9 +166,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
                     <TableCell>
                       <div className="truncate w-56">{transaction.description}</div>
                     </TableCell>
-                    <TableCell>
-                      <div className="truncate w-36">{transaction.type}</div>
-                    </TableCell>
+                    {!isShowingConnectedAccount && (
+                      <TableCell>
+                        <div className="truncate w-36">{transaction.type}</div>
+                      </TableCell>
+                    )}
 
                     {/* Fill empty space */}
                     <TableCell className="p-0"></TableCell>
