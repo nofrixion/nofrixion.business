@@ -31,6 +31,7 @@ import { Button } from '../../ui/atoms/Button/Button'
 import InputTextField from '../atoms/InputTextField/InputTextField'
 import EditOptionCard from '../EditOptionCard/EditOptionCard'
 import InputAmountField from '../InputAmountField/InputAmountField'
+import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
 import { Loader } from '../Loader/Loader'
 import PaymentConditionsModal from '../Modals/PaymentConditionsModal/PaymentConditionsModal'
 import PaymentMethodsModal from '../Modals/PaymentMethodsModal/PaymentMethodsModal'
@@ -823,6 +824,16 @@ const CreatePaymentRequestPage = ({
                                       (x) => x.fieldId === FieldID.PaymentRequestProductOrService,
                                     )
                                     ?.values?.map((value) => value.value)}
+                                />
+                              </div>
+
+                              <div className="mb-14">
+                                <InputTextAreaField
+                                  label="Description"
+                                  maxLength={140}
+                                  value={description}
+                                  onChange={(e) => setDescription(e.target.value)}
+                                  enableQuickValidation
                                 />
                               </div>
 
