@@ -1,6 +1,7 @@
+import Card from '@nofrixion/components/src/components/ui/atoms/Card/Card'
+
 import WavesGraphic from '../assets/graphics/waves.desktop.svg'
 import WavesGraphicMobile from '../assets/graphics/waves.mobile.svg'
-import Card from '../components/ui/atoms/Card/Card'
 
 interface AccountPayableCardProps extends React.HTMLAttributes<HTMLDivElement> {
   onShowViewAll?: () => void

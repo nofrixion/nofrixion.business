@@ -1,7 +1,7 @@
+import Card from '@nofrixion/components/src/components/ui/atoms/Card/Card'
 import { Transaction, useTransactions } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
-import Card from '../components/ui/atoms/Card/Card'
 import { NOFRIXION_API_URL } from '../lib/constants'
 import { displayAmount, formatAmount, formatDate } from '../lib/formatters'
 import { Account } from '../lib/types/localTypes'

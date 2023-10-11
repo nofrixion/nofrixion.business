@@ -295,7 +295,6 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 
 export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
@@ -333,7 +332,6 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
   {
@@ -370,7 +368,6 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 
 const regular: LocalPaymentRequest = {

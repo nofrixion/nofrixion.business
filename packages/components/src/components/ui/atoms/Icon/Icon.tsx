@@ -357,6 +357,12 @@ export const Icons = {
       <path d="M1 11H11" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'next/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M6 0.999999L11 6L6 11" />
+      <path d="M11 6L1 6" />
+    </SVG>
+  ),
   'arrow-down/8': (className: string) => (
     <SVG className={className} size="8">
       <path d="M0.5 2L4 5.5L7.5 2" strokeLinecap="round" strokeLinejoin="round" />
