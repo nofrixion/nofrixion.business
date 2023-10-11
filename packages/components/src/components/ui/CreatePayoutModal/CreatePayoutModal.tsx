@@ -615,9 +615,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         maxLength={140}
                         value={description ?? ''}
                         onChange={(e) => setDescription(e.target.value)}
-                        validation={onValidateYourReference}
                         subText="For internal use only."
-                        enableQuickValidation
                       />
                     </div>
                   </div>
