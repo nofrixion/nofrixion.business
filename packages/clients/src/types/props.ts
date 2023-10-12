@@ -95,7 +95,6 @@ export interface usePaymentRequestsProps
     PaymentRequestProps,
     PaymentRequestPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   titleSortDirection: SortDirection

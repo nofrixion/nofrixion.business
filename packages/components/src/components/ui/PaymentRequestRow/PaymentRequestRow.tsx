@@ -4,14 +4,16 @@ import { useState } from 'react'
 
 import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { cn } from '../../../utils'
 import { formatAmount } from '../../../utils/formatters'
 import { formatCurrency } from '../../../utils/uiFormaters'
 import Contact from '../Contact/Contact'
 import Created from '../Created/Created'
+import { Status } from '../molecules'
 import PaymentRequestActionMenu from '../PaymentRequestActionMenu/PaymentRequestActionMenu'
 import PaymentRequestAttemptsCell from '../PaymentRequestAttemptsCell/PaymentRequestAttemptsCell'
-import StatusBadge from '../PaymentRequestStatusBadge/PaymentRequestStatusBadge'
 import TagList from '../Tags/TagList/TagList'
+import TransactionsTooltip from '../TransactionsTooltip/TransactionsTooltip'
 
 export interface PaymentRequestRowProps extends LocalPaymentRequest {
   onClick?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
@@ -43,6 +45,8 @@ const Row = ({
   merchantTokenDescription,
   paymentAttempts,
   hostedPayCheckoutUrl,
+  amountReceived,
+  amountRefunded,
 }: PaymentRequestRowProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -77,6 +81,14 @@ const Row = ({
       : paymentMethods[0]
   }
 
+  const amountPaid = amountReceived - amountRefunded
+
+  const hasSettledPaymentAttempts =
+    paymentAttempts &&
+    paymentAttempts.filter(
+      (x) => x.settledAmount > 0 || (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0),
+    ).length > 0
+
   return (
     <tr
       className={classNames(
@@ -87,7 +99,7 @@ const Row = ({
       )}
       onClick={onClick}
     >
-      <td className={classNames(commonTdClasses, `pl-4 py-0`)}>
+      <td className={classNames(commonTdClasses, `text-13px`)}>
         <AnimatePresence>
           {isDeleting && (
             <motion.div
@@ -114,18 +126,13 @@ const Row = ({
             </motion.div>
           )}
         </AnimatePresence>
-
         <div className={`custom-backdrop-blur-${id}`}>
-          <StatusBadge status={status} />
+          <Created
+            createdAt={createdAt}
+            createdByMerchantTokenDescription={merchantTokenDescription}
+            createdByUser={createdByUser}
+          />
         </div>
-      </td>
-
-      <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
-        <Created
-          createdAt={createdAt}
-          createdByMerchantTokenDescription={merchantTokenDescription}
-          createdByUser={createdByUser}
-        />
       </td>
 
       <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
@@ -141,6 +148,42 @@ const Row = ({
         <span className="font-medium">
           {formatCurrency(currency)} {formatAmount(amount)}
         </span>
+      </td>
+
+      <td
+        className={classNames(
+          commonTdClasses,
+          `text-right truncate tabular-nums custom-backdrop-blur-${id}`,
+        )}
+      >
+        <>
+          {hasSettledPaymentAttempts ? (
+            <TransactionsTooltip paymentAttempts={paymentAttempts}>
+              <span
+                className={cn('font-medium', {
+                  'text-[#73808C]': amountPaid === 0,
+                })}
+              >
+                {formatCurrency(currency)}{' '}
+                <span
+                  className={cn({
+                    'border-b-[0.094rem] border-dashed border-[#ABB2BA] pb-[0.125rem]':
+                      hasSettledPaymentAttempts,
+                  })}
+                >
+                  {formatAmount(amountPaid)}
+                </span>
+              </span>
+            </TransactionsTooltip>
+          ) : (
+            <span className="font-medium text-[#73808C]">
+              {formatCurrency(currency)} <span>{formatAmount(amountPaid)}</span>
+            </span>
+          )}
+        </>
+      </td>
+      <td className={`py-3 custom-backdrop-blur-${id}`}>
+        <Status variant={status} size="medium" />
       </td>
 
       <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>

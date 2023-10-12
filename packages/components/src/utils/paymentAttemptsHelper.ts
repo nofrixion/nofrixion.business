@@ -1,5 +1,5 @@
 import { LocalPaymentMethodTypes, SubTransactionType } from '../types/LocalEnums'
-import { LocalPaymentAttempt, SubTransaction } from '../types/LocalTypes'
+import { LocalPaymentAttempt, LocalSettledTransaction, SubTransaction } from '../types/LocalTypes'
 
 export const getMaxCapturableAmount = (paymentAttempt: LocalPaymentAttempt): number => {
   return (
@@ -176,4 +176,40 @@ export const getMaxRefundableAmount = (paymentAttempt: LocalPaymentAttempt): num
     default:
       return 0
   }
+}
+
+export const getSettledTransactions = (
+  paymentAttempts: LocalPaymentAttempt[],
+): LocalSettledTransaction[] => {
+  const settledTransactions: LocalSettledTransaction[] = []
+
+  paymentAttempts
+    .filter((x) => x.settledAmount > 0 || (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0))
+    .forEach((paymentAttempt) => {
+      settledTransactions.push({
+        settledAt: paymentAttempt.occurredAt,
+        amount: getAmountReceived(paymentAttempt),
+        currency: paymentAttempt.currency,
+        paymentMethod: paymentAttempt.paymentMethod,
+        processor: paymentAttempt.paymentProcessor,
+        isRefund: false,
+        wallet: paymentAttempt.wallet,
+      })
+
+      paymentAttempt.refundAttempts.length > 0 &&
+        paymentAttempt.refundAttempts.forEach((refundAttempt) => {
+          settledTransactions.push({
+            settledAt: refundAttempt.refundSettledAt,
+            amount: refundAttempt.refundSettledAmount,
+            currency: paymentAttempt.currency,
+            paymentMethod: paymentAttempt.paymentMethod,
+            processor: paymentAttempt.paymentProcessor,
+            isRefund: true,
+          })
+        })
+    })
+
+  return settledTransactions.sort((a, b) => {
+    return new Date(b.settledAt ?? 0).getTime() - new Date(a.settledAt ?? 0).getTime()
+  })
 }

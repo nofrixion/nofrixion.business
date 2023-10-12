@@ -18,7 +18,6 @@ export interface PaymentRequestTableProps {
   onPaymentRequestDeleteClicked: (paymentRequest: LocalPaymentRequest) => void
   onPaymentRequestCopyLinkClicked: (paymentRequest: LocalPaymentRequest) => void
   onPageChanged?: (newPage: number) => void
-  setStatusSortDirection?: (sortDirection: SortDirection) => void
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   setTitleSortDirection?: (sortDirection: SortDirection) => void
@@ -42,7 +41,6 @@ const PaymentRequestTable = ({
   onPaymentRequestDeleteClicked,
   onPaymentRequestCopyLinkClicked,
   onPageChanged,
-  setStatusSortDirection,
   setCreatedSortDirection,
   setAmountSortDirection,
   setTitleSortDirection,
@@ -79,18 +77,11 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
+            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
             <tr>
-              <th className={classNames(commonThClasses, 'w-36 text-left')}>
-                <ColumnHeader
-                  label="Status"
-                  onSort={(sortDirection) =>
-                    setStatusSortDirection && setStatusSortDirection(sortDirection)
-                  }
-                />
-              </th>
               <th className={classNames(commonThClasses, 'w-36 text-left')}>
                 <ColumnHeader
                   label="Created"
@@ -115,6 +106,11 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
+              <th className={classNames(commonThClasses, 'w-44 text-right')}>
+                <ColumnHeader label="Paid" />
+              </th>
+              {/* Status */}
+              <th className={classNames('pb-11 w-36')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
                 <ColumnHeader label="Payment Attempts" />
@@ -145,13 +141,8 @@ const PaymentRequestTable = ({
                   key={`pr-placeholder-${index}`}
                   className="animate-pulse border-b border-[#F1F2F3]"
                 >
-                  {/* Status */}
-                  <td className="py-6">
-                    <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                  </td>
-
                   {/* Created */}
-                  <td>
+                  <td className="py-6">
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
                   </td>
 
@@ -161,8 +152,17 @@ const PaymentRequestTable = ({
                   </td>
 
                   {/* Amount */}
+                  <td className="p-0 text-right">
+                    <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                  </td>
+
+                  {/* Paid */}
                   <td className="p-0">
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                  </td>
+                  {/* Status */}
+                  <td className="p-0">
+                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
                   </td>
 
                   {/* Payment Attempts */}
