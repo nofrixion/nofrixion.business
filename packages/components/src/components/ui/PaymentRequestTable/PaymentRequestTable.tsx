@@ -79,6 +79,8 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
+            <col />
+            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
@@ -115,6 +117,11 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
+              <th className={classNames(commonThClasses, 'w-44 text-right')}>
+                <ColumnHeader label="Paid" />
+              </th>
+              {/* Status */}
+              <th className={classNames('pb-11 w-20')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
                 <ColumnHeader label="Payment Attempts" />
@@ -161,6 +168,11 @@ const PaymentRequestTable = ({
                   </td>
 
                   {/* Amount */}
+                  <td className="p-0">
+                    <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                  </td>
+
+                  {/* Paid */}
                   <td className="p-0">
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
                   </td>

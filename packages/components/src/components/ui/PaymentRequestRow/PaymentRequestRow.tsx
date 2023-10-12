@@ -43,6 +43,8 @@ const Row = ({
   merchantTokenDescription,
   paymentAttempts,
   hostedPayCheckoutUrl,
+  amountReceived,
+  amountRefunded,
 }: PaymentRequestRowProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -141,6 +143,23 @@ const Row = ({
         <span className="font-medium">
           {formatCurrency(currency)} {formatAmount(amount)}
         </span>
+      </td>
+
+      <td
+        className={classNames(
+          commonTdClasses,
+          `text-right truncate tabular-nums custom-backdrop-blur-${id}`,
+        )}
+      >
+        <span className="font-medium">
+          {formatCurrency(currency)} {formatAmount(amountReceived - amountRefunded)}
+        </span>
+      </td>
+
+      <td className={`py-3 custom-backdrop-blur-${id}`}>
+        <div className={`custom-backdrop-blur-${id}`}>
+          <StatusBadge status={status} />
+        </div>
       </td>
 
       <td className={classNames(commonTdClasses, `custom-backdrop-blur-${id}`)}>
