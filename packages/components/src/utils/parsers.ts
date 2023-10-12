@@ -277,7 +277,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
       return 'failed'
     }
 
-    if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
+    if (remotePaymentAttempt.settledAt || remotePaymentAttempt.cardAuthorisedAt) {
       return 'received'
     }
 
