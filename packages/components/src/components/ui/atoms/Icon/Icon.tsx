@@ -50,7 +50,7 @@ export const Icons = {
         strokeLinejoin="round"
       />
       <path d="M1.3335 6.9231H13.3335" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M11.3333 8.66675H10" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M11.3333 8.66675H10" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M6.84042 8.66675H2.6665" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M3.99984 10.6667H2.6665" strokeLinecap="round" strokeLinejoin="round" />
       <path

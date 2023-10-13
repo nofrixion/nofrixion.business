@@ -96,7 +96,7 @@ const TransactionsTooltip = ({
                       {flatPaymentAttempts.map((paymentAttempt, index) => (
                         <tr key={index}>
                           <td
-                            className={cn('pr-2 text-[#454D54]', {
+                            className={cn('pr-2 text-control-grey-hover', {
                               'pb-4': index !== flatPaymentAttempts.length - 1,
                             })}
                           >
@@ -106,7 +106,7 @@ const TransactionsTooltip = ({
                             />
                           </td>
                           <td
-                            className={cn('text-xs text-[#73808C] pr-12', {
+                            className={cn('text-xs text-grey-text pr-12', {
                               'pb-4': index !== flatPaymentAttempts.length - 1,
                             })}
                           >
@@ -117,15 +117,15 @@ const TransactionsTooltip = ({
                           </td>
                           <td
                             className={cn(
-                              'text-sm tabular-nums text-[#00264D] font-medium text-right',
+                              'text-sm tabular-nums text-default-text font-medium text-right',
                               {
                                 'pb-4': index !== flatPaymentAttempts.length - 1,
-                                'text-[#73808C]':
+                                'text-grey-text':
                                   paymentAttempt.paymentMethod === LocalPaymentMethodTypes.Card,
                               },
                             )}
                           >
-                            <span className={cn({ 'text-[#F32448]': paymentAttempt.isRefund })}>
+                            <span className={cn({ 'text-negative-red': paymentAttempt.isRefund })}>
                               {paymentAttempt.isRefund && <span>-</span>}
                               {formatCurrency(paymentAttempt.currency)}
                               {formatAmount(paymentAttempt.amount)}

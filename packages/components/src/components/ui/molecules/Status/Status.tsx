@@ -44,7 +44,7 @@ const iconVariants = cva('w-auto mb-[0.063rem]', {
       paid: ['text-[#29A37A]'],
       partial: ['text-[#B25900]'],
       unpaid: ['text-[#C8D0D0]'],
-      overpaid: ['text-[#29A37A]'],
+      overpaid: ['text-positive-green'],
       authorized: ['text-[#C8D0D0]'],
       pending: ['text-control-grey-hover'],
       pending_approval: ['text-[#B25900]'],

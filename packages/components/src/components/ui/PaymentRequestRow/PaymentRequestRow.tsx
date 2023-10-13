@@ -161,7 +161,7 @@ const Row = ({
             <TransactionsTooltip paymentAttempts={paymentAttempts}>
               <span
                 className={cn('font-medium', {
-                  'text-[#73808C]': amountPaid === 0,
+                  'text-grey-text': amountPaid === 0,
                 })}
               >
                 {formatCurrency(currency)}{' '}

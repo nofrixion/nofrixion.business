@@ -286,5 +286,5 @@ export interface LocalSettledTransaction {
   processor?: LocalPaymentProcessor
   paymentMethod: LocalPaymentMethodTypes
   isRefund: boolean
-  wallet?: LocalWallets | undefined
+  wallet?: LocalWallets
 }
