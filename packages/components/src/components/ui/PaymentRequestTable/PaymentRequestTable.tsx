@@ -82,7 +82,7 @@ const PaymentRequestTable = ({
           </colgroup>
           <thead>
             <tr>
-              <th className={classNames(commonThClasses, 'w-36 text-left')}>
+              <th className={classNames(commonThClasses, '2xl:w-36 xl:w-28 lg:w-24 text-left')}>
                 <ColumnHeader
                   label="Created"
                   onSort={(sortDirection) =>
@@ -90,7 +90,7 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+              <th className={classNames(commonThClasses, '2xl:w-44 xl:w-32 lg:w-28 text-left')}>
                 <ColumnHeader
                   label="For"
                   onSort={(sortDirection) =>
@@ -98,7 +98,9 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
+              <th
+                className={classNames(commonThClasses, '2xl:w-44 xl:w-36 lg:w-32 text-right pr-0')}
+              >
                 <ColumnHeader
                   label="Requested"
                   onSort={(sortDirection) =>
@@ -106,11 +108,11 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-right')}>
+              <th className={classNames(commonThClasses, '2xl:w-44 xl:w-40 lg:w-36 text-right')}>
                 <ColumnHeader label="Paid" />
               </th>
               {/* Status */}
-              <th className={classNames('pb-11 w-36')}></th>
+              <th className={classNames('pb-11 2xl:w-32 xl:w-28 lg:w-24')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
                 <ColumnHeader label="Payment Attempts" />
@@ -121,7 +123,7 @@ const PaymentRequestTable = ({
               However, it's used to display the
               pagination component in the table header
             */}
-              <th colSpan={2} className={classNames(commonThClasses)}>
+              <th colSpan={2} className={classNames(commonThClasses, 'w-68')}>
                 <Pager
                   pageSize={pageSize}
                   totalRecords={totalRecords}
@@ -158,7 +160,7 @@ const PaymentRequestTable = ({
 
                   {/* Paid */}
                   <td className="p-0">
-                    <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                    <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
                   </td>
                   {/* Status */}
                   <td className="p-0">
@@ -167,7 +169,7 @@ const PaymentRequestTable = ({
 
                   {/* Payment Attempts */}
                   <td className="p-0">
-                    <div className="w-3/4 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
+                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
                   </td>
 
                   {/* Extra */}

@@ -22,7 +22,7 @@ export interface TransactionsTooltipProps {
 const TransactionsTooltip = ({
   paymentAttempts,
   children,
-  side = 'top',
+  side = 'bottom',
   className,
   disableHover,
 }: TransactionsTooltipProps) => {
