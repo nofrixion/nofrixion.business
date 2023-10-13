@@ -5,6 +5,7 @@ import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
 import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
+import RevokeConnectionModal from '../../Modals/RevokeConnectionModal/RevokeConnectionModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -17,7 +18,7 @@ export interface CurrentAccountsListProps {
   onConnectToBank: (bank: BankSettings) => void
   onMaybeLater: () => void
   onRenewConnection?: (account: Account) => void
-  onRevokeConnection?: (account: Account) => void
+  onRevokeConnection?: (account: Account, revokeOnlyThisAccount: boolean) => void
   banks?: BankSettings[]
   isConnectingToBank: boolean
 }
@@ -36,6 +37,7 @@ const CurrentAcountsList = ({
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
   const [isRenewConnectionModalOpen, setIsRenewConnectionModalOpen] = useState(false)
+  const [isRevokeConnectionModalOpen, setIsRevokeConnectionModalOpen] = useState(false)
   const [internalAccounts, setInternalAccounts] = useState<Account[]>([])
   const [externalAccounts, setExternalAccounts] = useState<Account[]>()
   const [externalAccountConnectDisabled, setExternalAccountConnectDisabled] = useState(false)
@@ -49,6 +51,7 @@ const CurrentAcountsList = ({
     setIsConnectBankModalOpen(false)
     setIsRenewConnectionModalOpen(false)
     setExternalAccountConnectDisabled(false)
+    setIsRevokeConnectionModalOpen(false)
   }
 
   const handleOnApply = (bank: BankSettings) => {
@@ -61,9 +64,20 @@ const CurrentAcountsList = ({
     setIsRenewConnectionModalOpen(true)
   }
 
+  const handeOnRevokeConnectionClicked = (account: Account) => {
+    setSelectedAccount(account)
+    setIsRevokeConnectionModalOpen(true)
+  }
+
   const handleOnRenewConnection = () => {
     if (!selectedAccount) return
     onRenewConnection && onRenewConnection(selectedAccount)
+  }
+
+  const handleOnRevokeConnection = (revokeOnlyThisAccount: boolean) => {
+    if (!selectedAccount) return
+    onRevokeConnection && onRevokeConnection(selectedAccount, revokeOnlyThisAccount)
+    handleOnDismiss()
   }
 
   useEffect(() => {
@@ -133,7 +147,7 @@ const CurrentAcountsList = ({
                   }}
                   bankLogo={banks?.find((bank) => bank.bankName === account.bankName)?.logo}
                   onRenewConnection={handleOnRenewConnectionClicked}
-                  onRevokeConnection={onRevokeConnection}
+                  onRevokeConnection={handeOnRevokeConnectionClicked}
                   className="pr-3"
                 />
               ))}
@@ -162,6 +176,13 @@ const CurrentAcountsList = ({
         open={isRenewConnectionModalOpen}
         onDismiss={handleOnDismiss}
         isConnectingToBank={isConnectingToBank}
+      />
+
+      <RevokeConnectionModal
+        account={selectedAccount}
+        onApply={handleOnRevokeConnection}
+        open={isRevokeConnectionModalOpen}
+        onDismiss={handleOnDismiss}
       />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
