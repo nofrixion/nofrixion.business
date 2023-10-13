@@ -1,4 +1,12 @@
-import { PaymentRequestMetrics, useAccounts, usePaymentRequestMetrics } from '@nofrixion/moneymoov'
+import { LatestTransactionsCard } from '@nofrixion/components/src/components/ui/molecules'
+import { remoteTransactionsToLocal } from '@nofrixion/components/src/utils/parsers'
+import {
+  PaymentRequestMetrics,
+  Transaction,
+  useAccounts,
+  usePaymentRequestMetrics,
+  useTransactionsForUser,
+} from '@nofrixion/moneymoov'
 import { addDays, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -22,6 +30,7 @@ const DashboardPage = () => {
 
   const [accounts, setAccounts] = useState<Account[]>([])
   const [metrics, setMetrics] = useState<PaymentRequestMetrics>()
+  const [transactions, setTransactions] = useState<Transaction[]>([])
 
   const { data: accountsResponse, isLoading: isAccountsLoading } = useAccounts(
     { merchantId: merchant?.id, connectedAccounts: true },
@@ -32,6 +41,13 @@ const DashboardPage = () => {
 
   const { data: metricsResponse, isLoading: isMetricsLoading } = usePaymentRequestMetrics(
     { merchantId: merchant?.id, fromDateMS: startOfDay(last30Days).getTime() },
+    {
+      apiUrl: NOFRIXION_API_URL,
+    },
+  )
+
+  const { data: transactionsResponse, isLoading: isTransactionsLoading } = useTransactionsForUser(
+    { fromDateMS: startOfDay(last30Days).getTime(), pageSize: 10 },
     {
       apiUrl: NOFRIXION_API_URL,
     },
@@ -55,6 +71,16 @@ const DashboardPage = () => {
     }
   }, [authState, metricsResponse])
 
+  useEffect(() => {
+    if (transactionsResponse?.status === 'success') {
+      setTransactions(transactionsResponse.data.content)
+      console.log(transactionsResponse.data.content)
+    } else if (transactionsResponse?.status === 'error') {
+      console.error(transactionsResponse.error)
+      // authState?.logOut && authState?.logOut()
+    }
+  }, [authState, transactionsResponse])
+
   if (isAccountsLoading || isMetricsLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -67,6 +93,12 @@ const DashboardPage = () => {
     <>
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
       <div>
+        <LatestTransactionsCard
+          transactions={remoteTransactionsToLocal(transactions)}
+          isLoading={isTransactionsLoading}
+          className="mb-4"
+        />
+
         <div className="-mx-8 md:-mx-14">
           {!isAccountsLoading && accounts && <AccountsCarousel accounts={accounts} />}
         </div>

@@ -293,6 +293,7 @@ export interface Transaction {
   id: string
   merchantID: string
   accountID: string
+  accountName: string
   amount: number
   currency: Currency
   description: string
