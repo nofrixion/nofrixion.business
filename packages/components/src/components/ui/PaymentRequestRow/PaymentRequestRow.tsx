@@ -167,7 +167,7 @@ const Row = ({
                 {formatCurrency(currency)}{' '}
                 <span
                   className={cn({
-                    'border-b-[0.094rem] border-dashed border-[#ABB2BA] pb-[0.125rem]':
+                    'border-b-[0.094rem] border-dashed border-border-grey-highlighted pb-[0.125rem]':
                       hasSettledPaymentAttempts,
                   })}
                 >
@@ -176,7 +176,7 @@ const Row = ({
               </span>
             </TransactionsTooltip>
           ) : (
-            <span className="font-medium text-[#73808C]">
+            <span className="font-medium text-grey-text">
               {formatCurrency(currency)} <span>{formatAmount(amountPaid)}</span>
             </span>
           )}
