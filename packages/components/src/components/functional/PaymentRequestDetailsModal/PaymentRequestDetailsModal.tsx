@@ -52,7 +52,6 @@ const PaymentRequestDetailsModal = ({
   onCardRefund,
   onBankRefund,
   onCapture,
-  statusSortDirection,
   createdSortDirection,
   amountSortDirection,
   titleSortDirection,
@@ -94,7 +93,6 @@ const PaymentRequestDetailsModal = ({
   const { data: paymentRequestResponse } = usePaymentRequest(
     {
       merchantId: merchantId,
-      statusSortDirection: statusSortDirection,
       createdSortDirection: createdSortDirection,
       amountSortDirection: amountSortDirection,
       titleSortDirection: titleSortDirection,

@@ -20,6 +20,7 @@ export enum PaymentProcessor {
   Modulr = 'Modulr',
   Plaid = 'Plaid',
   Yapily = 'Yapily',
+  NoFrixion = 'Nofrixion',
 }
 
 export enum PaymentResult {

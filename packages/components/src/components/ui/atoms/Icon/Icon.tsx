@@ -42,6 +42,24 @@ export const Icons = {
       <path d="M2 2L12 12L2 22" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'card/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M12.29 4.66675H2.37697C1.80068 4.66675 1.3335 5.15177 1.3335 5.75008V12.2501C1.3335 12.8484 1.80068 13.3334 2.37697 13.3334H12.29C12.8663 13.3334 13.3335 12.8484 13.3335 12.2501V5.75008C13.3335 5.15177 12.8663 4.66675 12.29 4.66675Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M1.3335 6.9231H13.3335" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M11.3333 8.66675H10" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.84042 8.66675H2.6665" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3.99984 10.6667H2.6665" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M2.6665 4.65605V3.41659C2.6665 2.81828 3.15964 2.33325 3.76795 2.33325H14.2317C14.84 2.33325 15.3332 2.81828 15.3332 3.41659V9.91659C15.3332 10.5149 14.84 10.9999 14.2317 10.9999H13.4754"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
   'card/24': (className: string) => (
     <SVG className={className} size="24">
       <path
@@ -79,6 +97,27 @@ export const Icons = {
         strokeLinejoin="round"
       />
       <path d="M21 7.5H3" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'wallets/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path d="M11.2955 11.6448H2.6665" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M11.3332 8.86948V13.5072C11.3332 13.8147 11.1927 14.1096 10.9427 14.327C10.6926 14.5445 10.3534 14.6666 9.99984 14.6666H3.99984C3.64621 14.6666 3.30708 14.5445 3.05703 14.327C2.80698 14.1096 2.6665 13.8147 2.6665 13.5072V2.49267C2.6665 2.18518 2.80698 1.89027 3.05703 1.67284C3.30708 1.4554 3.64621 1.33325 3.99984 1.33325H8.99984"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.4826 8.46523C13.6821 8.46523 15.4652 6.68214 15.4652 4.48261C15.4652 2.28307 13.6821 0.5 11.4826 0.5C9.28307 0.5 7.5 2.28307 7.5 4.48261C7.5 6.68214 9.28307 8.46523 11.4826 8.46523Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.6774 2.29761H12.3413C11.7618 2.29761 11.206 2.52781 10.7962 2.93759C10.3864 3.34737 10.1562 3.90315 10.1562 4.48267C10.1562 5.06218 10.3864 5.61795 10.7962 6.02773C11.206 6.43751 11.7618 6.66772 12.3413 6.66772H12.6774"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M9.49756 4.6333H11.7982" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
   'wallets/24': (className: string) => (

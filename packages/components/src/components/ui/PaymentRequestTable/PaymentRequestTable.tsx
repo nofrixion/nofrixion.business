@@ -18,7 +18,6 @@ export interface PaymentRequestTableProps {
   onPaymentRequestDeleteClicked: (paymentRequest: LocalPaymentRequest) => void
   onPaymentRequestCopyLinkClicked: (paymentRequest: LocalPaymentRequest) => void
   onPageChanged?: (newPage: number) => void
-  setStatusSortDirection?: (sortDirection: SortDirection) => void
   setCreatedSortDirection?: (sortDirection: SortDirection) => void
   setAmountSortDirection?: (sortDirection: SortDirection) => void
   setTitleSortDirection?: (sortDirection: SortDirection) => void
@@ -42,7 +41,6 @@ const PaymentRequestTable = ({
   onPaymentRequestDeleteClicked,
   onPaymentRequestCopyLinkClicked,
   onPageChanged,
-  setStatusSortDirection,
   setCreatedSortDirection,
   setAmountSortDirection,
   setTitleSortDirection,
@@ -79,19 +77,12 @@ const PaymentRequestTable = ({
             <col />
             <col />
             <col />
+            <col />
             <col className="w-8" />
           </colgroup>
           <thead>
             <tr>
-              <th className={classNames(commonThClasses, 'w-36 text-left')}>
-                <ColumnHeader
-                  label="Status"
-                  onSort={(sortDirection) =>
-                    setStatusSortDirection && setStatusSortDirection(sortDirection)
-                  }
-                />
-              </th>
-              <th className={classNames(commonThClasses, 'w-36 text-left')}>
+              <th className={classNames(commonThClasses, '2xl:w-36 xl:w-28 lg:w-24 text-left')}>
                 <ColumnHeader
                   label="Created"
                   onSort={(sortDirection) =>
@@ -99,7 +90,7 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-left')}>
+              <th className={classNames(commonThClasses, '2xl:w-44 xl:w-32 lg:w-28 text-left')}>
                 <ColumnHeader
                   label="For"
                   onSort={(sortDirection) =>
@@ -107,7 +98,9 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
-              <th className={classNames(commonThClasses, 'w-44 text-right pr-0')}>
+              <th
+                className={classNames(commonThClasses, '2xl:w-44 xl:w-36 lg:w-32 text-right pr-0')}
+              >
                 <ColumnHeader
                   label="Requested"
                   onSort={(sortDirection) =>
@@ -115,6 +108,11 @@ const PaymentRequestTable = ({
                   }
                 />
               </th>
+              <th className={classNames(commonThClasses, '2xl:w-44 xl:w-40 lg:w-36 text-right')}>
+                <ColumnHeader label="Paid" />
+              </th>
+              {/* Status */}
+              <th className={classNames('pb-11 2xl:w-32 xl:w-28 lg:w-24')}></th>
 
               <th className={classNames(commonThClasses, 'w-64')}>
                 <ColumnHeader label="Payment Attempts" />
@@ -125,7 +123,7 @@ const PaymentRequestTable = ({
               However, it's used to display the
               pagination component in the table header
             */}
-              <th colSpan={2} className={classNames(commonThClasses)}>
+              <th colSpan={2} className={classNames(commonThClasses, 'w-68')}>
                 <Pager
                   pageSize={pageSize}
                   totalRecords={totalRecords}
@@ -145,13 +143,8 @@ const PaymentRequestTable = ({
                   key={`pr-placeholder-${index}`}
                   className="animate-pulse border-b border-[#F1F2F3]"
                 >
-                  {/* Status */}
-                  <td className="py-6">
-                    <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
-                  </td>
-
                   {/* Created */}
-                  <td>
+                  <td className="py-6">
                     <div className="w-1/2 ml-4 h-2 bg-[#E0E9EB] rounded-lg" />
                   </td>
 
@@ -161,13 +154,22 @@ const PaymentRequestTable = ({
                   </td>
 
                   {/* Amount */}
-                  <td className="p-0">
+                  <td className="p-0 text-right">
                     <div className="w-3/4 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                  </td>
+
+                  {/* Paid */}
+                  <td className="p-0">
+                    <div className="w-1/2 ml-auto h-2 bg-[#E0E9EB] rounded-l-lg" />
+                  </td>
+                  {/* Status */}
+                  <td className="p-0">
+                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
                   </td>
 
                   {/* Payment Attempts */}
                   <td className="p-0">
-                    <div className="w-3/4 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
+                    <div className="w-1/2 h-2 bg-[#E0E9EB] rounded-r-lg mr-4" />
                   </td>
 
                   {/* Extra */}

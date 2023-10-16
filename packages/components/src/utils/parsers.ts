@@ -37,6 +37,7 @@ import {
   LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
+  LocalPaymentProcessor,
   LocalPaymentRequest,
   LocalPaymentRequestCaptureAttempt,
   LocalPaymentRequestRefundAttempt,
@@ -276,11 +277,34 @@ const remotePaymentRequestToLocalPaymentRequest = (
       return 'failed'
     }
 
-    if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
+    if (remotePaymentAttempt.settledAt || remotePaymentAttempt.cardAuthorisedAt) {
       return 'received'
     }
 
     return 'unknown'
+  }
+
+  const parseApiPaymentProcessorToLocalPaymentProcessor = (
+    paymentProcessor: string | undefined,
+  ): LocalPaymentProcessor | undefined => {
+    switch (paymentProcessor) {
+      case 'Modulr':
+        return LocalPaymentProcessor.Modulr
+      case 'Plaid':
+        return LocalPaymentProcessor.Plaid
+      case 'Yapily':
+        return LocalPaymentProcessor.Yapily
+      case 'Stripe':
+        return LocalPaymentProcessor.Stripe
+      case 'Checkout':
+        return LocalPaymentProcessor.Checkout
+      case 'CyberSource':
+        return LocalPaymentProcessor.CyberSource
+      case 'NoFrixion':
+        return LocalPaymentProcessor.NoFrixion
+      default:
+        return LocalPaymentProcessor.None
+    }
   }
 
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
@@ -311,6 +335,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             cardAuthorisedAmount,
             cardAuthorisedAt,
             reconciledTransactionID,
+            paymentProcessor,
           } = remotePaymentAttempt
 
           localPaymentAttempts.push({
@@ -329,6 +354,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             status: parseApiStatusToLocalStatus(status),
             reconciledTransactionID: reconciledTransactionID,
             paymentStatus: getPaymentAttemptPaymentStatus(remotePaymentAttempt),
+            paymentProcessor: parseApiPaymentProcessorToLocalPaymentProcessor(paymentProcessor),
           })
         })
       return localPaymentAttempts
