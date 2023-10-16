@@ -1,4 +1,4 @@
-import { cn } from '../../../../../../../apps/business/src/lib/utils/utils'
+import { cn } from '../../../../utils'
 import { Icon } from '../Icon/Icon'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -5,7 +5,7 @@ import QRCodeComponent from 'react-qr-code'
 import { cn } from '../../../utils'
 import { Icon, Sheet, SheetContent } from '../atoms'
 
-interface QRCodeProps {
+export interface QRCodeProps {
   url: string
   className?: string
 }
