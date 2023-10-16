@@ -169,9 +169,14 @@ const PayoutDetailsModal = ({
     }
   }
 
+  const onModalDismiss = () => {
+    setPayout(undefined)
+    onDismiss()
+  }
+
   return (
     <UIPayoutDetailsModal
-      onDismiss={onDismiss}
+      onDismiss={onModalDismiss}
       onTagAdded={onTagAdded}
       onTagCreated={onTagCreated}
       onTagRemoved={onTagRemoved}
