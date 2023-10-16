@@ -37,7 +37,7 @@ const DashboardPage = () => {
   )
 
   const { data: transactionsResponse, isLoading: isTransactionsLoading } = useTransactionsForUser(
-    { fromDateMS: startOfDay(last30Days).getTime(), pageSize: 10 },
+    { pageSize: 10 },
     {
       apiUrl: NOFRIXION_API_URL,
     },
