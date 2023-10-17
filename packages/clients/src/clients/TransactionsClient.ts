@@ -54,32 +54,4 @@ export class TransactionsClient extends BaseApiClient {
       url,
     )
   }
-
-  /**
-   * Gets a paged list of Transactions for a user
-   * @param pageNumber The first page to fetch for the paged response. Default is 1
-   * @param pageSize The page size. Default is 20
-   * @param fromDate Optional. The date filter to apply to retrieve payment requests created after this date.
-   * @param toDate Optional. The date filter to apply to retrieve payment requests created up until this date.
-   * @param creditType Optional. The credit type filter to apply to retrieve transactions, either payin or payout.
-   * @returns A TransactionPageResponse if successful. An ApiError if not successful.
-   */
-  async getForUser({
-    pageNumber,
-    pageSize,
-    fromDate,
-    toDate,
-  }: TransactionsProps): Promise<ApiResponse<TransactionPageResponse>> {
-    const url = `${this.apiUrl}`
-
-    return await this.getPagedResponse<TransactionPageResponse>(
-      {
-        pageNumber: pageNumber,
-        pageSize: pageSize,
-        fromDate: fromDate,
-        toDate: toDate,
-      },
-      url,
-    )
-  }
 }

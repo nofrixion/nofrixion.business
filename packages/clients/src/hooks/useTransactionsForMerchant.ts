@@ -1,22 +1,24 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { TransactionsClient } from '../clients'
+import { MerchantClient } from '../clients'
 import { ApiResponse, PageResponse, Transaction } from '../types/ApiResponses'
-import { ApiProps, useTransactionsProps } from '../types/props'
+import { ApiProps, MerchantProps, useTransactionsProps } from '../types/props'
 
 type TransactionPageResponse = PageResponse<Transaction>
 
-const fetchTransactionsForUser = async (
+const fetchTransactionsForMerchant = async (
   apiUrl: string,
+  merchantId?: string,
   authToken?: string,
   pageNumber?: number,
   pageSize?: number,
   fromDateMS?: number,
   toDateMS?: number,
 ): Promise<ApiResponse<TransactionPageResponse>> => {
-  const client = new TransactionsClient({ apiUrl, authToken })
+  const client = new MerchantClient({ apiUrl, authToken })
 
-  const response = await client.getForUser({
+  const response = await client.getTransactions({
+    merchantId,
     pageNumber,
     pageSize,
     fromDate: fromDateMS ? new Date(fromDateMS) : undefined,
@@ -26,12 +28,14 @@ const fetchTransactionsForUser = async (
   return response
 }
 
-export const useTransactionsForUser = (
+export const useTransactionsForMerchant = (
+  { merchantId }: MerchantProps,
   { pageNumber, pageSize, fromDateMS, toDateMS }: useTransactionsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
   const QUERY_KEY = [
-    'AllTransactions',
+    'AllTransactionsForMerchant',
+    merchantId,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -40,7 +44,20 @@ export const useTransactionsForUser = (
     authToken,
   ]
 
-  return useQuery<ApiResponse<TransactionPageResponse>, Error>(QUERY_KEY, () =>
-    fetchTransactionsForUser(apiUrl, authToken, pageNumber, pageSize, fromDateMS, toDateMS),
+  return useQuery<ApiResponse<TransactionPageResponse>, Error>(
+    QUERY_KEY,
+    () =>
+      fetchTransactionsForMerchant(
+        apiUrl,
+        merchantId,
+        authToken,
+        pageNumber,
+        pageSize,
+        fromDateMS,
+        toDateMS,
+      ),
+    {
+      enabled: !!merchantId,
+    },
   )
 }

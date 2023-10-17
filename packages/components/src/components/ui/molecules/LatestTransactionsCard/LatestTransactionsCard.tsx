@@ -38,7 +38,7 @@ const TransactionRow: React.FC<TransactionRowProps> = ({ transaction: tx, isLoad
         </span>
         <span
           className={mergedClasses(
-            'text-13px/4 text-grey-text w-20 md:leading-6 md:mr-6 xl:mr-9 xl:w-24',
+            'text-13px/4 text-grey-text md:leading-6 md:mr-6 md:w-24 xl:mr-9',
           )}
         >
           {!isLoading && formatDate(tx.date)}

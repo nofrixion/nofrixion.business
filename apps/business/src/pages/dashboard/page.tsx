@@ -5,7 +5,7 @@ import {
   PaymentRequestMetrics,
   Transaction,
   usePaymentRequestMetrics,
-  useTransactionsForUser,
+  useTransactionsForMerchant,
 } from '@nofrixion/moneymoov'
 import { addDays, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -36,12 +36,14 @@ const DashboardPage = () => {
     },
   )
 
-  const { data: transactionsResponse, isLoading: isTransactionsLoading } = useTransactionsForUser(
-    { pageSize: 10 },
-    {
-      apiUrl: NOFRIXION_API_URL,
-    },
-  )
+  const { data: transactionsResponse, isLoading: isTransactionsLoading } =
+    useTransactionsForMerchant(
+      { merchantId: merchant?.id },
+      { pageSize: 10 },
+      {
+        apiUrl: NOFRIXION_API_URL,
+      },
+    )
 
   useEffect(() => {
     if (metricsResponse?.status === 'success') {
