@@ -30,9 +30,6 @@ const TransactionRow: React.FC<TransactionRowProps> = ({ transaction: tx, isLoad
     <div
       className={cn(
         'flex flex-row items-center py-2 text-[13px]/6 text-default-text border-border-grey space-x-9 w-full',
-        {
-          'border-b': !isLoading,
-        },
       )}
     >
       <span className={mergedClasses('text-grey-text w-24')}>
@@ -63,8 +60,11 @@ const LatestTransactionsCard: React.FC<LatestTransactionsCardProps> = ({
   className,
 }) => (
   <Card title="Latest transactions" className={className}>
-    <div className="mt-12 w-full">
-      {/* TODO: Do loading state with skeleton. Map 10 elements and show skeleton */}
+    <div
+      className={cn('mt-10 w-full', {
+        'divide-y': !isLoading,
+      })}
+    >
       {isLoading &&
         Array.from({ length: 10 }).map((_, i) => (
           <TransactionRow key={`loading-tx-${i}`} isLoading />
