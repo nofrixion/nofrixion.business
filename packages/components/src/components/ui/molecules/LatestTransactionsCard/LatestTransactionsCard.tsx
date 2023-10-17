@@ -29,18 +29,30 @@ const TransactionRow: React.FC<TransactionRowProps> = ({ transaction: tx, isLoad
   return (
     <div
       className={cn(
-        'flex flex-row items-center py-2 text-[13px]/6 text-default-text border-border-grey space-x-9 w-full',
+        'flex flex-row md:items-center py-2 text-[13px]/6 text-default-text border-border-grey space-x-6 xl:space-x-9 w-full',
       )}
     >
-      <span className={mergedClasses('text-grey-text w-24')}>
-        {!isLoading && formatDate(tx.date)}
+      <div className="flex flex-col flex-1 md:flex-none md:flex-row-reverse">
+        <span className={mergedClasses('text-13px/4 w-40 md:leading-6')}>
+          {!isLoading && tx.counterParty.name}
+        </span>
+        <span
+          className={mergedClasses(
+            'text-13px/4 text-grey-text w-20 md:leading-6 md:mr-6 xl:mr-9 xl:w-24',
+          )}
+        >
+          {!isLoading && formatDate(tx.date)}
+        </span>
+      </div>
+
+      <span className={mergedClasses('hidden md:block flex-1')}>
+        {!isLoading && (tx.accountName ?? '-')}
       </span>
-      <span className={mergedClasses('w-40')}>{!isLoading && tx.counterParty.name}</span>
-      <span className={mergedClasses('flex-1')}>{!isLoading && (tx.accountName ?? '-')}</span>
+
       <span
         className={mergedClasses(
           cn(
-            'text-sm/6 font-medium tabular-nums text-right ml-auto',
+            'text-sm/4 md:text-sm/6 font-medium tabular-nums text-right ml-auto',
             !isLoading && tx.amount >= 0 ? 'text-positive-green' : 'text-negative-red',
           ),
         )}
@@ -61,7 +73,7 @@ const LatestTransactionsCard: React.FC<LatestTransactionsCardProps> = ({
 }) => (
   <Card title="Latest transactions" className={className}>
     <div
-      className={cn('mt-10 w-full', {
+      className={cn('mt-8 md:mt-10 w-full', {
         'divide-y': !isLoading,
       })}
     >

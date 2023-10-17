@@ -73,7 +73,7 @@ const DashboardPage = () => {
     <>
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
       <div>
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col xl:flex-row gap-4">
           <Card title="Your accounts" subtext="Coming soon" />
           <LatestTransactionsCard
             transactions={remoteTransactionsToLocal(transactions)}
