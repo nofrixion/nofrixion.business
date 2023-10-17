@@ -521,3 +521,16 @@ export type UserRole = {
   emailAddress: string
   roleType: UserRoles
 }
+
+export type AccountTransactionMetrics = {
+  accountID: string
+  accountName: string
+  currency: Currency
+  balance: number
+  availableBalance: number
+  totalIncomingAmount: number
+  totalOutgoingAmount: number
+  numberOfTransactions: number
+}
+
+export type AccountTransactionMetricsPageResponse = PageResponse<AccountTransactionMetrics>

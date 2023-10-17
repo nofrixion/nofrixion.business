@@ -2,6 +2,7 @@ import {
   Account,
   AccountIdentifier,
   AccountIdentifierType,
+  AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
   PartialPaymentMethods,
@@ -33,6 +34,7 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountWithTransactionMetrics,
   LocalAddress,
   LocalBeneficiary,
   LocalCounterparty,
@@ -660,6 +662,42 @@ const userRoleToDisplay = (status: UserRoles) => {
   }
 }
 
+const remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics,
+): LocalAccountWithTransactionMetrics => {
+  const {
+    accountID,
+    accountName,
+    balance,
+    availableBalance,
+    totalIncomingAmount,
+    totalOutgoingAmount,
+    numberOfTransactions,
+    currency,
+  } = remoteAccountsWithTransactionMetrics
+
+  return {
+    accountID: accountID,
+    accountName: accountName,
+    balance: balance,
+    availableBalance: availableBalance,
+    totalIncomingAmount: totalIncomingAmount,
+    totalOutgoingAmount: totalOutgoingAmount,
+    numberOfTransactions: numberOfTransactions,
+    currency: currency,
+  }
+}
+
+const remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics[],
+): LocalAccountWithTransactionMetrics[] => {
+  return remoteAccountsWithTransactionMetrics.map((remoteAccountWithTransactionMetrics) => {
+    return remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics(
+      remoteAccountWithTransactionMetrics,
+    )
+  })
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -667,6 +705,7 @@ export {
   parseLocalTagToApiTag,
   payoutStatusToStatus,
   remoteAccountsToLocalAccounts,
+  remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
   remoteBeneficiariesToLocalBeneficiaries,
   remoteBeneficiaryToLocalBeneficiary,
   remotePaymentRequestToLocalPaymentRequest,

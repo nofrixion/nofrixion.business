@@ -288,3 +288,14 @@ export interface LocalSettledTransaction {
   isRefund: boolean
   wallet?: LocalWallets
 }
+
+export interface LocalAccountWithTransactionMetrics {
+  accountID: string
+  accountName: string
+  availableBalance: number
+  balance: number
+  currency: Currency
+  totalIncomingAmount: number
+  totalOutgoingAmount: number
+  numberOfTransactions: number
+}

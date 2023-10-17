@@ -1,5 +1,6 @@
 export { useAccount } from './useAccount'
 export { useAccounts } from './useAccounts'
+export { useAccountsWithTransactionMetrics } from './useAccountsWithTransactionMetrics'
 export { useAddPaymentRequestTag } from './useAddPaymentRequestTag'
 export { useAddPayoutTag } from './useAddPayoutTag'
 export { useBanks } from './useBanks'

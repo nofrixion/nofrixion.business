@@ -1,5 +1,6 @@
 import { UserRoleCreate } from '../types'
 import {
+  AccountTransactionMetricsPageResponse,
   ApiError,
   ApiResponse,
   Merchant,
@@ -8,7 +9,7 @@ import {
   UserRole,
 } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
-import { ApiProps, MerchantProps } from '../types/props'
+import { AccountsWithTransactionsMetricsProps, ApiProps, MerchantProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -119,5 +120,35 @@ export class MerchantClient extends BaseApiClient {
   async deleteUserRole(userRoleId: string): Promise<ApiResponse<undefined>> {
     const url = `${this.apiUrl}/userroles`
     return await this.httpRequest<undefined>(`${url}/${userRoleId}`, HttpMethod.DELETE)
+  }
+
+  /**
+   * Gets accounts with transaction metrics of the merchant
+   * @param merchantId The merchant id to get the accounts for
+   * @returns A AccountsWithTransactionsMetrics if successful. An ApiError if not successful.
+   */
+  async getAccountsWithTransactionMetrics({
+    pageNumber = 1,
+    pageSize = 3,
+    sort,
+    fromDate,
+    toDate,
+    currency,
+    merchantId,
+  }: AccountsWithTransactionsMetricsProps): Promise<
+    ApiResponse<AccountTransactionMetricsPageResponse>
+  > {
+    const url = `${this.apiUrl}/${merchantId}/accountsWithTransactionMetrics`
+    return await this.getPagedResponse<AccountTransactionMetricsPageResponse>(
+      {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        sort: sort,
+        fromDate: fromDate,
+        toDate: toDate,
+        currency: currency,
+      },
+      url,
+    )
   }
 }

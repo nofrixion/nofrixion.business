@@ -1,16 +1,46 @@
 import { Currency } from '@nofrixion/moneymoov'
+import { cva, VariantProps } from 'class-variance-authority'
 
 import { cn } from '../../../../utils'
 import { formatAmount } from '../../../../utils/formatters'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 
-export interface AccountBalanceProps extends React.HTMLAttributes<HTMLDivElement> {
+export const accountBalanceVariants = cva('font-semibold  font-inter-fontFeatureSettings', {
+  variants: {
+    size: {
+      large: ['text-[32px] leading-9'],
+      medium: ['text-2xl leading-[30px]'],
+      small: ['text-base leading-6'],
+    },
+  },
+  defaultVariants: {
+    size: 'large',
+  },
+})
+
+export const accountAvailableBalanceVariants = cva(' font-normal  mt-2 mr-1', {
+  variants: {
+    size: {
+      large: ['text-sm leading-4'],
+      medium: ['text-[13px] leading-4'],
+      small: ['text-[12px] mt-0 leading-4'],
+    },
+  },
+  defaultVariants: {
+    size: 'large',
+  },
+})
+
+export interface AccountBalanceProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof accountBalanceVariants> {
   currency: Currency
   balance: number
   availableBalance: number
 }
 
 const AccountBalance: React.FC<AccountBalanceProps> = ({
+  size,
   currency,
   balance,
   availableBalance,
@@ -19,10 +49,10 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({
 }) => {
   return (
     <div className={cn('text-right', className)} {...props}>
-      <span className="text-[32px] font-semibold leading-9 font-inter-fontFeatureSettings">
+      <span className={cn(accountBalanceVariants({ size }))}>
         {formatCurrency(currency)} {formatAmount(balance)}
       </span>
-      <div className="text-sm font-normal leading-4 mt-2 mr-1">
+      <div className={cn(accountAvailableBalanceVariants({ size }))}>
         <span className="pr-2">Available</span>
         <span className="font-inter-fontFeatureSettings">
           {formatCurrency(currency)} {formatAmount(availableBalance)}
