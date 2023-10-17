@@ -88,7 +88,6 @@ export const TopAccountsCard: React.FC<TopAccountsCardProps> = ({
       className={className}
       currency={currency}
       onCurrencyChange={onCurrencyChange}
-      
     >
       <div className="flex justify-between items-end mb-10 mt-6">
         <div className="max-w-[392px] h-[103px]">Graph</div>
