@@ -6,6 +6,12 @@ import Chart, { ChartPoint } from './AccountChart'
 export default {
   title: 'Molecules/Account Chart',
   component: Chart,
+  argTypes: {
+    currency: {
+      options: Object.values(Currency),
+      control: { type: 'select' },
+    },
+  },
 } as Meta
 
 const data: ChartPoint[] = [
