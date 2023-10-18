@@ -185,9 +185,11 @@ export interface LocalTag {
 
 export interface LocalTransaction {
   id: string
+  accountName: string
   date: Date
   counterParty: LocalCounterparty
   amount: number
+  currency: Currency
   balanceAfterTx?: number
   reference: string
   description: string

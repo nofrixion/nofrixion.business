@@ -57,7 +57,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
     defaultSourceAccount ? defaultSourceAccount : accounts[0],
   )
 
-  const getCurrencySymbol = (transactionCurrency: string) => {
+  const getCurrencySymbol = (transactionCurrency: Currency) => {
     return transactionCurrency === Currency.EUR
       ? localCurrency.eur.symbol
       : localCurrency.gbp.symbol
