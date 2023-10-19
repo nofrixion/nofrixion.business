@@ -28,16 +28,35 @@ const Template: StoryFn<typeof TopAccountsCard> = () => {
   return <TopAccountsCard currency={currency} onCurrencyChange={setCurrency} accounts={accounts} />
 }
 
+const SingleCurrencyTemplate: StoryFn<typeof TopAccountsCard> = () => {
+  return (
+    <TopAccountsCard
+      currency={Currency.EUR}
+      accounts={localAccountWithTransactionMetrics.filter(
+        (account) => account.currency === Currency.EUR,
+      )}
+      accountMetrics={[]}
+    />
+  )
+}
+
+const PlainTemplate: StoryFn<typeof TopAccountsCard> = (args) => <TopAccountsCard {...args} />
+
 export const Default = Template.bind({})
 Default.args = {}
 
-export const WithLoading = Template.bind({})
+export const WithLoading = PlainTemplate.bind({})
 WithLoading.args = {
-  accounts: undefined,
+  accounts: localAccountWithTransactionMetrics.filter(
+    (account) => account.currency === Currency.EUR,
+  ),
   isLoading: true,
 }
 
-export const NoTransactions = Template.bind({})
+export const NoTransactions = PlainTemplate.bind({})
 NoTransactions.args = {
   accounts: [],
 }
+
+export const SingleCurrency = SingleCurrencyTemplate.bind({})
+SingleCurrency.args = {}

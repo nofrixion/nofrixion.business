@@ -2,6 +2,7 @@ import {
   Account,
   AccountIdentifier,
   AccountIdentifierType,
+  AccountMetrics,
   AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
@@ -34,6 +35,7 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountMetrics,
   LocalAccountWithTransactionMetrics,
   LocalAddress,
   LocalBeneficiary,
@@ -674,6 +676,8 @@ const remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics = 
     totalOutgoingAmount,
     numberOfTransactions,
     currency,
+    numberOfIncomingTransactions,
+    numberOfOutgoingTransactions,
   } = remoteAccountsWithTransactionMetrics
 
   return {
@@ -685,6 +689,8 @@ const remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics = 
     totalOutgoingAmount: totalOutgoingAmount,
     numberOfTransactions: numberOfTransactions,
     currency: currency,
+    numberOfIncomingTransactions: numberOfIncomingTransactions,
+    numberOfOutgoingTransactions: numberOfOutgoingTransactions,
   }
 }
 
@@ -698,12 +704,36 @@ const remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics 
   })
 }
 
+const remoteAccountMetricsToLocalAccountMetrics = (
+  remoteAccountMetrics: AccountMetrics,
+): LocalAccountMetrics => {
+  const { merchantID, currency, totalBalance, totalAvailableBalance, numberOfAccounts } =
+    remoteAccountMetrics
+
+  return {
+    merchantID: merchantID,
+    currency: currency,
+    totalBalance: totalBalance,
+    totalAvailableBalance: totalAvailableBalance,
+    numberOfAccounts: numberOfAccounts,
+  }
+}
+
+const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
+  remoteAccountMetrics: AccountMetrics[],
+): LocalAccountMetrics[] => {
+  return remoteAccountMetrics.map((remoteAccountMetric) => {
+    return remoteAccountMetricsToLocalAccountMetrics(remoteAccountMetric)
+  })
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
+  remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsToLocalAccounts,
   remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
   remoteBeneficiariesToLocalBeneficiaries,

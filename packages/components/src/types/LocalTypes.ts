@@ -298,4 +298,14 @@ export interface LocalAccountWithTransactionMetrics {
   totalIncomingAmount: number
   totalOutgoingAmount: number
   numberOfTransactions: number
+  numberOfIncomingTransactions: number
+  numberOfOutgoingTransactions: number
+}
+
+export interface LocalAccountMetrics {
+  merchantID: string
+  totalAvailableBalance: number
+  totalBalance: number
+  currency: Currency
+  numberOfAccounts: number
 }

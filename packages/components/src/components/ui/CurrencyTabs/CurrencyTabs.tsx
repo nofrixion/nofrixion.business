@@ -1,5 +1,4 @@
 import { Currency } from '@nofrixion/moneymoov'
-import { useState } from 'react'
 
 import { cn } from '../../../utils'
 
@@ -24,24 +23,21 @@ export const CurrencyFilter: React.FC<{
   currency: Currency
   onCurrencyChange: (currency: Currency) => void
 }> = ({ currency, onCurrencyChange }) => {
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(currency)
   return (
     <div className="flex items-center space-x-2">
       <CurrencyTab
         onClick={() => {
-          setSelectedCurrency(Currency.EUR)
           onCurrencyChange(Currency.EUR)
         }}
         currency={Currency.EUR}
-        isActive={selectedCurrency === Currency.EUR}
+        isActive={currency === Currency.EUR}
       />
       <CurrencyTab
         onClick={() => {
-          setSelectedCurrency(Currency.GBP)
           onCurrencyChange(Currency.GBP)
         }}
         currency={Currency.GBP}
-        isActive={selectedCurrency === Currency.GBP}
+        isActive={currency === Currency.GBP}
       />
     </div>
   )

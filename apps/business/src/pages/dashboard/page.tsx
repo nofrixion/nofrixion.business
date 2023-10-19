@@ -1,10 +1,15 @@
 import { TopAccountsCard } from '@nofrixion/components/src/components/ui/molecules'
-import { remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics } from '@nofrixion/components/src/utils/parsers'
 import {
+  remoteAccountMetricsArrayToLocalAccountMetricsArray,
+  remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
+} from '@nofrixion/components/src/utils/parsers'
+import {
+  AccountMetrics,
   AccountTransactionMetrics,
   Currency,
   PaymentRequestMetrics,
   SortDirection,
+  useAccountMetrics,
   useAccountsWithTransactionMetrics,
   usePaymentRequestMetrics,
 } from '@nofrixion/moneymoov'
@@ -27,11 +32,17 @@ const DashboardPage = () => {
   const { authState } = useAuth() as AuthContextType
 
   const [accounts, setAccounts] = useState<AccountTransactionMetrics[]>([])
+  const [accountMetrics, setAccountMetrics] = useState<AccountMetrics[]>([])
   const [metrics, setMetrics] = useState<PaymentRequestMetrics>()
   const last30Days = addDays(new Date(), -30)
 
-  const [currency, setCurrency] = useState<Currency>(Currency.EUR)
-
+  const { data: accountMetricsResponse, isLoading: isAccountMetricsLoading } = useAccountMetrics(
+    { merchantId: merchant?.id },
+    {
+      apiUrl: NOFRIXION_API_URL,
+    },
+  )
+  const [currency, setCurrency] = useState<Currency | undefined>(undefined)
   const { data: accountsWithTransactionMetricsResponse, isLoading: isAccountsLoading } =
     useAccountsWithTransactionMetrics(
       {
@@ -47,6 +58,27 @@ const DashboardPage = () => {
       },
     )
 
+  const isDashboardLoading = isAccountMetricsLoading || isAccountsLoading
+
+  const singleCurrency =
+    !isAccountMetricsLoading && accountMetrics.length === 1 ? accountMetrics[0].currency : undefined
+
+  useEffect(() => {
+    if (singleCurrency && accountMetrics.length === 1) {
+      setCurrency(singleCurrency)
+    } else if (accountMetrics.length > 1) {
+      setCurrency(Currency.EUR)
+    }
+  }, [singleCurrency, accountMetrics])
+
+  useEffect(() => {
+    if (merchant) {
+      setCurrency(undefined)
+      setAccountMetrics([])
+      setAccounts([])
+    }
+  }, [merchant])
+
   const { data: metricsResponse, isLoading: isMetricsLoading } = usePaymentRequestMetrics(
     { merchantId: merchant?.id, fromDateMS: startOfDay(last30Days).getTime() },
     {
@@ -59,16 +91,23 @@ const DashboardPage = () => {
       setAccounts(accountsWithTransactionMetricsResponse.data.content)
     } else if (accountsWithTransactionMetricsResponse?.status === 'error') {
       console.error(accountsWithTransactionMetricsResponse.error)
-      // authState?.logOut && authState?.logOut()
     }
   }, [accountsWithTransactionMetricsResponse, authState])
+
+  useEffect(() => {
+    if (accountMetricsResponse?.status === 'success') {
+      console.log(accountMetricsResponse.data)
+      setAccountMetrics(accountMetricsResponse.data)
+    } else if (accountMetricsResponse?.status === 'error') {
+      console.error(accountMetricsResponse.error)
+    }
+  }, [accountMetricsResponse, authState])
 
   useEffect(() => {
     if (metricsResponse?.status === 'success') {
       setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
       console.error(metricsResponse.error)
-      // authState?.logOut && authState?.logOut()
     }
   }, [authState, metricsResponse])
 
@@ -85,17 +124,16 @@ const DashboardPage = () => {
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
       <div>
         <div className="flex flex-col lg:flex-row gap-4">
-          {currency && (
-            <TopAccountsCard
-              accounts={remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics(
-                accounts,
-              )}
-              isLoading={isAccountsLoading}
-              currency={currency}
-              onCurrencyChange={setCurrency}
-              className="md:pb-2"
-            />
-          )}
+          <TopAccountsCard
+            accounts={remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics(
+              accounts,
+            )}
+            isLoading={isDashboardLoading}
+            currency={currency}
+            onCurrencyChange={isDashboardLoading || singleCurrency ? undefined : setCurrency}
+            className="md:pb-2 h-[485.58px]"
+            accountMetrics={remoteAccountMetricsArrayToLocalAccountMetricsArray(accountMetrics)}
+          />
           <Card title="Latest transactions" subtext="Coming soon" />
         </div>
 

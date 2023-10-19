@@ -1,5 +1,6 @@
 import { UserRoleCreate } from '../types'
 import {
+  AccountMetrics,
   AccountTransactionMetricsPageResponse,
   ApiError,
   ApiResponse,
@@ -149,6 +150,18 @@ export class MerchantClient extends BaseApiClient {
         currency: currency,
       },
       url,
+    )
+  }
+
+  /**
+   * Gets the account metrics for the merchant
+   * @param merchantId The merchant id to get the account metrics for
+   * @returns A list of account metrics if successful. An ApiError if not successful.
+   */
+  async getAccountMetrics({ merchantId }: MerchantProps): Promise<ApiResponse<AccountMetrics[]>> {
+    return await this.httpRequest<AccountMetrics[]>(
+      `${this.apiUrl}/${merchantId}/accountMetrics`,
+      HttpMethod.GET,
     )
   }
 }
