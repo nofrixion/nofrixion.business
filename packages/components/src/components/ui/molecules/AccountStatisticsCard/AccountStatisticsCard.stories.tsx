@@ -4,17 +4,17 @@ import { useEffect, useState } from 'react'
 
 import { LocalAccountWithTransactionMetrics } from '../../../../types/LocalTypes'
 import mockedData from '../../../../utils/mockedData'
-import { TopAccountsCard } from './TopAccountsCard'
+import AccountStatisticsCard from './AccountStatisticsCard'
 
 export default {
-  title: 'Molecules/Cards/TopAccountsCard',
-  component: TopAccountsCard,
-} as Meta<typeof TopAccountsCard>
+  title: 'Molecules/Cards/AccountStatisticsCard',
+  component: AccountStatisticsCard,
+} as Meta<typeof AccountStatisticsCard>
 
 const localAccountWithTransactionMetrics: LocalAccountWithTransactionMetrics[] =
   mockedData.accountsWithTransactionMetrics
 
-const Template: StoryFn<typeof TopAccountsCard> = () => {
+const Template: StoryFn<typeof AccountStatisticsCard> = () => {
   const [currency, setCurrency] = useState<Currency>(Currency.EUR)
   const [accounts, setAccounts] = useState<LocalAccountWithTransactionMetrics[]>(
     localAccountWithTransactionMetrics.filter((account) => account.currency === Currency.EUR),
@@ -25,12 +25,14 @@ const Template: StoryFn<typeof TopAccountsCard> = () => {
       localAccountWithTransactionMetrics.filter((account) => account.currency === currency),
     )
   }, [currency])
-  return <TopAccountsCard currency={currency} onCurrencyChange={setCurrency} accounts={accounts} />
+  return (
+    <AccountStatisticsCard currency={currency} onCurrencyChange={setCurrency} accounts={accounts} />
+  )
 }
 
-const SingleCurrencyTemplate: StoryFn<typeof TopAccountsCard> = () => {
+const SingleCurrencyTemplate: StoryFn<typeof AccountStatisticsCard> = () => {
   return (
-    <TopAccountsCard
+    <AccountStatisticsCard
       currency={Currency.EUR}
       accounts={localAccountWithTransactionMetrics.filter(
         (account) => account.currency === Currency.EUR,
@@ -40,7 +42,9 @@ const SingleCurrencyTemplate: StoryFn<typeof TopAccountsCard> = () => {
   )
 }
 
-const PlainTemplate: StoryFn<typeof TopAccountsCard> = (args) => <TopAccountsCard {...args} />
+const PlainTemplate: StoryFn<typeof AccountStatisticsCard> = (args) => (
+  <AccountStatisticsCard {...args} />
+)
 
 export const Default = Template.bind({})
 Default.args = {}

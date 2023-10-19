@@ -1,6 +1,6 @@
 import {
+  AccountStatisticsCard,
   LatestTransactionsCard,
-  TopAccountsCard,
 } from '@nofrixion/components/src/components/ui/molecules'
 import {
   remoteAccountMetricsArrayToLocalAccountMetricsArray,
@@ -147,7 +147,7 @@ const DashboardPage = () => {
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
       <div>
         <div className="flex flex-col xl:flex-row gap-4">
-          <TopAccountsCard
+          <AccountStatisticsCard
             accounts={remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics(
               accounts,
             )}
