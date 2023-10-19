@@ -94,51 +94,6 @@ const TopAccountRow: React.FC<TopAccountRowProps> = ({ account, isLoading }) => 
   )
 }
 
-// enum TransactionType {
-//   All = 'All',
-//   Incoming = 'Incoming',
-//   Outgoing = 'Outgoing',
-// }
-
-// const TotalTransactionAmount: React.FC<{
-//   amount: number
-//   transactionType: TransactionType
-//   numberOfTransactions: number
-//   isLoading?: boolean
-//   className?: string
-// }> = ({ amount, transactionType, numberOfTransactions, isLoading, className }) => {
-//   return (
-//     <div className={cn('flex flex-col', className)}>
-//       <div className="mb-2 flex">
-//         {(transactionType === TransactionType.Incoming ||
-//           transactionType === TransactionType.Outgoing) && (
-//           <Icon name={transactionType === TransactionType.Incoming ? 'incoming/8' : 'outgoing/8'} />
-//         )}
-//         <span
-//           className={cn(
-//             'text-sm leading-6',
-//             transactionType === TransactionType.Incoming && 'text-positive-green',
-//             transactionType === TransactionType.Outgoing && 'text-negative-red',
-//           )}
-//         >
-//           {transactionType}
-//         </span>
-//       </div>
-//       <span className="text-2xl leading-6 font-medium">{numberOfTransactions}</span>
-//       <span
-//         className={cn(
-//           'text-sm leading-6 font-medium',
-//           transactionType === TransactionType.Incoming && 'text-positive-green',
-//           transactionType === TransactionType.Outgoing && 'text-negative-red',
-//         )}
-//       >
-//         {transactionType === TransactionType.Outgoing && <span>-</span>}
-//         {formatAmount(amount)}
-//       </span>
-//     </div>
-//   )
-// }
-
 export const TopAccountsCard: React.FC<TopAccountsCardProps> = ({
   accounts,
   isLoading = false,
@@ -147,8 +102,6 @@ export const TopAccountsCard: React.FC<TopAccountsCardProps> = ({
   accountMetrics,
   onCurrencyChange,
 }) => {
-  console.log('currency', currency)
-  console.log('onCurrencyChange', onCurrencyChange)
   const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md '
 
   const mergedClasses = (classes?: string) => cn(classes, isLoading && loadingClasses)
@@ -184,9 +137,9 @@ export const TopAccountsCard: React.FC<TopAccountsCardProps> = ({
 
       <div className="flex justify-between items-end mb-10 mt-6">
         {!isLoading && accounts && accounts.length > 0 && (
-          <div className="max-w-[392px] h-[103px]">Graph</div>
+          <div className="flex-grow-[2] h-[103px]">Graph</div>
         )}
-        {isLoading && <Loader className="w-[392px] h-[103px]" />}
+        {isLoading && <Loader className="h-[103px] flex-grow-[2]" />}
         <div className={cn('flex flex-col text-right', (isLoading || !currency) && 'w-56')}>
           {(isLoading || !currency) && (
             <div className="flex flex-col gap-3 w-full items-end">
