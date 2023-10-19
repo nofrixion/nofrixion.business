@@ -1,7 +1,11 @@
-import { TopAccountsCard } from '@nofrixion/components/src/components/ui/molecules'
+import {
+  LatestTransactionsCard,
+  TopAccountsCard,
+} from '@nofrixion/components/src/components/ui/molecules'
 import {
   remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
+  remoteTransactionsToLocal,
 } from '@nofrixion/components/src/utils/parsers'
 import {
   AccountMetrics,
@@ -9,9 +13,11 @@ import {
   Currency,
   PaymentRequestMetrics,
   SortDirection,
+  Transaction,
   useAccountMetrics,
   useAccountsWithTransactionMetrics,
   usePaymentRequestMetrics,
+  useTransactionsForMerchant,
 } from '@nofrixion/moneymoov'
 import { addDays, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -19,12 +25,13 @@ import { useNavigate } from 'react-router-dom'
 
 import AccountPayableCard from '../../components/AccountPayableCard'
 import AcountsReceivableCard from '../../components/AcountsReceivableCard'
-import Card from '../../components/ui/atoms/Card/Card'
 import { Loader } from '../../components/ui/Loader/Loader'
 import { AuthContextType } from '../../lib/auth/AuthProvider'
 import { useAuth } from '../../lib/auth/useAuth'
 import { NOFRIXION_API_URL } from '../../lib/constants'
 import useMerchantStore from '../../lib/stores/useMerchantStore'
+
+const last30Days = addDays(new Date(), -30)
 
 const DashboardPage = () => {
   const { merchant } = useMerchantStore()
@@ -34,7 +41,7 @@ const DashboardPage = () => {
   const [accounts, setAccounts] = useState<AccountTransactionMetrics[]>([])
   const [accountMetrics, setAccountMetrics] = useState<AccountMetrics[]>([])
   const [metrics, setMetrics] = useState<PaymentRequestMetrics>()
-  const last30Days = addDays(new Date(), -30)
+  const [transactions, setTransactions] = useState<Transaction[]>([])
 
   const { data: accountMetricsResponse, isLoading: isAccountMetricsLoading } = useAccountMetrics(
     { merchantId: merchant?.id },
@@ -86,6 +93,14 @@ const DashboardPage = () => {
     },
   )
 
+  const { data: transactionsResponse, isLoading: isTransactionsLoading } =
+    useTransactionsForMerchant(
+      { merchantId: merchant?.id },
+      { pageSize: 10 },
+      {
+        apiUrl: NOFRIXION_API_URL,
+      },
+    )
   useEffect(() => {
     if (accountsWithTransactionMetricsResponse?.status === 'success') {
       setAccounts(accountsWithTransactionMetricsResponse.data.content)
@@ -96,7 +111,6 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (accountMetricsResponse?.status === 'success') {
-      console.log(accountMetricsResponse.data)
       setAccountMetrics(accountMetricsResponse.data)
     } else if (accountMetricsResponse?.status === 'error') {
       console.error(accountMetricsResponse.error)
@@ -111,6 +125,15 @@ const DashboardPage = () => {
     }
   }, [authState, metricsResponse])
 
+  useEffect(() => {
+    if (transactionsResponse?.status === 'success') {
+      setTransactions(transactionsResponse.data.content)
+    } else if (transactionsResponse?.status === 'error') {
+      console.error(transactionsResponse.error)
+      // authState?.logOut && authState?.logOut()
+    }
+  }, [authState, transactionsResponse])
+
   if (isMetricsLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -123,18 +146,21 @@ const DashboardPage = () => {
     <>
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
       <div>
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col xl:flex-row gap-4">
           <TopAccountsCard
             accounts={remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics(
               accounts,
             )}
             isLoading={isDashboardLoading}
             currency={currency}
-            onCurrencyChange={isDashboardLoading || singleCurrency ? undefined : setCurrency}
+            onCurrencyChange={isAccountMetricsLoading || singleCurrency ? undefined : setCurrency}
             className="md:pb-2 h-[485.58px]"
             accountMetrics={remoteAccountMetricsArrayToLocalAccountMetricsArray(accountMetrics)}
           />
-          <Card title="Latest transactions" subtext="Coming soon" />
+          <LatestTransactionsCard
+            transactions={remoteTransactionsToLocal(transactions)}
+            isLoading={isTransactionsLoading}
+          />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 mt-4">

@@ -148,6 +148,7 @@ export const TopAccountsCard: React.FC<TopAccountsCardProps> = ({
   onCurrencyChange,
 }) => {
   console.log('currency', currency)
+  console.log('onCurrencyChange', onCurrencyChange)
   const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md '
 
   const mergedClasses = (classes?: string) => cn(classes, isLoading && loadingClasses)

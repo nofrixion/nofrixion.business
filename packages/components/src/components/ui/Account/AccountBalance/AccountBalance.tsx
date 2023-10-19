@@ -49,8 +49,6 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({
   hideAvailableBalanceIfSameAsBalance,
   ...props
 }) => {
-  console.log('AccountBalance', { size, currency, balance, availableBalance, className, props })
-  console.log(balance !== availableBalance)
   const hideAvailableBalance = hideAvailableBalanceIfSameAsBalance && balance === availableBalance
   return (
     <div className={cn('text-right', className)} {...props}>

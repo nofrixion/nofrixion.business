@@ -39,20 +39,20 @@ export const Showcase = Template.bind({})
 Showcase.args = {
   children: 'Create payment request',
   variant: 'primary',
-  size: 'big',
+  size: 'large',
 }
 
 export const Primary = Template.bind({})
 Primary.args = {
   children: 'Create payment request',
   variant: 'primary',
-  size: 'big',
+  size: 'large',
 }
 
 Primary.decorators = [
   () => (
     <div className="space-y-2 flex flex-col w-fit">
-      <Button {...(Primary.args, { size: 'big', variant: 'primary' })}>
+      <Button {...(Primary.args, { size: 'large', variant: 'primary' })}>
         Create payment request
       </Button>
       <Button {...(Primary.args, { size: 'medium', variant: 'primary' })}>
@@ -77,7 +77,7 @@ Secondary.args = {
 Secondary.decorators = [
   () => (
     <div className="space-y-2 flex flex-col w-fit">
-      <Button {...(Secondary.args, { size: 'big', variant: 'secondary' })}>Settings</Button>
+      <Button {...(Secondary.args, { size: 'large', variant: 'secondary' })}>Settings</Button>
       <Button {...(Secondary.args, { size: 'medium', variant: 'secondary' })}>Settings</Button>
       <Button {...(Secondary.args, { size: 'small', variant: 'secondary' })}>Settings</Button>
       <Button {...(Secondary.args, { size: 'x-small', variant: 'secondary' })}>Settings</Button>
@@ -95,7 +95,7 @@ Tertiary.args = {
 Tertiary.decorators = [
   () => (
     <div className="space-y-2 flex flex-col w-fit">
-      <Button {...(Secondary.args, { size: 'big', variant: 'tertiary' })}>Show more</Button>
+      <Button {...(Secondary.args, { size: 'large', variant: 'tertiary' })}>Show more</Button>
       <Button {...(Secondary.args, { size: 'medium', variant: 'tertiary' })}>Show more</Button>
       <Button {...(Secondary.args, { size: 'small', variant: 'tertiary' })}>Show more</Button>
       <Button {...(Secondary.args, { size: 'x-small', variant: 'tertiary' })}>Show more</Button>
@@ -113,7 +113,7 @@ TertiaryNegative.args = {
 Tertiary.decorators = [
   () => (
     <div className="space-y-2 flex flex-col w-fit">
-      <Button {...(Secondary.args, { size: 'big', variant: 'tertiary_negative' })}>
+      <Button {...(Secondary.args, { size: 'large', variant: 'tertiary_negative' })}>
         Show more
       </Button>
       <Button {...(Secondary.args, { size: 'medium', variant: 'tertiary_negative' })}>
@@ -139,7 +139,7 @@ Text.args = {
 Text.decorators = [
   () => (
     <div className="space-y-2 flex flex-col w-fit">
-      <Button {...(Secondary.args, { size: 'big', variant: 'text' })}>Settings</Button>
+      <Button {...(Secondary.args, { size: 'large', variant: 'text' })}>Settings</Button>
       <Button {...(Secondary.args, { size: 'medium', variant: 'text' })}>Settings</Button>
       <Button {...(Secondary.args, { size: 'small', variant: 'text' })}>Settings</Button>
       <Button {...(Secondary.args, { size: 'x-small', variant: 'text' })}>Settings</Button>

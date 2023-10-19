@@ -501,8 +501,10 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
     return {
       id: transaction.id,
       date: new Date(transaction.transactionDate),
+      accountName: transaction.accountName,
       counterParty: parseApiCounterPartyToLocalCounterParty(transaction.counterparty),
       amount: transaction.amount,
+      currency: transaction.currency,
       balanceAfterTx: transaction.balance,
       reference:
         transaction.amount > 0

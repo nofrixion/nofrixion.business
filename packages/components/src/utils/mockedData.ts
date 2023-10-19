@@ -296,7 +296,6 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 
 export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
@@ -334,7 +333,6 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
   {
@@ -371,7 +369,6 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 
 const regular: LocalPaymentRequest = {
@@ -1012,48 +1009,56 @@ function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
 export const mockedTransactions: LocalTransaction[] = [
   {
     id: '1',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -250.0,
+    currency: Currency.EUR,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA',
   },
   {
     id: '2',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: 1500000.99,
+    currency: Currency.EUR,
     reference: 'Very very very long reference. As long as it can be. Or even longer.',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA Instant',
   },
   {
     id: '3',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -350.0,
+    currency: Currency.EUR,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA Instant',
   },
   {
     id: '4',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: 450.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1061,12 +1066,14 @@ export const mockedTransactions: LocalTransaction[] = [
   },
   {
     id: '5',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -550.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1074,12 +1081,14 @@ export const mockedTransactions: LocalTransaction[] = [
   },
   {
     id: '6',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: 200.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1087,12 +1096,14 @@ export const mockedTransactions: LocalTransaction[] = [
   },
   {
     id: '7',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -300.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
