@@ -79,7 +79,7 @@ const LatestTransactionsCard: React.FC<LatestTransactionsCardProps> = ({
       })}
     >
       {isLoading &&
-        Array.from({ length: 10 }).map((_, i) => (
+        Array.from({ length: 9 }).map((_, i) => (
           <TransactionRow key={`loading-tx-${i}`} isLoading />
         ))}
 

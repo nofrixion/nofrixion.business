@@ -96,7 +96,7 @@ const DashboardPage = () => {
   const { data: transactionsResponse, isLoading: isTransactionsLoading } =
     useTransactionsForMerchant(
       { merchantId: merchant?.id },
-      { pageSize: 10 },
+      { pageSize: 9 },
       {
         apiUrl: NOFRIXION_API_URL,
       },
@@ -156,6 +156,9 @@ const DashboardPage = () => {
             onCurrencyChange={isAccountMetricsLoading || singleCurrency ? undefined : setCurrency}
             className="md:pb-2"
             accountMetrics={remoteAccountMetricsArrayToLocalAccountMetricsArray(accountMetrics)}
+            onShowViewAll={() => {
+              navigate('current-accounts')
+            }}
           />
           <LatestTransactionsCard
             transactions={remoteTransactionsToLocal(transactions)}

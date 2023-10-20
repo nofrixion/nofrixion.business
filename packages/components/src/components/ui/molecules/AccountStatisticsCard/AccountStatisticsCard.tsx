@@ -19,6 +19,7 @@ export interface AccountStatisticsCardProps {
   currency?: Currency
   accountMetrics?: LocalAccountMetrics[]
   onCurrencyChange?: (currency: Currency) => void
+  onShowViewAll?: () => void
 }
 
 const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
@@ -28,6 +29,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
   currency,
   accountMetrics,
   onCurrencyChange,
+  onShowViewAll,
 }) => {
   const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md '
 
@@ -38,6 +40,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
       className={className}
       currency={currency}
       onCurrencyChange={onCurrencyChange}
+      onShowViewAll={onShowViewAll}
     >
       {/* Emtpy state - if no accounts are found */}
       {!isLoading && (!accounts || accounts.length == 0) && (
