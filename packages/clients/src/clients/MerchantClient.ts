@@ -1,5 +1,7 @@
 import { UserRoleCreate } from '../types'
 import {
+  AccountMetrics,
+  AccountTransactionMetricsPageResponse,
   ApiError,
   ApiResponse,
   Merchant,
@@ -9,7 +11,12 @@ import {
   UserRole,
 } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
-import { ApiProps, MerchantProps, TransactionsProps } from '../types/props'
+import {
+  AccountsWithTransactionsMetricsProps,
+  ApiProps,
+  MerchantProps,
+  TransactionsProps,
+} from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -148,6 +155,48 @@ export class MerchantClient extends BaseApiClient {
         toDate: toDate,
       },
       url,
+    )
+  }
+
+  /**
+   * Gets accounts with transaction metrics of the merchant
+   * @param merchantId The merchant id to get the accounts for
+   * @returns A AccountsWithTransactionsMetrics if successful. An ApiError if not successful.
+   */
+  async getAccountsWithTransactionMetrics({
+    pageNumber = 1,
+    pageSize = 3,
+    sort,
+    fromDate,
+    toDate,
+    currency,
+    merchantId,
+  }: AccountsWithTransactionsMetricsProps): Promise<
+    ApiResponse<AccountTransactionMetricsPageResponse>
+  > {
+    const url = `${this.apiUrl}/${merchantId}/accountsWithTransactionMetrics`
+    return await this.getPagedResponse<AccountTransactionMetricsPageResponse>(
+      {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        sort: sort,
+        fromDate: fromDate,
+        toDate: toDate,
+        currency: currency,
+      },
+      url,
+    )
+  }
+
+  /**
+   * Gets the account metrics for the merchant
+   * @param merchantId The merchant id to get the account metrics for
+   * @returns A list of account metrics if successful. An ApiError if not successful.
+   */
+  async getAccountMetrics({ merchantId }: MerchantProps): Promise<ApiResponse<AccountMetrics[]>> {
+    return await this.httpRequest<AccountMetrics[]>(
+      `${this.apiUrl}/${merchantId}/accountMetrics`,
+      HttpMethod.GET,
     )
   }
 }
