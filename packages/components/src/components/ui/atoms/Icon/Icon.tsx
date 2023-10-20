@@ -715,6 +715,26 @@ export const Icons = {
       />
     </SVG>
   ),
+  'calendar/16': (className: string) => (
+    <SVG className={cn(className, '')} size="16">
+      <g id="16px/Calendar">
+        <path
+          id="Vector"
+          d="M14.5012 2.5H1.50122C0.948936 2.5 0.501221 2.94772 0.501221 3.5V14.5C0.501221 15.0523 0.948936 15.5 1.50122 15.5H14.5012C15.0535 15.5 15.5012 15.0523 15.5012 14.5V3.5C15.5012 2.94772 15.0535 2.5 14.5012 2.5Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M0.501221 6.5H15.5012"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path id="Vector_3" d="M4.50122 4V0.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector_4" d="M11.5012 4V0.5" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons

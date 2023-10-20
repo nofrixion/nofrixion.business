@@ -215,6 +215,8 @@ export interface LocalPayout {
   sourceAccountIban: string
   destination?: LocalCounterparty
   tags: LocalTag[]
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export interface LocalAccount {

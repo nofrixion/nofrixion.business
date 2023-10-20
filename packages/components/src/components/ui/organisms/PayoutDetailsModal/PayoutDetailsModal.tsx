@@ -1,7 +1,7 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import { LocalPayout, LocalTag } from '../../../../types/LocalTypes'
-import { formatAmountAndDecimals } from '../../../../utils/formatters'
+import { formatAmountAndDecimals, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
@@ -82,6 +82,7 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
+
                 <div className="flex text-sm mt-8">
                   <div className="text-grey-text w-1/3">To account</div>
                   <div>
@@ -96,6 +97,12 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
+                {payout.scheduled && payout.scheduleDate && (
+                  <div className="flex text-sm mt-8">
+                    <div className="text-grey-text w-1/3">Payment date</div>
+                    <div>{formatDateWithYear(new Date(payout.scheduleDate))}</div>
+                  </div>
+                )}
                 {payout.theirReference && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Their reference</div>

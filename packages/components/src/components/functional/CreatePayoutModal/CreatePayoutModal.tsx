@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
-import UICreatePayoutModal from '../../ui/CreatePayoutModal/CreatePayoutModal'
+import UICreatePayoutModal from '../../ui/organisms/CreatePayoutModal/CreatePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 

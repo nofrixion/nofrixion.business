@@ -364,6 +364,8 @@ export interface Payout {
   sourceAccountIban: string
   destination?: Counterparty
   tags: Tag[]
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export interface PayoutUpdate {

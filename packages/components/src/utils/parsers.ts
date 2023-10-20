@@ -534,6 +534,8 @@ const remotePayoutToLocal = (payout: Payout): LocalPayout => {
       ? parseApiCounterPartyToLocalCounterParty(payout.destination)
       : undefined,
     tags: payout.tags.map((tag) => parseApiTagToLocalTag(tag)),
+    scheduled: payout.scheduled,
+    scheduleDate: payout.scheduleDate,
   }
 }
 

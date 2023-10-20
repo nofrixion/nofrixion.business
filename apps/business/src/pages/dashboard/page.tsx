@@ -39,7 +39,7 @@ const DashboardPage = () => {
   const { data: transactionsResponse, isLoading: isTransactionsLoading } =
     useTransactionsForMerchant(
       { merchantId: merchant?.id },
-      { pageSize: 10 },
+      { pageSize: 9 },
       {
         apiUrl: NOFRIXION_API_URL,
       },

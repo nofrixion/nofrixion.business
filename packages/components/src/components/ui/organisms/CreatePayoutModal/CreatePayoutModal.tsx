@@ -2,18 +2,20 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-import { LocalAccountIdentifierType } from '../../../types/LocalEnums'
-import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
-import { cn } from '../../../utils'
-import { Button, Sheet, SheetContent } from '../atoms'
-import InputTextField from '../atoms/InputTextField/InputTextField'
-import { ValidationMessage } from '../atoms/ValidationMessage/ValidationMessage'
-import InputAmountField from '../InputAmountField/InputAmountField'
-import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
-import { Loader } from '../Loader/Loader'
-import { SelectAccount } from '../molecules/Select/SelectAccount/SelectAccount'
-import { SelectBeneficiary } from '../molecules/Select/SelectBeneficiary/SelectBeneficiary'
-import AnimateHeightWrapper from '../utils/AnimateHeight'
+import { LocalAccountIdentifierType } from '../../../../types/LocalEnums'
+import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../../types/LocalTypes'
+import { cn } from '../../../../utils'
+import { Button, Sheet, SheetContent } from '../../atoms'
+import InputTextField from '../../atoms/InputTextField/InputTextField'
+import { RadioGroup, RadioGroupItem } from '../../atoms/RadioGroup/RadioGroup'
+import { ValidationMessage } from '../../atoms/ValidationMessage/ValidationMessage'
+import DateInput from '../../DatePicker/DateInput'
+import InputAmountField from '../../InputAmountField/InputAmountField'
+import InputTextAreaField from '../../InputTextAreaField/InputTextAreaField'
+import { Loader } from '../../Loader/Loader'
+import { SelectAccount } from '../../molecules/Select/SelectAccount/SelectAccount'
+import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/SelectBeneficiary'
+import AnimateHeightWrapper from '../../utils/AnimateHeight'
 
 export interface CreatePayoutModalProps {
   onCreatePayout: (
@@ -70,6 +72,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     useState<boolean>(false)
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
+  const [selectedOption, setSelectedOption] = useState('immediately')
 
   useEffect(() => {
     if (!isOpen) {
@@ -573,6 +576,37 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       className="-mt-6"
                       label="beneficiary"
                     />
+                  </div>
+
+                  <div className="mt-10 items-baseline">
+                    <div className="text-left">
+                      <div className="flex flex-col">
+                        <div className="py-2 flex justify-between">
+                          <label className="text-default-text font-semibold text-sm leading-4">
+                            {'Payment date'}
+                          </label>
+                        </div>
+                      </div>
+                      <RadioGroup
+                        value={selectedOption}
+                        onValueChange={setSelectedOption}
+                        className="text-sm/4 space-y-3 mb-4"
+                      >
+                        <div className="flex items-center space-x-3 mt-4">
+                          <RadioGroupItem value="immediately" id="option-1" />
+                          <label className="cursor-pointer" htmlFor="option-1">
+                            Immediately
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value="choose-date" id="option-2" />
+                          <label className="cursor-pointer" htmlFor="option-2">
+                            Choose date
+                          </label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                    <DateInput value="28/10/1968" openCalendar={() => {}} />
                   </div>
 
                   <div
