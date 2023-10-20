@@ -385,8 +385,9 @@ export type PayoutMetrics = {
   inProgress: number
   pendingApproval: number
   failed: number
+  scheduled: number
   totalAmountsByCurrency: Record<
-    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed',
+    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed' | 'scheduled',
     Record<'eur' | 'gbp', number | undefined>
   >
 }

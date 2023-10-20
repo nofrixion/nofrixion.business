@@ -31,6 +31,8 @@ const getSpecificStatusClasses = (status: string) => {
       status === UserStatus.Active,
     "fill-negative-red [&>span]:text-negative-red data-[state='active']:border-[#DA0C30]":
       status === PayoutStatus.FAILED,
+    "fill-blue-text [&>span]:text-blue-text data-[state='active']:border-[#0088CC]":
+      status === PayoutStatus.SCHEDULED,
   })
 }
 
@@ -60,6 +62,8 @@ const getDisplayTextForStatus = (status: string) => {
       return 'Active'
     case UserStatus.RolePending:
       return 'Role pending'
+    case PayoutStatus.SCHEDULED:
+      return 'Scheduled'
     default:
       return 'All'
   }
@@ -74,6 +78,7 @@ const showIndicator = (status: string) => {
     case PayoutStatus.PENDING:
     case PayoutStatus.PENDING_APPROVAL:
     case PayoutStatus.PROCESSED:
+    case PayoutStatus.SCHEDULED:
     case PayoutStatus.FAILED:
     case UserStatus.Invited:
     case UserStatus.Active:

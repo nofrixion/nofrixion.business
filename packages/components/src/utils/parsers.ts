@@ -616,6 +616,7 @@ const payoutStatusToStatus = (
   | 'failed'
   | 'pending_approval'
   | 'inprogress'
+  | 'scheduled'
   | null
   | undefined => {
   switch (status) {
@@ -631,6 +632,8 @@ const payoutStatusToStatus = (
     case PayoutStatus.FAILED:
     case PayoutStatus.REJECTED:
       return 'failed'
+    case PayoutStatus.SCHEDULED:
+      return 'scheduled'
     default:
       return undefined
   }

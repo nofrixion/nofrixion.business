@@ -261,6 +261,9 @@ const PayoutDashboardMain = ({
       case PayoutStatus.FAILED:
         setQueryStatuses([PayoutStatus.FAILED, PayoutStatus.REJECTED, PayoutStatus.UNKNOWN])
         break
+      case PayoutStatus.SCHEDULED:
+        setQueryStatuses([PayoutStatus.SCHEDULED])
+        break
     }
   }, [status])
 
