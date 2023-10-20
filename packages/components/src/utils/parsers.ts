@@ -2,6 +2,8 @@ import {
   Account,
   AccountIdentifier,
   AccountIdentifierType,
+  AccountMetrics,
+  AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
   PartialPaymentMethods,
@@ -33,6 +35,8 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountMetrics,
+  LocalAccountWithTransactionMetrics,
   LocalAddress,
   LocalBeneficiary,
   LocalCounterparty,
@@ -662,13 +666,78 @@ const userRoleToDisplay = (status: UserRoles) => {
   }
 }
 
+const remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics,
+): LocalAccountWithTransactionMetrics => {
+  const {
+    accountID,
+    accountName,
+    balance,
+    availableBalance,
+    totalIncomingAmount,
+    totalOutgoingAmount,
+    numberOfTransactions,
+    currency,
+    numberOfIncomingTransactions,
+    numberOfOutgoingTransactions,
+  } = remoteAccountsWithTransactionMetrics
+
+  return {
+    accountID: accountID,
+    accountName: accountName,
+    balance: balance,
+    availableBalance: availableBalance,
+    totalIncomingAmount: totalIncomingAmount,
+    totalOutgoingAmount: totalOutgoingAmount,
+    numberOfTransactions: numberOfTransactions,
+    currency: currency,
+    numberOfIncomingTransactions: numberOfIncomingTransactions,
+    numberOfOutgoingTransactions: numberOfOutgoingTransactions,
+  }
+}
+
+const remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics[],
+): LocalAccountWithTransactionMetrics[] => {
+  return remoteAccountsWithTransactionMetrics.map((remoteAccountWithTransactionMetrics) => {
+    return remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics(
+      remoteAccountWithTransactionMetrics,
+    )
+  })
+}
+
+const remoteAccountMetricsToLocalAccountMetrics = (
+  remoteAccountMetrics: AccountMetrics,
+): LocalAccountMetrics => {
+  const { merchantID, currency, totalBalance, totalAvailableBalance, numberOfAccounts } =
+    remoteAccountMetrics
+
+  return {
+    merchantID: merchantID,
+    currency: currency,
+    totalBalance: totalBalance,
+    totalAvailableBalance: totalAvailableBalance,
+    numberOfAccounts: numberOfAccounts,
+  }
+}
+
+const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
+  remoteAccountMetrics: AccountMetrics[],
+): LocalAccountMetrics[] => {
+  return remoteAccountMetrics.map((remoteAccountMetric) => {
+    return remoteAccountMetricsToLocalAccountMetrics(remoteAccountMetric)
+  })
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
+  remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsToLocalAccounts,
+  remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
   remoteBeneficiariesToLocalBeneficiaries,
   remoteBeneficiaryToLocalBeneficiary,
   remotePaymentRequestToLocalPaymentRequest,

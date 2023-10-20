@@ -1,10 +1,15 @@
+import { Currency } from '@nofrixion/moneymoov'
+
 import { cn } from '../../../../utils'
+import { CurrencyFilter } from '../../CurrencyTabs/CurrencyTabs'
 import { Icon } from '../Icon/Icon'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
   subtext?: string
   onShowViewAll?: () => void
+  currency?: Currency
+  onCurrencyChange?: (currency: Currency) => void
 }
 
 const Card: React.FC<CardProps> = ({
@@ -12,6 +17,8 @@ const Card: React.FC<CardProps> = ({
   className,
   title,
   subtext,
+  currency,
+  onCurrencyChange,
   onShowViewAll,
   ...props
 }) => {
@@ -28,10 +35,15 @@ const Card: React.FC<CardProps> = ({
     >
       <div className="flex justify-between">
         {(title || subtext) && (
-          <div className="flex flex-col">
-            {title && <span className="font-semibold text-xl">{title}</span>}
+          <div className="flex gap-10">
+            <div className="flex flex-col">
+              {title && <span className="font-semibold text-xl">{title}</span>}
 
-            {subtext && <span className="text-gray-text text-sm/4 mt-2">{subtext}</span>}
+              {subtext && <span className="text-gray-text text-sm/4 mt-2">{subtext}</span>}
+            </div>
+            {currency && onCurrencyChange && (
+              <CurrencyFilter currency={currency} onCurrencyChange={onCurrencyChange} />
+            )}
           </div>
         )}
 
