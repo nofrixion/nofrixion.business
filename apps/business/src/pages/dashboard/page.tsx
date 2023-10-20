@@ -166,6 +166,7 @@ const DashboardPage = () => {
           <LatestTransactionsCard
             transactions={remoteTransactionsToLocal(transactions)}
             isLoading={isTransactionsLoading}
+            className="md:pb-6"
           />
         </div>
 
