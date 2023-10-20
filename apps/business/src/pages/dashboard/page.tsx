@@ -154,7 +154,7 @@ const DashboardPage = () => {
             isLoading={isDashboardLoading}
             currency={currency}
             onCurrencyChange={isAccountMetricsLoading || singleCurrency ? undefined : setCurrency}
-            className="md:pb-2 h-[485.58px]"
+            className="md:pb-2"
             accountMetrics={remoteAccountMetricsArrayToLocalAccountMetricsArray(accountMetrics)}
           />
           <LatestTransactionsCard

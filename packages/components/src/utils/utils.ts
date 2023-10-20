@@ -1,3 +1,4 @@
+import { ChartPoint } from '../components/ui/molecules/Chart/ChartSkeleton/ChartSkeleton'
 import { FieldID } from '../types/LocalEnums'
 import { AutoSuggestionAdd, AutoSuggestions } from '../types/LocalTypes'
 
@@ -66,3 +67,54 @@ export const addAutoSuggestions = (
 
   return newSuggestions
 }
+
+export const ChartSkeletonData: ChartPoint[] = [
+  {
+    x: 2,
+    y: 24267,
+  },
+  {
+    x: 3,
+    y: 52150,
+  },
+  {
+    x: 4,
+    y: 28000,
+  },
+  {
+    x: 5,
+    y: 70000,
+  },
+  {
+    x: 6,
+    y: 40000,
+  },
+  {
+    x: 7,
+    y: 65000,
+  },
+  {
+    x: 8,
+    y: 60000,
+  },
+  {
+    x: 9,
+    y: 63000,
+  },
+  {
+    x: 10,
+    y: 58000,
+  },
+  {
+    x: 11,
+    y: 50000,
+  },
+  {
+    x: 12,
+    y: 70000,
+  },
+  {
+    x: 13,
+    y: 65000,
+  },
+]

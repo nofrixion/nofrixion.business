@@ -5,10 +5,11 @@ import {
   LocalAccountWithTransactionMetrics,
 } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
+import { ChartSkeletonData } from '../../../../utils/utils'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import Card from '../../atoms/Card/Card'
 import { EmptyState } from '../../atoms/EmptyState/EmptyState'
-import { Loader } from '../../Loader/Loader'
+import ChartSkeleton from '../Chart/ChartSkeleton/ChartSkeleton'
 import { MostActiveAccountRow } from '../MostActiveAccountRow/MostActiveAccountRow'
 
 export interface AccountStatisticsCardProps {
@@ -43,21 +44,17 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
         <EmptyState>Here you will see your most active accounts statistics.</EmptyState>
       )}
 
-      <div className="flex justify-between items-end mb-10 mt-6">
-        {!isLoading && accounts && accounts.length > 0 && (
-          <div className="flex-grow-[2] h-[103px]">Graph</div>
-        )}
+      <div className={cn('flex justify-between items-end mb-10 mt-6', isLoading && 'items-center')}>
+        {!isLoading && accounts && accounts.length > 0 && <div className="h-[103px]">Graph</div>}
         {isLoading && (
-          <div className="flex flex-grow-[3] h-[103px] items-center justify-center">
-            <Loader className="h-1/2 w-1/2" />
+          <div className="flex flex-grow-[2] h-[103px] items-center justify-center">
+            <ChartSkeleton points={ChartSkeletonData} />
           </div>
         )}
         <div className={cn('flex flex-col text-right', (isLoading || !currency) && 'w-56')}>
           {(isLoading || !currency) && (
-            <div className="flex flex-col gap-3 w-full items-end">
-              <div className={cn(mergedClasses(), (isLoading || !currency) && 'w-1/2 h-3')}></div>
-              <div className={cn(mergedClasses(), (isLoading || !currency) && 'w-3/4 h-3')}></div>
-              <div className={cn(mergedClasses(), (isLoading || !currency) && 'w-3/4 h-2')}></div>
+            <div className="w-full items-end">
+              <div className={cn(mergedClasses(), (isLoading || !currency) && 'h-2')}></div>
             </div>
           )}
           {!isLoading && accountMetrics && currency && (
@@ -85,11 +82,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
         <span className="text-xs font-normal text-grey-text mb-2">MOST ACTIVE ACCOUNTS</span>
       )}
 
-      <div
-        className={cn('w-full', {
-          'divide-y': !isLoading,
-        })}
-      >
+      <div className="w-full divide-y">
         {/* TODO: Do loading state with skeleton. Map 3 elements and show skeleton */}
         {isLoading &&
           Array.from({ length: 3 }).map((_, i) => (
