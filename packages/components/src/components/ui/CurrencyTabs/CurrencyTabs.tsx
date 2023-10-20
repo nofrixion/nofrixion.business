@@ -9,7 +9,10 @@ const CurrencyTab: React.FC<{ currency: Currency; isActive: boolean; onClick: ()
 }) => {
   return (
     <button
-      onClick={onClick}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick()
+        e.stopPropagation()
+      }}
       className={cn('flex px-1 pb-1 items-center justify-center text-grey-text text-sm leading-6', {
         'text-default-text border-b border-solid border-[#40BFBF]': isActive,
       })}
