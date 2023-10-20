@@ -159,6 +159,9 @@ const DashboardPage = () => {
             onShowViewAll={() => {
               navigate('current-accounts')
             }}
+            onAccountClick={(accountID) => {
+              navigate(`current-accounts/${accountID}`)
+            }}
           />
           <LatestTransactionsCard
             transactions={remoteTransactionsToLocal(transactions)}

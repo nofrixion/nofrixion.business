@@ -13,11 +13,17 @@ interface MostActiveAccountWithLoading {
   isLoading: true
 }
 
-type MostActiveAccountRowProps = MostActiveAccountRowWithAccount | MostActiveAccountWithLoading
+interface AccountProps {
+  onAccountClick?: (accountID: string) => void
+}
+
+type MostActiveAccountRowProps =
+  | (MostActiveAccountRowWithAccount | MostActiveAccountWithLoading) & AccountProps
 
 export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
   account,
   isLoading,
+  onAccountClick,
 }) => {
   const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md'
 
@@ -33,7 +39,17 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
       <div className={cn(isLoading && 'flex flex-col gap-4')}>
         <div className={mergedClasses(isLoading && 'w-40 h-2')}>
           {!isLoading && (
-            <span className="text-sm leading-8 font-semibold">{account.accountName}</span>
+            <button
+              className={cn('text-sm leading-8 font-semibold', {
+                'cursor-pointer hover:underline hover:underline-offset-4': onAccountClick,
+              })}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                onAccountClick && onAccountClick(account.accountID)
+                e.stopPropagation()
+              }}
+            >
+              <span>{account.accountName}</span>
+            </button>
           )}
         </div>
 

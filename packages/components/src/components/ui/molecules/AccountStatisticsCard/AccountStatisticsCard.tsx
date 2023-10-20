@@ -20,6 +20,7 @@ export interface AccountStatisticsCardProps {
   accountMetrics?: LocalAccountMetrics[]
   onCurrencyChange?: (currency: Currency) => void
   onShowViewAll?: () => void
+  onAccountClick?: (accountID: string) => void
 }
 
 const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
@@ -30,6 +31,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
   accountMetrics,
   onCurrencyChange,
   onShowViewAll,
+  onAccountClick,
 }) => {
   const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md '
 
@@ -41,6 +43,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
       currency={currency}
       onCurrencyChange={onCurrencyChange}
       onShowViewAll={onShowViewAll}
+      onClick={onShowViewAll}
     >
       {/* Emtpy state - if no accounts are found */}
       {!isLoading && (!accounts || accounts.length == 0) && (
@@ -97,7 +100,11 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
           accounts &&
           accounts.length > 0 &&
           accounts.map((acc) => (
-            <MostActiveAccountRow key={`top-account-${acc.accountID}`} account={acc} />
+            <MostActiveAccountRow
+              key={`top-account-${acc.accountID}`}
+              account={acc}
+              onAccountClick={onAccountClick}
+            />
           ))}
       </div>
     </Card>
