@@ -53,6 +53,8 @@ export const buttonVariants = cva(
           'font-normal',
           'leading-6',
         ],
+        outline:
+          'border-border-grey hover:border-border-grey-highlighted text-[#454D54] border border-input bg-transparent hover:text-grey-text-hover',
       },
       size: {
         large: ['text-base', 'px-3', 'py-3', 'md:px-6'],
@@ -77,6 +79,7 @@ const icon = cva('w-full h-full', {
       tertiary: ['text-[#454D54]'],
       tertiary_negative: ['text-negative-red'],
       text: ['text-[#454D54]', 'hover:text-grey-text-hover'],
+      outline: ['text-[#454D54]', 'hover:text-grey-text-hover'],
     },
   },
   defaultVariants: {
