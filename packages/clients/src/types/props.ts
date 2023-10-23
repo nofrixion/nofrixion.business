@@ -19,6 +19,10 @@ export interface PaymentRequestPageProps
 
 export interface PayoutPageProps extends PagedResponseProps, FilterResponseProps {}
 
+export interface AccountsWithTransactionsMetricsProps
+  extends PagedResponseProps,
+    FilterResponseProps {}
+
 export interface UserRoleAndUserInvitePageProps extends PagedResponseProps, FilterResponseProps {}
 
 export interface FilterResponseProps {
@@ -95,7 +99,6 @@ export interface usePaymentRequestsProps
     PaymentRequestProps,
     PaymentRequestPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   titleSortDirection: SortDirection
@@ -213,6 +216,10 @@ export interface PayoutProps {
   payoutId?: string
 }
 
+export interface DeleteConnectedAccountProps {
+  accountId: string
+}
+
 export interface ConsentProps {
   consentId?: string
   merchantId?: string
@@ -221,4 +228,12 @@ export interface ConsentProps {
 
 export interface UserInviteProps {
   inviteId?: string
+}
+
+export interface useAccountsWithTransactionMetricsProps
+  extends MerchantProps,
+    AccountsWithTransactionsMetricsProps {
+  fromDateMS?: number
+  toDateMS?: number
+  numberOfTransactionsSortDirection: SortDirection
 }

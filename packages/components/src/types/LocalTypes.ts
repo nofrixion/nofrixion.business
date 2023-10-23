@@ -82,6 +82,7 @@ export interface LocalPaymentAttempt {
   status: LocalPaymentStatus
   reconciledTransactionID?: string
   paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
+  paymentProcessor?: LocalPaymentProcessor
 }
 
 export interface SubTransaction {
@@ -267,4 +268,46 @@ export interface LocalUser {
   firstName: string
   lastName: string
   email: string
+}
+
+export enum LocalPaymentProcessor {
+  None = 'None',
+  CyberSource = 'CyberSource',
+  Checkout = 'Checkout',
+  Stripe = 'Stripe',
+  Modulr = 'Modulr',
+  Plaid = 'Plaid',
+  Yapily = 'Yapily',
+  NoFrixion = 'Nofrixion',
+}
+
+export interface LocalSettledTransaction {
+  settledAt?: Date
+  amount: number
+  currency: Currency.EUR | Currency.GBP
+  processor?: LocalPaymentProcessor
+  paymentMethod: LocalPaymentMethodTypes
+  isRefund: boolean
+  wallet?: LocalWallets
+}
+
+export interface LocalAccountWithTransactionMetrics {
+  accountID: string
+  accountName: string
+  availableBalance: number
+  balance: number
+  currency: Currency
+  totalIncomingAmount: number
+  totalOutgoingAmount: number
+  numberOfTransactions: number
+  numberOfIncomingTransactions: number
+  numberOfOutgoingTransactions: number
+}
+
+export interface LocalAccountMetrics {
+  merchantID: string
+  totalAvailableBalance: number
+  totalBalance: number
+  currency: Currency
+  numberOfAccounts: number
 }

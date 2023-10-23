@@ -18,7 +18,6 @@ const fetchPaymentRequest = async (
 export const usePaymentRequest = (
   {
     merchantId,
-    statusSortDirection,
     createdSortDirection,
     amountSortDirection,
     titleSortDirection,
@@ -42,7 +41,6 @@ export const usePaymentRequest = (
     apiUrl,
     authToken,
     merchantId,
-    statusSortDirection,
     createdSortDirection,
     amountSortDirection,
     titleSortDirection,

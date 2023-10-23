@@ -103,6 +103,7 @@ export type ConsentRequest = {
   callbackUrl?: string
   successWebHookUrl?: string
   IsConnectedAccounts: boolean
+  failureCallbackUrl?: string
 }
 
 export type UserInviteCreate = {

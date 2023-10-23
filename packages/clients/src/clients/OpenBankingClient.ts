@@ -7,7 +7,7 @@ import {
   ConsentResponse,
   HttpMethod,
 } from '../types'
-import { ApiProps, ConsentProps } from '../types/props'
+import { ApiProps, ConsentProps, DeleteConnectedAccountProps } from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -88,6 +88,25 @@ export class OpenBankingClient extends BaseApiClient {
   }> {
     const response = await this.httpRequest(
       `${this.apiUrl}/consents/${consentId}`,
+      HttpMethod.DELETE,
+    )
+
+    return response.status === 'success'
+      ? { success: true }
+      : { success: false, error: response.error }
+  }
+
+  /**
+   * Deletes an account
+   * @param accountId The Account Id
+   * @returns True if successfull. An ApiError if not successful.
+   */
+  async deleteConnectedAccount({ accountId }: DeleteConnectedAccountProps): Promise<{
+    success?: boolean
+    error?: ApiError
+  }> {
+    const response = await this.httpRequest(
+      `${this.apiUrl}/account/${accountId}`,
       HttpMethod.DELETE,
     )
 

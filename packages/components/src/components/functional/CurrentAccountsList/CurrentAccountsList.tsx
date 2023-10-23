@@ -4,11 +4,16 @@ import {
   OpenBankingClient,
   useAccounts,
   useBanks,
+  useDeleteConnectedAccount,
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import {
+  ErrorType,
+  useErrorsStore,
+} from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
 import { getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
@@ -66,12 +71,15 @@ const CurrentAccountsMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
+  const { deleteConnectedAccount } = useDeleteConnectedAccount({ apiUrl: apiUrl, authToken: token })
+
   const businessBaseUrl = () => {
     // Defaults to local dev if it's not set
     return import.meta.env.VITE_PUBLIC_APP_BASE_URL ?? 'https://localhost:3001' // Local development
   }
 
   const { bankId } = useParams()
+  const { errors, removeError } = useErrorsStore()
 
   useEffect(() => {
     if (banksResponse?.status === 'success') {
@@ -86,6 +94,22 @@ const CurrentAccountsMain = ({
       onUnauthorized && onUnauthorized()
     }
   }
+
+  useEffect(() => {
+    const errorID = 'ca-error'
+
+    const error = errors.find(
+      (caError) => caError.type === ErrorType.CONNECTEDACCOUNT && caError.id === errorID,
+    )?.error
+
+    if (error) {
+      makeToast('error', `Consent authorisation error: ${error.detail}`)
+    }
+
+    if (errorID && error) {
+      removeError(errorID)
+    }
+  }, [])
 
   useEffect(() => {
     if (bankId) {
@@ -110,6 +134,7 @@ const CurrentAccountsMain = ({
         merchantID: merchantId,
         IsConnectedAccounts: true,
         callbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts/connected/{bankId}')}`,
+        failureCallbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts')}`,
       })
 
       if (response.status === 'error') {
@@ -153,8 +178,37 @@ const CurrentAccountsMain = ({
     }
   }
 
-  const handleOnRevokeConnection = async (account: Account) => {
-    console.log('TODO: Revoke connection', account)
+  const handleOnRevokeConnection = async (account: Account, revokeOnlyThisAccount: boolean) => {
+    if (revokeOnlyThisAccount) {
+      const response = await deleteConnectedAccount(account.id)
+
+      if (response.error) {
+        makeToast('error', response.error.title)
+        return
+      }
+
+      makeToast('success', 'Account connection successfully revoked.')
+    } else {
+      if (accounts?.status !== 'success') return
+
+      // Revoke all accounts with the same consentID
+      // If any of the promises fail, the toast will not be shown
+      const promises = accounts.data
+        .filter((a) => a.consentID === account.consentID)
+        .map((a) => deleteConnectedAccount(a.id))
+
+      const responses = await Promise.all(promises)
+
+      if (responses.some((r) => r.error)) {
+        makeToast(
+          'error',
+          'Error revoking account connections. Some connections may not have been revoked.',
+        )
+        return
+      }
+
+      makeToast('success', 'All account connections successfully revoked.')
+    }
   }
 
   if (isAccountsLoading) {

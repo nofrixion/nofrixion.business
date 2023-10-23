@@ -2,6 +2,8 @@ import {
   Account,
   AccountIdentifier,
   AccountIdentifierType,
+  AccountMetrics,
+  AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
   PartialPaymentMethods,
@@ -33,10 +35,13 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountMetrics,
+  LocalAccountWithTransactionMetrics,
   LocalAddress,
   LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
+  LocalPaymentProcessor,
   LocalPaymentRequest,
   LocalPaymentRequestCaptureAttempt,
   LocalPaymentRequestRefundAttempt,
@@ -276,11 +281,34 @@ const remotePaymentRequestToLocalPaymentRequest = (
       return 'failed'
     }
 
-    if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
+    if (remotePaymentAttempt.settledAt || remotePaymentAttempt.cardAuthorisedAt) {
       return 'received'
     }
 
     return 'unknown'
+  }
+
+  const parseApiPaymentProcessorToLocalPaymentProcessor = (
+    paymentProcessor: string | undefined,
+  ): LocalPaymentProcessor | undefined => {
+    switch (paymentProcessor) {
+      case 'Modulr':
+        return LocalPaymentProcessor.Modulr
+      case 'Plaid':
+        return LocalPaymentProcessor.Plaid
+      case 'Yapily':
+        return LocalPaymentProcessor.Yapily
+      case 'Stripe':
+        return LocalPaymentProcessor.Stripe
+      case 'Checkout':
+        return LocalPaymentProcessor.Checkout
+      case 'CyberSource':
+        return LocalPaymentProcessor.CyberSource
+      case 'NoFrixion':
+        return LocalPaymentProcessor.NoFrixion
+      default:
+        return LocalPaymentProcessor.None
+    }
   }
 
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
@@ -311,6 +339,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             cardAuthorisedAmount,
             cardAuthorisedAt,
             reconciledTransactionID,
+            paymentProcessor,
           } = remotePaymentAttempt
 
           localPaymentAttempts.push({
@@ -329,6 +358,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             status: parseApiStatusToLocalStatus(status),
             reconciledTransactionID: reconciledTransactionID,
             paymentStatus: getPaymentAttemptPaymentStatus(remotePaymentAttempt),
+            paymentProcessor: parseApiPaymentProcessorToLocalPaymentProcessor(paymentProcessor),
           })
         })
       return localPaymentAttempts
@@ -636,13 +666,78 @@ const userRoleToDisplay = (status: UserRoles) => {
   }
 }
 
+const remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics,
+): LocalAccountWithTransactionMetrics => {
+  const {
+    accountID,
+    accountName,
+    balance,
+    availableBalance,
+    totalIncomingAmount,
+    totalOutgoingAmount,
+    numberOfTransactions,
+    currency,
+    numberOfIncomingTransactions,
+    numberOfOutgoingTransactions,
+  } = remoteAccountsWithTransactionMetrics
+
+  return {
+    accountID: accountID,
+    accountName: accountName,
+    balance: balance,
+    availableBalance: availableBalance,
+    totalIncomingAmount: totalIncomingAmount,
+    totalOutgoingAmount: totalOutgoingAmount,
+    numberOfTransactions: numberOfTransactions,
+    currency: currency,
+    numberOfIncomingTransactions: numberOfIncomingTransactions,
+    numberOfOutgoingTransactions: numberOfOutgoingTransactions,
+  }
+}
+
+const remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics[],
+): LocalAccountWithTransactionMetrics[] => {
+  return remoteAccountsWithTransactionMetrics.map((remoteAccountWithTransactionMetrics) => {
+    return remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics(
+      remoteAccountWithTransactionMetrics,
+    )
+  })
+}
+
+const remoteAccountMetricsToLocalAccountMetrics = (
+  remoteAccountMetrics: AccountMetrics,
+): LocalAccountMetrics => {
+  const { merchantID, currency, totalBalance, totalAvailableBalance, numberOfAccounts } =
+    remoteAccountMetrics
+
+  return {
+    merchantID: merchantID,
+    currency: currency,
+    totalBalance: totalBalance,
+    totalAvailableBalance: totalAvailableBalance,
+    numberOfAccounts: numberOfAccounts,
+  }
+}
+
+const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
+  remoteAccountMetrics: AccountMetrics[],
+): LocalAccountMetrics[] => {
+  return remoteAccountMetrics.map((remoteAccountMetric) => {
+    return remoteAccountMetricsToLocalAccountMetrics(remoteAccountMetric)
+  })
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
+  remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsToLocalAccounts,
+  remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
   remoteBeneficiariesToLocalBeneficiaries,
   remoteBeneficiaryToLocalBeneficiary,
   remotePaymentRequestToLocalPaymentRequest,

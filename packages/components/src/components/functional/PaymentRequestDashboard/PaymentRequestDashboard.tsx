@@ -79,7 +79,6 @@ const PaymentRequestDashboardMain = ({
   onUnauthorized,
 }: PaymentRequestDashboardProps) => {
   const [page, setPage] = useState(1)
-  const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
   const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
     SortDirection.NONE,
   )
@@ -143,7 +142,6 @@ const PaymentRequestDashboardMain = ({
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
       amountSortDirection: amountSortDirection,
-      statusSortDirection: statusSortDirection,
       createdSortDirection: createdSortDirection,
       titleSortDirection: titleSortDirection,
       merchantId: merchantId,
@@ -609,7 +607,6 @@ const PaymentRequestDashboardMain = ({
           pageSize={pageSize}
           totalRecords={totalRecords}
           onPageChanged={setPage}
-          setStatusSortDirection={setStatusSortDirection}
           setCreatedSortDirection={setCreatedSortDirection}
           setAmountSortDirection={setAmountSortDirection}
           setTitleSortDirection={setTitleSortDirection}
@@ -665,7 +662,6 @@ const PaymentRequestDashboardMain = ({
         onCardRefund={onCardRefundClick}
         onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
-        statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
         amountSortDirection={amountSortDirection}
         titleSortDirection={titleSortDirection}
