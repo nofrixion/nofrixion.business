@@ -23,7 +23,7 @@ interface TransactionRowWithLoading {
 type TransactionRowProps = TransactionRowWithTransaction | TransactionRowWithLoading
 
 const TransactionRow: React.FC<TransactionRowProps> = ({ transaction: tx, isLoading }) => {
-  const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md h-4'
+  const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md h-3'
 
   const mergedClasses = (classes: string) => cn(classes, isLoading && loadingClasses)
 
