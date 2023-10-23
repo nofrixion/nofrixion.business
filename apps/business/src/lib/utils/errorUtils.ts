@@ -27,7 +27,7 @@ export const tryParseConnectedAccountError = (search?: string) => {
     const connectedAccountError = params.get('error')
 
     if (connectedAccountError) {
-      const errorMessage = decodeURI(search)
+      const errorMessage = decodeURIComponent(search).split('=')[1].replace(/\+/g, ' ')
 
       const apiError = {
         detail: errorMessage,

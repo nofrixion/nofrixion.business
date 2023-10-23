@@ -10,7 +10,10 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { ErrorType, useErrorsStore } from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
+import {
+  ErrorType,
+  useErrorsStore,
+} from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
 import { getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
@@ -93,14 +96,14 @@ const CurrentAccountsMain = ({
   }
 
   useEffect(() => {
-    const errorID = "ca-error";
+    const errorID = 'ca-error'
 
     const error = errors.find(
-      (caError) => caError.type === ErrorType.CONNECTEDACCOUNT && caError.id === errorID
+      (caError) => caError.type === ErrorType.CONNECTEDACCOUNT && caError.id === errorID,
     )?.error
 
     if (error) {
-      makeToast('error', error.detail)
+      makeToast('error', `Consent authorisation error: ${error.detail}`)
     }
 
     if (errorID && error) {
