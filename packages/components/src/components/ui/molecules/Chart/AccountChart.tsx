@@ -1,5 +1,6 @@
 import { Currency } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
+import { useState } from 'react'
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts'
 
 import { formatAmount } from '../../../../utils/formatters'
@@ -16,6 +17,8 @@ export interface AccountChartProps {
 }
 
 const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
+  const [hovered, setHovered] = useState(false)
+
   const formatData = (points: ChartPoint[]) => {
     return points.map((point) => {
       return {
@@ -58,6 +61,8 @@ const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
           left: 0,
           bottom: 0,
         }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
         <Tooltip
           cursor={{ stroke: '#00264D', strokeWidth: 2 }}
@@ -69,6 +74,7 @@ const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
           stroke="#009999"
           strokeWidth={2}
           fill="#40BFBF"
+          fillOpacity={hovered ? 0.3 : 0.2}
           activeDot={{ stroke: '#00264D', fill: '#00264D', strokeWidth: 2, r: 2 }}
         />
       </AreaChart>
