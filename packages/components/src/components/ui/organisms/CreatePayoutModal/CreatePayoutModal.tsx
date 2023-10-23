@@ -9,7 +9,6 @@ import { Button, Sheet, SheetContent } from '../../atoms'
 import InputTextField from '../../atoms/InputTextField/InputTextField'
 import { RadioGroup, RadioGroupItem } from '../../atoms/RadioGroup/RadioGroup'
 import { ValidationMessage } from '../../atoms/ValidationMessage/ValidationMessage'
-import DateInput from '../../DatePicker/DateInput'
 import InputAmountField from '../../InputAmountField/InputAmountField'
 import InputTextAreaField from '../../InputTextAreaField/InputTextAreaField'
 import { Loader } from '../../Loader/Loader'
@@ -606,7 +605,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         </div>
                       </RadioGroup>
                     </div>
-                    <DateInput value="28/10/1968" openCalendar={() => {}} />
+                    {/* <DateInput value="28/10/1968" openCalendar={() => {}} /> */}
                   </div>
 
                   <div
