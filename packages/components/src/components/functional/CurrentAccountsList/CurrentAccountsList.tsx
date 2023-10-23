@@ -83,7 +83,26 @@ const CurrentAccountsMain = ({
 
   useEffect(() => {
     if (banksResponse?.status === 'success') {
-      setBanks(banksResponse.data.payByBankSettings)
+      const bankList = banksResponse.data.payByBankSettings
+
+      banksResponse.data.payByBankSettings.forEach((bank, index) => {
+        if (bank.businessInstitutionID) {
+          bankList.push({
+            bankID: bank.bankID,
+            bankName: `${bank.bankName} Business`,
+            order: index,
+            logo: bank.logo,
+            currency: bank.currency,
+            processor: bank.processor,
+            personalInstitutionID: bank.businessInstitutionID,
+            businessInstitutionID: bank.businessInstitutionID,
+            message: bank.message,
+            messageImageUrl: bank.messageImageUrl,
+          })
+        }
+      })
+
+      setBanks(bankList)
     } else if (banksResponse?.status === 'error') {
       console.warn(banksResponse.error)
     }
