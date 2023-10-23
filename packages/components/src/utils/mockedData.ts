@@ -18,6 +18,7 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountWithTransactionMetrics,
   LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
@@ -1813,6 +1814,69 @@ export const users: UserRoleAndUserInvite[] = [
   },
 ]
 
+const accountsWithTransactionMetrics: LocalAccountWithTransactionMetrics[] = [
+  {
+    accountID: '7',
+    accountName: 'E account',
+    currency: Currency.GBP,
+    balance: 100000,
+    availableBalance: 100000,
+    totalIncomingAmount: 100000,
+    totalOutgoingAmount: 0,
+    numberOfTransactions: 1,
+  },
+  {
+    accountID: '4',
+    accountName: 'EURO Account 2',
+    currency: Currency.EUR,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+  {
+    accountID: '1',
+    accountName: 'EURO Account',
+    currency: Currency.EUR,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+  {
+    accountID: '71',
+    accountName: 'E account',
+    currency: Currency.GBP,
+    balance: 100000,
+    availableBalance: 100000,
+    totalIncomingAmount: 100000,
+    totalOutgoingAmount: 0,
+    numberOfTransactions: 1,
+  },
+  {
+    accountID: '41',
+    accountName: 'GBP Account 2',
+    currency: Currency.GBP,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+  {
+    accountID: '11',
+    accountName: 'EUR Account',
+    currency: Currency.EUR,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+]
+
 export default {
   fewPaymentRequests,
   paymentRequest: {
@@ -1825,6 +1889,7 @@ export default {
   merchantTags: mockMerchantTags,
   account,
   accounts,
+  accountsWithTransactionMetrics,
   counterparty: eurCounterparty,
   beneficiaries: beneficiaries,
   payout: {
