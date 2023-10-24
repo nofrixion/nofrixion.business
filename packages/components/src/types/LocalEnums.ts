@@ -54,3 +54,8 @@ export enum FieldID {
   PaymentRequestLastName = 'PaymentRequestLastName',
   PaymentRequestEmail = 'PaymentRequestEmail',
 }
+
+export enum LocalTimeFrequencyEnum {
+  None = 'None',
+  Daily = 'Daily',
+}

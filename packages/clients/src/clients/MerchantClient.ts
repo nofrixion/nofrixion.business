@@ -12,6 +12,7 @@ import {
 } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
 import {
+  AccountsMetricsProps,
   AccountsWithTransactionsMetricsProps,
   ApiProps,
   MerchantProps,
@@ -193,9 +194,24 @@ export class MerchantClient extends BaseApiClient {
    * @param merchantId The merchant id to get the account metrics for
    * @returns A list of account metrics if successful. An ApiError if not successful.
    */
-  async getAccountMetrics({ merchantId }: MerchantProps): Promise<ApiResponse<AccountMetrics[]>> {
+  async getAccountMetrics({
+    merchantId,
+    fromDate,
+    toDate,
+    timeFrequency,
+  }: AccountsMetricsProps): Promise<ApiResponse<AccountMetrics[]>> {
+    const filterParams = new URLSearchParams()
+    if (fromDate) {
+      filterParams.append('fromDate', fromDate.toUTCString())
+    }
+    if (toDate) {
+      filterParams.append('toDate', toDate.toUTCString())
+    }
+    if (timeFrequency) {
+      filterParams.append('timeFrequency', timeFrequency)
+    }
     return await this.httpRequest<AccountMetrics[]>(
-      `${this.apiUrl}/${merchantId}/accountMetrics`,
+      `${this.apiUrl}/${merchantId}/accountMetrics?${filterParams.toString()}`,
       HttpMethod.GET,
     )
   }

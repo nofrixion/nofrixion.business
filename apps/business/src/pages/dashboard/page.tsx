@@ -13,6 +13,7 @@ import {
   Currency,
   PaymentRequestMetrics,
   SortDirection,
+  TimeFrequencyEnum,
   Transaction,
   useAccountMetrics,
   useAccountsWithTransactionMetrics,
@@ -44,7 +45,12 @@ const DashboardPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
   const { data: accountMetricsResponse, isLoading: isAccountMetricsLoading } = useAccountMetrics(
-    { merchantId: merchant?.id },
+    {
+      merchantId: merchant?.id,
+      fromDate: startOfDay(last30Days),
+      toDate: startOfDay(new Date()),
+      timeFrequency: TimeFrequencyEnum.Daily,
+    },
     {
       apiUrl: NOFRIXION_API_URL,
     },

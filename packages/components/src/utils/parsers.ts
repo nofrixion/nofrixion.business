@@ -17,6 +17,7 @@ import {
   Payout,
   PayoutStatus,
   type Tag,
+  TimeFrequencyEnum,
   Transaction,
   TransactionTypeValue,
   User,
@@ -25,11 +26,13 @@ import {
   Wallets,
 } from '@nofrixion/moneymoov'
 
+import { ChartPoint } from '../components/ui/molecules/Chart/AccountChart'
 import {
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
+  LocalTimeFrequencyEnum,
   LocalWallets,
 } from '../types/LocalEnums'
 import {
@@ -47,6 +50,7 @@ import {
   LocalPaymentRequestRefundAttempt,
   LocalPaymentStatus,
   LocalPayout,
+  LocalPeriodicBalance,
   LocalTag,
   LocalTransaction,
   LocalUser,
@@ -706,11 +710,31 @@ const remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics 
   })
 }
 
+const remoteTimeFrequencyToLocalTimeFrequency = (
+  remoteTimeFrequency: TimeFrequencyEnum,
+): LocalTimeFrequencyEnum => {
+  switch (remoteTimeFrequency) {
+    case TimeFrequencyEnum.Daily:
+      return LocalTimeFrequencyEnum.Daily
+    default:
+      return LocalTimeFrequencyEnum.None
+  }
+}
+
 const remoteAccountMetricsToLocalAccountMetrics = (
   remoteAccountMetrics: AccountMetrics,
 ): LocalAccountMetrics => {
-  const { merchantID, currency, totalBalance, totalAvailableBalance, numberOfAccounts } =
-    remoteAccountMetrics
+  const {
+    merchantID,
+    currency,
+    totalBalance,
+    totalAvailableBalance,
+    numberOfAccounts,
+    periodicBalances,
+    periodicBalancesFromDate,
+    periodicBalancesToDate,
+    periodicBalancesFrequency,
+  } = remoteAccountMetrics
 
   return {
     merchantID: merchantID,
@@ -718,7 +742,21 @@ const remoteAccountMetricsToLocalAccountMetrics = (
     totalBalance: totalBalance,
     totalAvailableBalance: totalAvailableBalance,
     numberOfAccounts: numberOfAccounts,
+    periodicBalances: periodicBalances,
+    periodicBalancesFromDate: periodicBalancesFromDate,
+    periodicBalancesToDate: periodicBalancesToDate,
+    periodicBalancesFrequency: remoteTimeFrequencyToLocalTimeFrequency(periodicBalancesFrequency),
   }
+}
+
+const periodicBalancesToChartPoints = (periodicBalances: LocalPeriodicBalance[]): ChartPoint[] => {
+  console.log(periodicBalances)
+  return periodicBalances.map((periodicBalance) => {
+    return {
+      x: new Date(periodicBalance.balanceAt),
+      y: periodicBalance.balance,
+    }
+  })
 }
 
 const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
@@ -735,6 +773,7 @@ export {
   parseApiTagToLocalTag,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
+  periodicBalancesToChartPoints,
   remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsToLocalAccounts,
   remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,

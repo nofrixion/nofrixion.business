@@ -16,11 +16,12 @@ export interface AccountChartProps {
   currency: Currency
 }
 
-const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
+const AccountChart: React.FC<AccountChartProps> = ({ points, currency }) => {
   const [hovered, setHovered] = useState(false)
 
   const formatData = (points: ChartPoint[]) => {
     return points.map((point) => {
+      console.log(point)
       return {
         x: format(point.x, 'MMM dd, yyyy'),
         y: point.y,
@@ -82,4 +83,4 @@ const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
   )
 }
 
-export default Chart
+export default AccountChart

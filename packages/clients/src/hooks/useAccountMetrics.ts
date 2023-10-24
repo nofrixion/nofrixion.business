@@ -1,32 +1,39 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { MerchantClient } from '../clients'
+import { TimeFrequencyEnum } from '../types'
 import { AccountMetrics, ApiResponse } from '../types/ApiResponses'
-import { ApiProps, MerchantProps } from '../types/props'
+import { AccountsMetricsProps, ApiProps } from '../types/props'
 
 const fetchAccountMetrics = async (
   apiUrl: string,
   merchantId?: string,
   authToken?: string,
+  fromDate?: Date,
+  toDate?: Date,
+  timeFrequency?: TimeFrequencyEnum,
 ): Promise<ApiResponse<AccountMetrics[]>> => {
   const client = new MerchantClient({ apiUrl, authToken })
 
   const response = await client.getAccountMetrics({
     merchantId: merchantId,
+    fromDate: fromDate,
+    toDate: toDate,
+    timeFrequency: timeFrequency,
   })
 
   return response
 }
 
 export const useAccountMetrics = (
-  { merchantId }: MerchantProps,
+  { merchantId, fromDate, toDate, timeFrequency }: AccountsMetricsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
   const QUERY_KEY = ['AccountMetrics', apiUrl, authToken, merchantId]
 
   return useQuery<ApiResponse<AccountMetrics[]>, Error>(
     QUERY_KEY,
-    () => fetchAccountMetrics(apiUrl, merchantId, authToken),
+    () => fetchAccountMetrics(apiUrl, merchantId, authToken, fromDate, toDate, timeFrequency),
     {
       enabled: !!merchantId,
     },

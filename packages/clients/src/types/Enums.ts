@@ -236,3 +236,8 @@ export const enum UserInviteStatusEnum {
   Active = 'Active',
   Expired = 'Expired',
 }
+
+export const enum TimeFrequencyEnum {
+  None = 'None',
+  Daily = 'Daily',
+}

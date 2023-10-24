@@ -5,10 +5,12 @@ import {
   LocalAccountWithTransactionMetrics,
 } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
+import { periodicBalancesToChartPoints } from '../../../../utils/parsers'
 import { ChartSkeletonData } from '../../../../utils/utils'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import Card from '../../atoms/Card/Card'
 import { EmptyState } from '../../atoms/EmptyState/EmptyState'
+import AccountChart from '../Chart/AccountChart'
 import ChartSkeleton from '../Chart/ChartSkeleton/ChartSkeleton'
 import { MostActiveAccountRow } from '../MostActiveAccountRow/MostActiveAccountRow'
 
@@ -50,14 +52,33 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
         <EmptyState>Here you will see your most active accounts statistics.</EmptyState>
       )}
 
-      <div className={cn('flex justify-between items-end mb-10 mt-6', isLoading && 'items-center')}>
-        {!isLoading && accounts && accounts.length > 0 && <div className="h-[103px]">Graph</div>}
+      <div
+        className={cn(
+          'flex justify-between items-end mb-10 mt-6 w-full',
+          isLoading && 'items-center',
+        )}
+      >
+        {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
+          <div className="h-[103px] flex-grow-[1] flex-shrink-[3]">
+            <AccountChart
+              currency={currency}
+              points={periodicBalancesToChartPoints(
+                accountMetrics.filter((x) => x.currency === currency)[0].periodicBalances,
+              )}
+            ></AccountChart>
+          </div>
+        )}
         {isLoading && (
           <div className="flex flex-grow-[2] h-[103px] items-center justify-center">
             <ChartSkeleton points={ChartSkeletonData} />
           </div>
         )}
-        <div className={cn('flex flex-col text-right', (isLoading || !currency) && 'w-56')}>
+        <div
+          className={cn(
+            'flex flex-grow-[1] flex-col text-right',
+            (isLoading || !currency) && 'w-56',
+          )}
+        >
           {(isLoading || !currency) && (
             <div className="w-full items-end">
               <div className={cn(mergedClasses(), (isLoading || !currency) && 'h-2')}></div>
