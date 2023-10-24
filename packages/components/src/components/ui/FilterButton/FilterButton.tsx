@@ -127,14 +127,14 @@ const FilterButton: FilterButtonFC = ({
         <AnimatePresence>
           {isDialogOpen && (
             <DropdownMenu.Portal forceMount>
-              <DropdownMenu.Content sideOffset={5} side="bottom" asChild>
+              <DropdownMenu.Content sideOffset={5} collisionPadding={40} side="bottom" asChild>
                 <motion.div
-                  className="rounded-lg py-6 px-8 bg-white select-none shadow-[0px_0px_16px_rgba(4,_41,_49,_0.15)] text-sm"
+                  className="rounded-lg py-6 px-8 bg-white min-w-[20rem] max-w-[40rem] select-none shadow-[0px_0px_16px_rgba(4,_41,_49,_0.15)] text-sm"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <div className="flex flex-col space-y-8" style={{ width: 309 }}>
+                  <div className="flex flex-col space-y-8">
                     {body}
                     <div className="flex justify-between">
                       <button
