@@ -51,25 +51,25 @@ const ConnectBankModal = ({
               <Select
                 options={banks.map((bank) => {
                   return {
-                    value: bank.bankID,
+                    value: bank.personalInstitutionID!,
                     label: bank.bankName,
                   }
                 })}
                 onChange={(selectedOption) => {
                   setSelectedBank(
-                    banks.find((bank) => bank.bankID === selectedOption.value) ?? banks[0],
+                    banks.find((bank) => bank.personalInstitutionID === selectedOption.value) ?? banks[0],
                   )
                 }}
                 selected={
                   !selectedBank
                     ? {
-                        value: banks[0].bankID,
-                        label: banks[0].bankName,
-                      }
+                      value: banks[0].personalInstitutionID!,
+                      label: banks[0].bankName,
+                    }
                     : {
-                        value: selectedBank.bankID,
-                        label: selectedBank.bankName,
-                      }
+                      value: selectedBank.personalInstitutionID!,
+                      label: selectedBank.bankName,
+                    }
                 }
               />
             </div>

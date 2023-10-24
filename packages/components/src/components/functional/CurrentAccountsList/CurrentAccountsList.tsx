@@ -15,7 +15,7 @@ import {
   useErrorsStore,
 } from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
-import { getRoute } from '../../../utils/utils'
+import { addConnectedBanks, getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
 import { Loader } from '../../ui/Loader/Loader'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -83,27 +83,7 @@ const CurrentAccountsMain = ({
 
   useEffect(() => {
     if (banksResponse?.status === 'success') {
-      const bankList = banksResponse.data.payByBankSettings
-
-      banksResponse.data.payByBankSettings.forEach((bank, index) => {
-        if (bank.businessInstitutionID) {
-          bankList.push({
-            bankID: bank.bankID,
-            bankName: `${bank.bankName} Business`,
-            order: index,
-            logo: bank.logo,
-            currency: bank.currency,
-            processor: bank.processor,
-            personalInstitutionID: bank.businessInstitutionID,
-            businessInstitutionID: bank.businessInstitutionID,
-            message: bank.message,
-            messageImageUrl: bank.messageImageUrl,
-          })
-        }
-      })
-
-      bankList.sort((a, b) => (a.bankName > b.bankName ? 1 : -1))
-      setBanks(bankList)
+      setBanks(addConnectedBanks(banksResponse.data.payByBankSettings))
 
     } else if (banksResponse?.status === 'error') {
       console.warn(banksResponse.error)
@@ -144,7 +124,8 @@ const CurrentAccountsMain = ({
   }, [bankId, banks])
 
   const onConnectBank = async (bank: BankSettings) => {
-    // TODO: Fix this. Which one should we use?
+    // Hack: Personal and Business banks have separate records and the institution ID
+    // is set on the personalInstitutionID field for both personal and business. 
     if (bank.personalInstitutionID) {
       setIsConnectingToBank(true)
 
