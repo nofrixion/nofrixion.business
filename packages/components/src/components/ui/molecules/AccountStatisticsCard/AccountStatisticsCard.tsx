@@ -52,12 +52,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
         <EmptyState>Here you will see your most active accounts statistics.</EmptyState>
       )}
 
-      <div
-        className={cn(
-          'flex justify-between items-end mb-10 mt-6 w-full',
-          isLoading && 'items-center',
-        )}
-      >
+      <div className={cn('flex justify-between items-end mb-10 mt-6', isLoading && 'items-center')}>
         {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
           <div className="h-[103px] flex-grow-[1] flex-shrink-[3]">
             <AccountChart
