@@ -102,7 +102,9 @@ const CurrentAccountsMain = ({
         }
       })
 
+      bankList.sort((a, b) => (a.bankName > b.bankName ? 1 : -1))
       setBanks(bankList)
+
     } else if (banksResponse?.status === 'error') {
       console.warn(banksResponse.error)
     }
