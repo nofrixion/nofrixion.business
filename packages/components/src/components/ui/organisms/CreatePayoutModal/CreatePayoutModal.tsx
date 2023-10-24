@@ -1,4 +1,5 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
+import { addDays, startOfDay } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -15,6 +16,7 @@ import { Loader } from '../../Loader/Loader'
 import { SelectAccount } from '../../molecules/Select/SelectAccount/SelectAccount'
 import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/SelectBeneficiary'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
+import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
 
 export interface CreatePayoutModalProps {
   onCreatePayout: (
@@ -25,6 +27,8 @@ export interface CreatePayoutModalProps {
     yourReference?: string,
     description?: string,
     createAndApprove?: boolean,
+    scheduled?: boolean,
+    scheduleDate?: Date,
   ) => Promise<void>
   onDismiss: () => void
   accounts: LocalAccount[]
@@ -50,6 +54,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const [beneficiaryValidationErrorMessage, setBeneficiaryValidationErrorMessage] = useState<
     string | undefined
   >(undefined)
+  const [dateValidationErrorMessage, setDateValidationErrorMessage] = useState<string | undefined>(
+    undefined,
+  )
 
   const [formError, setFormError] = useState<string | undefined>(undefined)
   const [payoutAmount, setPayoutAmount] = useState<string | undefined>('')
@@ -71,7 +78,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     useState<boolean>(false)
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
-  const [selectedOption, setSelectedOption] = useState('immediately')
+  const [selectedScheduleOption, setSelectedScheduleOption] = useState('immediately')
+  const [scheduleDate, setScheduleDate] = useState<Date | undefined>(addDays(new Date(), 1))
 
   useEffect(() => {
     if (!isOpen) {
@@ -196,6 +204,13 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
       validationFailed = true
     }
 
+    const validateScheduleDateMessage = onValidateDate(scheduleDate)
+
+    if (validateScheduleDateMessage) {
+      setDateValidationErrorMessage(validateScheduleDateMessage)
+      validationFailed = true
+    }
+
     return validationFailed
   }
 
@@ -234,6 +249,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         yourReference,
         description,
         createAndApprove,
+        selectedScheduleOption === 'choose-date',
+        scheduleDate,
       )
 
       setIsCreatePayoutButtonDisabled(false)
@@ -259,6 +276,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     setCreatePayoutClicked(false)
     setIsCreatePayoutButtonDisabled(false)
     setIsCreateAndApproveButtonDisabled(false)
+    setSelectedScheduleOption('immediately')
+    setScheduleDate(addDays(new Date(), 1))
+    setDateValidationErrorMessage(undefined)
   }
 
   const handleOnOpenChange = (open: boolean) => {
@@ -337,6 +357,22 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
   }
 
+  const onValidateDate = (date: Date | undefined): string | undefined => {
+    if (selectedScheduleOption === 'choose-date' && !date) {
+      return 'Invalid schedule date.'
+    }
+
+    if (selectedScheduleOption === 'choose-date' && date) {
+      if (startOfDay(date) < startOfDay(addDays(new Date(), 1))) {
+        return 'The schedule date must be in the future.'
+      }
+
+      if (startOfDay(date) > startOfDay(addDays(new Date(), 61))) {
+        return 'The schedule date cannot be more than 60 days in the future.'
+      }
+    }
+  }
+
   const onCurrencyChange = (currency: string) => {
     if (!selectedBeneficiary) {
       setDestinationAccountName('')
@@ -381,6 +417,11 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     if (beneficiary && beneficiary.currency !== currency) {
       setBeneficiaryValidationErrorMessage(beneficiaryDifferentCurrencyMessage)
     }
+  }
+
+  const onDateChange = (date: Date | undefined) => {
+    setScheduleDate(date)
+    setDateValidationErrorMessage(undefined)
   }
 
   return (
@@ -587,8 +628,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         </div>
                       </div>
                       <RadioGroup
-                        value={selectedOption}
-                        onValueChange={setSelectedOption}
+                        value={selectedScheduleOption}
+                        onValueChange={setSelectedScheduleOption}
                         className="text-sm/4 space-y-3 mb-4"
                       >
                         <div className="flex items-center space-x-3 mt-4">
@@ -605,7 +646,24 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         </div>
                       </RadioGroup>
                     </div>
-                    {/* <DateInput value="28/10/1968" openCalendar={() => {}} /> */}
+                    <div className="ml-7 mb-8 min-h-12">
+                      <AnimatePresence>
+                        {selectedScheduleOption === 'choose-date' && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <SingleDatePicker
+                              value={scheduleDate}
+                              onDateChange={onDateChange}
+                              validationErrorMessage={dateValidationErrorMessage}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
 
                   <div

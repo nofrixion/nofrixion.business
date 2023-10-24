@@ -54,6 +54,8 @@ const CreatePayoutModal = ({
     yourReference?: string,
     description?: string,
     createAndApprove?: boolean,
+    scheduled?: boolean,
+    scheduleDate?: Date,
   ) => {
     const payoutCreate: PayoutCreate = {
       accountID: sourceAccount.id,
@@ -68,6 +70,8 @@ const CreatePayoutModal = ({
           : AccountIdentifierType.SCAN,
       currency: sourceAccount.currency,
       allowIncomplete: false,
+      scheduled: scheduled,
+      scheduleDate: scheduleDate,
     }
 
     const response = await createPayout(payoutCreate)

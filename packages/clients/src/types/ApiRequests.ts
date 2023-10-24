@@ -86,6 +86,8 @@ export type PayoutCreate = {
   invoiceID?: string
   allowIncomplete: boolean
   tagIds?: string[]
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export type BatchApprove = {

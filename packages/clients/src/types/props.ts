@@ -210,6 +210,8 @@ export interface CreatePayoutProps {
   invoiceID?: string
   allowIncomplete: boolean
   paymentRequestId?: string
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export interface PayoutProps {
