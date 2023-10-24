@@ -15,7 +15,7 @@ import {
   useErrorsStore,
 } from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
-import { getRoute } from '../../../utils/utils'
+import { addConnectedBanks, getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
 import { Loader } from '../../ui/Loader/Loader'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -83,7 +83,8 @@ const CurrentAccountsMain = ({
 
   useEffect(() => {
     if (banksResponse?.status === 'success') {
-      setBanks(banksResponse.data.payByBankSettings)
+      setBanks(addConnectedBanks(banksResponse.data.payByBankSettings))
+
     } else if (banksResponse?.status === 'error') {
       console.warn(banksResponse.error)
     }
@@ -123,7 +124,8 @@ const CurrentAccountsMain = ({
   }, [bankId, banks])
 
   const onConnectBank = async (bank: BankSettings) => {
-    // TODO: Fix this. Which one should we use?
+    // Hack: Personal and Business banks have separate records and the institution ID
+    // is set on the personalInstitutionID field for both personal and business. 
     if (bank.personalInstitutionID) {
       setIsConnectingToBank(true)
 
