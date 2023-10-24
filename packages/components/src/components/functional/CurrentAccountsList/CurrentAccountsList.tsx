@@ -10,8 +10,12 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import {
+  ErrorType,
+  useErrorsStore,
+} from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
-import { getRoute } from '../../../utils/utils'
+import { addConnectedBanks, getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
 import { Loader } from '../../ui/Loader/Loader'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -75,10 +79,12 @@ const CurrentAccountsMain = ({
   }
 
   const { bankId } = useParams()
+  const { errors, removeError } = useErrorsStore()
 
   useEffect(() => {
     if (banksResponse?.status === 'success') {
-      setBanks(banksResponse.data.payByBankSettings)
+      setBanks(addConnectedBanks(banksResponse.data.payByBankSettings))
+
     } else if (banksResponse?.status === 'error') {
       console.warn(banksResponse.error)
     }
@@ -89,6 +95,22 @@ const CurrentAccountsMain = ({
       onUnauthorized && onUnauthorized()
     }
   }
+
+  useEffect(() => {
+    const errorID = 'ca-error'
+
+    const error = errors.find(
+      (caError) => caError.type === ErrorType.CONNECTEDACCOUNT && caError.id === errorID,
+    )?.error
+
+    if (error) {
+      makeToast('error', `Consent authorisation error: ${error.detail}`)
+    }
+
+    if (errorID && error) {
+      removeError(errorID)
+    }
+  }, [])
 
   useEffect(() => {
     if (bankId) {
@@ -102,7 +124,8 @@ const CurrentAccountsMain = ({
   }, [bankId, banks])
 
   const onConnectBank = async (bank: BankSettings) => {
-    // TODO: Fix this. Which one should we use?
+    // Hack: Personal and Business banks have separate records and the institution ID
+    // is set on the personalInstitutionID field for both personal and business. 
     if (bank.personalInstitutionID) {
       setIsConnectingToBank(true)
 
@@ -113,6 +136,7 @@ const CurrentAccountsMain = ({
         merchantID: merchantId,
         IsConnectedAccounts: true,
         callbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts/connected/{bankId}')}`,
+        failureCallbackUrl: `${businessBaseUrl()}${getRoute('/home/current-accounts')}`,
       })
 
       if (response.status === 'error') {
