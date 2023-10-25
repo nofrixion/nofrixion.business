@@ -1,5 +1,5 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
-import { addDays, startOfDay } from 'date-fns'
+import { addDays, format, startOfDay } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -17,7 +17,6 @@ import { SelectAccount } from '../../molecules/Select/SelectAccount/SelectAccoun
 import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/SelectBeneficiary'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
-
 export interface CreatePayoutModalProps {
   onCreatePayout: (
     sourceAccount: LocalAccount,
@@ -363,12 +362,13 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
 
     if (selectedScheduleOption === 'choose-date' && date) {
-      if (startOfDay(date) < startOfDay(addDays(new Date(), 1))) {
-        return 'The schedule date must be in the future.'
-      }
+      const maxDate = addDays(new Date(), 61)
 
-      if (startOfDay(date) > startOfDay(addDays(new Date(), 61))) {
-        return 'The schedule date cannot be more than 60 days in the future.'
+      if (
+        startOfDay(date) < startOfDay(addDays(new Date(), 1)) ||
+        startOfDay(date) > startOfDay(addDays(new Date(), 61))
+      ) {
+        return `The payment date should be between tomorrow and ${format(maxDate, 'MMM do, yyyy')}`
       }
     }
   }
@@ -659,6 +659,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                               value={scheduleDate}
                               onDateChange={onDateChange}
                               validationErrorMessage={dateValidationErrorMessage}
+                              warningValidation={onValidateDate}
                             />
                           </motion.div>
                         )}
