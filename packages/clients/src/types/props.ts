@@ -113,6 +113,7 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   counterPartyNameSortDirection: SortDirection
+  scheduleDateSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   statuses: PayoutStatus[]

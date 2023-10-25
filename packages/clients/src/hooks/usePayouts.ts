@@ -11,6 +11,7 @@ const fetchPayouts = async (
   createdSortDirection: SortDirection,
   amountSortDirection: SortDirection,
   counterPartyNameSortDirection: SortDirection,
+  scheduleDateSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
   pageNumber?: number,
@@ -29,6 +30,7 @@ const fetchPayouts = async (
     createdSortDirection: createdSortDirection,
     amountSortDirection: amountSortDirection,
     counterPartyNameSortDirection: counterPartyNameSortDirection,
+    scheduleDateSortDirection: scheduleDateSortDirection,
   })
 
   const client = new PayoutClient({ apiUrl, authToken })
@@ -58,6 +60,7 @@ export const usePayouts = (
     createdSortDirection,
     amountSortDirection,
     counterPartyNameSortDirection,
+    scheduleDateSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -80,6 +83,7 @@ export const usePayouts = (
     createdSortDirection,
     amountSortDirection,
     counterPartyNameSortDirection,
+    scheduleDateSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -101,6 +105,7 @@ export const usePayouts = (
         createdSortDirection,
         amountSortDirection,
         counterPartyNameSortDirection,
+        scheduleDateSortDirection,
         authToken,
         merchantId,
         pageNumber,

@@ -16,6 +16,7 @@ interface SortExpressionProps {
   roleSortDirection?: SortDirection
   titleSortDirection?: SortDirection
   numberOfTransactionsSortDirection?: SortDirection
+  scheduleDateSortDirection?: SortDirection
 }
 
 /**
@@ -104,6 +105,11 @@ const formatSortExpression = ({ ...props }: SortExpressionProps): string => {
   ) {
     sortExpression += sortExpression.length > 0 ? ',' : ''
     sortExpression += `NumberOfTransactions ${props.numberOfTransactionsSortDirection}`
+  }
+
+  if (props.scheduleDateSortDirection && props.scheduleDateSortDirection !== SortDirection.NONE) {
+    sortExpression += sortExpression.length > 0 ? ',' : ''
+    sortExpression += `ScheduleDate ${props.scheduleDateSortDirection}`
   }
 
   return sortExpression
