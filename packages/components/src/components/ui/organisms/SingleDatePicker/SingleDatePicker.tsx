@@ -123,7 +123,7 @@ export const SingleDatePicker = ({
         }}
       />
       <div className="mt-2 text-grey-text font-normal text-[0.813rem] leading-5 flex justify-between">
-        <span>From tomorrow to a maximum of 60 days from tomorrow</span>
+        <span>From tomorrow to a maximum of 60 days in the future</span>
       </div>
       <div className="w-fit">
         <ValidationMessage variant="warning" message={warning} label="scheduleDate" />
