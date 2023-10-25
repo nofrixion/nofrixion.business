@@ -10,7 +10,7 @@ import { Icon } from '../../atoms'
 import { ValidationMessage } from '../../atoms/ValidationMessage/ValidationMessage'
 import DateRangeButton from '../../DateRangePicker/DateRangeButton'
 
-export interface DateSinglePickerProps {
+export interface SingleDatePickerProps {
   onDateChange?: (date: Date) => void
   value?: Date
   className?: string
@@ -22,7 +22,7 @@ export const SingleDatePicker = ({
   onDateChange,
   className,
   validationErrorMessage,
-}: DateSinglePickerProps) => {
+}: SingleDatePickerProps) => {
   const [date, setDate] = useState<Date>(value || addDays(new Date(), 1))
   const [isEditing, setIsEditing] = useState<boolean>(false)
 

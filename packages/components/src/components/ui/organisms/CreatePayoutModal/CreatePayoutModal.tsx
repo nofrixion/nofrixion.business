@@ -646,7 +646,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                         </div>
                       </RadioGroup>
                     </div>
-                    <div className="ml-7 mb-8 min-h-fit">
+                    <div className="ml-7 mb-6 min-h-fit">
                       <AnimatePresence>
                         {selectedScheduleOption === 'choose-date' && (
                           <motion.div
