@@ -29,7 +29,6 @@ export const ProtectedRoutes = () => {
     if (connectedAccountError) {
       addError(connectedAccountError)
     }
-
   }, [location])
 
   if (authContext && authContext.authState?.isLoading) {
