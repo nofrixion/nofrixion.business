@@ -74,7 +74,7 @@ export const SingleDatePicker = ({
             <div className="flex w-[200px] items-center h-12 font-normal rounded-[0.25rem] border border-border-grey hover:border-border-grey-highlighted text-[#454D54]">
               {!isEditing && (
                 <button
-                  className="flex items-center w-full ml-3 mr-3 bg-white select-none"
+                  className="flex items-center w-full ml-3 mr-3 bg-white select-none text-sm"
                   onClick={changeToEditMode}
                 >
                   {date && formatDateWithYear(date)}
@@ -87,7 +87,7 @@ export const SingleDatePicker = ({
                 value={value}
                 onKeyDown={handleKeyDown}
                 onBlur={() => setIsEditing(false)}
-                className={cn('w-1/2 ml-3 outline-none', {
+                className={cn('w-1/2 ml-3 outline-none text-sm', {
                   // Have to hide the input when not editing because if not
                   // the input will be visible on top of the button
                   // and we need to have this element in the DOM
