@@ -16,7 +16,15 @@ export default {
     },
     variant: {
       control: { type: 'radio' },
-      options: ['primary', 'primaryDark', 'secondary', 'tertiary', 'tertiary_negative', 'text'],
+      options: [
+        'primary',
+        'primaryDark',
+        'secondary',
+        'tertiary',
+        'tertiary_negative',
+        'text',
+        'confirm_negative',
+      ],
     },
     previousArrow: {
       control: { type: 'boolean' },
