@@ -105,7 +105,7 @@ const Tab = ({
     <Tabs.Trigger
       value={status}
       className={classNames(
-        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 xl:px-8 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
+        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 xl:pl-6 xl:pr-4 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
         getSpecificStatusClasses(status),
       )}
     >
