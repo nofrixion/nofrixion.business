@@ -448,6 +448,7 @@ const PayoutDashboardMain = ({
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
         counterPartyNameSortDirection={counterPartyNameSortDirection}
+        scheduleDateSortDirection={scheduleDateSortDirection}
         page={page}
         pageSize={pageSize}
         dateRange={dateRange}
