@@ -216,7 +216,7 @@ export interface CreatePayoutProps {
 }
 
 export interface PayoutProps {
-  payoutId?: string
+  payoutId: string
 }
 
 export interface DeleteConnectedAccountProps {
