@@ -60,7 +60,7 @@ export const usePayout = (
     tags,
   ]
 
-  const SINGLE_PAYOUT_QUERY_KEY = ['Payouts', payoutId, apiUrl, authToken]
+  const SINGLE_PAYOUT_QUERY_KEY = ['Payout', payoutId, apiUrl, authToken]
 
   return useQuery<ApiResponse<Payout>, Error>({
     queryKey: SINGLE_PAYOUT_QUERY_KEY,

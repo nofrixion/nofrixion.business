@@ -6,6 +6,7 @@ import {
   useCreateTag,
   usePayout,
   useRemovePayoutTag,
+  useUpdatePayout,
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
@@ -102,12 +103,7 @@ const PayoutDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { addPayoutTag } = useAddPayoutTag(
-    {
-      merchantId: merchantId,
-    },
-    { apiUrl: apiUrl, authToken: token },
-  )
+  const { addPayoutTag } = useAddPayoutTag({ apiUrl: apiUrl, authToken: token })
 
   const { removeTag } = useRemovePayoutTag(
     {
@@ -115,6 +111,8 @@ const PayoutDetailsModal = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { updatePayout } = useUpdatePayout({ apiUrl: apiUrl, authToken: token })
 
   const onTagAdded = async (tag: LocalTag) => {
     if (payout) {
@@ -172,6 +170,16 @@ const PayoutDetailsModal = ({
     }
   }
 
+  const onScheduleCancelled = async () => {
+    if (payout) {
+      const response = await updatePayout({ payoutID: payout.id, scheduled: false })
+
+      if (response.error) {
+        makeToast('error', 'Could not cancel authorisation.')
+      }
+    }
+  }
+
   const onModalDismiss = () => {
     setPayout(undefined)
     onDismiss()
@@ -186,6 +194,7 @@ const PayoutDetailsModal = ({
       open={open}
       payout={payout}
       merchantTags={merchantTags}
+      onScheduleCancelled={onScheduleCancelled}
     />
   )
 }

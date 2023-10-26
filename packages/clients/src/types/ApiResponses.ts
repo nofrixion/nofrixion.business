@@ -369,6 +369,7 @@ export interface Payout {
 }
 
 export interface PayoutUpdate {
+  ID?: string
   accountID?: string
   type?: AccountIdentifierType
   description?: string
@@ -379,6 +380,8 @@ export interface PayoutUpdate {
   destination?: Counterparty
   tags?: Tag[]
   tagIds?: string[]
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export type PayoutMetrics = {
