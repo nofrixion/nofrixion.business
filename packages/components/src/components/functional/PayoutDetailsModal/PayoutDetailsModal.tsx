@@ -26,6 +26,7 @@ export interface PayoutDetailsModalProps {
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   counterPartyNameSortDirection: SortDirection
+  scheduleDateSortDirection: SortDirection
   statuses: PayoutStatus[]
   page: number
   pageSize: number
@@ -49,6 +50,7 @@ const PayoutDetailsModal = ({
   createdSortDirection,
   amountSortDirection,
   counterPartyNameSortDirection,
+  scheduleDateSortDirection,
   statuses,
   page,
   pageSize,
@@ -71,6 +73,7 @@ const PayoutDetailsModal = ({
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
       counterPartyNameSortDirection: counterPartyNameSortDirection,
+      scheduleDateSortDirection: scheduleDateSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       statuses: statuses,

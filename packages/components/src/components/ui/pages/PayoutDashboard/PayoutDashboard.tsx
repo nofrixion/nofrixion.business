@@ -29,7 +29,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
   onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name',
+    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
     direction: SortDirection,
   ) => void
   onDateChange: (dateRange: DateRange) => void
@@ -98,7 +98,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   /// unless there are no payouts at all for the specified status.
   const getTotalAmountPerCurrencyAndStatus = (
     currency: 'eur' | 'gbp',
-    status: 'paid' | 'inProgress' | 'failed' | 'pendingApproval',
+    status: 'paid' | 'inProgress' | 'failed' | 'pendingApproval' | 'scheduled',
   ) => {
     if (
       payoutMetrics &&
@@ -199,6 +199,13 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
                 totalRecords={payoutMetrics?.pendingApproval ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'pendingApproval')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'pendingApproval')}
+              />
+              <Tab
+                status={PayoutStatus.SCHEDULED}
+                isLoading={isLoadingMetrics}
+                totalRecords={payoutMetrics?.scheduled ?? 0}
+                totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'scheduled')}
+                totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'scheduled')}
               />
               <Tab
                 status={PayoutStatus.PENDING}

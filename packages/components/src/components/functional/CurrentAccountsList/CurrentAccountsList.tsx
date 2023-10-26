@@ -84,7 +84,6 @@ const CurrentAccountsMain = ({
   useEffect(() => {
     if (banksResponse?.status === 'success') {
       setBanks(addConnectedBanks(banksResponse.data.payByBankSettings))
-
     } else if (banksResponse?.status === 'error') {
       console.warn(banksResponse.error)
     }
@@ -125,7 +124,7 @@ const CurrentAccountsMain = ({
 
   const onConnectBank = async (bank: BankSettings) => {
     // Hack: Personal and Business banks have separate records and the institution ID
-    // is set on the personalInstitutionID field for both personal and business. 
+    // is set on the personalInstitutionID field for both personal and business.
     if (bank.personalInstitutionID) {
       setIsConnectingToBank(true)
 

@@ -80,6 +80,9 @@ const PayoutDashboardMain = ({
     SortDirection.NONE,
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [scheduleDateSortDirection, setScheduleDateSortDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([])
@@ -135,6 +138,7 @@ const PayoutDashboardMain = ({
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
       counterPartyNameSortDirection: counterPartyNameSortDirection,
+      scheduleDateSortDirection: scheduleDateSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       status: status,
@@ -261,6 +265,9 @@ const PayoutDashboardMain = ({
       case PayoutStatus.FAILED:
         setQueryStatuses([PayoutStatus.FAILED, PayoutStatus.REJECTED, PayoutStatus.UNKNOWN])
         break
+      case PayoutStatus.SCHEDULED:
+        setQueryStatuses([PayoutStatus.SCHEDULED])
+        break
     }
   }, [status])
 
@@ -290,7 +297,7 @@ const PayoutDashboardMain = ({
   }
 
   const onSort = (
-    column: 'status' | 'date' | 'amount' | 'counterParty.name',
+    column: 'status' | 'date' | 'amount' | 'counterParty.name' | 'scheduleDate',
     direction: SortDirection,
   ) => {
     switch (column) {
@@ -305,6 +312,9 @@ const PayoutDashboardMain = ({
         break
       case 'counterParty.name':
         setCounterPartyNameSortDirection(direction)
+        break
+      case 'scheduleDate':
+        setScheduleDateSortDirection(direction)
         break
     }
   }
@@ -438,6 +448,7 @@ const PayoutDashboardMain = ({
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
         counterPartyNameSortDirection={counterPartyNameSortDirection}
+        scheduleDateSortDirection={scheduleDateSortDirection}
         page={page}
         pageSize={pageSize}
         dateRange={dateRange}

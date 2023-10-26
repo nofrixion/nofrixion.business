@@ -35,6 +35,7 @@ module.exports = {
         'nav-accent': '#3DD7F5',
         'information-bg': '#CCEEFF',
         'warning-yellow': '#FCF5CF',
+        'blue-text': '#0088CC',
       },
       fontSize: {
         '13px': '0.8125rem',
