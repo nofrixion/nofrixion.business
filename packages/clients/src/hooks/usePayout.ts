@@ -6,7 +6,7 @@ import { ApiProps, PayoutProps, usePayoutsProps } from '../types/props'
 
 const fetchPayout = async (
   apiUrl: string,
-  payoutId: string,
+  payoutId?: string,
   authToken?: string,
 ): Promise<ApiResponse<Payout>> => {
   const client = new PayoutClient({ apiUrl, authToken })

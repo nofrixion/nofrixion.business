@@ -379,7 +379,6 @@ export interface PayoutUpdate {
   destination?: Counterparty
   tags?: Tag[]
   tagIds?: string[]
-  scheduled?: boolean
 }
 
 export type PayoutMetrics = {
