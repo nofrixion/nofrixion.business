@@ -114,7 +114,7 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
-                {payout.scheduled && payout.scheduleDate && (
+                {payout.scheduleDate && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Payment date</div>
                     <div>{formatDateWithYear(new Date(payout.scheduleDate))}</div>

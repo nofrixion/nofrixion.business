@@ -241,8 +241,8 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                       {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
                     </TableCell>
                     <TableCell className="w-48">
-                      {payout.scheduleDate
-                        ? formatDateWithYear(new Date(payout.scheduleDate))
+                      {payout.scheduled && payout.scheduled === true
+                        ? payout.scheduleDate && formatDateWithYear(new Date(payout.scheduleDate))
                         : 'Immediately'}
                     </TableCell>
                     <TableCell className="w-48">
