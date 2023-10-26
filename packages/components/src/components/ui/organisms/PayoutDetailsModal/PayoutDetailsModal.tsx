@@ -69,7 +69,7 @@ const PayoutDetailsModal = ({
                     <ConfrimButton
                       variant={'secondary'}
                       size={'medium'}
-                      primaryText="Cancel authorisation"
+                      primaryText="Cancel schedule"
                       confirmText="Click again to confirm"
                       onConfirm={onScheduleCancelled}
                       className="w-[169px]"
