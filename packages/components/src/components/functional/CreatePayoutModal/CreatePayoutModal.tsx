@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
-import UICreatePayoutModal from '../../ui/CreatePayoutModal/CreatePayoutModal'
+import UICreatePayoutModal from '../../ui/organisms/CreatePayoutModal/CreatePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 
@@ -54,6 +54,8 @@ const CreatePayoutModal = ({
     yourReference?: string,
     description?: string,
     createAndApprove?: boolean,
+    scheduled?: boolean,
+    scheduleDate?: Date,
   ) => {
     const payoutCreate: PayoutCreate = {
       accountID: sourceAccount.id,
@@ -68,6 +70,8 @@ const CreatePayoutModal = ({
           : AccountIdentifierType.SCAN,
       currency: sourceAccount.currency,
       allowIncomplete: false,
+      scheduled: scheduled,
+      scheduleDate: scheduleDate,
     }
 
     const response = await createPayout(payoutCreate)

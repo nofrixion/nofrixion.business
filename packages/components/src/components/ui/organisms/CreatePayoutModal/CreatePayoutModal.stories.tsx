@@ -1,7 +1,7 @@
 ﻿import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
 
-import mockedData from '../../../utils/mockedData'
+import mockedData from '../../../../utils/mockedData'
 import CreatePayoutModal, { CreatePayoutModalProps } from './CreatePayoutModal'
 
 const meta: Meta<typeof CreatePayoutModal> = {

@@ -1,20 +1,22 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
+import { addDays, format, startOfDay } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-import { LocalAccountIdentifierType } from '../../../types/LocalEnums'
-import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
-import { cn } from '../../../utils'
-import { Button, Sheet, SheetContent } from '../atoms'
-import InputTextField from '../atoms/InputTextField/InputTextField'
-import { ValidationMessage } from '../atoms/ValidationMessage/ValidationMessage'
-import InputAmountField from '../InputAmountField/InputAmountField'
-import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
-import { Loader } from '../Loader/Loader'
-import { SelectAccount } from '../molecules/Select/SelectAccount/SelectAccount'
-import { SelectBeneficiary } from '../molecules/Select/SelectBeneficiary/SelectBeneficiary'
-import AnimateHeightWrapper from '../utils/AnimateHeight'
-
+import { LocalAccountIdentifierType } from '../../../../types/LocalEnums'
+import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../../types/LocalTypes'
+import { cn } from '../../../../utils'
+import { Button, Sheet, SheetContent } from '../../atoms'
+import InputTextField from '../../atoms/InputTextField/InputTextField'
+import { RadioGroup, RadioGroupItem } from '../../atoms/RadioGroup/RadioGroup'
+import { ValidationMessage } from '../../atoms/ValidationMessage/ValidationMessage'
+import InputAmountField from '../../InputAmountField/InputAmountField'
+import InputTextAreaField from '../../InputTextAreaField/InputTextAreaField'
+import { Loader } from '../../Loader/Loader'
+import { SelectAccount } from '../../molecules/Select/SelectAccount/SelectAccount'
+import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/SelectBeneficiary'
+import AnimateHeightWrapper from '../../utils/AnimateHeight'
+import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
 export interface CreatePayoutModalProps {
   onCreatePayout: (
     sourceAccount: LocalAccount,
@@ -24,6 +26,8 @@ export interface CreatePayoutModalProps {
     yourReference?: string,
     description?: string,
     createAndApprove?: boolean,
+    scheduled?: boolean,
+    scheduleDate?: Date,
   ) => Promise<void>
   onDismiss: () => void
   accounts: LocalAccount[]
@@ -49,6 +53,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const [beneficiaryValidationErrorMessage, setBeneficiaryValidationErrorMessage] = useState<
     string | undefined
   >(undefined)
+  const [dateValidationErrorMessage, setDateValidationErrorMessage] = useState<string | undefined>(
+    undefined,
+  )
 
   const [formError, setFormError] = useState<string | undefined>(undefined)
   const [payoutAmount, setPayoutAmount] = useState<string | undefined>('')
@@ -70,6 +77,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     useState<boolean>(false)
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
+  const [selectedScheduleOption, setSelectedScheduleOption] = useState('immediately')
+  const [scheduleDate, setScheduleDate] = useState<Date | undefined>(addDays(new Date(), 1))
 
   useEffect(() => {
     if (!isOpen) {
@@ -194,6 +203,13 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
       validationFailed = true
     }
 
+    const validateScheduleDateMessage = onValidateDate(scheduleDate)
+
+    if (validateScheduleDateMessage) {
+      setDateValidationErrorMessage(validateScheduleDateMessage)
+      validationFailed = true
+    }
+
     return validationFailed
   }
 
@@ -232,6 +248,8 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
         yourReference,
         description,
         createAndApprove,
+        selectedScheduleOption === 'choose-date',
+        scheduleDate,
       )
 
       setIsCreatePayoutButtonDisabled(false)
@@ -257,6 +275,9 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     setCreatePayoutClicked(false)
     setIsCreatePayoutButtonDisabled(false)
     setIsCreateAndApproveButtonDisabled(false)
+    setSelectedScheduleOption('immediately')
+    setScheduleDate(addDays(new Date(), 1))
+    setDateValidationErrorMessage(undefined)
   }
 
   const handleOnOpenChange = (open: boolean) => {
@@ -335,6 +356,23 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     }
   }
 
+  const onValidateDate = (date: Date | undefined): string | undefined => {
+    if (selectedScheduleOption === 'choose-date' && !date) {
+      return 'Invalid schedule date.'
+    }
+
+    if (selectedScheduleOption === 'choose-date' && date) {
+      const maxDate = addDays(new Date(), 61)
+
+      if (
+        startOfDay(date) < startOfDay(addDays(new Date(), 1)) ||
+        startOfDay(date) > startOfDay(addDays(new Date(), 61))
+      ) {
+        return `The payment date should be between tomorrow and ${format(maxDate, 'MMM do, yyyy')}`
+      }
+    }
+  }
+
   const onCurrencyChange = (currency: string) => {
     if (!selectedBeneficiary) {
       setDestinationAccountName('')
@@ -379,6 +417,11 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     if (beneficiary && beneficiary.currency !== currency) {
       setBeneficiaryValidationErrorMessage(beneficiaryDifferentCurrencyMessage)
     }
+  }
+
+  const onDateChange = (date: Date | undefined) => {
+    setScheduleDate(date)
+    setDateValidationErrorMessage(undefined)
   }
 
   return (
@@ -573,6 +616,55 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                       className="-mt-6"
                       label="beneficiary"
                     />
+                  </div>
+
+                  <div className="mt-10 items-baseline">
+                    <div className="text-left">
+                      <div className="flex flex-col">
+                        <div className="py-2 flex justify-between">
+                          <label className="text-default-text font-semibold text-sm leading-4">
+                            {'Payment date'}
+                          </label>
+                        </div>
+                      </div>
+                      <RadioGroup
+                        value={selectedScheduleOption}
+                        onValueChange={setSelectedScheduleOption}
+                        className="text-sm/4 space-y-3 mb-4"
+                      >
+                        <div className="flex items-center space-x-3 mt-4">
+                          <RadioGroupItem value="immediately" id="option-1" />
+                          <label className="cursor-pointer" htmlFor="option-1">
+                            Immediately
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value="choose-date" id="option-2" />
+                          <label className="cursor-pointer" htmlFor="option-2">
+                            Choose date
+                          </label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                    <div className="ml-7 mb-6 min-h-fit">
+                      <AnimatePresence>
+                        {selectedScheduleOption === 'choose-date' && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <SingleDatePicker
+                              value={scheduleDate}
+                              onDateChange={onDateChange}
+                              validationErrorMessage={dateValidationErrorMessage}
+                              warningValidation={onValidateDate}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
 
                   <div

@@ -1,12 +1,13 @@
 import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
 import { LocalPayout, LocalTag } from '../../../../types/LocalTypes'
-import { formatAmountAndDecimals } from '../../../../utils/formatters'
+import { formatAmountAndDecimals, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
+import ConfrimButton from '../../molecules/ConfirmButton/ConfirmButton'
 import TagManager from '../../Tags/TagManager/TagManager'
 import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
 
@@ -18,6 +19,7 @@ export interface PayoutDetailsModalProps {
   onTagAdded: (tag: LocalTag) => void
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
+  onScheduleCancelled: () => void
 }
 
 const PayoutDetailsModal = ({
@@ -28,6 +30,7 @@ const PayoutDetailsModal = ({
   onTagAdded,
   onTagRemoved,
   onTagCreated,
+  onScheduleCancelled,
 }: PayoutDetailsModalProps) => {
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
@@ -60,6 +63,20 @@ const PayoutDetailsModal = ({
                   </div>
                 </div>
               )}
+              {payout && payout.status === PayoutStatus.SCHEDULED && (
+                <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
+                  <div className="mt-4">
+                    <ConfrimButton
+                      variant={'secondary'}
+                      size={'medium'}
+                      primaryText="Cancel schedule"
+                      confirmText="Click again to confirm"
+                      onConfirm={onScheduleCancelled}
+                      className="w-[169px]"
+                    />
+                  </div>
+                </div>
+              )}
               <div className="flex pt-10 mx-8 justify-between items-center">
                 <span className="text-[2rem] font-semibold leading-8 text-default-text tabular-nums pt-1">
                   {formatCurrency(payout?.currency ?? Currency.EUR)}
@@ -82,6 +99,7 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
+
                 <div className="flex text-sm mt-8">
                   <div className="text-grey-text w-1/3">To account</div>
                   <div>
@@ -96,6 +114,12 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
+                {payout.scheduleDate && (
+                  <div className="flex text-sm mt-8">
+                    <div className="text-grey-text w-1/3">Payment date</div>
+                    <div>{formatDateWithYear(new Date(payout.scheduleDate))}</div>
+                  </div>
+                )}
                 {payout.theirReference && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Their reference</div>

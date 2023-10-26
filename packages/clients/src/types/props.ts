@@ -119,6 +119,7 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   counterPartyNameSortDirection: SortDirection
+  scheduleDateSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   statuses: PayoutStatus[]
@@ -216,6 +217,8 @@ export interface CreatePayoutProps {
   invoiceID?: string
   allowIncomplete: boolean
   paymentRequestId?: string
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export interface PayoutProps {
@@ -248,4 +251,18 @@ export interface AccountsMetricsProps extends MerchantProps {
   fromDate?: Date
   toDate?: Date
   timeFrequency?: TimeFrequencyEnum
+}
+
+export interface UpdatePayoutProps {
+  payoutID: string
+  accountID?: string
+  type?: AccountIdentifierType
+  description?: string
+  currency?: Currency
+  amount?: number
+  yourReference?: string
+  theirReference?: string
+  destination?: Counterparty
+  scheduled?: boolean
+  scheduleDate?: Date
 }

@@ -24,6 +24,7 @@ const statusVariants = cva(
         role_pending: ['bg-warning-yellow', 'text-[#663300]'],
         active: ['bg-[#D8F2EA]', 'text-[#004D33]'],
         expired_link: ['bg-error-bg', 'text-negative-red'],
+        scheduled: ['bg-information-bg', 'text-default-text'],
       },
       size: {
         small: ['text-xs', 'font-normal', 'py-1', 'px-2', 'h-fit'],
@@ -55,6 +56,7 @@ const iconVariants = cva('w-auto mb-[0.063rem]', {
       role_pending: ['text-[#B25900]'],
       active: ['text-[#29A37A]'],
       expired_link: ['text-negative-red fill-none'],
+      scheduled: ['text-[#476685]'],
     },
   },
   defaultVariants: {
@@ -141,6 +143,11 @@ const iconName: Record<TVariant, Record<'small' | 'medium' | 'large', IconNames>
     small: 'expired/12',
     medium: 'expired/12',
     large: 'expired/16',
+  },
+  scheduled: {
+    small: 'scheduled/12',
+    medium: 'scheduled/12',
+    large: 'scheduled/16',
   },
 }
 

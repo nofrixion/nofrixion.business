@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PayoutClient } from '../clients'
 import { ApiError, PayoutUpdate, Tag } from '../types'
-import { AddTagProps, ApiProps, MerchantProps } from '../types/props'
+import { AddTagProps, ApiProps } from '../types/props'
 
 const addTagAsync = async (
   apiUrl: string,
@@ -28,17 +28,17 @@ const addTagAsync = async (
   return { success: true }
 }
 
-export const useAddPayoutTag = (
-  { merchantId }: MerchantProps,
-  { apiUrl, authToken }: ApiProps,
-): {
+export const useAddPayoutTag = ({
+  apiUrl,
+  authToken,
+}: ApiProps): {
   addPayoutTag: (addTagProps: AddTagProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
   const [payoutId, setPayoutId] = useState<string>()
 
-  const SINGLE_PAYOUT_QUERY_KEY = ['Payout', merchantId, payoutId, apiUrl, authToken]
+  const SINGLE_PAYOUT_QUERY_KEY = ['Payout', payoutId, apiUrl, authToken]
 
   const PAYOUTS_QUERY_KEY = ['Payouts']
 

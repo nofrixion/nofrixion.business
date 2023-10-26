@@ -115,6 +115,7 @@ export enum PayoutStatus {
   QUEUED = 'QUEUED',
   FAILED = 'FAILED',
   PENDING_INPUT = 'PENDING_INPUT',
+  SCHEDULED = 'SCHEDULED',
 }
 
 export enum PaymentProcessorsEnum {

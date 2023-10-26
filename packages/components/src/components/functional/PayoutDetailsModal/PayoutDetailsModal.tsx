@@ -6,6 +6,7 @@ import {
   useCreateTag,
   usePayout,
   useRemovePayoutTag,
+  useUpdatePayout,
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
@@ -26,6 +27,7 @@ export interface PayoutDetailsModalProps {
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   counterPartyNameSortDirection: SortDirection
+  scheduleDateSortDirection: SortDirection
   statuses: PayoutStatus[]
   page: number
   pageSize: number
@@ -49,6 +51,7 @@ const PayoutDetailsModal = ({
   createdSortDirection,
   amountSortDirection,
   counterPartyNameSortDirection,
+  scheduleDateSortDirection,
   statuses,
   page,
   pageSize,
@@ -71,6 +74,7 @@ const PayoutDetailsModal = ({
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
       counterPartyNameSortDirection: counterPartyNameSortDirection,
+      scheduleDateSortDirection: scheduleDateSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       statuses: statuses,
@@ -99,12 +103,7 @@ const PayoutDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { addPayoutTag } = useAddPayoutTag(
-    {
-      merchantId: merchantId,
-    },
-    { apiUrl: apiUrl, authToken: token },
-  )
+  const { addPayoutTag } = useAddPayoutTag({ apiUrl: apiUrl, authToken: token })
 
   const { removeTag } = useRemovePayoutTag(
     {
@@ -112,6 +111,8 @@ const PayoutDetailsModal = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { updatePayout } = useUpdatePayout({ apiUrl: apiUrl, authToken: token })
 
   const onTagAdded = async (tag: LocalTag) => {
     if (payout) {
@@ -169,6 +170,16 @@ const PayoutDetailsModal = ({
     }
   }
 
+  const onScheduleCancelled = async () => {
+    if (payout) {
+      const response = await updatePayout({ payoutID: payout.id, scheduled: false })
+
+      if (response.error) {
+        makeToast('error', 'Could not cancel authorisation.')
+      }
+    }
+  }
+
   const onModalDismiss = () => {
     setPayout(undefined)
     onDismiss()
@@ -183,6 +194,7 @@ const PayoutDetailsModal = ({
       open={open}
       payout={payout}
       merchantTags={merchantTags}
+      onScheduleCancelled={onScheduleCancelled}
     />
   )
 }

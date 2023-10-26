@@ -101,7 +101,8 @@
 }
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: var(--rmdp-primary-green) !important;
+  background-color: rgba(64, 191, 191, 0.4) !important;
+  box-shadow: none !important;
 }
 
 .rmdp-day:not(.rmdp-day-hidden) span:hover {

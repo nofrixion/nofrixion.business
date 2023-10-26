@@ -365,9 +365,12 @@ export interface Payout {
   sourceAccountIban: string
   destination?: Counterparty
   tags: Tag[]
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export interface PayoutUpdate {
+  ID?: string
   accountID?: string
   type?: AccountIdentifierType
   description?: string
@@ -378,6 +381,8 @@ export interface PayoutUpdate {
   destination?: Counterparty
   tags?: Tag[]
   tagIds?: string[]
+  scheduled?: boolean
+  scheduleDate?: Date
 }
 
 export type PayoutMetrics = {
@@ -386,8 +391,9 @@ export type PayoutMetrics = {
   inProgress: number
   pendingApproval: number
   failed: number
+  scheduled: number
   totalAmountsByCurrency: Record<
-    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed',
+    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed' | 'scheduled',
     Record<'eur' | 'gbp', number | undefined>
   >
 }
