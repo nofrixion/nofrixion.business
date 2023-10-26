@@ -67,6 +67,7 @@ const PayoutDetailsModal = ({
                 <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
                   <div className="mt-4">
                     <ConfrimButton
+                      variant={'secondary'}
                       size={'medium'}
                       primaryText="Cancel authorisation"
                       confirmText="Click again to confirm"

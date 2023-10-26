@@ -15,6 +15,7 @@ export interface ConfrimButtonProps
 }
 
 const ConfrimButton = ({
+  variant,
   size,
   primaryText,
   confirmText,
@@ -48,7 +49,7 @@ const ConfrimButton = ({
         >
           <Button
             size={size}
-            variant={'secondary'}
+            variant={variant}
             onClick={() => setIsConfirming(true)}
             className={className}
           >
