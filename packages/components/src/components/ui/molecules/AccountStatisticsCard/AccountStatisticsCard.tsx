@@ -86,25 +86,26 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
             </div>
           )}
 
-          {!isLoading && accountMetrics && currency && (
-            <span className="font-normal mt-2 mr-1 mb-2 text-sm font-inter-fontFeatureSettings text-grey-text">
-              Total {accountMetrics.filter((x) => x.currency === currency)[0].numberOfAccounts}{' '}
-              accounts
-            </span>
-          )}
+          <div className="flex sm:flex-col justify-between mt-4">
+            {!isLoading && accountMetrics && currency && (
+              <span className="font-normal mt-1 sm:mt-0 mb-2 text-sm font-inter-fontFeatureSettings text-grey-text">
+                Total {accountMetrics.filter((x) => x.currency === currency)[0].numberOfAccounts}{' '}
+                accounts
+              </span>
+            )}
 
-          {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
-            <AccountBalance
-              className="sm:text-right"
-              size={'medium'}
-              availableBalance={
-                accountMetrics.filter((x) => x.currency === currency)[0].totalAvailableBalance
-              }
-              balance={accountMetrics.filter((x) => x.currency === currency)[0].totalBalance}
-              currency={currency}
-              hideAvailableBalanceIfSameAsBalance={true}
-            />
-          )}
+            {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
+              <AccountBalance
+                size={'medium'}
+                availableBalance={
+                  accountMetrics.filter((x) => x.currency === currency)[0].totalAvailableBalance
+                }
+                balance={accountMetrics.filter((x) => x.currency === currency)[0].totalBalance}
+                currency={currency}
+                hideAvailableBalanceIfSameAsBalance={true}
+              />
+            )}
+          </div>
         </div>
       </div>
 

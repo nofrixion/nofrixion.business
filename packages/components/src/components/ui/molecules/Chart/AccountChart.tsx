@@ -22,7 +22,6 @@ const AccountChart: React.FC<AccountChartProps> = ({ points, currency, height })
 
   const formatData = (points: ChartPoint[]) => {
     return points.map((point) => {
-      console.log(point)
       return {
         x: format(point.x, 'MMM dd, yyyy'),
         y: point.y,

@@ -18,7 +18,7 @@ export const accountBalanceVariants = cva('font-semibold  font-inter-fontFeature
   },
 })
 
-export const accountAvailableBalanceVariants = cva(' font-normal  mt-2 mr-1', {
+export const accountAvailableBalanceVariants = cva(' font-normal mt-2', {
   variants: {
     size: {
       large: ['text-sm leading-4'],
@@ -51,7 +51,7 @@ const AccountBalance: React.FC<AccountBalanceProps> = ({
 }) => {
   const hideAvailableBalance = hideAvailableBalanceIfSameAsBalance && balance === availableBalance
   return (
-    <div className={cn('whitespace-nowrap', className)} {...props}>
+    <div className={cn('whitespace-nowrap text-right', className)} {...props}>
       <span className={cn(accountBalanceVariants({ size }))}>
         {`${formatCurrency(currency)} ${formatAmount(balance)}`}
       </span>
