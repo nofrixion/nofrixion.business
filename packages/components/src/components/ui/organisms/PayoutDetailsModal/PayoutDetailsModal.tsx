@@ -7,6 +7,7 @@ import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
+import ConfrimButton from '../../molecules/ConfirmButton/ConfirmButton'
 import TagManager from '../../Tags/TagManager/TagManager'
 import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
 
@@ -18,6 +19,7 @@ export interface PayoutDetailsModalProps {
   onTagAdded: (tag: LocalTag) => void
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
+  onScheduleCancelled: () => void
 }
 
 const PayoutDetailsModal = ({
@@ -28,6 +30,7 @@ const PayoutDetailsModal = ({
   onTagAdded,
   onTagRemoved,
   onTagCreated,
+  onScheduleCancelled,
 }: PayoutDetailsModalProps) => {
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
@@ -57,6 +60,19 @@ const PayoutDetailsModal = ({
                   </div>
                   <div className="mt-4 mr-8">
                     {payout && <PayoutAuthoriseForm id={payout?.id} size={'medium'} />}
+                  </div>
+                </div>
+              )}
+              {payout && payout.status === PayoutStatus.SCHEDULED && (
+                <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
+                  <div className="mt-4">
+                    <ConfrimButton
+                      size={'medium'}
+                      primaryText="Cancel authorisation"
+                      confirmText="Click again to confirm"
+                      onConfirm={onScheduleCancelled}
+                      className="w-[169px]"
+                    />
                   </div>
                 </div>
               )}

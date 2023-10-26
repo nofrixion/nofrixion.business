@@ -59,6 +59,8 @@ export const useUpdatePayout = ({
 
   const PAYOUTS_QUERY_KEY = ['Payouts']
 
+  const PAYOUTS_METRICS_QUERY_KEY = ['PayoutMetrics']
+
   const mutation: UseMutationResult<
     { success?: boolean | undefined; error?: ApiError | undefined },
     Error,
@@ -84,6 +86,7 @@ export const useUpdatePayout = ({
       if (data.success) {
         queryClient.invalidateQueries({ queryKey: SINGLE_PAYOUT_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: PAYOUTS_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: PAYOUTS_METRICS_QUERY_KEY })
       }
     },
   })

@@ -1,16 +1,28 @@
+import { VariantProps } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
 import { Button } from '../../atoms'
+import { buttonVariants } from '../../atoms/Button/Button'
 
-export interface ConfrimButtonProps {
+export interface ConfrimButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   primaryText: string
   confirmText: string
   onConfirm: () => void
+  className?: string
 }
 
-const ConfrimButton = ({ primaryText, confirmText, onConfirm }: ConfrimButtonProps) => {
+const ConfrimButton = ({
+  size,
+  primaryText,
+  confirmText,
+  onConfirm,
+  className,
+}: ConfrimButtonProps) => {
   const [isConfirming, setIsConfirming] = useState<boolean>(false)
+  const [confirmDisable, setConfirmDisable] = useState<boolean>(false)
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLButtonElement>) => {
     if (evt.key === 'Escape') {
@@ -18,6 +30,11 @@ const ConfrimButton = ({ primaryText, confirmText, onConfirm }: ConfrimButtonPro
       evt.currentTarget.blur()
       setIsConfirming(false)
     }
+  }
+
+  const handleOnConfirmClicked = () => {
+    setConfirmDisable(true)
+    onConfirm()
   }
 
   return (
@@ -29,7 +46,12 @@ const ConfrimButton = ({ primaryText, confirmText, onConfirm }: ConfrimButtonPro
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <Button variant={'secondary'} onClick={() => setIsConfirming(true)} className="w-[189px]">
+          <Button
+            size={size}
+            variant={'secondary'}
+            onClick={() => setIsConfirming(true)}
+            className={className}
+          >
             {primaryText}
           </Button>
         </motion.div>
@@ -42,11 +64,13 @@ const ConfrimButton = ({ primaryText, confirmText, onConfirm }: ConfrimButtonPro
           transition={{ duration: 0.2 }}
         >
           <Button
+            size={size}
             variant={'confirm_negative'}
-            onClick={onConfirm}
+            onClick={handleOnConfirmClicked}
             onKeyDown={(event) => handleKeyDown(event)}
             onBlur={() => setIsConfirming(false)}
-            className="w-[189px]"
+            className={className}
+            disabled={confirmDisable}
           >
             {confirmText}
           </Button>
