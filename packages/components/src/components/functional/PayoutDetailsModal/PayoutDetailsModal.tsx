@@ -102,12 +102,7 @@ const PayoutDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { addPayoutTag } = useAddPayoutTag(
-    {
-      merchantId: merchantId,
-    },
-    { apiUrl: apiUrl, authToken: token },
-  )
+  const { addPayoutTag } = useAddPayoutTag({ apiUrl: apiUrl, authToken: token })
 
   const { removeTag } = useRemovePayoutTag(
     {

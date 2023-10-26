@@ -240,3 +240,17 @@ export interface useAccountsWithTransactionMetricsProps
   toDateMS?: number
   numberOfTransactionsSortDirection: SortDirection
 }
+
+export interface UpdatePayoutProps {
+  payoutID: string
+  accountID?: string
+  type?: AccountIdentifierType
+  description?: string
+  currency?: Currency
+  amount?: number
+  yourReference?: string
+  theirReference?: string
+  destination?: Counterparty
+  scheduled?: boolean
+  scheduleDate?: Date
+}
