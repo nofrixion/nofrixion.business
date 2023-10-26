@@ -13,7 +13,6 @@ body {
 }
 
 html,
-body,
-div#root {
+body {
   height: 100%;
 }
