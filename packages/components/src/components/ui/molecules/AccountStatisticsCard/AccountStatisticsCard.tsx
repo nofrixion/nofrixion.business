@@ -35,7 +35,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
   onShowViewAll,
   onAccountClick,
 }) => {
-  const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md '
+  const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md'
 
   const mergedClasses = (classes?: string) => cn(classes, isLoading && loadingClasses)
   return (
@@ -52,35 +52,42 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
         <EmptyState>Here you will see your most active accounts statistics.</EmptyState>
       )}
 
-      <div className={cn('flex justify-between items-end mb-10 mt-6', isLoading && 'items-center')}>
-        {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
-          <div className="h-[103px] flex-grow-[1] flex-shrink-[3]">
+      <div className="mt-6 mb-10 flex flex-col sm:flex-row gap-x-8">
+        {/* Chart */}
+        <>
+          {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
             <AccountChart
+              height={103}
               currency={currency}
               points={periodicBalancesToChartPoints(
                 accountMetrics.filter((x) => x.currency === currency)[0].periodicBalances,
               )}
-            ></AccountChart>
-          </div>
-        )}
-        {isLoading && (
-          <div className="flex flex-grow-[2] h-[103px] items-center justify-center">
-            <ChartSkeleton points={ChartSkeletonData} />
-          </div>
-        )}
-        <div
-          className={cn(
-            'flex flex-grow-[1] flex-col text-right',
-            (isLoading || !currency) && 'w-56',
+            />
           )}
-        >
-          {(isLoading || !currency) && (
-            <div className="w-full items-end">
-              <div className={cn(mergedClasses(), (isLoading || !currency) && 'h-2')}></div>
+
+          {/* Chart skeleton */}
+          {isLoading && (
+            <div className="w-full h-[103px]">
+              <ChartSkeleton points={ChartSkeletonData} />
             </div>
           )}
+        </>
+
+        {/* Balance at right of chart */}
+        <div
+          className={cn('flex flex-col sm:justify-end sm:text-right', {
+            'w-56': isLoading || !currency,
+          })}
+        >
+          {/* Loading state */}
+          {(isLoading || !currency) && (
+            <div className="w-full items-end mt-4 sm:mt-0">
+              <div className={cn(mergedClasses(), { 'h-2': isLoading || !currency })}></div>
+            </div>
+          )}
+
           {!isLoading && accountMetrics && currency && (
-            <span className=" font-normal mt-2 mr-1 mb-2 text-sm font-inter-fontFeatureSettings text-grey-text">
+            <span className="font-normal mt-2 mr-1 mb-2 text-sm font-inter-fontFeatureSettings text-grey-text">
               Total {accountMetrics.filter((x) => x.currency === currency)[0].numberOfAccounts}{' '}
               accounts
             </span>
@@ -88,6 +95,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
 
           {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
             <AccountBalance
+              className="sm:text-right"
               size={'medium'}
               availableBalance={
                 accountMetrics.filter((x) => x.currency === currency)[0].totalAvailableBalance
@@ -95,7 +103,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
               balance={accountMetrics.filter((x) => x.currency === currency)[0].totalBalance}
               currency={currency}
               hideAvailableBalanceIfSameAsBalance={true}
-            ></AccountBalance>
+            />
           )}
         </div>
       </div>

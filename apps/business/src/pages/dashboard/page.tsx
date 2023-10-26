@@ -160,7 +160,7 @@ const DashboardPage = () => {
             isLoading={isDashboardLoading}
             currency={currency}
             onCurrencyChange={isAccountMetricsLoading || singleCurrency ? undefined : setCurrency}
-            className="md:pb-6"
+            className="md:pb-6 w-full xl:w-1/2"
             accountMetrics={remoteAccountMetricsArrayToLocalAccountMetricsArray(accountMetrics)}
             onShowViewAll={() => {
               navigate('current-accounts')
@@ -172,7 +172,7 @@ const DashboardPage = () => {
           <LatestTransactionsCard
             transactions={remoteTransactionsToLocal(transactions)}
             isLoading={isTransactionsLoading}
-            className="md:pb-6"
+            className="md:pb-6 w-full xl:w-1/2"
           />
         </div>
 

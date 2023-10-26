@@ -14,9 +14,10 @@ export interface ChartPoint {
 export interface AccountChartProps {
   points: ChartPoint[]
   currency: Currency
+  height: number
 }
 
-const AccountChart: React.FC<AccountChartProps> = ({ points, currency }) => {
+const AccountChart: React.FC<AccountChartProps> = ({ points, currency, height }) => {
   const [hovered, setHovered] = useState(false)
 
   const formatData = (points: ChartPoint[]) => {
@@ -53,13 +54,13 @@ const AccountChart: React.FC<AccountChartProps> = ({ points, currency }) => {
   }
 
   return (
-    <ResponsiveContainer className="w-full h-full">
+    <ResponsiveContainer height={height} className={'w-full'}>
       <AreaChart
         data={formatData(points)}
         margin={{
-          top: 10,
-          right: 30,
-          left: 0,
+          top: 3,
+          right: 3,
+          left: 3,
           bottom: 0,
         }}
         onMouseEnter={() => setHovered(true)}

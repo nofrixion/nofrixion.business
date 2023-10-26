@@ -750,7 +750,6 @@ const remoteAccountMetricsToLocalAccountMetrics = (
 }
 
 const periodicBalancesToChartPoints = (periodicBalances: LocalPeriodicBalance[]): ChartPoint[] => {
-  console.log(periodicBalances)
   return periodicBalances.map((periodicBalance) => {
     return {
       x: new Date(periodicBalance.balanceAt),
