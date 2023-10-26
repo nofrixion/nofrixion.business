@@ -698,7 +698,7 @@ export const Icons = {
     </SVG>
   ),
   'scheduled/12': (className: string) => (
-    <SVG className={cn(className, 'fill-current stroke-none')} size="12" viewBox="0 +1">
+    <SVG className={cn(className, 'fill-current stroke-none')} size="12" viewBox="0 0">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -707,7 +707,7 @@ export const Icons = {
     </SVG>
   ),
   'scheduled/16': (className: string) => (
-    <SVG className={cn(className, 'fill-current stroke-none')} size="16">
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16" viewBox="0 -1">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

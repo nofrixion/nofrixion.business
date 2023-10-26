@@ -29,7 +29,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
   onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name',
+    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
     direction: SortDirection,
   ) => void
   onDateChange: (dateRange: DateRange) => void

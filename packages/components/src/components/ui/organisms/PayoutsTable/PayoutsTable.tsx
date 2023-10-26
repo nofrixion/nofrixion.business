@@ -27,7 +27,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
   onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name',
+    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
     direction: SortDirection,
   ) => void
   onPayoutClicked?: (payout: LocalPayout) => void
@@ -138,6 +138,12 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
+                    label={'Scheduled'}
+                    onSort={(direction) => onSort('scheduleDate', direction)}
+                  />
+                </TableHead>
+                <TableHead>
+                  <ColumnHeader
                     label={'Payee'}
                     onSort={(direction) => onSort('counterParty.name', direction)}
                   />
@@ -166,6 +172,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     className="animate-pulse border-b border-[#F1F2F3]"
                   >
                     <TableCell className="w-48 py-6">
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell className="w-48">
                       <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
@@ -229,6 +239,11 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </TableCell>
                     <TableCell className="w-48">
                       {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
+                    </TableCell>
+                    <TableCell className="w-48">
+                      {payout.scheduleDate
+                        ? formatDateWithYear(new Date(payout.scheduleDate))
+                        : 'Immediately'}
                     </TableCell>
                     <TableCell className="w-48">
                       <div className="truncate">{payout.destination?.name}</div>
