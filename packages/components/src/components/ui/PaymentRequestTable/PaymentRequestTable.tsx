@@ -1,4 +1,4 @@
-import { PaymentResult } from "@nofrixion/moneymoov";
+import { PaymentResult } from '@nofrixion/moneymoov'
 import classNames from 'classnames'
 
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
@@ -194,8 +194,8 @@ const PaymentRequestTable = ({
                   onDelete={
                     paymentRequest.remoteStatus === PaymentResult.None
                       ? () =>
-                        onPaymentRequestDeleteClicked &&
-                        onPaymentRequestDeleteClicked(paymentRequest)
+                          onPaymentRequestDeleteClicked &&
+                          onPaymentRequestDeleteClicked(paymentRequest)
                       : undefined
                   }
                   onCopyLink={() =>
