@@ -54,31 +54,40 @@ const AccountChart: React.FC<AccountChartProps> = ({ points, currency, height })
 
   return (
     <ResponsiveContainer height={height} className={'w-full'}>
-      <AreaChart
-        data={formatData(points)}
-        margin={{
-          top: 3,
-          right: 3,
-          left: 3,
-          bottom: 0,
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
         }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        className="w-full"
       >
-        <Tooltip
-          cursor={{ stroke: '#00264D', strokeWidth: 2 }}
-          content={(props) => <CustomTooltip {...props} currency={currency} />}
-        />
-        <Area
-          type="linear"
-          dataKey="y"
-          stroke="#009999"
-          strokeWidth={2}
-          fill="#40BFBF"
-          fillOpacity={hovered ? 0.3 : 0.2}
-          activeDot={{ stroke: '#00264D', fill: '#00264D', strokeWidth: 2, r: 2 }}
-        />
-      </AreaChart>
+        <ResponsiveContainer height={height} className={'w-full'}>
+          <AreaChart
+            data={formatData(points)}
+            margin={{
+              top: 3,
+              right: 3,
+              left: 3,
+              bottom: 0,
+            }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <Tooltip
+              cursor={{ stroke: '#00264D', strokeWidth: 2 }}
+              content={(props) => <CustomTooltip {...props} currency={currency} />}
+            />
+            <Area
+              type="linear"
+              dataKey="y"
+              stroke="#009999"
+              strokeWidth={2}
+              fill="#40BFBF"
+              fillOpacity={hovered ? 0.3 : 0.2}
+              activeDot={{ stroke: '#00264D', fill: '#00264D', strokeWidth: 2, r: 2 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </button>
     </ResponsiveContainer>
   )
 }
