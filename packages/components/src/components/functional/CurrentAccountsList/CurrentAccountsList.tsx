@@ -6,7 +6,7 @@ import {
   useBanks,
   useDeleteConnectedAccount,
 } from '@nofrixion/moneymoov'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -20,12 +20,15 @@ import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcou
 import { Loader } from '../../ui/Loader/Loader'
 import { makeToast } from '../../ui/Toast/Toast'
 
+const queryClient = new QueryClient()
+
 export interface CurrentAccountsListProps {
   merchantId: string
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   token?: string // Example: "eyJhbGciOiJIUz..."
   onUnauthorized?: () => void
   onAccountClick?: (account: Account) => void
+  isWebComponent?: boolean
 }
 
 const CurrentAccountsList = ({
@@ -34,10 +37,12 @@ const CurrentAccountsList = ({
   merchantId,
   onUnauthorized,
   onAccountClick,
+  isWebComponent,
 }: CurrentAccountsListProps) => {
-  const queryClient = useQueryClient()
+  const queryClientToUse = isWebComponent ? queryClient : useQueryClient()
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClientToUse}>
       <CurrentAccountsMain
         token={token}
         merchantId={merchantId}
