@@ -5,10 +5,12 @@ import {
   LocalAccountWithTransactionMetrics,
 } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
+import { periodicBalancesToChartPoints } from '../../../../utils/parsers'
 import { ChartSkeletonData } from '../../../../utils/utils'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import Card from '../../atoms/Card/Card'
 import { EmptyState } from '../../atoms/EmptyState/EmptyState'
+import AccountChart from '../Chart/AccountChart'
 import ChartSkeleton from '../Chart/ChartSkeleton/ChartSkeleton'
 import { MostActiveAccountRow } from '../MostActiveAccountRow/MostActiveAccountRow'
 
@@ -33,7 +35,7 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
   onShowViewAll,
   onAccountClick,
 }) => {
-  const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md '
+  const loadingClasses = 'bg-[#E0E9EB] animate-pulse rounded-md'
 
   const mergedClasses = (classes?: string) => cn(classes, isLoading && loadingClasses)
   return (
@@ -50,37 +52,60 @@ const AccountStatisticsCard: React.FC<AccountStatisticsCardProps> = ({
         <EmptyState>Here you will see your most active accounts statistics.</EmptyState>
       )}
 
-      <div className={cn('flex justify-between items-end mb-10 mt-6', isLoading && 'items-center')}>
-        {!isLoading && accounts && accounts.length > 0 && <div className="h-[103px]">Graph</div>}
-        {isLoading && (
-          <div className="flex flex-grow-[2] h-[103px] items-center justify-center">
-            <ChartSkeleton points={ChartSkeletonData} />
-          </div>
-        )}
-        <div className={cn('flex flex-col text-right', (isLoading || !currency) && 'w-56')}>
-          {(isLoading || !currency) && (
-            <div className="w-full items-end">
-              <div className={cn(mergedClasses(), (isLoading || !currency) && 'h-2')}></div>
-            </div>
-          )}
-          {!isLoading && accountMetrics && currency && (
-            <span className=" font-normal mt-2 mr-1 mb-2 text-sm font-inter-fontFeatureSettings text-grey-text">
-              Total {accountMetrics.filter((x) => x.currency === currency)[0].numberOfAccounts}{' '}
-              accounts
-            </span>
+      <div className="mt-6 mb-10 flex flex-col sm:flex-row gap-x-8">
+        {/* Chart */}
+        <>
+          {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
+            <AccountChart
+              height={103}
+              currency={currency}
+              points={periodicBalancesToChartPoints(
+                accountMetrics.filter((x) => x.currency === currency)[0].periodicBalances,
+              )}
+            />
           )}
 
-          {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
-            <AccountBalance
-              size={'medium'}
-              availableBalance={
-                accountMetrics.filter((x) => x.currency === currency)[0].totalAvailableBalance
-              }
-              balance={accountMetrics.filter((x) => x.currency === currency)[0].totalBalance}
-              currency={currency}
-              hideAvailableBalanceIfSameAsBalance={true}
-            ></AccountBalance>
+          {/* Chart skeleton */}
+          {isLoading && (
+            <div className="w-full h-[103px]">
+              <ChartSkeleton points={ChartSkeletonData} />
+            </div>
           )}
+        </>
+
+        {/* Balance at right of chart */}
+        <div
+          className={cn('flex flex-col sm:justify-end sm:text-right', {
+            'w-56': isLoading || !currency,
+          })}
+        >
+          {/* Loading state */}
+          {(isLoading || !currency) && (
+            <div className="w-full items-end mt-4 sm:mt-0">
+              <div className={cn(mergedClasses(), { 'h-2': isLoading || !currency })}></div>
+            </div>
+          )}
+
+          <div className="flex sm:flex-col justify-between mt-4">
+            {!isLoading && accountMetrics && currency && (
+              <span className="font-normal mt-1 sm:mt-0 mb-2 text-sm font-inter-fontFeatureSettings text-grey-text">
+                Total {accountMetrics.filter((x) => x.currency === currency)[0].numberOfAccounts}{' '}
+                accounts
+              </span>
+            )}
+
+            {!isLoading && accounts && accounts.length > 0 && accountMetrics && currency && (
+              <AccountBalance
+                size={'medium'}
+                availableBalance={
+                  accountMetrics.filter((x) => x.currency === currency)[0].totalAvailableBalance
+                }
+                balance={accountMetrics.filter((x) => x.currency === currency)[0].totalBalance}
+                currency={currency}
+                hideAvailableBalanceIfSameAsBalance={true}
+              />
+            )}
+          </div>
         </div>
       </div>
 

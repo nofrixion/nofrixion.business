@@ -1,5 +1,11 @@
 import { Counterparty, Tag } from './ApiResponses'
-import { AccountIdentifierType, Currency, PayoutStatus, SortDirection } from './Enums'
+import {
+  AccountIdentifierType,
+  Currency,
+  PayoutStatus,
+  SortDirection,
+  TimeFrequencyEnum,
+} from './Enums'
 
 export interface PagedResponseProps
   extends FilterResponseProps,
@@ -239,6 +245,12 @@ export interface useAccountsWithTransactionMetricsProps
   fromDateMS?: number
   toDateMS?: number
   numberOfTransactionsSortDirection: SortDirection
+}
+
+export interface AccountsMetricsProps extends MerchantProps {
+  fromDate?: Date
+  toDate?: Date
+  timeFrequency?: TimeFrequencyEnum
 }
 
 export interface UpdatePayoutProps {

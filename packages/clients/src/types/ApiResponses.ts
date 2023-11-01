@@ -14,6 +14,7 @@ import {
   PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  TimeFrequencyEnum,
   UserInviteStatusEnum,
   UserRoles,
   UserStatus,
@@ -550,4 +551,13 @@ export type AccountMetrics = {
   totalBalance: number
   totalAvailableBalance: number
   numberOfAccounts: number
+  periodicBalances: PeriodicBalance[]
+  periodicBalancesFromDate: Date
+  periodicBalancesToDate: Date
+  periodicBalancesFrequency: TimeFrequencyEnum
+}
+
+export type PeriodicBalance = {
+  balanceAt: Date
+  balance: number
 }

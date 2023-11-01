@@ -6,6 +6,7 @@ import {
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
+  LocalTimeFrequencyEnum,
   LocalWallets,
   SubTransactionType,
 } from './LocalEnums'
@@ -312,4 +313,13 @@ export interface LocalAccountMetrics {
   totalBalance: number
   currency: Currency
   numberOfAccounts: number
+  periodicBalances: LocalPeriodicBalance[]
+  periodicBalancesFromDate: Date
+  periodicBalancesToDate: Date
+  periodicBalancesFrequency: LocalTimeFrequencyEnum
+}
+
+export interface LocalPeriodicBalance {
+  balanceAt: Date
+  balance: number
 }

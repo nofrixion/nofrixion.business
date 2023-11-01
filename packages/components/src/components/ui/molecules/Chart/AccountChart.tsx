@@ -14,9 +14,10 @@ export interface ChartPoint {
 export interface AccountChartProps {
   points: ChartPoint[]
   currency: Currency
+  height: number
 }
 
-const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
+const AccountChart: React.FC<AccountChartProps> = ({ points, currency, height }) => {
   const [hovered, setHovered] = useState(false)
 
   const formatData = (points: ChartPoint[]) => {
@@ -52,34 +53,43 @@ const Chart: React.FC<AccountChartProps> = ({ points, currency }) => {
   }
 
   return (
-    <ResponsiveContainer className="w-full h-full">
-      <AreaChart
-        data={formatData(points)}
-        margin={{
-          top: 10,
-          right: 30,
-          left: 0,
-          bottom: 0,
+    <ResponsiveContainer height={height} className={'w-full'}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
         }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        className="w-full"
       >
-        <Tooltip
-          cursor={{ stroke: '#00264D', strokeWidth: 2 }}
-          content={(props) => <CustomTooltip {...props} currency={currency} />}
-        />
-        <Area
-          type="linear"
-          dataKey="y"
-          stroke="#009999"
-          strokeWidth={2}
-          fill="#40BFBF"
-          fillOpacity={hovered ? 0.3 : 0.2}
-          activeDot={{ stroke: '#00264D', fill: '#00264D', strokeWidth: 2, r: 2 }}
-        />
-      </AreaChart>
+        <ResponsiveContainer height={height} className={'w-full'}>
+          <AreaChart
+            data={formatData(points)}
+            margin={{
+              top: 3,
+              right: 3,
+              left: 3,
+              bottom: 0,
+            }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <Tooltip
+              cursor={{ stroke: '#00264D', strokeWidth: 2 }}
+              content={(props) => <CustomTooltip {...props} currency={currency} />}
+            />
+            <Area
+              type="linear"
+              dataKey="y"
+              stroke="#009999"
+              strokeWidth={2}
+              fill="#40BFBF"
+              fillOpacity={hovered ? 0.3 : 0.2}
+              activeDot={{ stroke: '#00264D', fill: '#00264D', strokeWidth: 2, r: 2 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </button>
     </ResponsiveContainer>
   )
 }
 
-export default Chart
+export default AccountChart
