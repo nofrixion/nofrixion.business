@@ -20,6 +20,7 @@ export interface PayoutDetailsModalProps {
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
   onScheduleCancelled: () => void
+  onEdit: () => void
 }
 
 const PayoutDetailsModal = ({
@@ -31,6 +32,7 @@ const PayoutDetailsModal = ({
   onTagRemoved,
   onTagCreated,
   onScheduleCancelled,
+  onEdit,
 }: PayoutDetailsModalProps) => {
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
@@ -54,7 +56,7 @@ const PayoutDetailsModal = ({
               {payout && payout.status === PayoutStatus.PENDING_APPROVAL && (
                 <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
                   <div className="mt-4">
-                    <Button variant={'secondary'} size={'medium'} onClick={onDismiss}>
+                    <Button variant={'secondary'} size={'medium'} onClick={onEdit}>
                       Edit payout
                     </Button>
                   </div>

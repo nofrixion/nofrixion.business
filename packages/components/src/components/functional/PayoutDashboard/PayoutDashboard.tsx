@@ -394,6 +394,10 @@ const PayoutDashboardMain = ({
     }
   }
 
+  const onPayoutEditClicked = () => {
+    setCreatePayoutClicked(true)
+  }
+
   return (
     <div>
       <UIPayoutDashboard
@@ -459,6 +463,7 @@ const PayoutDashboardMain = ({
         maxAmountFilter={maxAmountFilter}
         tagsFilter={tagsFilter}
         merchantTags={localMerchantTags}
+        onEdit={onPayoutEditClicked}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
@@ -472,6 +477,11 @@ const PayoutDashboardMain = ({
             setCreatePayoutClicked(false)
           }}
           merchantId={merchantId}
+          selectedPayout={
+            payouts
+              ? remotePayoutsToLocal(payouts).find((x) => x.id === selectedPayoutId)
+              : undefined
+          }
         />
       )}
 

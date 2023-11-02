@@ -4,9 +4,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 import { LocalAccountIdentifierType } from '../../../../types/LocalEnums'
-import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../../types/LocalTypes'
+import {
+  LocalAccount,
+  LocalBeneficiary,
+  LocalCounterparty,
+  LocalPayout,
+} from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
-import { Button, Sheet, SheetContent } from '../../atoms'
+import { Button, Icon, Sheet, SheetContent } from '../../atoms'
 import InputTextField from '../../atoms/InputTextField/InputTextField'
 import { RadioGroup, RadioGroupItem } from '../../atoms/RadioGroup/RadioGroup'
 import { ValidationMessage } from '../../atoms/ValidationMessage/ValidationMessage'
@@ -33,6 +38,7 @@ export interface CreatePayoutModalProps {
   accounts: LocalAccount[]
   isOpen: boolean
   beneficiaries: LocalBeneficiary[]
+  selectedPayout?: LocalPayout
 }
 
 const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
@@ -41,6 +47,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   accounts,
   beneficiaries,
   isOpen,
+  selectedPayout,
 }) => {
   const [isCreatePayoutButtonDisabled, setIsCreatePayoutButtonDisabled] = useState(false)
   const [isCreateAndApproveButtonDisabled, setIsCreateAndApproveButtonDisabled] = useState(false)
@@ -96,12 +103,31 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
       : undefined
 
   const [currency, setCurrency] = useState<Currency | undefined>(
-    singleCurrency != undefined ? singleCurrency : Currency.EUR,
+    selectedPayout
+      ? selectedPayout.currency
+      : singleCurrency != undefined
+      ? singleCurrency
+      : Currency.EUR,
   )
 
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount | undefined>(
     accounts?.filter((x) => x.currency === currency)[0],
   )
+
+  useEffect(() => {
+    setPayoutAmount(selectedPayout?.amount?.toString() ?? '')
+    setTheirReference(selectedPayout?.theirReference)
+    setYourReference(selectedPayout?.yourReference)
+    setDescription(selectedPayout?.description)
+    setDestinationAccountName(selectedPayout?.destination?.name)
+    setDestinationAccountIBAN(selectedPayout?.destination?.identifier?.iban)
+    setDestinationAccountNumber(selectedPayout?.destination?.identifier?.accountNumber)
+    setDestinationAccountSortCode(selectedPayout?.destination?.identifier?.sortCode)
+    setAddManuallySelected(!!selectedPayout)
+    const selectedAccount = getAccountFromCurrencyOrExistingPayout()
+    setSelectedAccount(selectedAccount)
+    validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
+  }, [selectedPayout])
 
   const theirReferenceMaxLength = currency === Currency.EUR ? 139 : 17
 
@@ -109,6 +135,12 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
 
   const beneficiaryDifferentCurrencyMessage =
     'This account has a different currency than the chosen amount.'
+
+  const getAccountFromCurrencyOrExistingPayout = () => {
+    return accounts?.filter((x) =>
+      selectedPayout ? x.id === selectedPayout.accountID : x.currency === currency,
+    )[0]
+  }
 
   const validateAmount = (amount: string, account: LocalAccount) => {
     if (account && account.availableBalance < Number(amount)) {
@@ -126,8 +158,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   const handleAccountOnChange = (value: string) => {
     setAccountValidationErrorMessage(undefined)
     const account = accounts.find((account) => account.id === value)
-
-    setSelectedAccount(account ?? accounts.filter((account) => account.currency === currency)[0])
+    setSelectedAccount(account ?? getAccountFromCurrencyOrExistingPayout())
 
     if (account && account.availableBalance < Number(payoutAmount)) {
       setAccountValidationErrorMessage(balanceLessThanAmountMessage)
@@ -278,6 +309,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
     setSelectedScheduleOption('immediately')
     setScheduleDate(addDays(new Date(), 1))
     setDateValidationErrorMessage(undefined)
+    setSelectedAccount(getAccountFromCurrencyOrExistingPayout())
   }
 
   const handleOnOpenChange = (open: boolean) => {
@@ -374,16 +406,19 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   }
 
   const onCurrencyChange = (currency: string) => {
-    if (!selectedBeneficiary) {
+    if (!selectedBeneficiary && (!selectedPayout || selectedPayout.currency !== currency)) {
       setDestinationAccountName('')
       setDestinationAccountIBAN('')
       setDestinationAccountNumber('')
       setDestinationAccountSortCode('')
     }
     setCurrency(currency as Currency.EUR | Currency.GBP)
-    setSelectedAccount(accounts?.filter((x) => x.currency === currency)[0])
-    payoutAmount &&
-      validateAmount(payoutAmount, accounts?.filter((x) => x.currency === currency)[0])
+
+    if (!selectedAccount || selectedAccount.currency !== currency) {
+      const newAccount = accounts?.filter((x) => x.currency === currency)[0]
+      setSelectedAccount(newAccount)
+      payoutAmount && validateAmount(payoutAmount, newAccount)
+    }
 
     if (selectedBeneficiary && selectedBeneficiary.currency !== currency) {
       setBeneficiaryValidationErrorMessage(beneficiaryDifferentCurrencyMessage)
@@ -431,8 +466,13 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
           <SheetContent className="w-full lg:w-[37.5rem]">
             <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8">
               <div className="h-fit mb-[7.5rem] lg:mb-0">
+                {selectedPayout && (
+                  <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
+                    <Icon name="back/24" />
+                  </button>
+                )}
                 <span className="block text-2xl font-semibold text-default-text mt-8">
-                  New payout
+                  {selectedPayout ? 'Edit payout' : 'New payout'}
                 </span>
 
                 <div className="mt-12 md:flex w-full">
@@ -727,22 +767,25 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                     {isCreateAndApproveButtonDisabled ? (
                       <Loader className="h-6 w-6 mx-auto" />
                     ) : (
-                      <span>Create and authorise</span>
+                      <span>{selectedPayout ? 'Save changes' : 'Create and authorise'}</span>
                     )}
                   </Button>
-                  <Button
-                    variant="secondary"
-                    size="large"
-                    className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed mt-4"
-                    onClick={() => onCreatePayoutClick(false)}
-                    disabled={isCreatePayoutButtonDisabled}
-                  >
-                    {isCreatePayoutButtonDisabled ? (
-                      <Loader className="h-6 w-6 mx-auto" />
-                    ) : (
-                      <span>Save for later authorisation</span>
-                    )}
-                  </Button>
+
+                  {!selectedPayout && (
+                    <Button
+                      variant="secondary"
+                      size="large"
+                      className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed mt-4"
+                      onClick={() => onCreatePayoutClick(false)}
+                      disabled={isCreatePayoutButtonDisabled}
+                    >
+                      {isCreatePayoutButtonDisabled ? (
+                        <Loader className="h-6 w-6 mx-auto" />
+                      ) : (
+                        <span>Save for later authorisation</span>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
