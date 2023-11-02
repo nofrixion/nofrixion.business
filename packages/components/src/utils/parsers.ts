@@ -419,6 +419,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
       ? parseApiUserToLocalUser(remotePaymentRequest.createdByUser)
       : undefined,
     merchantTokenDescription: remotePaymentRequest.merchantTokenDescription,
+    remoteStatus: remotePaymentRequest.status,
   }
 }
 

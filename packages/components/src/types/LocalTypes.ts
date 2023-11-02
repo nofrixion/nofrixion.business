@@ -1,4 +1,4 @@
-import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import { Currency, PaymentResult, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
   FieldID,
@@ -46,6 +46,7 @@ export interface LocalPaymentRequest {
   customerName?: string
   createdByUser?: LocalUser
   merchantTokenDescription?: string
+  remoteStatus: PaymentResult
 }
 
 export interface LocalCounterparty {
