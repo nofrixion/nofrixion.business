@@ -118,7 +118,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setDestinationAccountIBAN(selectedPayout?.destination?.identifier?.iban)
     setDestinationAccountNumber(selectedPayout?.destination?.identifier?.accountNumber)
     setDestinationAccountSortCode(selectedPayout?.destination?.identifier?.sortCode)
-    setAddManuallySelected(!!selectedPayout)
     const selectedAccount = getAccountFromCurrencyOrExistingPayout()
     setSelectedAccount(selectedAccount)
     validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
@@ -164,7 +163,13 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     let validationFailed = false
     setAmountValidationErrorMessage(undefined)
     setDestinationAccountRequiredPrompt(false)
-    if (beneficiaries && beneficiaries.length > 0 && !selectedBeneficiary && !addManuallySelected) {
+    if (
+      beneficiaries &&
+      beneficiaries.length > 0 &&
+      !selectedBeneficiary &&
+      !addManuallySelected &&
+      !selectedPayout
+    ) {
       validationFailed = true
       setDestinationAccountRequiredPrompt(true)
     }
@@ -549,6 +554,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                   <AnimatePresence initial={false}>
                     {(selectedBeneficiary ||
                       addManuallySelected ||
+                      selectedPayout ||
                       !beneficiaries ||
                       beneficiaries.length === 0) && (
                       <motion.div
@@ -586,6 +592,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                         <AnimatePresence initial={false}>
                           {(destinationAccountIBAN ||
                             ((addManuallySelected ||
+                              selectedPayout ||
                               !beneficiaries ||
                               beneficiaries.length === 0) &&
                               currency === Currency.EUR)) && (
@@ -610,6 +617,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                         <AnimatePresence initial={false}>
                           {((destinationAccountSortCode && destinationAccountNumber) ||
                             ((addManuallySelected ||
+                              selectedPayout ||
                               !beneficiaries ||
                               beneficiaries.length === 0) &&
                               currency === Currency.GBP)) && (

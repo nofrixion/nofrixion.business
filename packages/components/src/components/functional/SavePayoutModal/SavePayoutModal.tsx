@@ -147,6 +147,7 @@ const SavePayoutModal = ({
       return
     }
 
+    makeToast('success', 'Payout details successfully updated.')
     onDismiss()
   }
 
