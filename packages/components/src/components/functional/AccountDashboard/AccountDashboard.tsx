@@ -11,7 +11,7 @@ import {
   useTransactions,
   useUpdateAccountName,
 } from '@nofrixion/moneymoov'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
@@ -21,12 +21,15 @@ import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
 
+const queryClient = new QueryClient()
+
 export interface AccountDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   onAllCurrentAccountsClick?: () => void
   accountId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
+  isWebComponent?: boolean
 }
 
 const AccountDashboard = ({
@@ -35,10 +38,12 @@ const AccountDashboard = ({
   onAllCurrentAccountsClick,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
+  isWebComponent,
 }: AccountDashboardProps) => {
-  const queryClient = useQueryClient()
+  const queryClientToUse = isWebComponent ? queryClient : useQueryClient()
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClientToUse}>
       <AccountDashboardMain
         token={token}
         accountId={accountId}
