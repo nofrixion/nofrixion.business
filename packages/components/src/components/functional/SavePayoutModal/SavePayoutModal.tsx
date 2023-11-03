@@ -15,11 +15,11 @@ import {
   LocalPayout,
 } from '../../../types/LocalTypes'
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
-import UICreatePayoutModal from '../../ui/organisms/CreatePayoutModal/CreatePayoutModal'
+import UISavePayoutModal from '../../ui/organisms/SavePayoutModal/SavePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 
-export interface CreatePayoutModalProps {
+export interface SavePayoutModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   merchantId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
@@ -30,7 +30,7 @@ export interface CreatePayoutModalProps {
   selectedPayout?: LocalPayout // Payout that's been currently edited. This serves as a create/edit toggle.
 }
 
-const CreatePayoutModal = ({
+const SavePayoutModal = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   isOpen,
@@ -38,7 +38,7 @@ const CreatePayoutModal = ({
   accounts,
   beneficiaries,
   selectedPayout,
-}: CreatePayoutModalProps) => {
+}: SavePayoutModalProps) => {
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
   const { updatePayout } = useUpdatePayout({ apiUrl: apiUrl, authToken: token })
 
@@ -152,7 +152,7 @@ const CreatePayoutModal = ({
 
   return (
     <>
-      <UICreatePayoutModal
+      <UISavePayoutModal
         onDismiss={onDismiss}
         isOpen={isOpen}
         onCreatePayout={selectedPayout ? onUpdatePayout : onCreatePayout}
@@ -173,4 +173,4 @@ const CreatePayoutModal = ({
   )
 }
 
-export default CreatePayoutModal
+export default SavePayoutModal

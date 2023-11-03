@@ -30,8 +30,8 @@ import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashb
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
-import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
+import SavePayoutModal from '../SavePayoutModal/SavePayoutModal'
 
 export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -467,7 +467,7 @@ const PayoutDashboardMain = ({
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
-        <CreatePayoutModal
+        <SavePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
           beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
           apiUrl={apiUrl}

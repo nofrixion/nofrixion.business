@@ -22,7 +22,7 @@ import { SelectAccount } from '../../molecules/Select/SelectAccount/SelectAccoun
 import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/SelectBeneficiary'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
-export interface CreatePayoutModalProps {
+export interface SavePayoutModalProps {
   onCreatePayout: (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
@@ -41,7 +41,7 @@ export interface CreatePayoutModalProps {
   selectedPayout?: LocalPayout
 }
 
-const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
+const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   onCreatePayout,
   onDismiss,
   accounts,
@@ -102,19 +102,14 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
           .filter((value, index, self) => self.indexOf(value) === index)[0]
       : undefined
 
-  const [currency, setCurrency] = useState<Currency | undefined>(
-    selectedPayout
-      ? selectedPayout.currency
-      : singleCurrency != undefined
-      ? singleCurrency
-      : Currency.EUR,
-  )
+  const [currency, setCurrency] = useState<Currency | undefined>(singleCurrency)
 
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount | undefined>(
     accounts?.filter((x) => x.currency === currency)[0],
   )
 
   useEffect(() => {
+    setCurrency(selectedPayout?.currency ? selectedPayout.currency : currency)
     setPayoutAmount(selectedPayout?.amount?.toString() ?? '')
     setTheirReference(selectedPayout?.theirReference)
     setYourReference(selectedPayout?.yourReference)
@@ -412,7 +407,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
       setDestinationAccountNumber('')
       setDestinationAccountSortCode('')
     }
-    setCurrency(currency as Currency.EUR | Currency.GBP)
+    setCurrency(currency as Currency)
 
     if (!selectedAccount || selectedAccount.currency !== currency) {
       const newAccount = accounts?.filter((x) => x.currency === currency)[0]
@@ -478,15 +473,17 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                 <div className="mt-12 md:flex w-full">
                   <div className="text-left ">
                     <div>
-                      <InputAmountField
-                        currency={currency ?? Currency.EUR}
-                        onCurrencyChange={onCurrencyChange}
-                        allowCurrencyChange={true}
-                        value={payoutAmount ?? ''}
-                        onChange={handleAmountOnChange}
-                        required
-                        formSubmitted={createPayoutClicked}
-                      ></InputAmountField>
+                      {currency && (
+                        <InputAmountField
+                          currency={currency}
+                          onCurrencyChange={onCurrencyChange}
+                          allowCurrencyChange={true}
+                          value={payoutAmount ?? ''}
+                          onChange={handleAmountOnChange}
+                          required
+                          formSubmitted={createPayoutClicked}
+                        ></InputAmountField>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -796,4 +793,4 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   )
 }
 
-export default CreatePayoutModal
+export default SavePayoutModal
