@@ -280,11 +280,11 @@ const CreatePaymentRequestPage = ({
     const paymentRequestToCreate: LocalPaymentRequestCreate = {
       amount: Number(amount),
       currency: currency as Currency,
-      productOrService,
-      description,
-      firstName,
-      lastName,
-      email,
+      productOrService: productOrService.trim(),
+      description: description.trim(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
       paymentConditions: {
         allowPartialPayments: paymentConditionsFormValue.allowPartialPayments,
       },
