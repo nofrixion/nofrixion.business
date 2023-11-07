@@ -23,6 +23,7 @@ import useMerchantsStore from '../../lib/stores/useMerchantsStore'
 import useMerchantStore from '../../lib/stores/useMerchantStore'
 import useStore from '../../lib/stores/useStore'
 import useUserStore from '../../lib/stores/useUserStore'
+import { LocalUserRoles } from '../../lib/types/localTypes'
 
 const merchantImage = (shortName: string) =>
   `https://cdn.nofrixion.com/nextgen/assets/merchants/${shortName}/${shortName}.svg`
@@ -115,17 +116,19 @@ const UserNav = () => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           )}
-          <DropdownMenuItem
-            onSelect={() => navigate('users')}
-            disabled={currentRoute.indexOf('/home/users') !== -1}
-            icon={{
-              src: UsersIcon,
-              alt: 'Users',
-            }}
-            className={commonCss}
-          >
-            Users
-          </DropdownMenuItem>
+          {user?.role && user?.role >= LocalUserRoles.AdminApprover && (
+            <DropdownMenuItem
+              onSelect={() => navigate('users')}
+              disabled={currentRoute.indexOf('/home/users') !== -1}
+              icon={{
+                src: UsersIcon,
+                alt: 'Users',
+              }}
+              className={commonCss}
+            >
+              Users
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onSelect={() => navigate('pricing')}
             disabled={currentRoute.indexOf('/home/pricing') !== -1}
