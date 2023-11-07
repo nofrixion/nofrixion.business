@@ -11,6 +11,7 @@ import { useAuth } from '../lib/auth/useAuth'
 import useMerchantsStore from '../lib/stores/useMerchantsStore'
 import useMerchantStore from '../lib/stores/useMerchantStore'
 import useUserStore from '../lib/stores/useUserStore'
+import { parseApiUserToLocalUser } from '../lib/utils/parsers'
 // interface DashboardLayoutProps {
 //   children: React.ReactNode
 // }
@@ -18,7 +19,7 @@ import useUserStore from '../lib/stores/useUserStore'
 const Layout = () => {
   const { merchants, setMerchants } = useMerchantsStore()
   const { merchant, setMerchant } = useMerchantStore()
-  const { user, setUser } = useUserStore()
+  const { setUser } = useUserStore()
   const { authState } = useAuth() as AuthContextType
 
   const outlet = useOutlet()
@@ -60,13 +61,12 @@ const Layout = () => {
 
   useEffect(() => {
     if (userResponse?.status === 'success') {
-      setUser(userResponse.data)
-      // throw new Error('test')
+      setUser(parseApiUserToLocalUser(userResponse.data, merchant?.id))
     } else if (userResponse?.status === 'error') {
       console.log('Error fetching user', userResponse.error)
       authState?.logOut && authState.logOut()
     }
-  }, [userResponse, user, setUser, authState])
+  }, [userResponse, setUser, authState, merchant])
 
   return (
     <>
