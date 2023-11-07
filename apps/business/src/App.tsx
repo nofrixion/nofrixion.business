@@ -31,7 +31,8 @@ export const App = () => {
             <Route element={<ProtectedRoutes />}>
               <Route path={getRoute('/home')} element={<Layout />}>
                 <Route index element={<DashboardPage />} />
-                <Route element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.User} />}>
+                {/* Accounts payable */}
+                <Route element={<RoleProtectedRoute />}>
                   <Route path="accounts-payable" element={<AccountPayablePage />} />
                 </Route>
                 <Route
@@ -41,24 +42,27 @@ export const App = () => {
                 >
                   <Route path="accounts-receivable" element={<AccountReceivablePage />} />
                 </Route>
-                <Route element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.User} />}>
+                {/* Current accounts */}
+                <Route element={<RoleProtectedRoute />}>
                   <Route path="current-accounts" element={<CurrentAccountsPage />} />
                 </Route>
-                <Route element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.User} />}>
+                <Route element={<RoleProtectedRoute />}>
                   <Route
                     path="current-accounts/connected/:bankId"
                     element={<CurrentAccountsPage />}
                   />
                 </Route>
-                <Route element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.User} />}>
+                <Route element={<RoleProtectedRoute />}>
                   <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
                 </Route>
-                <Route element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.User} />}>
+                {/* Payouts */}
+                <Route element={<RoleProtectedRoute />}>
                   <Route path="payouts" element={<PayoutsPage />} />
                 </Route>
-                <Route element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.User} />}>
+                <Route element={<RoleProtectedRoute />}>
                   <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />
                 </Route>
+                {/* User management */}
                 <Route
                   element={
                     <RoleProtectedRoute minimumRequiredRole={LocalUserRoles.AdminApprover} />

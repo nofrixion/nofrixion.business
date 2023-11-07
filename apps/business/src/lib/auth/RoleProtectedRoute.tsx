@@ -4,10 +4,12 @@ import useUserStore from '../stores/useUserStore'
 import { LocalUserRoles } from '../types/localTypes'
 
 export interface RoleRouteProps {
-  minimumRequiredRole: LocalUserRoles
+  minimumRequiredRole?: LocalUserRoles
 }
 
-export const RoleProtectedRoute = ({ minimumRequiredRole }: RoleRouteProps) => {
+export const RoleProtectedRoute = ({
+  minimumRequiredRole = LocalUserRoles.User,
+}: RoleRouteProps) => {
   const { user } = useUserStore()
 
   if (user?.role && user?.role >= minimumRequiredRole) {
