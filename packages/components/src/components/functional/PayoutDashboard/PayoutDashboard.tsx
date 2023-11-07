@@ -13,14 +13,16 @@ import {
   useMerchantTags,
   usePayoutMetrics,
   usePayouts,
+  useUser,
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useRef, useState } from 'react'
 
-import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { ApproveType, LocalPayout, LocalTag, LocalUserRoles } from '../../../types/LocalTypes'
 import {
   parseApiTagToLocalTag,
+  parseApiUserRoleToLocalUserRole,
   remoteAccountsToLocalAccounts,
   remoteBeneficiariesToLocalBeneficiaries,
   remotePayoutsToLocal,
@@ -105,6 +107,7 @@ const PayoutDashboardMain = ({
   const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
   const authoriseFormRef = useRef<HTMLFormElement>(null)
+  const [userRole, setUserRole] = useState<LocalUserRoles | undefined>(undefined)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -191,6 +194,10 @@ const PayoutDashboardMain = ({
     { merchantId: merchantId },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { data: userResponse } = useUser({
+    apiUrl: apiUrl,
+  })
 
   const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
 
@@ -281,6 +288,18 @@ const PayoutDashboardMain = ({
       authoriseFormRef.current?.submit()
     }
   }, [batchId])
+
+  useEffect(() => {
+    if (userResponse?.status === 'success') {
+      setUserRole(
+        parseApiUserRoleToLocalUserRole(
+          userResponse.data.roles.filter((r) => r.merchantID === merchantId)[0].roleType,
+        ),
+      )
+    } else if (userResponse?.status === 'error') {
+      console.log('Error fetching user', userResponse.error)
+    }
+  }, [userResponse])
 
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {
@@ -436,6 +455,7 @@ const PayoutDashboardMain = ({
         selectedPayouts={selectedPayouts}
         onApproveBatchPayouts={onApproveBatchPayouts}
         payoutsExist={payoutsExists}
+        userRole={userRole}
       />
 
       <PayoutDetailsModal

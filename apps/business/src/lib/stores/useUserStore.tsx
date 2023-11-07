@@ -1,6 +1,5 @@
+import { LocalUser } from '@nofrixion/components/src/types/LocalTypes'
 import { create } from 'zustand'
-
-import { LocalUser } from '../types/localTypes'
 
 type UserStore = {
   user?: LocalUser

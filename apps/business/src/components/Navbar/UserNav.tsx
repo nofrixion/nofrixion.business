@@ -8,6 +8,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@nofrixion/components/src/components/ui/atoms/DropDown/DropDown'
+import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -23,7 +24,6 @@ import useMerchantsStore from '../../lib/stores/useMerchantsStore'
 import useMerchantStore from '../../lib/stores/useMerchantStore'
 import useStore from '../../lib/stores/useStore'
 import useUserStore from '../../lib/stores/useUserStore'
-import { LocalUserRoles } from '../../lib/types/localTypes'
 
 const merchantImage = (shortName: string) =>
   `https://cdn.nofrixion.com/nextgen/assets/merchants/${shortName}/${shortName}.svg`

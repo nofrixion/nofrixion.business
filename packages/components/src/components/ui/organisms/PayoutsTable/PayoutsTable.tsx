@@ -1,7 +1,7 @@
 import { Pagination, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
-import { LocalPayout } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalUserRoles } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
 import { formatAmount, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
@@ -39,6 +39,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   selectedPayouts: string[]
   isLoadingMetrics: boolean
   payoutsExist: boolean
+  userRole?: LocalUserRoles
 }
 
 const PayoutsTable: React.FC<PayoutsTableProps> = ({
@@ -55,6 +56,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   selectedPayouts,
   isLoadingMetrics,
   payoutsExist,
+  userRole,
   ...props
 }) => {
   const [allPayoutsSelected, setAllPayoutsSelected] = useState(false)
@@ -257,9 +259,11 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     <TableCell>
                       <div className="flex ml-auto justify-items-end items-center w-fit">
                         <TagList labels={payout.tags.map((tag) => tag.name)} />
-                        {payout.status === PayoutStatus.PENDING_APPROVAL && (
-                          <PayoutAuthoriseForm id={payout.id} size="x-small" className="pl-4" />
-                        )}
+                        {payout.status === PayoutStatus.PENDING_APPROVAL &&
+                          userRole &&
+                          userRole >= LocalUserRoles.Approver && (
+                            <PayoutAuthoriseForm id={payout.id} size="x-small" className="pl-4" />
+                          )}
                       </div>
                     </TableCell>
                   </TableRow>

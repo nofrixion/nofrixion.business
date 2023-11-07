@@ -117,7 +117,7 @@ const PricingPage: React.FC = () => {
   const { user } = useUserStore()
 
   const onInterestedClick = ({ amount, name }: { amount: number; name: string }) => {
-    const message = `🤑 ${user?.emailAddress ?? 'Someone'} wants to pay ${amount}€/m for *${name}*`
+    const message = `🤑 ${user?.email ?? 'Someone'} wants to pay ${amount}€/m for *${name}*`
 
     sendSlackMessage(message)
   }

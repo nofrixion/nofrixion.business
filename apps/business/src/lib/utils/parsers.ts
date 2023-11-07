@@ -1,13 +1,12 @@
+import { LocalUser, LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { User, UserRoles } from '@nofrixion/moneymoov'
-
-import { LocalUser, LocalUserRoles } from '../types/localTypes'
 
 const parseApiUserToLocalUser = (remoteUser: User, merchantId: string | undefined): LocalUser => {
   const { id, emailAddress, firstName, lastName } = remoteUser
 
   return {
     id: id,
-    emailAddress: emailAddress,
+    email: emailAddress,
     firstName: firstName,
     lastName: lastName,
     role:

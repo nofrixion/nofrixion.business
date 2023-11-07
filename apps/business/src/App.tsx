@@ -1,3 +1,4 @@
+import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import LogoNofrixion from './assets/graphics/nofrixion-logo.svg'
@@ -7,7 +8,6 @@ import AppLogout from './lib/auth/AppLogout'
 import { AuthProvider } from './lib/auth/AuthProvider'
 import { ProtectedRoutes } from './lib/auth/ProtectedRoutes'
 import { RoleProtectedRoute } from './lib/auth/RoleProtectedRoute'
-import { LocalUserRoles } from './lib/types/localTypes'
 import { getRoute } from './lib/utils/utils'
 import AccountPayablePage from './pages/accounts-payable/page'
 import AccountReceivablePage from './pages/accounts-receivable/page'

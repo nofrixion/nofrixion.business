@@ -4,7 +4,7 @@ import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-import { LocalPayout } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalUserRoles } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
@@ -54,6 +54,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   selectedPayouts: string[]
   onApproveBatchPayouts: () => void
   payoutsExist: boolean
+  userRole?: LocalUserRoles
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -90,6 +91,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   selectedPayouts,
   onApproveBatchPayouts,
   payoutsExist,
+  userRole,
 }) => {
   const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
 
@@ -122,32 +124,34 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
         <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
           <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Payouts</span>
           <div className="flex">
-            <div className="mr-4">
-              <AnimatePresence>
-                {selectedPayouts && selectedPayouts.length > 1 && (
-                  <LayoutWrapper layout={'preserve-aspect'}>
-                    <Button
-                      variant={'secondary'}
-                      size="large"
-                      onClick={handleApproveBatchPayouts}
-                      className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                      disabled={isApproveButtonDisabled}
-                    >
-                      {isApproveButtonDisabled ? (
-                        <Loader className="h-6 w-6 mx-[77px]" />
-                      ) : (
-                        <>
-                          <Icon name="authorise/16" />
-                          <span className="hidden md:inline-block">
-                            Authorise {selectedPayouts.length} pending
-                          </span>
-                        </>
-                      )}
-                    </Button>
-                  </LayoutWrapper>
-                )}
-              </AnimatePresence>
-            </div>
+            {userRole && userRole >= LocalUserRoles.Approver && (
+              <div className="mr-4">
+                <AnimatePresence>
+                  {selectedPayouts && selectedPayouts.length > 1 && (
+                    <LayoutWrapper layout={'preserve-aspect'}>
+                      <Button
+                        variant={'secondary'}
+                        size="large"
+                        onClick={handleApproveBatchPayouts}
+                        className="space-x-2 w-fit h-10 md:w-full md:h-full transition-all ease-in-out duration-200 disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                        disabled={isApproveButtonDisabled}
+                      >
+                        {isApproveButtonDisabled ? (
+                          <Loader className="h-6 w-6 mx-[77px]" />
+                        ) : (
+                          <>
+                            <Icon name="authorise/16" />
+                            <span className="hidden md:inline-block">
+                              Authorise {selectedPayouts.length} pending
+                            </span>
+                          </>
+                        )}
+                      </Button>
+                    </LayoutWrapper>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
             <Button size="large" onClick={onCreatePayout} className="w-10 h-10 md:w-full md:h-full">
               <span className="hidden md:inline-block">Create payout</span>
               <Icon name="add/16" className="md:hidden" />
@@ -251,6 +255,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             selectedPayouts={selectedPayouts}
             payoutsExist={payoutsExist}
             isLoadingMetrics={isLoadingMetrics}
+            userRole={userRole}
           />
         </div>
 

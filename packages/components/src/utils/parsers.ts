@@ -54,6 +54,7 @@ import {
   LocalTag,
   LocalTransaction,
   LocalUser,
+  LocalUserRoles,
 } from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
@@ -772,10 +773,26 @@ const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
   })
 }
 
+const parseApiUserRoleToLocalUserRole = (remoteUserRole: UserRoles | undefined): LocalUserRoles => {
+  switch (remoteUserRole) {
+    case UserRoles.User:
+      return LocalUserRoles.User
+    case UserRoles.Approver:
+      return LocalUserRoles.Approver
+    case UserRoles.AdminApprover:
+      return LocalUserRoles.AdminApprover
+    case UserRoles.PaymentRequestor:
+      return LocalUserRoles.PaymentRequestor
+    default:
+      return LocalUserRoles.NewlyRegistered
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
+  parseApiUserRoleToLocalUserRole,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
   periodicBalancesToChartPoints,

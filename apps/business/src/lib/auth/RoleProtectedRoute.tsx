@@ -1,7 +1,7 @@
+import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Outlet } from 'react-router-dom'
 
 import useUserStore from '../stores/useUserStore'
-import { LocalUserRoles } from '../types/localTypes'
 
 export interface RoleRouteProps {
   minimumRequiredRole?: LocalUserRoles

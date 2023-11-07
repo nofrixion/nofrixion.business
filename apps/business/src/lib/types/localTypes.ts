@@ -32,22 +32,6 @@ export interface Merchant {
   paymentAccounts: any[] // TODO: Add type
 }
 
-export interface LocalUser {
-  id: string
-  emailAddress: string
-  firstName: string
-  lastName: string
-  role: LocalUserRoles
-}
-
-export enum LocalUserRoles {
-  NewlyRegistered = 1,
-  PaymentRequestor = 2,
-  User = 3,
-  Approver = 4,
-  AdminApprover = 5,
-}
-
 export interface Account {
   id: string
   merchantID: string

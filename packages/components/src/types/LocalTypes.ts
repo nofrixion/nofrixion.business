@@ -272,6 +272,7 @@ export interface LocalUser {
   firstName: string
   lastName: string
   email: string
+  role?: LocalUserRoles
 }
 
 export enum LocalPaymentProcessor {
@@ -323,4 +324,12 @@ export interface LocalAccountMetrics {
 export interface LocalPeriodicBalance {
   balanceAt: Date
   balance: number
+}
+
+export enum LocalUserRoles {
+  NewlyRegistered = 1,
+  PaymentRequestor = 2,
+  User = 3,
+  Approver = 4,
+  AdminApprover = 5,
 }

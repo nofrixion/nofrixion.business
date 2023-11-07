@@ -1,9 +1,10 @@
+import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
+
 import IconAccountsPayable from '../assets/icons/accounts-payable.svg'
 import IconAccountsReceivable from '../assets/icons/accounts-receivable.svg'
 import IconCurrentAccounts from '../assets/icons/current-accounts.svg'
 import IconDashboard from '../assets/icons/dashboard.svg'
 import IconPayouts from '../assets/icons/payouts.svg'
-import { LocalUserRoles } from './types/localTypes'
 import { getRoute } from './utils/utils'
 
 const NOFRIXION_API_URL = '/api'
