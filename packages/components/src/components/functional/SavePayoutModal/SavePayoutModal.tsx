@@ -66,6 +66,7 @@ const SavePayoutModal = ({
     createAndApprove?: boolean,
     scheduled?: boolean,
     scheduleDate?: Date,
+    beneficiaryID?: string,
   ) => {
     const payoutCreate: PayoutCreate = {
       accountID: sourceAccount.id,
@@ -82,6 +83,7 @@ const SavePayoutModal = ({
       allowIncomplete: false,
       scheduled: scheduled,
       scheduleDate: scheduleDate,
+      beneficiaryID: beneficiaryID,
     }
 
     const response = await createPayout(payoutCreate)
@@ -117,6 +119,7 @@ const SavePayoutModal = ({
     createAndApprove?: boolean,
     scheduled?: boolean,
     scheduleDate?: Date,
+    beneficiaryID?: string,
   ) => {
     if (!selectedPayout?.id) {
       makeToast('error', 'Must select a payout to edit.')
@@ -138,6 +141,7 @@ const SavePayoutModal = ({
       currency: sourceAccount.currency,
       scheduled: scheduled,
       scheduleDate: scheduleDate,
+      beneficiaryID: beneficiaryID,
     }
 
     const response = await updatePayout(payoutUpdate)
@@ -156,7 +160,7 @@ const SavePayoutModal = ({
       <UISavePayoutModal
         onDismiss={onDismiss}
         isOpen={isOpen}
-        onCreatePayout={selectedPayout ? onUpdatePayout : onCreatePayout}
+        onSavePayout={selectedPayout ? onUpdatePayout : onCreatePayout}
         accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
         beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
         selectedPayout={selectedPayout}

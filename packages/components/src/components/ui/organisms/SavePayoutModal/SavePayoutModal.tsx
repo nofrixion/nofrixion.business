@@ -1,5 +1,5 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
-import { addDays, format, startOfDay } from 'date-fns'
+import { addDays, format, parseISO, startOfDay } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -23,7 +23,7 @@ import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/Sele
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
 export interface SavePayoutModalProps {
-  onCreatePayout: (
+  onSavePayout: (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
     amount: number,
@@ -33,6 +33,7 @@ export interface SavePayoutModalProps {
     createAndApprove?: boolean,
     scheduled?: boolean,
     scheduleDate?: Date,
+    beneficiaryID?: string,
   ) => Promise<void>
   onDismiss: () => void
   accounts: LocalAccount[]
@@ -42,7 +43,7 @@ export interface SavePayoutModalProps {
 }
 
 const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
-  onCreatePayout,
+  onSavePayout,
   onDismiss,
   accounts,
   beneficiaries,
@@ -102,7 +103,9 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
           .filter((value, index, self) => self.indexOf(value) === index)[0]
       : undefined
 
-  const [currency, setCurrency] = useState<Currency | undefined>(singleCurrency)
+  const [currency, setCurrency] = useState<Currency | undefined>(
+    singleCurrency !== undefined ? singleCurrency : Currency.EUR,
+  )
 
   const [selectedAccount, setSelectedAccount] = useState<LocalAccount | undefined>(
     accounts?.filter((x) => x.currency === currency)[0],
@@ -114,10 +117,29 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setTheirReference(selectedPayout?.theirReference)
     setYourReference(selectedPayout?.yourReference)
     setDescription(selectedPayout?.description)
-    setDestinationAccountName(selectedPayout?.destination?.name)
-    setDestinationAccountIBAN(selectedPayout?.destination?.identifier?.iban)
-    setDestinationAccountNumber(selectedPayout?.destination?.identifier?.accountNumber)
-    setDestinationAccountSortCode(selectedPayout?.destination?.identifier?.sortCode)
+
+    if (selectedPayout) {
+      if (selectedPayout.beneficiaryID) {
+        handleBeneficiaryOnChange(selectedPayout.beneficiaryID)
+      } else {
+        handleBeneficiaryOnChange('addManually')
+        setDestinationAccountName(selectedPayout?.destination?.name)
+        setDestinationAccountIBAN(selectedPayout?.destination?.identifier?.iban)
+        setDestinationAccountNumber(selectedPayout?.destination?.identifier?.accountNumber)
+        setDestinationAccountSortCode(selectedPayout?.destination?.identifier?.sortCode)
+      }
+    } else {
+      setSelectedBeneficiary(undefined)
+      setAddManuallySelected(false)
+    }
+
+    setSelectedScheduleOption(selectedPayout?.scheduled ? 'choose-date' : 'immediately')
+    onDateChange(
+      selectedPayout?.scheduled && selectedPayout?.scheduleDate
+        ? parseISO(selectedPayout.scheduleDate.toString())
+        : addDays(new Date(), 1),
+    )
+
     const selectedAccount = getAccountFromCurrencyOrExistingPayout()
     setSelectedAccount(selectedAccount)
     validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
@@ -271,7 +293,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
         },
       }
 
-      await onCreatePayout(
+      await onSavePayout(
         selectedAccount!,
         counterParty,
         parsedAmount,
@@ -281,6 +303,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
         createAndApprove,
         selectedScheduleOption === 'choose-date',
         scheduleDate,
+        selectedBeneficiary?.id,
       )
 
       setIsCreatePayoutButtonDisabled(false)

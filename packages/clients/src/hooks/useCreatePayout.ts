@@ -28,6 +28,7 @@ const createPayoutAsync = async (
   invoiceID?: string,
   scheduled?: boolean,
   scheduleDate?: Date,
+  beneficiaryID?: string,
 ): Promise<ApiResponse<Payout>> => {
   const payoutClient = new PayoutClient({ apiUrl, authToken })
 
@@ -49,6 +50,7 @@ const createPayoutAsync = async (
     allowIncomplete: allowIncomplete,
     scheduled: scheduled,
     scheduleDate: scheduleDate,
+    beneficiaryID: beneficiaryID,
   }
   const payoutCreateResponse = await payoutClient.create(payoutCreate)
 
@@ -85,6 +87,7 @@ export const useCreatePayout = ({
         variables.invoiceID,
         variables.scheduled,
         variables.scheduleDate,
+        variables.beneficiaryID,
       ),
     onSuccess: (data: ApiResponse<Payout>) => {
       if (data.status === 'success') {
@@ -110,6 +113,7 @@ export const useCreatePayout = ({
       allowIncomplete,
       scheduled,
       scheduleDate,
+      beneficiaryID,
     }: CreatePayoutProps) => {
       const result = await mutation.mutateAsync({
         accountID,
@@ -124,6 +128,7 @@ export const useCreatePayout = ({
         allowIncomplete,
         scheduled,
         scheduleDate,
+        beneficiaryID,
       })
 
       return result

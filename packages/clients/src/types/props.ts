@@ -219,6 +219,7 @@ export interface CreatePayoutProps {
   paymentRequestId?: string
   scheduled?: boolean
   scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export interface PayoutProps {
@@ -265,4 +266,5 @@ export interface UpdatePayoutProps {
   destination?: Counterparty
   scheduled?: boolean
   scheduleDate?: Date
+  beneficiaryID?: string
 }
