@@ -6,9 +6,9 @@ import {
   useBanks,
   useDeleteConnectedAccount,
 } from '@nofrixion/moneymoov'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { redirect, useParams } from 'react-router-dom'
 
 import {
   ErrorType,
@@ -20,12 +20,15 @@ import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcou
 import { Loader } from '../../ui/Loader/Loader'
 import { makeToast } from '../../ui/Toast/Toast'
 
+const queryClient = new QueryClient()
+
 export interface CurrentAccountsListProps {
   merchantId: string
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   token?: string // Example: "eyJhbGciOiJIUz..."
   onUnauthorized?: () => void
   onAccountClick?: (account: Account) => void
+  isWebComponent?: boolean
 }
 
 const CurrentAccountsList = ({
@@ -34,16 +37,19 @@ const CurrentAccountsList = ({
   merchantId,
   onUnauthorized,
   onAccountClick,
+  isWebComponent,
 }: CurrentAccountsListProps) => {
-  const queryClient = useQueryClient()
+  const queryClientToUse = isWebComponent ? queryClient : useQueryClient()
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClientToUse}>
       <CurrentAccountsMain
         token={token}
         merchantId={merchantId}
         apiUrl={apiUrl}
         onUnauthorized={onUnauthorized}
         onAccountClick={onAccountClick}
+        isWebComponent={isWebComponent}
       />
     </QueryClientProvider>
   )
@@ -55,11 +61,11 @@ const CurrentAccountsMain = ({
   merchantId,
   onUnauthorized,
   onAccountClick,
+  isWebComponent,
 }: CurrentAccountsListProps) => {
   const [isConnectingToBank, setIsConnectingToBank] = useState(false)
   const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
   const { userSettings, updateUserSettings } = useUserSettings()
-  const navigate = useNavigate()
 
   const { data: accounts, isLoading: isAccountsLoading } = useAccounts(
     { connectedAccounts: true, merchantId: merchantId },
@@ -112,12 +118,12 @@ const CurrentAccountsMain = ({
   }, [])
 
   useEffect(() => {
-    if (bankId) {
+    if (isWebComponent && bankId) {
       const bank = banks?.find((bank) => bank.bankID === bankId)
 
       if (bank) {
         makeToast('success', `Your ${bank.bankName} connection is ready!`)
-        navigate(getRoute('/home/current-accounts'))
+        redirect(getRoute('/home/current-accounts'))
       }
     }
   }, [bankId, banks])
@@ -232,6 +238,8 @@ const CurrentAccountsMain = ({
           onRenewConnection={handleOnRenewConnection}
           isConnectingToBank={isConnectingToBank}
           onRevokeConnection={handleOnRevokeConnection}
+          // Disable connected accounts if it's a web component
+          areConnectedAccountsEnabled={!isWebComponent}
         />
       )}
     </>

@@ -21,6 +21,7 @@ export interface CurrentAccountsListProps {
   onRevokeConnection?: (account: Account, revokeOnlyThisAccount: boolean) => void
   banks?: BankSettings[]
   isConnectingToBank: boolean
+  areConnectedAccountsEnabled?: boolean
 }
 
 const CurrentAcountsList = ({
@@ -33,6 +34,7 @@ const CurrentAcountsList = ({
   onRevokeConnection,
   banks,
   isConnectingToBank,
+  areConnectedAccountsEnabled = true,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
@@ -91,16 +93,18 @@ const CurrentAcountsList = ({
     <div className="font-inter bg-main-grey text-default-text h-full">
       <div className="flex">
         <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
-        {userSettings?.connectMaybeLater && externalAccounts?.length === 0 && (
-          <Button
-            variant={'secondary'}
-            className="h-fit w-fit ml-auto"
-            onClick={handleOnConnectClicked}
-          >
-            <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
-            Connect external account
-          </Button>
-        )}
+        {areConnectedAccountsEnabled &&
+          userSettings?.connectMaybeLater &&
+          externalAccounts?.length === 0 && (
+            <Button
+              variant={'secondary'}
+              className="h-fit w-fit ml-auto"
+              onClick={handleOnConnectClicked}
+            >
+              <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
+              Connect external account
+            </Button>
+          )}
       </div>
       {internalAccounts && (
         <div className="flex-row mb-8 md:mb-[68px]">
@@ -119,7 +123,7 @@ const CurrentAcountsList = ({
       )}
 
       {/* External accounts list */}
-      {externalAccounts && externalAccounts.length > 0 && (
+      {areConnectedAccountsEnabled && externalAccounts && externalAccounts.length > 0 && (
         <div>
           <div className="flex ml-3 mb-16 items-center">
             <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">
@@ -155,35 +159,41 @@ const CurrentAcountsList = ({
         </div>
       )}
 
-      {!userSettings?.connectMaybeLater && externalAccounts?.length === 0 && (
-        <ExternalAccountConnectCard
-          onConnectClicked={handleOnConnectClicked}
-          onMaybeLater={onMaybeLater}
-          disabled={externalAccountConnectDisabled}
-        />
+      {areConnectedAccountsEnabled &&
+        !userSettings?.connectMaybeLater &&
+        externalAccounts?.length === 0 && (
+          <ExternalAccountConnectCard
+            onConnectClicked={handleOnConnectClicked}
+            onMaybeLater={onMaybeLater}
+            disabled={externalAccountConnectDisabled}
+          />
+        )}
+
+      {areConnectedAccountsEnabled && (
+        <>
+          <ConnectBankModal
+            banks={banks}
+            onApply={handleOnApply}
+            open={isConnectBankModalOpen}
+            onDismiss={handleOnDismiss}
+            isConnectingToBank={isConnectingToBank}
+          />
+
+          <RenewConnectionModal
+            onApply={handleOnRenewConnection}
+            open={isRenewConnectionModalOpen}
+            onDismiss={handleOnDismiss}
+            isConnectingToBank={isConnectingToBank}
+          />
+
+          <RevokeConnectionModal
+            account={selectedAccount}
+            onApply={handleOnRevokeConnection}
+            open={isRevokeConnectionModalOpen}
+            onDismiss={handleOnDismiss}
+          />
+        </>
       )}
-
-      <ConnectBankModal
-        banks={banks}
-        onApply={handleOnApply}
-        open={isConnectBankModalOpen}
-        onDismiss={handleOnDismiss}
-        isConnectingToBank={isConnectingToBank}
-      />
-
-      <RenewConnectionModal
-        onApply={handleOnRenewConnection}
-        open={isRenewConnectionModalOpen}
-        onDismiss={handleOnDismiss}
-        isConnectingToBank={isConnectingToBank}
-      />
-
-      <RevokeConnectionModal
-        account={selectedAccount}
-        onApply={handleOnRevokeConnection}
-        open={isRevokeConnectionModalOpen}
-        onDismiss={handleOnDismiss}
-      />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
     </div>

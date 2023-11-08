@@ -15,7 +15,7 @@ import {
   useVoid,
 } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, set, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
@@ -46,11 +46,14 @@ import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal'
 
+const queryClient = new QueryClient()
+
 export interface PaymentRequestDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
   onUnauthorized: () => void
+  isWebComponent?: boolean
 }
 
 const PaymentRequestDashboard = ({
@@ -58,10 +61,11 @@ const PaymentRequestDashboard = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
+  isWebComponent,
 }: PaymentRequestDashboardProps) => {
-  const queryClient = useQueryClient()
+  const queryClientToUse = isWebComponent ? queryClient : useQueryClient()
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClientToUse}>
       <PaymentRequestDashboardMain
         token={token}
         merchantId={merchantId}
