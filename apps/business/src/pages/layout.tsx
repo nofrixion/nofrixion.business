@@ -1,5 +1,6 @@
 import '../index.css'
 
+import { parseApiUserToLocalUser } from '@nofrixion/components/src/utils/parsers'
 import { useMerchants, useUser } from '@nofrixion/moneymoov'
 import { useEffect } from 'react'
 import { useOutlet } from 'react-router-dom'
@@ -11,10 +12,6 @@ import { useAuth } from '../lib/auth/useAuth'
 import useMerchantsStore from '../lib/stores/useMerchantsStore'
 import useMerchantStore from '../lib/stores/useMerchantStore'
 import useUserStore from '../lib/stores/useUserStore'
-import { parseApiUserToLocalUser } from '../lib/utils/parsers'
-// interface DashboardLayoutProps {
-//   children: React.ReactNode
-// }
 
 const Layout = () => {
   const { merchants, setMerchants } = useMerchantsStore()

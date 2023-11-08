@@ -295,7 +295,7 @@ const PayoutDashboardMain = ({
         userResponse.data.roles.filter((r) => r.merchantID === merchantId)[0].roleType,
       )
 
-      setIsUserAuthoriser(userRole >= LocalUserRoles.Approver)
+      setIsUserAuthoriser(userRole ? userRole >= LocalUserRoles.Approver : false)
     } else if (userResponse?.status === 'error') {
       console.log('Error fetching user', userResponse.error)
     }
@@ -479,6 +479,7 @@ const PayoutDashboardMain = ({
         maxAmountFilter={maxAmountFilter}
         tagsFilter={tagsFilter}
         merchantTags={localMerchantTags}
+        isUserAuthoriser={isUserAuthoriser}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (

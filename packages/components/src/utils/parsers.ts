@@ -370,16 +370,6 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
-  const parseApiUserToLocalUser = (remoteUser: User): LocalUser => {
-    const { id, emailAddress, firstName, lastName } = remoteUser
-    return {
-      id: id,
-      email: emailAddress,
-      firstName: firstName,
-      lastName: lastName,
-    }
-  }
-
   return {
     id: remotePaymentRequest.id,
     status: parseApiStatusToLocalStatus(status),
@@ -421,6 +411,20 @@ const remotePaymentRequestToLocalPaymentRequest = (
       : undefined,
     merchantTokenDescription: remotePaymentRequest.merchantTokenDescription,
     remoteStatus: remotePaymentRequest.status,
+  }
+}
+
+const parseApiUserToLocalUser = (remoteUser: User, merchantId?: string): LocalUser => {
+  const { id, emailAddress, firstName, lastName } = remoteUser
+  return {
+    id: id,
+    email: emailAddress,
+    firstName: firstName,
+    lastName: lastName,
+    role:
+      parseApiUserRoleToLocalUserRole(
+        remoteUser.roles.find((role) => role.merchantID === merchantId)?.roleType,
+      ) ?? LocalUserRoles.NewlyRegistered,
   }
 }
 
@@ -793,6 +797,7 @@ export {
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
   parseApiUserRoleToLocalUserRole,
+  parseApiUserToLocalUser,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
   periodicBalancesToChartPoints,
