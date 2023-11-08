@@ -30,7 +30,9 @@ export const App = () => {
             <Route path={getRoute('/')} element={<HomeUI />} />
             <Route element={<ProtectedRoutes />}>
               <Route path={getRoute('/home')} element={<Layout />}>
-                <Route index element={<DashboardPage />} />
+                <Route element={<RoleProtectedRoute />}>
+                  <Route index element={<DashboardPage />} />
+                </Route>
                 {/* Accounts payable */}
                 <Route element={<RoleProtectedRoute />}>
                   <Route path="accounts-payable" element={<AccountPayablePage />} />
