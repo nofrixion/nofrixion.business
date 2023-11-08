@@ -1,5 +1,5 @@
 ﻿import { Currency } from '@nofrixion/moneymoov'
-import { addDays, format, parseISO, startOfDay } from 'date-fns'
+import { addDays, format, isEqual, parseISO, startOfDay } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -89,6 +89,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
   const [selectedScheduleOption, setSelectedScheduleOption] = useState('immediately')
   const [scheduleDate, setScheduleDate] = useState<Date | undefined>(addDays(new Date(), 1))
+  const [changesMade, setChangesMade] = useState<boolean>(false)
 
   useEffect(() => {
     if (!isOpen) {
@@ -146,6 +147,60 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setSelectedAccount(selectedAccount)
     validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
   }, [selectedPayout])
+
+  // Checks if changes have been made when in Edit mode
+  useEffect(() => {
+    let noChanges =
+      selectedAccount?.id === selectedPayout?.accountID &&
+      payoutAmount === selectedPayout?.amount?.toString() &&
+      theirReference === selectedPayout?.theirReference &&
+      yourReference === selectedPayout?.yourReference &&
+      description === selectedPayout?.description &&
+      selectedScheduleOption === (selectedPayout?.scheduled ? 'choose-date' : 'immediately')
+
+    if (selectedPayout?.beneficiaryID) {
+      noChanges = noChanges && selectedPayout?.beneficiaryID === selectedBeneficiary?.id
+    } else {
+      noChanges =
+        noChanges &&
+        (selectedPayout?.destination?.name ? selectedPayout?.destination?.name : '') ===
+          destinationAccountName
+      if (currency === Currency.EUR) {
+        noChanges =
+          noChanges && selectedPayout?.destination?.identifier?.iban === destinationAccountIBAN
+      } else if (currency === Currency.GBP) {
+        noChanges =
+          noChanges &&
+          selectedPayout?.destination?.identifier?.accountNumber === destinationAccountNumber
+        noChanges =
+          noChanges &&
+          selectedPayout?.destination?.identifier?.sortCode === destinationAccountSortCode
+      }
+    }
+
+    if (selectedScheduleOption === 'choose-date') {
+      noChanges =
+        noChanges &&
+        ((!selectedPayout?.scheduleDate && !scheduleDate) ||
+          isEqual(parseISO(selectedPayout!.scheduleDate!.toString()), scheduleDate!))
+    }
+
+    setChangesMade(!selectedPayout || !noChanges)
+  }, [
+    selectedPayout,
+    selectedAccount,
+    payoutAmount,
+    theirReference,
+    yourReference,
+    description,
+    destinationAccountName,
+    destinationAccountIBAN,
+    destinationAccountNumber,
+    destinationAccountSortCode,
+    selectedBeneficiary,
+    selectedScheduleOption,
+    scheduleDate,
+  ])
 
   const theirReferenceMaxLength = currency === Currency.EUR ? 139 : 17
 
@@ -488,11 +543,21 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     <>
       {accounts && (
         <Sheet open={isOpen} onOpenChange={handleOnOpenChange}>
-          <SheetContent className="w-full lg:w-[37.5rem]">
+          <SheetContent
+            className="w-full lg:w-[37.5rem]"
+            onOpenAutoFocus={(event) => {
+              event.preventDefault()
+            }}
+          >
             <div className="bg-white h-screen overflow-auto lg:w-[37.5rem] px-8 py-8">
               <div className="h-fit mb-[7.5rem] lg:mb-0">
                 {selectedPayout && (
-                  <button type="button" className="hover:cursor-pointer block" onClick={onDismiss}>
+                  <button
+                    type="button"
+                    className="hover:cursor-pointer block"
+                    onClick={onDismiss}
+                    tabIndex={-1}
+                  >
                     <Icon name="back/24" />
                   </button>
                 )}
@@ -793,16 +858,17 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                       size="large"
                       className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
                       onClick={() => onCreatePayoutClick(true)}
-                      disabled={isCreateAndApproveButtonDisabled}
+                      disabled={isCreateAndApproveButtonDisabled || !changesMade}
                     >
-                      {isCreateAndApproveButtonDisabled ? (
+                      {!changesMade ? (
+                        <span>No changes made</span>
+                      ) : isCreateAndApproveButtonDisabled ? (
                         <Loader className="h-6 w-6 mx-auto" />
                       ) : (
                         <span>{selectedPayout ? 'Save changes' : 'Create and authorise'}</span>
                       )}
                     </Button>
                   )}
-                  
 
                   {!selectedPayout && (
                     <Button
