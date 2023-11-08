@@ -19,10 +19,10 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useRef, useState } from 'react'
 
-import { ApproveType, LocalPayout, LocalTag, LocalUserRoles } from '../../../types/LocalTypes'
+import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
 import {
   parseApiTagToLocalTag,
-  parseApiUserRoleToLocalUserRole,
+  parseApiUserToLocalUser,
   remoteAccountsToLocalAccounts,
   remoteBeneficiariesToLocalBeneficiaries,
   remotePayoutsToLocal,
@@ -291,11 +291,9 @@ const PayoutDashboardMain = ({
 
   useEffect(() => {
     if (userResponse?.status === 'success') {
-      const userRole = parseApiUserRoleToLocalUserRole(
-        userResponse.data.roles.filter((r) => r.merchantID === merchantId)[0].roleType,
-      )
+      const user = parseApiUserToLocalUser(userResponse.data, merchantId)
 
-      setIsUserAuthoriser(userRole ? userRole >= LocalUserRoles.Approver : false)
+      setIsUserAuthoriser(user.isAuthoriser)
     } else if (userResponse?.status === 'error') {
       console.log('Error fetching user', userResponse.error)
     }

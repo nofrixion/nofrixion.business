@@ -416,15 +416,19 @@ const remotePaymentRequestToLocalPaymentRequest = (
 
 const parseApiUserToLocalUser = (remoteUser: User, merchantId?: string): LocalUser => {
   const { id, emailAddress, firstName, lastName } = remoteUser
+  const userRole =
+    parseApiUserRoleToLocalUserRole(
+      remoteUser.roles.find((role) => role.merchantID === merchantId)?.roleType,
+    ) ?? LocalUserRoles.NewlyRegistered
+
   return {
     id: id,
     email: emailAddress,
     firstName: firstName,
     lastName: lastName,
-    role:
-      parseApiUserRoleToLocalUserRole(
-        remoteUser.roles.find((role) => role.merchantID === merchantId)?.roleType,
-      ) ?? LocalUserRoles.NewlyRegistered,
+    role: userRole,
+    isAdmin: userRole >= LocalUserRoles.AdminApprover,
+    isAuthoriser: userRole >= LocalUserRoles.Approver,
   }
 }
 

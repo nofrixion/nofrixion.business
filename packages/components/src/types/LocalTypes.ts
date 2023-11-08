@@ -273,6 +273,8 @@ export interface LocalUser {
   lastName: string
   email: string
   role?: LocalUserRoles
+  isAdmin: boolean
+  isAuthoriser: boolean
 }
 
 export enum LocalPaymentProcessor {

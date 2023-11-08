@@ -8,7 +8,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@nofrixion/components/src/components/ui/atoms/DropDown/DropDown'
-import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -116,7 +115,7 @@ const UserNav = () => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           )}
-          {user?.role && user?.role >= LocalUserRoles.AdminApprover && (
+          {user?.role && user?.isAdmin && (
             <DropdownMenuItem
               onSelect={() => navigate('users')}
               disabled={currentRoute.indexOf('/home/users') !== -1}
