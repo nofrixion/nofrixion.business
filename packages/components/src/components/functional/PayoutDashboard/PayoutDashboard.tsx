@@ -492,6 +492,7 @@ const PayoutDashboardMain = ({
             setCreatePayoutClicked(false)
           }}
           merchantId={merchantId}
+          isUserAuthoriser={isUserAuthoriser}
         />
       )}
 
