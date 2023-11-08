@@ -20,6 +20,7 @@ export interface CreatePayoutModalProps {
   accounts: LocalAccount[]
   beneficiaries: LocalBeneficiary[]
   onDismiss: () => void // Callback function that will be called when the modal is asked to be closed.
+  isUserAuthoriser: boolean
 }
 
 const CreatePayoutModal = ({
@@ -29,6 +30,7 @@ const CreatePayoutModal = ({
   onDismiss,
   accounts,
   beneficiaries,
+  isUserAuthoriser,
 }: CreatePayoutModalProps) => {
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
 
@@ -105,6 +107,7 @@ const CreatePayoutModal = ({
         onCreatePayout={onCreatePayout}
         accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
         beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
+        isUserAuthoriser={isUserAuthoriser}
       />
 
       {payoutID && (
