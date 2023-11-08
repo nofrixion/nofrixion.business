@@ -1,6 +1,7 @@
 import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Outlet, useNavigate } from 'react-router-dom'
 
+import { Loader } from '../../components/ui/Loader/Loader'
 import useUserStore from '../stores/useUserStore'
 
 export interface RoleRouteProps {
@@ -12,6 +13,10 @@ export const RoleProtectedRoute = ({
 }: RoleRouteProps) => {
   const { user } = useUserStore()
   const navigate = useNavigate()
+
+  if (!user) {
+    return <Loader className="flex items-center justify-center p-24 min-h-screen" />
+  }
 
   if (user?.role && user?.role >= minimumRequiredRole) {
     // User has access to this route
