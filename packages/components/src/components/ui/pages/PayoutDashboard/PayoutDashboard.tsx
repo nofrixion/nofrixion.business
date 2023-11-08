@@ -4,7 +4,7 @@ import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-import { LocalPayout, LocalUserRoles } from '../../../../types/LocalTypes'
+import { LocalPayout } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
@@ -54,7 +54,7 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   selectedPayouts: string[]
   onApproveBatchPayouts: () => void
   payoutsExist: boolean
-  userRole?: LocalUserRoles
+  isUserAuthoriser: boolean
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -91,7 +91,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   selectedPayouts,
   onApproveBatchPayouts,
   payoutsExist,
-  userRole,
+  isUserAuthoriser,
 }) => {
   const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
 
@@ -124,7 +124,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
         <div className="flex gap-8 justify-between items-center mb-8 md:mb-[68px] md:px-4">
           <span className="leading-8 font-medium text-2xl md:text-[1.75rem]">Payouts</span>
           <div className="flex">
-            {userRole && userRole >= LocalUserRoles.Approver && (
+            {isUserAuthoriser && (
               <div className="mr-4">
                 <AnimatePresence>
                   {selectedPayouts && selectedPayouts.length > 1 && (
@@ -255,7 +255,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             selectedPayouts={selectedPayouts}
             payoutsExist={payoutsExist}
             isLoadingMetrics={isLoadingMetrics}
-            userRole={userRole}
+            isUserAuthoriser={isUserAuthoriser}
           />
         </div>
 

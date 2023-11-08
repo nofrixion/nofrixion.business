@@ -107,7 +107,7 @@ const PayoutDashboardMain = ({
   const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
   const authoriseFormRef = useRef<HTMLFormElement>(null)
-  const [userRole, setUserRole] = useState<LocalUserRoles | undefined>(undefined)
+  const [isUserAuthoriser, setIsUserAuthoriser] = useState<boolean>(false)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -291,11 +291,11 @@ const PayoutDashboardMain = ({
 
   useEffect(() => {
     if (userResponse?.status === 'success') {
-      setUserRole(
-        parseApiUserRoleToLocalUserRole(
-          userResponse.data.roles.filter((r) => r.merchantID === merchantId)[0].roleType,
-        ),
+      const userRole = parseApiUserRoleToLocalUserRole(
+        userResponse.data.roles.filter((r) => r.merchantID === merchantId)[0].roleType,
       )
+
+      setIsUserAuthoriser(userRole >= LocalUserRoles.Approver)
     } else if (userResponse?.status === 'error') {
       console.log('Error fetching user', userResponse.error)
     }
@@ -455,7 +455,7 @@ const PayoutDashboardMain = ({
         selectedPayouts={selectedPayouts}
         onApproveBatchPayouts={onApproveBatchPayouts}
         payoutsExist={payoutsExists}
-        userRole={userRole}
+        isUserAuthoriser={isUserAuthoriser}
       />
 
       <PayoutDetailsModal
