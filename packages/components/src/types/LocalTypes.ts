@@ -326,6 +326,8 @@ export interface LocalPeriodicBalance {
   balance: number
 }
 
+// This isn't an exact copy of the enum in the API.
+// The roles are sorted in order of least to most privileged.
 export enum LocalUserRoles {
   NewlyRegistered = 1,
   PaymentRequestor = 2,
