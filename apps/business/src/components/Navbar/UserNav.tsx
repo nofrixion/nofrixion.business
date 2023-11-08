@@ -115,7 +115,7 @@ const UserNav = () => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           )}
-          {user?.role && user?.isAdmin && (
+          {user?.isAdmin && (
             <DropdownMenuItem
               onSelect={() => navigate('users')}
               disabled={currentRoute.indexOf('/home/users') !== -1}
