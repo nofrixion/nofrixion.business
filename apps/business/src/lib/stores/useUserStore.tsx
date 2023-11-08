@@ -1,15 +1,14 @@
+import { LocalUser } from '@nofrixion/components/src/types/LocalTypes'
 import { create } from 'zustand'
 
-import { User } from '../types/localTypes'
-
 type UserStore = {
-  user?: User
-  setUser: (user: User) => void
+  user?: LocalUser
+  setUser: (user: LocalUser) => void
 }
 
 const useUserStore = create<UserStore>()((set) => ({
   user: undefined,
-  setUser: (user: User) => set(() => ({ user })),
+  setUser: (user: LocalUser) => set(() => ({ user })),
 }))
 
 export default useUserStore

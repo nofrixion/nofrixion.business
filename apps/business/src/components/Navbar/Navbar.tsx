@@ -11,6 +11,7 @@ import IconNoFrixion from '../../assets/icons/nofrixion-long.svg'
 import IconSort from '../../assets/icons/sort.svg'
 import UserNav from '../../components/Navbar/UserNav'
 import { navItems } from '../../lib/constants'
+import useUserStore from '../../lib/stores/useUserStore'
 import { cn } from '../../lib/utils/utils'
 import { PRReview } from '../ui/PRReview'
 import NavItem from './NavbarItem'
@@ -18,6 +19,7 @@ import NavItem from './NavbarItem'
 const Navbar = () => {
   const currentRoute = useLocation().pathname
   const navigate = useNavigate()
+  const { user } = useUserStore()
 
   const commonCss = 'data-[highlighted]:text-nav-accent focus:text-nav-accent'
 
@@ -28,9 +30,11 @@ const Navbar = () => {
   return (
     <nav className="flex text-white bg-dark-bg h-20 pl-8 md:pl-14 w-full">
       <div className="hidden xl:flex">
-        {navItems.map((item) => {
-          return <NavItem key={item.href} isActive={checkIfItemIsCurrentRoute(item)} {...item} />
-        })}
+        {navItems
+          .filter((item) => user?.role && user?.role >= item.minimumRequiredRole)
+          .map((item) => {
+            return <NavItem key={item.href} isActive={checkIfItemIsCurrentRoute(item)} {...item} />
+          })}
       </div>
       <div className="flex xl:hidden">
         <DropdownMenu>
@@ -52,7 +56,9 @@ const Navbar = () => {
               className="mx-6 min-w-[140px] bg-dark-bg rounded-lg text-white"
             >
               {navItems
-                .filter((item) => !item.isHidden)
+                .filter(
+                  (item) => !item.isHidden && user?.role && user?.role >= item.minimumRequiredRole,
+                )
                 .map((item) => {
                   return (
                     <DropdownMenuItem

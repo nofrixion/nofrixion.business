@@ -27,6 +27,7 @@ export interface SavePayoutModalProps {
   accounts: LocalAccount[]
   beneficiaries: LocalBeneficiary[]
   onDismiss: () => void // Callback function that will be called when the modal is asked to be closed.
+  isUserAuthoriser: boolean
   selectedPayout?: LocalPayout // Payout that's been currently edited. This serves as a create/edit toggle.
 }
 
@@ -37,6 +38,7 @@ const SavePayoutModal = ({
   onDismiss,
   accounts,
   beneficiaries,
+  isUserAuthoriser,
   selectedPayout,
 }: SavePayoutModalProps) => {
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
@@ -163,6 +165,7 @@ const SavePayoutModal = ({
         onSavePayout={selectedPayout ? onUpdatePayout : onCreatePayout}
         accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
         beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
+        isUserAuthoriser={isUserAuthoriser}
         selectedPayout={selectedPayout}
       />
 

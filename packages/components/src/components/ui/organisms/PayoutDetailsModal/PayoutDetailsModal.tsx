@@ -20,6 +20,7 @@ export interface PayoutDetailsModalProps {
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
   onScheduleCancelled: () => void
+  isUserAuthoriser: boolean
   onEdit: () => void
 }
 
@@ -32,6 +33,7 @@ const PayoutDetailsModal = ({
   onTagRemoved,
   onTagCreated,
   onScheduleCancelled,
+  isUserAuthoriser,
   onEdit,
 }: PayoutDetailsModalProps) => {
   const handleOnOpenChange = (open: boolean) => {
@@ -60,12 +62,14 @@ const PayoutDetailsModal = ({
                       Edit payout
                     </Button>
                   </div>
-                  <div className="mt-4 mr-8">
-                    {payout && <PayoutAuthoriseForm id={payout?.id} size={'medium'} />}
+                  <div className="mt-4">
+                    {isUserAuthoriser && payout && (
+                      <PayoutAuthoriseForm id={payout?.id} size={'medium'} />
+                    )}
                   </div>
                 </div>
               )}
-              {payout && payout.status === PayoutStatus.SCHEDULED && (
+              {isUserAuthoriser && payout && payout.status === PayoutStatus.SCHEDULED && (
                 <div className="flex bg-main-grey h-[72px] justify-end space-x-4 pr-8">
                   <div className="mt-4">
                     <ConfrimButton

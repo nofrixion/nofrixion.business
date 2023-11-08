@@ -38,6 +38,7 @@ export interface PayoutDetailsModalProps {
   maxAmountFilter?: number
   tagsFilter?: string[]
   merchantTags: LocalTag[]
+  isUserAuthoriser: boolean
   onEdit: () => void
 }
 
@@ -63,6 +64,7 @@ const PayoutDetailsModal = ({
   maxAmountFilter,
   tagsFilter,
   merchantTags,
+  isUserAuthoriser,
   onEdit,
 }: PayoutDetailsModalProps) => {
   const [payout, setPayout] = useState<LocalPayout | undefined>(undefined)
@@ -197,6 +199,7 @@ const PayoutDetailsModal = ({
       payout={payout}
       merchantTags={merchantTags}
       onScheduleCancelled={onScheduleCancelled}
+      isUserAuthoriser={isUserAuthoriser}
       onEdit={onEdit}
     />
   )

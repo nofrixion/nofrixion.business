@@ -273,6 +273,9 @@ export interface LocalUser {
   firstName: string
   lastName: string
   email: string
+  role?: LocalUserRoles
+  isAdmin: boolean
+  isAuthoriser: boolean
 }
 
 export enum LocalPaymentProcessor {
@@ -324,4 +327,14 @@ export interface LocalAccountMetrics {
 export interface LocalPeriodicBalance {
   balanceAt: Date
   balance: number
+}
+
+// This isn't an exact copy of the enum in the API.
+// The roles are sorted in order of least to most privileged.
+export enum LocalUserRoles {
+  NewlyRegistered = 1,
+  PaymentRequestor = 2,
+  User = 3,
+  Approver = 4,
+  AdminApprover = 5,
 }

@@ -39,6 +39,7 @@ export interface SavePayoutModalProps {
   accounts: LocalAccount[]
   isOpen: boolean
   beneficiaries: LocalBeneficiary[]
+  isUserAuthoriser: boolean
   selectedPayout?: LocalPayout
 }
 
@@ -48,6 +49,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   accounts,
   beneficiaries,
   isOpen,
+  isUserAuthoriser,
   selectedPayout,
 }) => {
   const [isCreatePayoutButtonDisabled, setIsCreatePayoutButtonDisabled] = useState(false)
@@ -785,19 +787,22 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                   <div className="mb-4">
                     <ValidationMessage label="form" variant="error" message={formError} />
                   </div>
-                  <Button
-                    variant="primaryDark"
-                    size="large"
-                    className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                    onClick={() => onCreatePayoutClick(true)}
-                    disabled={isCreateAndApproveButtonDisabled}
-                  >
-                    {isCreateAndApproveButtonDisabled ? (
-                      <Loader className="h-6 w-6 mx-auto" />
-                    ) : (
-                      <span>{selectedPayout ? 'Save changes' : 'Create and authorise'}</span>
-                    )}
-                  </Button>
+                  {isUserAuthoriser && (
+                    <Button
+                      variant="primaryDark"
+                      size="large"
+                      className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                      onClick={() => onCreatePayoutClick(true)}
+                      disabled={isCreateAndApproveButtonDisabled}
+                    >
+                      {isCreateAndApproveButtonDisabled ? (
+                        <Loader className="h-6 w-6 mx-auto" />
+                      ) : (
+                        <span>{selectedPayout ? 'Save changes' : 'Create and authorise'}</span>
+                      )}
+                    </Button>
+                  )}
+                  
 
                   {!selectedPayout && (
                     <Button
