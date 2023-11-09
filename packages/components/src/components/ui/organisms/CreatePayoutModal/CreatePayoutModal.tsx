@@ -33,6 +33,7 @@ export interface CreatePayoutModalProps {
   accounts: LocalAccount[]
   isOpen: boolean
   beneficiaries: LocalBeneficiary[]
+  isUserAuthoriser: boolean
 }
 
 const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
@@ -41,6 +42,7 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
   accounts,
   beneficiaries,
   isOpen,
+  isUserAuthoriser,
 }) => {
   const [isCreatePayoutButtonDisabled, setIsCreatePayoutButtonDisabled] = useState(false)
   const [isCreateAndApproveButtonDisabled, setIsCreateAndApproveButtonDisabled] = useState(false)
@@ -717,19 +719,21 @@ const CreatePayoutModal: React.FC<CreatePayoutModalProps> = ({
                   <div className="mb-4">
                     <ValidationMessage label="form" variant="error" message={formError} />
                   </div>
-                  <Button
-                    variant="primaryDark"
-                    size="large"
-                    className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                    onClick={() => onCreatePayoutClick(true)}
-                    disabled={isCreateAndApproveButtonDisabled}
-                  >
-                    {isCreateAndApproveButtonDisabled ? (
-                      <Loader className="h-6 w-6 mx-auto" />
-                    ) : (
-                      <span>Create and authorise</span>
-                    )}
-                  </Button>
+                  {isUserAuthoriser && (
+                    <Button
+                      variant="primaryDark"
+                      size="large"
+                      className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                      onClick={() => onCreatePayoutClick(true)}
+                      disabled={isCreateAndApproveButtonDisabled}
+                    >
+                      {isCreateAndApproveButtonDisabled ? (
+                        <Loader className="h-6 w-6 mx-auto" />
+                      ) : (
+                        <span>Create and authorise</span>
+                      )}
+                    </Button>
+                  )}
                   <Button
                     variant="secondary"
                     size="large"

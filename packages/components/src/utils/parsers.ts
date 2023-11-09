@@ -54,6 +54,7 @@ import {
   LocalTag,
   LocalTransaction,
   LocalUser,
+  LocalUserRoles,
 } from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
@@ -369,16 +370,6 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
-  const parseApiUserToLocalUser = (remoteUser: User): LocalUser => {
-    const { id, emailAddress, firstName, lastName } = remoteUser
-    return {
-      id: id,
-      email: emailAddress,
-      firstName: firstName,
-      lastName: lastName,
-    }
-  }
-
   return {
     id: remotePaymentRequest.id,
     status: parseApiStatusToLocalStatus(status),
@@ -420,6 +411,24 @@ const remotePaymentRequestToLocalPaymentRequest = (
       : undefined,
     merchantTokenDescription: remotePaymentRequest.merchantTokenDescription,
     remoteStatus: remotePaymentRequest.status,
+  }
+}
+
+const parseApiUserToLocalUser = (remoteUser: User, merchantId?: string): LocalUser => {
+  const { id, emailAddress, firstName, lastName } = remoteUser
+  const userRole =
+    parseApiUserRoleToLocalUserRole(
+      remoteUser.roles.find((role) => role.merchantID === merchantId)?.roleType,
+    ) ?? LocalUserRoles.NewlyRegistered
+
+  return {
+    id: id,
+    email: emailAddress,
+    firstName: firstName,
+    lastName: lastName,
+    role: userRole,
+    isAdmin: userRole >= LocalUserRoles.AdminApprover,
+    isAuthoriser: userRole >= LocalUserRoles.Approver,
   }
 }
 
@@ -772,10 +781,27 @@ const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
   })
 }
 
+const parseApiUserRoleToLocalUserRole = (remoteUserRole: UserRoles | undefined): LocalUserRoles => {
+  switch (remoteUserRole) {
+    case UserRoles.User:
+      return LocalUserRoles.User
+    case UserRoles.Approver:
+      return LocalUserRoles.Approver
+    case UserRoles.AdminApprover:
+      return LocalUserRoles.AdminApprover
+    case UserRoles.PaymentRequestor:
+      return LocalUserRoles.PaymentRequestor
+    default:
+      return LocalUserRoles.NewlyRegistered
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
+  parseApiUserRoleToLocalUserRole,
+  parseApiUserToLocalUser,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
   periodicBalancesToChartPoints,
