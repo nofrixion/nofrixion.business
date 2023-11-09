@@ -35,7 +35,7 @@ const Card: React.FC<CardProps> = ({
     >
       <div className="flex justify-between">
         {(title || subtext) && (
-          <div className="flex gap-10">
+          <div className="flex gap-6 sm:gap-10 flex-col sm:flex-row">
             <div className="flex flex-col">
               {title && <span className="font-semibold text-xl">{title}</span>}
 
