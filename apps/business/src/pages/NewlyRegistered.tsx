@@ -13,7 +13,7 @@ const NewlyRegistered = () => {
   return (
     <div className="flex flex-col">
       <div className="pl-10 text-[32px] font-semibold">{`${user?.firstName}, welcome to MoneyMoov for Business`}</div>
-      <div className="flex rounded-lg mt-16 px-10 py-8 bg-[#FFF] w-full">
+      <div className="flex rounded-lg mt-16 px-10 py-8 bg-white w-full">
         <Icon name="info/16" className="stroke:control-grey-hover mt-1" />
 
         <div className="flex flex-col pl-4">
