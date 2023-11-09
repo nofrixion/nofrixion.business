@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from '@storybook/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import InputTextAreaField, { InputTextAreaFieldProps } from './InputTextAreaField'
 
@@ -14,8 +14,8 @@ export default {
 const Template: StoryFn<InputTextAreaFieldProps> = (args) => {
   const [localValue, setValue] = useState<string>(args.value?.toString() || '')
 
-  const onChangeInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value)
+  const onChangeInput = (value: string) => {
+    setValue(value)
   }
 
   return <InputTextAreaField {...args} value={localValue} onChange={onChangeInput} />

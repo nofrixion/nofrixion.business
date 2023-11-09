@@ -532,7 +532,7 @@ const CreatePaymentRequestPage = ({
             )}
 
             {/* Product or service + description */}
-            {(productOrService || description) && (
+            {(productOrService.trim() || description.trim()) && (
               <LayoutWrapper key="product-or-service-wrapper" className={reviewRowClassNames}>
                 <span className="leading-6 text-grey-text w-40 shrink-0">Product/Service</span>
 
@@ -613,7 +613,7 @@ const CreatePaymentRequestPage = ({
               amount &&
               (!paymentMethodsFormValue?.isBankEnabled ||
                 Number(amount) >= getMinimumAmountPerCurrency(currency)) &&
-              productOrService &&
+              productOrService.trim() &&
               !hasEmailError && (
                 <LayoutWrapper
                   key="buttons"
@@ -832,7 +832,7 @@ const CreatePaymentRequestPage = ({
                                   label="Description"
                                   maxLength={140}
                                   value={description}
-                                  onChange={(e) => setDescription(e.target.value)}
+                                  onChange={setDescription}
                                 />
                               </div>
 
@@ -949,7 +949,7 @@ const CreatePaymentRequestPage = ({
                               amount &&
                               (!paymentMethodsFormValue?.isBankEnabled ||
                                 Number(amount) >= getMinimumAmountPerCurrency(currency)) &&
-                              productOrService && (
+                              productOrService.trim() && (
                                 <motion.div
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
