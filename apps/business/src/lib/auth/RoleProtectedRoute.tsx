@@ -29,7 +29,6 @@ export const RoleProtectedRoute = ({
     // TODO: Add a proper newly registered page
     return <div>Newly registered placeholder</div>
   } else {
-    // TODO: Add a proper not authorized page
     return <NotAuthorised />
   }
 }
