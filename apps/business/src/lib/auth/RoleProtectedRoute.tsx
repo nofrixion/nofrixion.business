@@ -2,6 +2,7 @@ import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Loader } from '../../components/ui/Loader/Loader'
+import NotAuthorised from '../../pages/NotAuthorised'
 import useUserStore from '../stores/useUserStore'
 
 export interface RoleRouteProps {
@@ -28,7 +29,6 @@ export const RoleProtectedRoute = ({
     // TODO: Add a proper newly registered page
     return <div>Newly registered placeholder</div>
   } else {
-    // TODO: Add a proper not authorized page
-    return <div>Not authorized</div>
+    return <NotAuthorised />
   }
 }
