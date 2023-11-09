@@ -47,8 +47,11 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
     const handleOnBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       onBlur && onBlur(e)
 
-      if (!e.target.value.trim()) {
-        onChange && onChange('')
+      const value = e.target.value
+
+      if (value && value != value.trimEnd()) {
+        // If there is a value and the trimmed value at the end is not the same as the value, trim the end
+        onChange && onChange(e.target.value.trimEnd())
       }
 
       if (!validation) {

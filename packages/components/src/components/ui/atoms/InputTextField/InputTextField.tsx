@@ -78,8 +78,12 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
     const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       onBlur && onBlur(e)
 
-      if (!e.target.value.trim()) {
-        onChange && onChange('')
+      const value = e.target.value
+
+      // If there is a value and the trimmed value is empty, set the value to empty
+      if (value && value != value.trimEnd()) {
+        // If there is a value and the trimmed value at the end is not the same as the value, trim the end
+        onChange && onChange(e.target.value.trimEnd())
       }
 
       if (!warningValidation) {
