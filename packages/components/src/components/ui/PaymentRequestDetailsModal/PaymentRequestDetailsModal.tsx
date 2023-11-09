@@ -113,7 +113,7 @@ const PaymentRequestDetailsModal = ({
                   onTagAdded={onTagAdded}
                   onTagRemoved={onTagRemoved}
                   onTagCreated={onTagCreated}
-                ></PaymentRequestDetails>
+                />
               )}
             </div>
           </div>
