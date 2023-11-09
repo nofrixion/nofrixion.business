@@ -735,6 +735,37 @@ export const Icons = {
       </g>
     </SVG>
   ),
+  'info/16': (className: string) => (
+    <SVG className={cn(className, '')} size="16">
+      <g id="16px/Info" clipPath="url(#clip0_10157_54785)">
+        <path
+          id="Vector"
+          d="M9.5 11H9C8.73478 11 8.48043 10.8946 8.29289 10.7071C8.10536 10.5196 8 10.2652 8 10V7.5C8 7.36739 7.94732 7.24022 7.85355 7.14645C7.75978 7.05268 7.63261 7 7.5 7H7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M7.75 5C7.6837 5 7.62011 4.97366 7.57322 4.92678C7.52634 4.87989 7.5 4.8163 7.5 4.75C7.5 4.6837 7.52634 4.62011 7.57322 4.57322C7.62011 4.52634 7.6837 4.5 7.75 4.5"
+        />
+        <path
+          id="Vector_3"
+          d="M7.75 5C7.8163 5 7.87989 4.97366 7.92678 4.92678C7.97366 4.87989 8 4.8163 8 4.75C8 4.6837 7.97366 4.62011 7.92678 4.57322C7.87989 4.52634 7.8163 4.5 7.75 4.5"
+        />
+        <path
+          id="Vector_4"
+          d="M8 15.5C12.142 15.5 15.5 12.142 15.5 8C15.5 3.858 12.142 0.5 8 0.5C3.858 0.5 0.5 3.858 0.5 8C0.5 12.142 3.858 15.5 8 15.5Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_10157_54785">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons
