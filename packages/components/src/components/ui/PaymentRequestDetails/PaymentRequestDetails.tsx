@@ -84,7 +84,7 @@ const PaymentRequestDetails = ({
               onAdded={onTagAdded}
               onRemoved={onTagRemoved}
               onCreated={onTagCreated}
-            ></TagManager>
+            />
           </div>
         </div>
         <div className="pb-6">
