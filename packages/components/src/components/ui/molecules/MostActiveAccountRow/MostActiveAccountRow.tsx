@@ -48,7 +48,7 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
                 e.stopPropagation()
               }}
             >
-              <span className="line-clamp-2 sm:line-clamp-none">{account.accountName}</span>
+              <span className="line-clamp-1 sm:line-clamp-none">{account.accountName}</span>
             </button>
           )}
         </div>
@@ -74,7 +74,7 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
           )}
         </div>
       </div>
-      <span className="mt-2 sm:mt-0">
+      <span>
         {isLoading && (
           <div className="flex justify-end">
             <div className={mergedClasses(isLoading && 'w-[7.5rem] h-2')}></div>
