@@ -32,7 +32,7 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
   return (
     <div
       className={cn(
-        'flex flex-row items-center  text-[13px]/6 text-default-text border-border-grey justify-between w-full',
+        'flex flex-row sm:items-center text-[13px]/6 text-default-text border-border-grey justify-between w-full',
         isLoading ? 'py-4' : 'py-2',
       )}
     >
@@ -40,7 +40,7 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
         <div className={mergedClasses(isLoading && 'w-40 h-2')}>
           {!isLoading && (
             <button
-              className={cn('text-sm leading-8 font-semibold', {
+              className={cn('text-sm leading-8 font-semibold text-left', {
                 'cursor-pointer hover:underline hover:underline-offset-4': onAccountClick,
               })}
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -48,15 +48,15 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
                 e.stopPropagation()
               }}
             >
-              <span>{account.accountName}</span>
+              <span className="line-clamp-2 sm:line-clamp-none">{account.accountName}</span>
             </button>
           )}
         </div>
 
-        <div className={cn('flex gap-4', isLoading && 'h-2')}>
+        <div className={cn('flex flex-col gap-2 sm:flex-row sm:gap-4', isLoading && 'h-2')}>
           <div className={mergedClasses(isLoading && 'w-40')}>
             {!isLoading && (
-              <div className="flex items-center h-full justify-end font-medium text-xs tabular-nums text-positive-green">
+              <div className="flex items-center h-full sm:justify-end font-medium text-xs tabular-nums text-positive-green">
                 <div className="mr-1">
                   <Icon name="incoming/8" />
                 </div>
@@ -65,7 +65,7 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
             )}
           </div>
           {!isLoading && (
-            <div className="flex items-center h-full justify-end font-medium text-xs tabular-nums text-negative-red">
+            <div className="flex items-center h-full sm:justify-end font-medium text-xs tabular-nums text-negative-red">
               <div className="mr-1">
                 <Icon name="outgoing/8" />
               </div>
@@ -74,7 +74,7 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
           )}
         </div>
       </div>
-      <span>
+      <span className="mt-2 sm:mt-0">
         {isLoading && (
           <div className="flex justify-end">
             <div className={mergedClasses(isLoading && 'w-[7.5rem] h-2')}></div>
