@@ -128,37 +128,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   )
 
   useEffect(() => {
-    setCurrency(selectedPayout?.currency ? selectedPayout.currency : currency)
-    setPayoutAmount(selectedPayout?.amount?.toString() ?? '')
-    setTheirReference(selectedPayout?.theirReference)
-    setYourReference(selectedPayout?.yourReference)
-    setDescription(selectedPayout?.description)
-
-    if (selectedPayout) {
-      if (selectedPayout.beneficiaryID) {
-        handleBeneficiaryOnChange(selectedPayout.beneficiaryID)
-      } else {
-        handleBeneficiaryOnChange('addManually')
-        setDestinationAccountName(selectedPayout?.destination?.name)
-        setDestinationAccountIBAN(selectedPayout?.destination?.identifier?.iban)
-        setDestinationAccountNumber(selectedPayout?.destination?.identifier?.accountNumber)
-        setDestinationAccountSortCode(selectedPayout?.destination?.identifier?.sortCode)
-      }
-    } else {
-      setSelectedBeneficiary(undefined)
-      setAddManuallySelected(false)
-    }
-
-    setSelectedScheduleOption(selectedPayout?.scheduled ? 'choose-date' : 'immediately')
-    onDateChange(
-      selectedPayout?.scheduled && selectedPayout?.scheduleDate
-        ? parseISO(selectedPayout.scheduleDate.toString())
-        : addDays(new Date(), 1),
-    )
-
-    const selectedAccount = getAccountFromCurrencyOrExistingPayout()
-    setSelectedAccount(selectedAccount)
-    validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
+    fillSelectedPayoutFields()
   }, [selectedPayout])
 
   // Checks if changes have been made when in Edit mode
@@ -400,6 +370,40 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     }
   }
 
+  const fillSelectedPayoutFields = () => {
+    setCurrency(selectedPayout?.currency ? selectedPayout.currency : currency)
+    setPayoutAmount(selectedPayout?.amount?.toString() ?? '')
+    setTheirReference(selectedPayout?.theirReference)
+    setYourReference(selectedPayout?.yourReference)
+    setDescription(selectedPayout?.description)
+
+    if (selectedPayout) {
+      if (selectedPayout.beneficiaryID) {
+        handleBeneficiaryOnChange(selectedPayout.beneficiaryID)
+      } else {
+        handleBeneficiaryOnChange('addManually')
+        setDestinationAccountName(selectedPayout?.destination?.name)
+        setDestinationAccountIBAN(selectedPayout?.destination?.identifier?.iban)
+        setDestinationAccountNumber(selectedPayout?.destination?.identifier?.accountNumber)
+        setDestinationAccountSortCode(selectedPayout?.destination?.identifier?.sortCode)
+      }
+    } else {
+      setSelectedBeneficiary(undefined)
+      setAddManuallySelected(false)
+    }
+
+    setSelectedScheduleOption(selectedPayout?.scheduled ? 'choose-date' : 'immediately')
+    onDateChange(
+      selectedPayout?.scheduled && selectedPayout?.scheduleDate
+        ? parseISO(selectedPayout.scheduleDate.toString())
+        : addDays(new Date(), 1),
+    )
+
+    const selectedAccount = getAccountFromCurrencyOrExistingPayout()
+    setSelectedAccount(selectedAccount)
+    validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
+  }
+
   const resetFields = () => {
     setPayoutAmount(undefined)
     setTheirReference(undefined)
@@ -423,6 +427,10 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setScheduleDate(addDays(new Date(), 1))
     setDateValidationErrorMessage(undefined)
     setSelectedAccount(getAccountFromCurrencyOrExistingPayout())
+
+    if (selectedPayout) {
+      fillSelectedPayoutFields()
+    }
   }
 
   const handleOnOpenChange = (open: boolean) => {
