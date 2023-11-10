@@ -3,10 +3,10 @@ import {
   SortDirection,
   Tag,
   useAddPayoutTag,
+  useCancelScheduledPayout,
   useCreateTag,
   usePayout,
   useRemovePayoutTag,
-  useUpdatePayout,
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
@@ -114,7 +114,7 @@ const PayoutDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { updatePayout } = useUpdatePayout({ apiUrl: apiUrl, authToken: token })
+  const { cancelScheduledPayout } = useCancelScheduledPayout({ apiUrl: apiUrl, authToken: token })
 
   const onTagAdded = async (tag: LocalTag) => {
     if (payout) {
@@ -174,10 +174,10 @@ const PayoutDetailsModal = ({
 
   const onScheduleCancelled = async () => {
     if (payout) {
-      const response = await updatePayout({ payoutID: payout.id, scheduled: false })
+      const response = await cancelScheduledPayout(payout.id)
 
       if (response.error) {
-        makeToast('error', 'Could not cancel authorisation.')
+        makeToast('error', 'Could not cancel scheduled payout.')
       }
     }
   }
