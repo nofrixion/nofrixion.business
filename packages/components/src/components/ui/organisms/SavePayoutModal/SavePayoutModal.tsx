@@ -23,7 +23,7 @@ import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/Sele
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
 export interface SavePayoutModalProps {
-  onSavePayout: (
+  onCreatePayout?: (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
     amount: number,
@@ -31,6 +31,18 @@ export interface SavePayoutModalProps {
     yourReference?: string,
     description?: string,
     createAndApprove?: boolean,
+    scheduled?: boolean,
+    scheduleDate?: Date,
+    beneficiaryID?: string,
+  ) => Promise<void>
+  onUpdatePayout?: (
+    sourceAccount: LocalAccount,
+    counterParty: LocalCounterparty,
+    amount: number,
+    theirReference: string,
+    yourReference?: string,
+    description?: string,
+    updateAndApprove?: boolean,
     scheduled?: boolean,
     scheduleDate?: Date,
     beneficiaryID?: string,
@@ -44,7 +56,8 @@ export interface SavePayoutModalProps {
 }
 
 const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
-  onSavePayout,
+  onCreatePayout,
+  onUpdatePayout,
   onDismiss,
   accounts,
   beneficiaries,
@@ -323,12 +336,28 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     return validationFailed
   }
 
-  const onCreatePayoutClick = async (createAndApprove?: boolean) => {
+  const buildCounterPartyForSaving = (): LocalCounterparty => {
+    return {
+      name: destinationAccountName ?? '',
+      identifier: selectedBeneficiary?.destination?.identifier ?? {
+        iban: destinationAccountIBAN ?? '',
+        accountNumber: destinationAccountNumber ?? '',
+        sortCode: destinationAccountSortCode ?? '',
+        type:
+          currency && currency === Currency.EUR
+            ? LocalAccountIdentifierType.IBAN
+            : LocalAccountIdentifierType.SCAN,
+        currency: currency ? currency : Currency.EUR,
+      },
+    }
+  }
+
+  const savePayout = async (saveAndApprove?: boolean) => {
     setCreatePayoutClicked(true)
     if (handleValidation()) {
       return
     } else {
-      if (!createAndApprove) {
+      if (!saveAndApprove) {
         setIsCreatePayoutButtonDisabled(true)
       } else {
         setIsCreateAndApproveButtonDisabled(true)
@@ -336,37 +365,41 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       let parsedAmount = Number(payoutAmount)
       parsedAmount = parsedAmount ?? 0
 
-      const counterParty: LocalCounterparty = {
-        name: destinationAccountName ?? '',
-        identifier: selectedBeneficiary?.destination?.identifier ?? {
-          iban: destinationAccountIBAN ?? '',
-          accountNumber: destinationAccountNumber ?? '',
-          sortCode: destinationAccountSortCode ?? '',
-          type:
-            currency && currency === Currency.EUR
-              ? LocalAccountIdentifierType.IBAN
-              : LocalAccountIdentifierType.SCAN,
-          currency: currency ? currency : Currency.EUR,
-        },
-      }
+      const counterParty: LocalCounterparty = buildCounterPartyForSaving()
 
-      await onSavePayout(
-        selectedAccount!,
-        counterParty,
-        parsedAmount,
-        theirReference!,
-        yourReference,
-        description,
-        createAndApprove,
-        selectedScheduleOption === 'choose-date',
-        scheduleDate,
-        selectedBeneficiary?.id,
-      )
+      if (!selectedPayout && onCreatePayout) {
+        await onCreatePayout(
+          selectedAccount!,
+          counterParty,
+          parsedAmount,
+          theirReference!,
+          yourReference,
+          description,
+          saveAndApprove,
+          selectedScheduleOption === 'choose-date',
+          scheduleDate,
+          selectedBeneficiary?.id,
+        )
+      } else if (selectedPayout && onUpdatePayout) {
+        await onUpdatePayout(
+          selectedAccount!,
+          counterParty,
+          parsedAmount,
+          theirReference!,
+          yourReference,
+          description,
+          saveAndApprove,
+          selectedScheduleOption === 'choose-date',
+          scheduleDate,
+          selectedBeneficiary?.id,
+        )
+      }
 
       setIsCreatePayoutButtonDisabled(false)
       setIsCreateAndApproveButtonDisabled(false)
     }
   }
+
   const resetFields = () => {
     setPayoutAmount(undefined)
     setTheirReference(undefined)
@@ -537,6 +570,14 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   const onDateChange = (date: Date | undefined) => {
     setScheduleDate(date)
     setDateValidationErrorMessage(undefined)
+  }
+
+  const onSavePayoutClick = async () => {
+    await savePayout(false)
+  }
+
+  const onSaveAndAuthorisePayoutClick = async () => {
+    await savePayout(true)
   }
 
   return (
@@ -852,30 +893,27 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                   <div className="mb-4">
                     <ValidationMessage label="form" variant="error" message={formError} />
                   </div>
-                  {isUserAuthoriser && (
+                  {changesMade && isUserAuthoriser && (
                     <Button
                       variant="primaryDark"
                       size="large"
                       className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                      onClick={() => onCreatePayoutClick(true)}
-                      disabled={isCreateAndApproveButtonDisabled || !changesMade}
+                      onClick={onSaveAndAuthorisePayoutClick}
+                      disabled={isCreateAndApproveButtonDisabled}
                     >
-                      {!changesMade ? (
-                        <span>No changes made</span>
-                      ) : isCreateAndApproveButtonDisabled ? (
+                      {isCreateAndApproveButtonDisabled ? (
                         <Loader className="h-6 w-6 mx-auto" />
                       ) : (
-                        <span>{selectedPayout ? 'Save changes' : 'Create and authorise'}</span>
+                        <span>Save and authorise</span>
                       )}
                     </Button>
                   )}
-
-                  {!selectedPayout && (
+                  {changesMade && (
                     <Button
                       variant="secondary"
                       size="large"
                       className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed mt-4"
-                      onClick={() => onCreatePayoutClick(false)}
+                      onClick={onSavePayoutClick}
                       disabled={isCreatePayoutButtonDisabled}
                     >
                       {isCreatePayoutButtonDisabled ? (
@@ -883,6 +921,16 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                       ) : (
                         <span>Save for later authorisation</span>
                       )}
+                    </Button>
+                  )}
+                  {!changesMade && (
+                    <Button
+                      variant="primaryDark"
+                      size="large"
+                      className="disabled:!bg-[#E3E5E8] disabled:!opacity-100 disabled:cursor-not-allowed disabled:text-grey-text"
+                      disabled={!changesMade}
+                    >
+                      <span>No changes made</span>
                     </Button>
                   )}
                 </div>

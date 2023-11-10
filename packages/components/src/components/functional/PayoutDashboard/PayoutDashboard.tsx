@@ -17,7 +17,7 @@ import {
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
 import {
@@ -154,6 +154,12 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const selectedPayout = useMemo<LocalPayout | undefined>(() => {
+    return payouts
+      ? remotePayoutsToLocal(payouts).find((x) => x.id === selectedPayoutId)
+      : undefined
+  }, [selectedPayoutId, payouts])
 
   useEffect(() => {
     if (isLoadingPayouts) {
@@ -497,11 +503,7 @@ const PayoutDashboardMain = ({
           }}
           merchantId={merchantId}
           isUserAuthoriser={isUserAuthoriser}
-          selectedPayout={
-            payouts
-              ? remotePayoutsToLocal(payouts).find((x) => x.id === selectedPayoutId)
-              : undefined
-          }
+          selectedPayout={selectedPayout}
         />
       )}
 

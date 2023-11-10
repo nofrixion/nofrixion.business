@@ -118,7 +118,7 @@ const SavePayoutModal = ({
     theirReference: string,
     yourReference?: string,
     description?: string,
-    createAndApprove?: boolean,
+    updateAndApprove?: boolean,
     scheduled?: boolean,
     scheduleDate?: Date,
     beneficiaryID?: string,
@@ -150,11 +150,23 @@ const SavePayoutModal = ({
 
     if (response.error) {
       makeToast('error', 'Could not edit payout details.')
-      return
-    }
+    } else {
+      if (updateAndApprove) {
+        setPayoutID(selectedPayout.id)
+      }
 
-    makeToast('success', 'Payout details successfully updated.')
-    onDismiss()
+      if (!updateAndApprove) {
+        makeToast('success', 'Payout details successfully updated.')
+      }
+
+      if (updateAndApprove) {
+        await sleep(10000).then(() => {
+          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+        })
+      }
+
+      onDismiss()
+    }
   }
 
   return (
@@ -162,7 +174,8 @@ const SavePayoutModal = ({
       <UISavePayoutModal
         onDismiss={onDismiss}
         isOpen={isOpen}
-        onSavePayout={selectedPayout ? onUpdatePayout : onCreatePayout}
+        onCreatePayout={onCreatePayout}
+        onUpdatePayout={onUpdatePayout}
         accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
         beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
         isUserAuthoriser={isUserAuthoriser}
