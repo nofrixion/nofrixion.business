@@ -17,7 +17,7 @@ import {
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
 import {
@@ -32,8 +32,8 @@ import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashb
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
-import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
+import SavePayoutModal from '../SavePayoutModal/SavePayoutModal'
 
 export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -154,6 +154,12 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const selectedPayout = useMemo<LocalPayout | undefined>(() => {
+    return payouts
+      ? remotePayoutsToLocal(payouts).find((x) => x.id === selectedPayoutId)
+      : undefined
+  }, [selectedPayoutId, payouts])
 
   useEffect(() => {
     if (isLoadingPayouts) {
@@ -411,6 +417,10 @@ const PayoutDashboardMain = ({
     }
   }
 
+  const onPayoutEditClicked = () => {
+    setCreatePayoutClicked(true)
+  }
+
   return (
     <div>
       <UIPayoutDashboard
@@ -478,10 +488,11 @@ const PayoutDashboardMain = ({
         tagsFilter={tagsFilter}
         merchantTags={localMerchantTags}
         isUserAuthoriser={isUserAuthoriser}
+        onEdit={onPayoutEditClicked}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
-        <CreatePayoutModal
+        <SavePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
           beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
           apiUrl={apiUrl}
@@ -492,6 +503,7 @@ const PayoutDashboardMain = ({
           }}
           merchantId={merchantId}
           isUserAuthoriser={isUserAuthoriser}
+          selectedPayout={selectedPayout}
         />
       )}
 

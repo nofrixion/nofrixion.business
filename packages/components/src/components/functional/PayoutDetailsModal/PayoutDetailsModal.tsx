@@ -39,6 +39,7 @@ export interface PayoutDetailsModalProps {
   tagsFilter?: string[]
   merchantTags: LocalTag[]
   isUserAuthoriser: boolean
+  onEdit: () => void
 }
 
 const PayoutDetailsModal = ({
@@ -64,6 +65,7 @@ const PayoutDetailsModal = ({
   tagsFilter,
   merchantTags,
   isUserAuthoriser,
+  onEdit,
 }: PayoutDetailsModalProps) => {
   const [payout, setPayout] = useState<LocalPayout | undefined>(undefined)
 
@@ -198,6 +200,7 @@ const PayoutDetailsModal = ({
       merchantTags={merchantTags}
       onScheduleCancelled={onScheduleCancelled}
       isUserAuthoriser={isUserAuthoriser}
+      onEdit={onEdit}
     />
   )
 }
