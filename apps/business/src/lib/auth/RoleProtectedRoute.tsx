@@ -2,6 +2,7 @@ import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Loader } from '../../components/ui/Loader/Loader'
+import NewlyRegistered from '../../pages/NewlyRegistered'
 import NotAuthorised from '../../pages/NotAuthorised'
 import useUserStore from '../stores/useUserStore'
 
@@ -26,8 +27,7 @@ export const RoleProtectedRoute = ({
     // If user is a payment requestor, redirect to accounts receivable
     navigate('accounts-receivable')
   } else if (user?.role && user?.role === LocalUserRoles.NewlyRegistered) {
-    // TODO: Add a proper newly registered page
-    return <div>Newly registered placeholder</div>
+    return <NewlyRegistered />
   } else {
     return <NotAuthorised />
   }

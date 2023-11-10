@@ -78,12 +78,26 @@ const CreatePaymentRequestPageMain = ({
 }: CreatePaymentRequesPageProps) => {
   const { createPaymentRequest } = useCreatePaymentRequest({ apiUrl: apiUrl, authToken: token })
 
-  const { autoSuggestions, setAutoSuggestions } = useStore(
+  const { autoSuggestions: rawAutoSuggestions, setAutoSuggestions } = useStore(
     useAutoSuggestionsStore,
     (state) => state,
   ) ?? {
     autoSuggestions: undefined,
   }
+
+  // Trim the values in the autoSuggestions array
+  const autoSuggestions = rawAutoSuggestions?.map((suggestion) => ({
+    ...suggestion,
+    values: suggestion.values
+      ?.map((value) => ({ ...value, value: value.value.trim() })) // Trim the values
+      ?.filter(
+        (
+          value,
+          index,
+          self, // Remove duplicates
+        ) => index === self.findIndex((v) => v.value === value.value),
+      ),
+  }))
 
   const { data: banksResponse } = useBanks(
     { merchantId: merchantId },

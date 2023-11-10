@@ -890,7 +890,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                         label="Description"
                         maxLength={140}
                         value={description ?? ''}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={setDescription}
                         subText="For internal use only."
                       />
                     </div>
