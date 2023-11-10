@@ -49,6 +49,7 @@ export class PayoutClient extends BaseApiClient {
       `${this.apiUrl}/${payoutId}`,
       HttpMethod.PUT,
       payoutUpdate,
+      'application/json',
     )
   }
 
