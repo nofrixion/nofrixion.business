@@ -69,11 +69,6 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
             layout="position"
             layoutId={`icons-container-${label}`}
             className="flex items-center space-x-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-            }}
           >
             {deleteMode && (
               <svg
