@@ -99,7 +99,6 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
     <>
       {!editMode && (
         <motion.div
-          layout
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{

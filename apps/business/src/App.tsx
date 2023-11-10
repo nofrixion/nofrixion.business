@@ -1,9 +1,7 @@
 import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
-import LogoNofrixion from './assets/graphics/nofrixion-logo.svg'
 import HomeUI from './components/HomeUI'
-import Button from './components/ui/Button'
 import AppLogout from './lib/auth/AppLogout'
 import { AuthProvider } from './lib/auth/AuthProvider'
 import { ProtectedRoutes } from './lib/auth/ProtectedRoutes'
@@ -15,6 +13,7 @@ import AccountDashboardPage from './pages/current-accounts/account-dashboard'
 import CurrentAccountsPage from './pages/current-accounts/page'
 import DashboardPage from './pages/dashboard/page'
 import Layout from './pages/layout'
+import NotFound from './pages/NotFound'
 import PayoutsPage from './pages/payouts/page'
 import PricingPage from './pages/pricing/page'
 import UsersPage from './pages/users/page'
@@ -80,40 +79,4 @@ export const App = () => {
       </AppLogout>
     </AuthProvider>
   )
-}
-
-function NotFound() {
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  if (location.pathname.startsWith(getRoute('/home'))) {
-    // No route exists
-    return (
-      <>
-        <main className="flex flex-col items-center justify-center p-24 min-h-full">
-          <div className="flex justify-center items-center text-gray-text mb-8">
-            <img src={LogoNofrixion} alt="Nofrixion Logo" width={200} height={200} />
-          </div>
-          <h3>
-            No route exists for <code>{location.pathname}</code>
-          </h3>
-          <Button
-            className="flex mx-auto py-3 px-[24px] mt-8"
-            onClick={() => navigate(getRoute('/home'))}
-          >
-            {'Return to home page'}
-          </Button>
-        </main>
-      </>
-    )
-  } else {
-    // Try to redirect to the new location
-    return (
-      <Navigate
-        to={`${getRoute('/home')}${location.pathname}`}
-        replace
-        state={{ from: location }}
-      />
-    )
-  }
 }
