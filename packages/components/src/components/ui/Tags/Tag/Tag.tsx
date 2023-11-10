@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
+import { motion, MotionConfig } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 
@@ -65,11 +65,18 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
         </motion.span>
 
         {!readonly && (
-          <AnimatePresence>
+          <motion.div
+            layout="position"
+            layoutId={`icons-container-${label}`}
+            className="flex items-center space-x-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+            }}
+          >
             {deleteMode && (
-              <motion.svg
-                key="delete"
-                layout="position"
+              <svg
                 className="hover:cursor-pointer"
                 width="20"
                 height="20"
@@ -85,12 +92,10 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-              </motion.svg>
+              </svg>
             )}
 
-            <motion.svg
-              key="edit"
-              layout="position"
+            <svg
               className={classNames('hover:cursor-pointer stroke-[#454D54]', {
                 'stroke-[#A3747C]': deleteMode,
               })}
@@ -99,12 +104,12 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
               viewBox="0 0 10 9"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={() => setDeleteMode(!deleteMode)}
+              onClick={() => setDeleteMode((prev) => !prev)}
             >
               <path d="M1 0.5L9 8.5" />
               <path d="M9 0.5L1 8.5" />
-            </motion.svg>
-          </AnimatePresence>
+            </svg>
+          </motion.div>
         )}
       </motion.div>
     </MotionConfig>
