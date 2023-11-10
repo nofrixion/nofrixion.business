@@ -86,9 +86,9 @@ export const MostActiveAccountRow: React.FC<MostActiveAccountRowProps> = ({
             balance={account.balance}
             availableBalance={account.availableBalance}
             currency={account.currency}
-            className="py-[7.11px]"
+            className="sm:py-[7.11px] leading-8 sm:leading-6"
             hideAvailableBalanceIfSameAsBalance={true}
-          ></AccountBalance>
+          />
         )}
       </span>
     </div>
