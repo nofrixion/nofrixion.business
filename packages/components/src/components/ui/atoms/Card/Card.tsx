@@ -35,7 +35,7 @@ const Card: React.FC<CardProps> = ({
     >
       <div className="flex justify-between">
         {(title || subtext) && (
-          <div className="flex gap-10">
+          <div className="flex gap-6 sm:gap-10 flex-col sm:flex-row">
             <div className="flex flex-col">
               {title && <span className="font-semibold text-xl">{title}</span>}
 
@@ -52,8 +52,8 @@ const Card: React.FC<CardProps> = ({
             onClick={onShowViewAll}
             className="flex items-center h-6 justify-end space-x-2 underline underline-offset-2 hover:no-underline"
           >
-            <span className="hidden md:inline-block text-sm">View all</span>
-            <Icon name="next/12" />
+            <span className="text-xs/6 sm:text-sm">View all</span>
+            <Icon className="hidden md:inline-block" name="next/12" />
           </button>
         )}
       </div>
