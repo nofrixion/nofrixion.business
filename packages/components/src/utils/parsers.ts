@@ -554,6 +554,7 @@ const remotePayoutToLocal = (payout: Payout): LocalPayout => {
     tags: payout.tags.map((tag) => parseApiTagToLocalTag(tag)),
     scheduled: payout.scheduled,
     scheduleDate: payout.scheduleDate,
+    beneficiaryID: payout.beneficiaryID,
   }
 }
 

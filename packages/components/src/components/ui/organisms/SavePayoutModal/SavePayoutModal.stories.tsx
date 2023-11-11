@@ -2,19 +2,19 @@
 import { Meta, StoryFn } from '@storybook/react'
 
 import mockedData from '../../../../utils/mockedData'
-import CreatePayoutModal, { CreatePayoutModalProps } from './CreatePayoutModal'
+import SavePayoutModal, { SavePayoutModalProps } from './SavePayoutModal'
 
-const meta: Meta<typeof CreatePayoutModal> = {
+const meta: Meta<typeof SavePayoutModal> = {
   title: 'UI/Create Payout Modal',
-  component: CreatePayoutModal,
+  component: SavePayoutModal,
   argTypes: {
-    onCreatePayout: { control: { type: 'action' } },
+    onSavePayout: { control: { type: 'action' } },
     onDismiss: { control: { type: 'action' } },
   },
 }
 
-const Template: StoryFn<CreatePayoutModalProps> = (args) => {
-  return <CreatePayoutModal {...args} />
+const Template: StoryFn<SavePayoutModalProps> = (args) => {
+  return <SavePayoutModal {...args} />
 }
 
 export const Showcase = Template.bind({})

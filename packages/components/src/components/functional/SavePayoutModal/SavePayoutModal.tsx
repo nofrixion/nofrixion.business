@@ -2,17 +2,24 @@ import {
   AccountIdentifierType,
   Currency,
   PayoutCreate,
+  UpdatePayoutProps,
   useCreatePayout,
+  useUpdatePayout,
 } from '@nofrixion/moneymoov'
 import { useEffect, useRef, useState } from 'react'
 
-import { LocalAccount, LocalBeneficiary, LocalCounterparty } from '../../../types/LocalTypes'
+import {
+  LocalAccount,
+  LocalBeneficiary,
+  LocalCounterparty,
+  LocalPayout,
+} from '../../../types/LocalTypes'
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
-import UICreatePayoutModal from '../../ui/organisms/CreatePayoutModal/CreatePayoutModal'
+import UISavePayoutModal from '../../ui/organisms/SavePayoutModal/SavePayoutModal'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 
-export interface CreatePayoutModalProps {
+export interface SavePayoutModalProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   merchantId: string // Example: "bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d"
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
@@ -21,9 +28,10 @@ export interface CreatePayoutModalProps {
   beneficiaries: LocalBeneficiary[]
   onDismiss: () => void // Callback function that will be called when the modal is asked to be closed.
   isUserAuthoriser: boolean
+  selectedPayout?: LocalPayout // Payout that's been currently edited. This serves as a create/edit toggle.
 }
 
-const CreatePayoutModal = ({
+const SavePayoutModal = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   isOpen,
@@ -31,10 +39,12 @@ const CreatePayoutModal = ({
   accounts,
   beneficiaries,
   isUserAuthoriser,
-}: CreatePayoutModalProps) => {
+  selectedPayout,
+}: SavePayoutModalProps) => {
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
+  const { updatePayout } = useUpdatePayout({ apiUrl: apiUrl, authToken: token })
 
-  const [payoutID, setPayoutID] = useState<string | undefined>(undefined)
+  const [payoutID, setPayoutID] = useState<string | undefined>(selectedPayout?.id)
 
   const approveFormRef = useRef<HTMLFormElement>(null)
 
@@ -58,6 +68,7 @@ const CreatePayoutModal = ({
     createAndApprove?: boolean,
     scheduled?: boolean,
     scheduleDate?: Date,
+    beneficiaryID?: string,
   ) => {
     const payoutCreate: PayoutCreate = {
       accountID: sourceAccount.id,
@@ -74,6 +85,7 @@ const CreatePayoutModal = ({
       allowIncomplete: false,
       scheduled: scheduled,
       scheduleDate: scheduleDate,
+      beneficiaryID: beneficiaryID,
     }
 
     const response = await createPayout(payoutCreate)
@@ -99,15 +111,75 @@ const CreatePayoutModal = ({
     }
   }
 
+  const onUpdatePayout = async (
+    sourceAccount: LocalAccount,
+    counterParty: LocalCounterparty,
+    amount: number,
+    theirReference: string,
+    yourReference?: string,
+    description?: string,
+    updateAndApprove?: boolean,
+    scheduled?: boolean,
+    scheduleDate?: Date,
+    beneficiaryID?: string,
+  ) => {
+    if (!selectedPayout?.id) {
+      makeToast('error', 'Must select a payout to edit.')
+      return
+    }
+
+    const payoutUpdate: UpdatePayoutProps = {
+      payoutID: selectedPayout.id,
+      accountID: sourceAccount.id,
+      amount: amount,
+      destination: localCounterPartyToRemoteCounterParty(counterParty),
+      theirReference: theirReference,
+      yourReference: yourReference,
+      description: description,
+      type:
+        sourceAccount.currency === Currency.EUR
+          ? AccountIdentifierType.IBAN
+          : AccountIdentifierType.SCAN,
+      currency: sourceAccount.currency,
+      scheduled: scheduled,
+      scheduleDate: scheduleDate,
+      beneficiaryID: beneficiaryID,
+    }
+
+    const response = await updatePayout(payoutUpdate)
+
+    if (response.error) {
+      makeToast('error', 'Could not edit payout details.')
+    } else {
+      if (updateAndApprove) {
+        setPayoutID(selectedPayout.id)
+      }
+
+      if (!updateAndApprove) {
+        makeToast('success', 'Payout details successfully updated.')
+      }
+
+      if (updateAndApprove) {
+        await sleep(10000).then(() => {
+          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+        })
+      }
+
+      onDismiss()
+    }
+  }
+
   return (
     <>
-      <UICreatePayoutModal
+      <UISavePayoutModal
         onDismiss={onDismiss}
         isOpen={isOpen}
         onCreatePayout={onCreatePayout}
+        onUpdatePayout={onUpdatePayout}
         accounts={accounts.sort((a, b) => (a.accountName > b.accountName ? 1 : -1))}
         beneficiaries={beneficiaries.sort((a, b) => (a.name > b.name ? 1 : -1))}
         isUserAuthoriser={isUserAuthoriser}
+        selectedPayout={selectedPayout}
       />
 
       {payoutID && (
@@ -122,4 +194,4 @@ const CreatePayoutModal = ({
   )
 }
 
-export default CreatePayoutModal
+export default SavePayoutModal

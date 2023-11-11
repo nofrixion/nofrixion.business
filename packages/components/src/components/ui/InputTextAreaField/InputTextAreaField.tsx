@@ -3,8 +3,10 @@ import { forwardRef, useId, useState } from 'react'
 
 import AnimateHeightWrapper from '../../ui/utils/AnimateHeight'
 
-export interface InputTextAreaFieldProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+export interface InputTextAreaFieldProps
+  extends Omit<React.InputHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
   label: string
+  onChange?: (value: string) => void
   required?: boolean
   maxLength?: number
   validation?: (value: string) => string | undefined
@@ -33,7 +35,7 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
     const [error, setError] = useState<string>()
 
     const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange && onChange(e)
+      onChange && onChange(e.target.value)
 
       if (!validation || (!enableQuickValidation && !error)) {
         return
@@ -44,6 +46,13 @@ const InputTextAreaField = forwardRef<HTMLTextAreaElement, InputTextAreaFieldPro
 
     const handleOnBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       onBlur && onBlur(e)
+
+      const value = e.target.value
+
+      if (value && value != value.trimEnd()) {
+        // If there is a value and the trimmed value at the end is not the same as the value, trim the end
+        onChange && onChange(e.target.value.trimEnd())
+      }
 
       if (!validation) {
         return

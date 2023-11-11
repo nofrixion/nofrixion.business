@@ -88,6 +88,7 @@ export type PayoutCreate = {
   tagIds?: string[]
   scheduled?: boolean
   scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export type BatchApprove = {

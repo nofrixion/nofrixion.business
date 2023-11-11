@@ -219,6 +219,7 @@ export interface LocalPayout {
   tags: LocalTag[]
   scheduled?: boolean
   scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export interface LocalAccount {

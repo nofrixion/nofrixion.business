@@ -368,6 +368,7 @@ export interface Payout {
   tags: Tag[]
   scheduled?: boolean
   scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export interface PayoutUpdate {
@@ -384,6 +385,7 @@ export interface PayoutUpdate {
   tagIds?: string[]
   scheduled?: boolean
   scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export type PayoutMetrics = {
