@@ -35,7 +35,6 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
   return (
     <MotionConfig transition={{ duration: 0.2 }}>
       <motion.div
-        layout
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{
@@ -54,7 +53,6 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
       >
         <motion.span
           key={text}
-          layout="position"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{
@@ -65,32 +63,35 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
         </motion.span>
 
         {!readonly && (
-          <AnimatePresence>
-            {deleteMode && (
-              <motion.svg
-                key="delete"
-                layout="position"
-                className="hover:cursor-pointer"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                onClick={() => onDelete && onDelete(id)}
-              >
-                <circle cx="10" cy="10" r="10" fill="#FFF5F7" />
-                <path
-                  d="M6 10.2369L8.84211 13.079L15 6.92114"
-                  stroke="#F32448"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </motion.svg>
-            )}
+          <div className="flex items-center space-x-2">
+            <AnimatePresence>
+              {deleteMode && (
+                <motion.svg
+                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  className="hover:cursor-pointer"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => onDelete && onDelete(id)}
+                >
+                  <circle cx="10" cy="10" r="10" fill="#FFF5F7" />
+                  <path
+                    d="M6 10.2369L8.84211 13.079L15 6.92114"
+                    stroke="#F32448"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </motion.svg>
+              )}
+            </AnimatePresence>
 
             <motion.svg
-              key="edit"
-              layout="position"
+              animate={{ opacity: 1 }}
+              initial={{ opacity: 0 }}
+              key={`cross-${deleteMode}`}
               className={classNames('hover:cursor-pointer stroke-[#454D54]', {
                 'stroke-[#A3747C]': deleteMode,
               })}
@@ -99,12 +100,12 @@ const Tag = ({ id, label, readonly = false, onDelete }: TagProps) => {
               viewBox="0 0 10 9"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={() => setDeleteMode(!deleteMode)}
+              onClick={() => setDeleteMode((prev) => !prev)}
             >
               <path d="M1 0.5L9 8.5" />
               <path d="M9 0.5L1 8.5" />
             </motion.svg>
-          </AnimatePresence>
+          </div>
         )}
       </motion.div>
     </MotionConfig>
