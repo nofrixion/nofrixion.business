@@ -1,6 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 
+import SessionEndSound from '../../../../assets/sounds/session-ending.mp3'
 import { Button } from '../../atoms'
 
 export interface NotifyModalProps {
@@ -11,6 +13,14 @@ export interface NotifyModalProps {
 }
 
 const NotifyModal = ({ open, notifyText, buttonText, onApply }: NotifyModalProps) => {
+  useEffect(() => {
+    if (!open) return
+
+    const sound = new Audio(SessionEndSound)
+
+    sound.play()
+  }, [open])
+
   return (
     <Dialog.Root open={open}>
       <AnimatePresence>

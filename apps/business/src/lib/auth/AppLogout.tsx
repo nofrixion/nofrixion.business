@@ -6,6 +6,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import useUserStore from '../stores/useUserStore'
 import { AuthContextType } from './AuthProvider'
 import { useAuth } from './useAuth'
+
 interface AppLogoutProps {
   children: React.ReactNode
 }
@@ -14,14 +15,14 @@ const AppLogout = ({ children }: AppLogoutProps) => {
   const { authState } = useAuth() as AuthContextType
   const { user } = useUserStore()
 
-  const [state, setState] = useState<'Active' | 'Prompted' | 'Idle'>('Active')
-  const [remainingSeconds, setRemainingSeconds] = useState<number>(0)
-  const [promptOpen, setPromptOpen] = useState<boolean>(false)
-
   // If the user is a payment requestor, the session should end after 30 minutes. Otherwise, it should end after 5 minutes.
-  const timeout = user?.role === LocalUserRoles.PaymentRequestor ? 1000 * 60 * 30 : 1000 * 60 * 5
+  const timeout = user?.role === LocalUserRoles.PaymentRequestor ? 1000 * 60 * 30 : 1000 * 70 * 1
   // Prompt the user 1 min before the session ends
   const promptBeforeIdle = 1000 * 60
+
+  const [state, setState] = useState<'Active' | 'Prompted' | 'Idle'>('Active')
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(promptBeforeIdle / 1000)
+  const [promptOpen, setPromptOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (state === 'Prompted') {
@@ -72,6 +73,7 @@ const AppLogout = ({ children }: AppLogoutProps) => {
 
   // Reset the timer
   const resetSession = () => {
+    setRemainingSeconds(promptBeforeIdle / 1000)
     document.title = 'NoFrixion'
     setState('Active')
     setPromptOpen(false)
