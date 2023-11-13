@@ -16,7 +16,7 @@ const AppLogout = ({ children }: AppLogoutProps) => {
   const { user } = useUserStore()
 
   // If the user is a payment requestor, the session should end after 30 minutes. Otherwise, it should end after 5 minutes.
-  const timeout = user?.role === LocalUserRoles.PaymentRequestor ? 1000 * 60 * 30 : 1000 * 70 * 1
+  const timeout = user?.role === LocalUserRoles.PaymentRequestor ? 1000 * 60 * 30 : 1000 * 60 * 5
   // Prompt the user 1 min before the session ends
   const promptBeforeIdle = 1000 * 60
 
