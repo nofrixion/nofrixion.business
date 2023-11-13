@@ -38,6 +38,8 @@ const NotifyModal = ({ open, notifyText, buttonText, onApply }: NotifyModalProps
             <Dialog.Content
               forceMount
               className="fixed top-[50%] left-[50%] w-[528px] translate-x-[-50%] translate-y-[-50%] z-50"
+              onEscapeKeyDown={onApply}
+              onInteractOutside={onApply}
             >
               <div className="flex flex-col min-h-full justify-center items-center overflow-hidden rounded-lg bg-white align-middle shadow-xl transition-all text-default-text text-2xl font-semibold">
                 <span className="md:px-12 mt-12 text-center max-w-[390px]">{notifyText}</span>
