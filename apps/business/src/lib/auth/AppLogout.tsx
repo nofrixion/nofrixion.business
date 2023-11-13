@@ -27,6 +27,8 @@ const AppLogout = ({ children }: AppLogoutProps) => {
   useEffect(() => {
     if (state === 'Prompted') {
       document.title = `${remainingSeconds}s to end session`
+    } else {
+      document.title = 'NoFrixion'
     }
   }, [remainingSeconds])
 
@@ -48,7 +50,6 @@ const AppLogout = ({ children }: AppLogoutProps) => {
 
   // Logout the user
   const onIdle = () => {
-    document.title = 'NoFrixion'
     setState('Idle')
     setPromptOpen(false)
     logout(window.location.pathname)
@@ -74,7 +75,6 @@ const AppLogout = ({ children }: AppLogoutProps) => {
   // Reset the timer
   const resetSession = () => {
     setRemainingSeconds(promptBeforeIdle / 1000)
-    document.title = 'NoFrixion'
     setState('Active')
     setPromptOpen(false)
     activate()
