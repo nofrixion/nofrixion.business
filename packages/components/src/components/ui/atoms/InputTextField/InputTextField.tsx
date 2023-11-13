@@ -81,9 +81,9 @@ const InputTextField = forwardRef<HTMLInputElement, InputTextFieldProps>(
       const value = e.target.value
 
       // If there is a value and the trimmed value is empty, set the value to empty
-      if (value && value != value.trimEnd()) {
+      if (value && value != value.trim()) {
         // If there is a value and the trimmed value at the end is not the same as the value, trim the end
-        onChange && onChange(e.target.value.trimEnd())
+        onChange && onChange(e.target.value.trim())
       }
 
       if (!warningValidation) {
