@@ -10,7 +10,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "prepare": "husky install",
-    "pre-commit": "turbo run lint && npm run format"
+    "pre-commit": "turbo run lint && npm run format && npm run build"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
