@@ -48,7 +48,11 @@ const InputAmountField: React.FC<InputAmountFieldProps> = ({
   const ref = useRef(null)
   const inputRef = useRef(null)
 
-  const [selectedCurrency, setSelectedCurrency] = useState(localCurrency.eur)
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    localCurrency[currency.toLowerCase()]
+      ? localCurrency[currency.toLowerCase()]
+      : localCurrency.eur,
+  )
 
   const [fieldValue, setFieldValue] = useState<string>('')
   const [requiredErrorPrompt, setRequiredErrorPrompt] = useState<boolean>(false)

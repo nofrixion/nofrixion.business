@@ -49,6 +49,7 @@ export class PayoutClient extends BaseApiClient {
       `${this.apiUrl}/${payoutId}`,
       HttpMethod.PUT,
       payoutUpdate,
+      'application/json',
     )
   }
 
@@ -178,5 +179,14 @@ export class PayoutClient extends BaseApiClient {
    */
   async createBatch(payoutIds: BatchApprove): Promise<ApiResponse<BatchPayout>> {
     return await this.httpRequest<BatchPayout>(`${this.apiUrl}/batch`, HttpMethod.POST, payoutIds)
+  }
+
+  /**
+   * Attempts to cancel a scheduled Payout
+   * @param payoutId The ID of the Payout to cancel the scheduled submit for.
+   * @returns The updated Payout if successful. An ApiError if not successful.
+   */
+  async cancel(payoutId: string): Promise<ApiResponse<Payout>> {
+    return await this.httpRequest<Payout>(`${this.apiUrl}/cancel/${payoutId}`, HttpMethod.PUT)
   }
 }

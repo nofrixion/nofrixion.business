@@ -18,6 +18,7 @@ const updatePayoutAsync = async (
   destination?: Counterparty,
   scheduled?: boolean,
   scheduleDate?: Date,
+  beneficiaryID?: string,
   authToken?: string,
 ): Promise<{
   success?: boolean
@@ -35,6 +36,7 @@ const updatePayoutAsync = async (
     destination,
     scheduled,
     scheduleDate,
+    beneficiaryID,
   }
   const payoutTagAdd = await client.update(paymoutId, payoutRequestUpdate)
 
@@ -80,6 +82,7 @@ export const useUpdatePayout = ({
         variables.destination,
         variables.scheduled,
         variables.scheduleDate,
+        variables.beneficiaryID,
         authToken,
       ),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
@@ -104,6 +107,7 @@ export const useUpdatePayout = ({
       destination,
       scheduled,
       scheduleDate,
+      beneficiaryID,
     }: UpdatePayoutProps) => {
       if (payoutID) {
         setPayoutId(payoutID)
@@ -119,6 +123,7 @@ export const useUpdatePayout = ({
           destination,
           scheduled,
           scheduleDate,
+          beneficiaryID,
         })
 
         if (result.success) {
