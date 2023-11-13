@@ -7,7 +7,12 @@ export const apiUrls = {
   production: 'https://api.nofrixion.com/api/v1',
 }
 
-export const localCurrency = {
+export type LocalCurrencyItem = {
+  code: string
+  symbol: string
+}
+
+export const localCurrency: { [key: string]: LocalCurrencyItem } = {
   gbp: { code: 'GBP', symbol: '£' },
   eur: { code: 'EUR', symbol: '€' },
 }
