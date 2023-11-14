@@ -32,28 +32,32 @@ const SelectAccount: React.FC<SelectAccountPros> = ({
   accounts,
   ...props
 }) => {
+  const account = accounts.find((x) => x.id === value)
+
   return (
     <Select defaultValue={defaultValue} value={value} onValueChange={onValueChange} {...props}>
       {
         <SelectTrigger
           className={cn('w-full md:w-[375px] py-3 rounded h-12 font-normal', className)}
+          placeholder="Select account"
         >
           <SelectValue asChild>
             <div className="w-full flex justify-between align-middle">
-              {value != undefined ? (
+              {account && (
                 <>
                   <span className="break-keep">
-                    {accounts.find((x) => x.id === value)!.accountName}
+                    {accounts.find((x) => x.id === value)?.accountName}
                   </span>
                   <span className="text-[#73888C]">
-                    {formatCurrency(accounts.find((x) => x.id === value)!.currency)}{' '}
+                    {account && formatCurrency(account.currency)}{' '}
                     <span className="tabular-nums">
-                      {formatAmount(accounts.find((x) => x.id === value)!.availableBalance)}
+                      {account && formatAmount(account.availableBalance)}
                     </span>
                   </span>
                 </>
-              ) : (
-                'Custom'
+              )}
+              {!account && (
+                <span className="font-normal text-grey-text text-sm">Select account</span>
               )}
             </div>
           </SelectValue>

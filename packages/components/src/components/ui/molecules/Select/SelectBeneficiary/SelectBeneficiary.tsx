@@ -26,25 +26,25 @@ const SelectBeneficiary: React.FC<SelectBeneficiaryPros> = ({
   beneficiaries,
   ...props
 }) => {
+  const beneficiary = beneficiaries.find((x) => x.id === value)
+
   return (
     <Select value={value} onValueChange={onValueChange} {...props}>
       {
         <SelectTrigger className={cn('md:w-[27rem] py-3 h-12 rounded font-normal', className)}>
           <SelectValue asChild>
             <div className="w-full flex justify-between items-center">
-              {value != undefined ? (
+              {value ? (
                 value === 'addManually' ? (
                   <span className="text-grey-text text-sm">Add manually</span>
                 ) : (
                   <>
-                    <span className="break-keep">
-                      {beneficiaries.find((x) => x.id === value)!.destination?.name}
-                    </span>
+                    <span className="break-keep">{beneficiary?.destination?.name}</span>
                     <span className="text-xs">
                       <span className="text-[#73888C] mr-2">
-                        {beneficiaries.find((x) => x.id === value)!.destination?.accountInfo}
+                        {beneficiary?.destination?.accountInfo}
                       </span>
-                      <span>{beneficiaries.find((x) => x.id === value)!.currency}</span>
+                      <span>{beneficiary?.currency}</span>
                     </span>
                   </>
                 )
