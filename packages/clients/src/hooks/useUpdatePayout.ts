@@ -1,4 +1,5 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query'
+import { startOfDay } from 'date-fns'
 import { useCallback, useState } from 'react'
 
 import { PayoutClient } from '../clients'
@@ -25,6 +26,12 @@ const updatePayoutAsync = async (
   error?: ApiError
 }> => {
   const client = new PayoutClient({ apiUrl, authToken })
+
+  // The schedule time needs to be the start of the day
+  if (scheduleDate) {
+    scheduleDate = startOfDay(scheduleDate)
+  }
+
   const payoutRequestUpdate: PayoutUpdate = {
     accountID,
     type,
