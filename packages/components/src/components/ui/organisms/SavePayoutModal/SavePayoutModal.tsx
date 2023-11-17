@@ -76,6 +76,8 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   const [dateValidationErrorMessage, setDateValidationErrorMessage] = useState<string | undefined>(
     undefined,
   )
+  const [showFromAccountAutomaticallyChanged, setShowFromAccountAutomaticallyChanged] =
+    useState(false)
 
   const [formError, setFormError] = useState<string | undefined>(undefined)
   const [payoutAmount, setPayoutAmount] = useState<string | undefined>('')
@@ -108,6 +110,18 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       resetFields()
     }
   }, [isOpen])
+
+  // After the `showFromAccountAutomaticallyChanged` goes true
+  // we need to reset it to false after 3 second
+  // so the user can see the message and then it disappears
+  useEffect(() => {
+    if (showFromAccountAutomaticallyChanged) {
+      const timer = setTimeout(() => {
+        setShowFromAccountAutomaticallyChanged(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showFromAccountAutomaticallyChanged])
 
   const singleCurrency =
     accounts
@@ -532,7 +546,8 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
 
     // If the selected account is not in the selected currency, leave the from account picker empty
     if (fromAccount?.currency !== currency) {
-      setFromAccount(undefined)
+      setFromAccount(accounts.find((acc) => acc.currency == currency))
+      setShowFromAccountAutomaticallyChanged(true)
     }
 
     if (selectedBeneficiary && selectedBeneficiary.currency !== currency) {
@@ -643,6 +658,17 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                         value={fromAccount?.id ?? ''}
                         onValueChange={handleFromAccountOnChange}
                         accounts={accounts.filter((account) => account.currency === currency)}
+                      />
+                    </div>
+                    <div className="w-full">
+                      <ValidationMessage
+                        variant="info"
+                        message={
+                          showFromAccountAutomaticallyChanged
+                            ? 'Your account was changed to match the selected currency'
+                            : undefined
+                        }
+                        label="from-account"
                       />
                     </div>
                   </div>

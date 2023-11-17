@@ -5,11 +5,12 @@ import * as React from 'react'
 import { cn } from '../../../../utils'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 
-const validationMessageVariants = cva('text-default-text', {
+const validationMessageVariants = cva('text-default-text text-sm p-3 rounded mt-2', {
   variants: {
     variant: {
-      error: 'mt-2 bg-[#FEE7EB] text-sm p-3 rounded',
-      warning: 'mt-2 bg-[#FCF5CF] text-sm p-3 rounded',
+      error: 'bg-[#FEE7EB]',
+      warning: 'bg-[#FCF5CF]',
+      info: 'bg-[#CEF]',
     },
   },
   defaultVariants: {
