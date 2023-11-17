@@ -73,15 +73,15 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   const [accountValidationErrorMessage, setAccountValidationErrorMessage] = useState<
     string | undefined
   >(undefined)
-  const [beneficiaryValidationErrorMessage, setBeneficiaryValidationErrorMessage] = useState<
-    string | undefined
-  >(undefined)
   const [dateValidationErrorMessage, setDateValidationErrorMessage] = useState<string | undefined>(
     undefined,
   )
+  const [showFromAccountAutomaticallyChanged, setShowFromAccountAutomaticallyChanged] =
+    useState(false)
 
   const [formError, setFormError] = useState<string | undefined>(undefined)
   const [payoutAmount, setPayoutAmount] = useState<string | undefined>('')
+  const [fromAccount, setFromAccount] = useState<LocalAccount | undefined>()
   const [theirReference, setTheirReference] = useState<string | undefined>('')
   const [yourReference, setYourReference] = useState<string | undefined>('')
   const [description, setDescription] = useState<string | undefined>('')
@@ -96,6 +96,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     '',
   )
 
+  const [isFromAccountRequiredPrompt, setIsFromAccountRequiredPrompt] = useState<boolean>(false)
   const [destinationAccountRequiredPrompt, setDestinationAccountRequiredPrompt] =
     useState<boolean>(false)
 
@@ -110,6 +111,18 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     }
   }, [isOpen])
 
+  // After the `showFromAccountAutomaticallyChanged` goes true
+  // we need to reset it to false after 3 second
+  // so the user can see the message and then it disappears
+  useEffect(() => {
+    if (showFromAccountAutomaticallyChanged) {
+      const timer = setTimeout(() => {
+        setShowFromAccountAutomaticallyChanged(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showFromAccountAutomaticallyChanged])
+
   const singleCurrency =
     accounts
       .map((item) => item.currency)
@@ -123,10 +136,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     singleCurrency !== undefined ? singleCurrency : Currency.EUR,
   )
 
-  const [selectedAccount, setSelectedAccount] = useState<LocalAccount | undefined>(
-    accounts?.filter((x) => x.currency === currency)[0],
-  )
-
   useEffect(() => {
     fillSelectedPayoutFields()
   }, [selectedPayout])
@@ -134,7 +143,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   // Checks if changes have been made when in Edit mode
   useEffect(() => {
     let noChanges =
-      selectedAccount?.id === selectedPayout?.accountID &&
+      fromAccount?.id === selectedPayout?.accountID &&
       payoutAmount === selectedPayout?.amount?.toString() &&
       theirReference === selectedPayout?.theirReference &&
       yourReference === selectedPayout?.yourReference &&
@@ -171,7 +180,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setChangesMade(!selectedPayout || !noChanges)
   }, [
     selectedPayout,
-    selectedAccount,
+    fromAccount,
     payoutAmount,
     theirReference,
     yourReference,
@@ -189,9 +198,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
 
   const balanceLessThanAmountMessage = "This account doesn't have enough funds for this transaction"
 
-  const beneficiaryDifferentCurrencyMessage =
-    'This account has a different currency than the chosen amount.'
-
   const getAccountFromCurrencyOrExistingPayout = () => {
     return accounts?.filter((x) =>
       selectedPayout ? x.id === selectedPayout.accountID : x.currency === currency,
@@ -208,13 +214,16 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
 
   const handleAmountOnChange = (value: string) => {
     setPayoutAmount(value)
-    selectedAccount && validateAmount(value, selectedAccount)
+    fromAccount && validateAmount(value, fromAccount)
   }
 
-  const handleAccountOnChange = (value: string) => {
+  const handleFromAccountOnChange = (value: string) => {
     setAccountValidationErrorMessage(undefined)
     const account = accounts.find((account) => account.id === value)
-    setSelectedAccount(account ?? getAccountFromCurrencyOrExistingPayout())
+
+    setFromAccount(account ?? getAccountFromCurrencyOrExistingPayout())
+
+    setIsFromAccountRequiredPrompt(false)
 
     if (account && account.availableBalance < Number(payoutAmount)) {
       setAccountValidationErrorMessage(balanceLessThanAmountMessage)
@@ -225,6 +234,8 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     let validationFailed = false
     setAmountValidationErrorMessage(undefined)
     setDestinationAccountRequiredPrompt(false)
+    setIsFromAccountRequiredPrompt(false)
+
     if (
       beneficiaries &&
       beneficiaries.length > 0 &&
@@ -244,11 +255,14 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       validationFailed = true
       setAmountValidationErrorMessage("The amount can't be 0.")
     }
+
+    setIsFromAccountRequiredPrompt(!fromAccount)
+
     if (
       !(
         (destinationAccountIBAN || (destinationAccountNumber && destinationAccountSortCode)) &&
         payoutAmount &&
-        selectedAccount &&
+        fromAccount &&
         theirReference
       )
     ) {
@@ -288,11 +302,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       validationFailed = true
     }
 
-    if (selectedBeneficiary && selectedBeneficiary.currency !== currency) {
-      validationFailed = true
-    }
-
-    if (selectedAccount && selectedAccount.availableBalance < Number(payoutAmount)) {
+    if (fromAccount && fromAccount.availableBalance < Number(payoutAmount)) {
       validationFailed = true
     }
 
@@ -339,7 +349,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
 
       if (!selectedPayout && onCreatePayout) {
         await onCreatePayout(
-          selectedAccount!,
+          fromAccount!,
           counterParty,
           parsedAmount,
           theirReference!,
@@ -352,7 +362,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
         )
       } else if (selectedPayout && onUpdatePayout) {
         await onUpdatePayout(
-          selectedAccount!,
+          fromAccount!,
           counterParty,
           parsedAmount,
           theirReference!,
@@ -400,7 +410,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     )
 
     const selectedAccount = getAccountFromCurrencyOrExistingPayout()
-    setSelectedAccount(selectedAccount)
+    setFromAccount(selectedAccount)
     validateAmount(selectedPayout?.amount?.toString() ?? '', selectedAccount)
   }
 
@@ -418,7 +428,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setDestinationAccountRequiredPrompt(false)
     setAmountValidationErrorMessage(undefined)
     setAccountValidationErrorMessage(undefined)
-    setBeneficiaryValidationErrorMessage(undefined)
     setFormError(undefined)
     setCreatePayoutClicked(false)
     setIsCreatePayoutButtonDisabled(false)
@@ -426,7 +435,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setSelectedScheduleOption('immediately')
     setScheduleDate(addDays(new Date(), 1))
     setDateValidationErrorMessage(undefined)
-    setSelectedAccount(getAccountFromCurrencyOrExistingPayout())
+    setFromAccount(getAccountFromCurrencyOrExistingPayout())
 
     if (selectedPayout) {
       fillSelectedPayoutFields()
@@ -535,16 +544,14 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     }
     setCurrency(currency as Currency)
 
-    if (!selectedAccount || selectedAccount.currency !== currency) {
-      const newAccount = accounts?.filter((x) => x.currency === currency)[0]
-      setSelectedAccount(newAccount)
-      payoutAmount && validateAmount(payoutAmount, newAccount)
+    // If the selected account is not in the selected currency, leave the from account picker empty
+    if (fromAccount?.currency !== currency) {
+      setFromAccount(accounts.find((acc) => acc.currency == currency))
+      setShowFromAccountAutomaticallyChanged(true)
     }
 
     if (selectedBeneficiary && selectedBeneficiary.currency !== currency) {
-      setBeneficiaryValidationErrorMessage(beneficiaryDifferentCurrencyMessage)
-    } else {
-      setBeneficiaryValidationErrorMessage(undefined)
+      setSelectedBeneficiary(undefined)
     }
   }
 
@@ -553,10 +560,10 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setDestinationAccountIBAN('')
     setDestinationAccountNumber('')
     setDestinationAccountSortCode('')
-    setBeneficiaryValidationErrorMessage(undefined)
     setSelectedBeneficiary(undefined)
 
     setDestinationAccountRequiredPrompt(false)
+    setIsFromAccountRequiredPrompt(false)
     let beneficiary: LocalBeneficiary | undefined
     if (value === 'addManually') {
       setAddManuallySelected(true)
@@ -568,10 +575,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       setDestinationAccountIBAN(beneficiary?.destination?.identifier?.iban ?? '')
       setDestinationAccountNumber(beneficiary?.destination?.identifier?.accountNumber ?? '')
       setDestinationAccountSortCode(beneficiary?.destination?.identifier?.sortCode ?? '')
-    }
-
-    if (beneficiary && beneficiary.currency !== currency) {
-      setBeneficiaryValidationErrorMessage(beneficiaryDifferentCurrencyMessage)
     }
   }
 
@@ -641,17 +644,31 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
 
                 <div className="md:w-[27rem]">
                   <div className="mt-10 flex-row items-baseline">
-                    <div className="mb-2">
+                    <div className="py-2 flex justify-between">
                       <span className="text-default-text font-semibold text-sm leading-4">
                         From account
                       </span>
+                      {isFromAccountRequiredPrompt && (
+                        <div className="text-[#F32448] font-normal text-xs leading-4">REQUIRED</div>
+                      )}
                     </div>
                     <div>
                       <SelectAccount
                         className="text-right border border-border-grey md:w-[27rem]"
-                        value={selectedAccount?.id}
-                        onValueChange={handleAccountOnChange}
+                        value={fromAccount?.id ?? ''}
+                        onValueChange={handleFromAccountOnChange}
                         accounts={accounts.filter((account) => account.currency === currency)}
+                      />
+                    </div>
+                    <div className="w-full">
+                      <ValidationMessage
+                        variant="info"
+                        message={
+                          showFromAccountAutomaticallyChanged
+                            ? 'Your account was changed to match the selected currency'
+                            : undefined
+                        }
+                        label="from-account"
                       />
                     </div>
                   </div>
@@ -682,9 +699,17 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                       <div className="text-left">
                         <SelectBeneficiary
                           className="text-right border border-border-grey"
-                          value={addManuallySelected ? 'addManually' : selectedBeneficiary?.id}
+                          value={
+                            addManuallySelected
+                              ? 'addManually'
+                              : selectedBeneficiary
+                              ? selectedBeneficiary?.id
+                              : ''
+                          }
                           onValueChange={handleBeneficiaryOnChange}
-                          beneficiaries={beneficiaries}
+                          beneficiaries={beneficiaries.filter(
+                            (beneficiary) => beneficiary.currency === currency,
+                          )}
                         />
                       </div>
                     </div>
@@ -793,14 +818,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  <div>
-                    <ValidationMessage
-                      variant="warning"
-                      message={beneficiaryValidationErrorMessage}
-                      className="-mt-6"
-                      label="beneficiary"
-                    />
-                  </div>
 
                   <div className="mt-10 items-baseline">
                     <div className="text-left">
@@ -854,7 +871,6 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                   <div
                     className={cn('items-baseline', {
                       'mt-10': beneficiaries?.length === 0,
-                      'mt-8': beneficiaryValidationErrorMessage,
                     })}
                   >
                     <div className="text-left">
