@@ -32,13 +32,6 @@ export interface Merchant {
   paymentAccounts: any[] // TODO: Add type
 }
 
-export interface User {
-  id: string
-  emailAddress: string
-  firstName: string
-  lastName: string
-}
-
 export interface Account {
   id: string
   merchantID: string

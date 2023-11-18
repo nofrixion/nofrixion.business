@@ -1,14 +1,23 @@
 import { UserRoleCreate } from '../types'
 import {
+  AccountMetrics,
+  AccountTransactionMetricsPageResponse,
   ApiError,
   ApiResponse,
   Merchant,
   MerchantBankSettings,
   Tag,
+  TransactionPageResponse,
   UserRole,
 } from '../types/ApiResponses'
 import { HttpMethod } from '../types/Enums'
-import { ApiProps, MerchantProps } from '../types/props'
+import {
+  AccountsMetricsProps,
+  AccountsWithTransactionsMetricsProps,
+  ApiProps,
+  MerchantProps,
+  TransactionsProps,
+} from '../types/props'
 import { BaseApiClient } from './BaseApiClient'
 
 /**
@@ -119,5 +128,91 @@ export class MerchantClient extends BaseApiClient {
   async deleteUserRole(userRoleId: string): Promise<ApiResponse<undefined>> {
     const url = `${this.apiUrl}/userroles`
     return await this.httpRequest<undefined>(`${url}/${userRoleId}`, HttpMethod.DELETE)
+  }
+
+  /**
+   * Gets a paged list of Transactions for a user
+   * @param pageNumber The first page to fetch for the paged response. Default is 1
+   * @param pageSize The page size. Default is 20
+   * @param fromDate Optional. The date filter to apply to retrieve payment requests created after this date.
+   * @param toDate Optional. The date filter to apply to retrieve payment requests created up until this date.
+   * @param creditType Optional. The credit type filter to apply to retrieve transactions, either payin or payout.
+   * @returns A TransactionPageResponse if successful. An ApiError if not successful.
+   */
+  async getTransactions({
+    merchantId,
+    pageNumber,
+    pageSize,
+    fromDate,
+    toDate,
+  }: TransactionsProps & MerchantProps): Promise<ApiResponse<TransactionPageResponse>> {
+    const url = `${this.apiUrl}/${merchantId}/transactions`
+
+    return await this.getPagedResponse<TransactionPageResponse>(
+      {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        fromDate: fromDate,
+        toDate: toDate,
+      },
+      url,
+    )
+  }
+
+  /**
+   * Gets accounts with transaction metrics of the merchant
+   * @param merchantId The merchant id to get the accounts for
+   * @returns A AccountsWithTransactionsMetrics if successful. An ApiError if not successful.
+   */
+  async getAccountsWithTransactionMetrics({
+    pageNumber = 1,
+    pageSize = 3,
+    sort,
+    fromDate,
+    toDate,
+    currency,
+    merchantId,
+  }: AccountsWithTransactionsMetricsProps): Promise<
+    ApiResponse<AccountTransactionMetricsPageResponse>
+  > {
+    const url = `${this.apiUrl}/${merchantId}/accountsWithTransactionMetrics`
+    return await this.getPagedResponse<AccountTransactionMetricsPageResponse>(
+      {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        sort: sort,
+        fromDate: fromDate,
+        toDate: toDate,
+        currency: currency,
+      },
+      url,
+    )
+  }
+
+  /**
+   * Gets the account metrics for the merchant
+   * @param merchantId The merchant id to get the account metrics for
+   * @returns A list of account metrics if successful. An ApiError if not successful.
+   */
+  async getAccountMetrics({
+    merchantId,
+    fromDate,
+    toDate,
+    timeFrequency,
+  }: AccountsMetricsProps): Promise<ApiResponse<AccountMetrics[]>> {
+    const filterParams = new URLSearchParams()
+    if (fromDate) {
+      filterParams.append('fromDate', fromDate.toUTCString())
+    }
+    if (toDate) {
+      filterParams.append('toDate', toDate.toUTCString())
+    }
+    if (timeFrequency) {
+      filterParams.append('timeFrequency', timeFrequency)
+    }
+    return await this.httpRequest<AccountMetrics[]>(
+      `${this.apiUrl}/${merchantId}/accountMetrics?${filterParams.toString()}`,
+      HttpMethod.GET,
+    )
   }
 }

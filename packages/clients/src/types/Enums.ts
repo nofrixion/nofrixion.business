@@ -20,6 +20,7 @@ export enum PaymentProcessor {
   Modulr = 'Modulr',
   Plaid = 'Plaid',
   Yapily = 'Yapily',
+  NoFrixion = 'Nofrixion',
 }
 
 export enum PaymentResult {
@@ -114,6 +115,7 @@ export enum PayoutStatus {
   QUEUED = 'QUEUED',
   FAILED = 'FAILED',
   PENDING_INPUT = 'PENDING_INPUT',
+  SCHEDULED = 'SCHEDULED',
 }
 
 export enum PaymentProcessorsEnum {
@@ -234,4 +236,9 @@ export const enum UserStatus {
 export const enum UserInviteStatusEnum {
   Active = 'Active',
   Expired = 'Expired',
+}
+
+export const enum TimeFrequencyEnum {
+  None = 'None',
+  Daily = 'Daily',
 }

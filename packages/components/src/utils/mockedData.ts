@@ -18,6 +18,7 @@ import {
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountWithTransactionMetrics,
   LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
@@ -295,7 +296,6 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 
 export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
@@ -333,7 +333,6 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
   {
@@ -370,7 +369,6 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     status: 'paid',
     paymentStatus: 'received',
   },
-  // Add more transactions as needed
 ]
 
 const regular: LocalPaymentRequest = {
@@ -1011,48 +1009,56 @@ function randomDate(start = new Date(2012, 0, 1), end = new Date()) {
 export const mockedTransactions: LocalTransaction[] = [
   {
     id: '1',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -250.0,
+    currency: Currency.EUR,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA',
   },
   {
     id: '2',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: 1500000.99,
+    currency: Currency.EUR,
     reference: 'Very very very long reference. As long as it can be. Or even longer.',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA Instant',
   },
   {
     id: '3',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -350.0,
+    currency: Currency.EUR,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
     type: 'SEPA Instant',
   },
   {
     id: '4',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: 450.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1060,12 +1066,14 @@ export const mockedTransactions: LocalTransaction[] = [
   },
   {
     id: '5',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -550.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1073,12 +1081,14 @@ export const mockedTransactions: LocalTransaction[] = [
   },
   {
     id: '6',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: 200.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1086,12 +1096,14 @@ export const mockedTransactions: LocalTransaction[] = [
   },
   {
     id: '7',
+    accountName: 'My Account',
     date: randomDate(),
     counterParty: {
       name: 'Daniel Kowalski',
       accountInfo: 'IE11MODR99035501927019',
     },
     amount: -300.0,
+    currency: Currency.EUR,
     balanceAfterTx: 32345,
     reference: 'Dinner Payment',
     description: 'Lorem Ipsum er ganske enkelt fyldtekst fra print- og typografiindustrien.',
@@ -1387,6 +1399,29 @@ const accounts: LocalAccount[] = [
     availableBalance: 100000,
   },
 ]
+const account: Account = {
+  accountName: 'MARIO ROSSI',
+  accountNumber: '',
+  availableBalance: 5022,
+  balance: 5022,
+  bankName: 'Fineco Sandbox',
+  consentID: 'e91f0b76-6145-4f50-bca0-08dbbdb41968',
+  currency: Currency.EUR,
+  displayName: 'MARIO ROSSI (2ccce116-3dc8-4ad0-83ac-8bf73d252c32)',
+  expiryDate: '2023-12-24T11:41:17.2280342+00:00',
+  iban: 'IT31X0301503200000003517230',
+  id: '2ccce116-3dc8-4ad0-83ac-8bf73d252c32',
+  identifier: {
+    type: AccountIdentifierType.IBAN,
+    iban: 'IT31X0301503200000003517230',
+    currency: Currency.EUR,
+  },
+  isConnectedAccount: true,
+  isDefault: false,
+  merchantID: 'bf9e1828-c6a1-4cc5-a012-08daf2ff1b2d',
+  sortCode: '',
+  summary: 'MARIO ROSSI, IBAN: IT31X0301503200000003517230',
+}
 
 const eurCounterparty: LocalCounterparty = {
   name: 'John Doe',
@@ -1779,6 +1814,69 @@ export const users: UserRoleAndUserInvite[] = [
   },
 ]
 
+const accountsWithTransactionMetrics: LocalAccountWithTransactionMetrics[] = [
+  {
+    accountID: '7',
+    accountName: 'E account',
+    currency: Currency.GBP,
+    balance: 100000,
+    availableBalance: 100000,
+    totalIncomingAmount: 100000,
+    totalOutgoingAmount: 0,
+    numberOfTransactions: 1,
+  },
+  {
+    accountID: '4',
+    accountName: 'EURO Account 2',
+    currency: Currency.EUR,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+  {
+    accountID: '1',
+    accountName: 'EURO Account',
+    currency: Currency.EUR,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+  {
+    accountID: '71',
+    accountName: 'E account',
+    currency: Currency.GBP,
+    balance: 100000,
+    availableBalance: 100000,
+    totalIncomingAmount: 100000,
+    totalOutgoingAmount: 0,
+    numberOfTransactions: 1,
+  },
+  {
+    accountID: '41',
+    accountName: 'GBP Account 2',
+    currency: Currency.GBP,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+  {
+    accountID: '11',
+    accountName: 'EUR Account',
+    currency: Currency.EUR,
+    balance: 100,
+    availableBalance: 100,
+    totalIncomingAmount: 200,
+    totalOutgoingAmount: 100,
+    numberOfTransactions: 2,
+  },
+]
+
 export default {
   fewPaymentRequests,
   paymentRequest: {
@@ -1789,7 +1887,9 @@ export default {
     overpaidPaymentRequest,
   },
   merchantTags: mockMerchantTags,
+  account,
   accounts,
+  accountsWithTransactionMetrics,
   counterparty: eurCounterparty,
   beneficiaries: beneficiaries,
   payout: {

@@ -7,7 +7,6 @@ import { ApiProps, usePaymentRequestsProps } from '../types/props'
 
 const fetchPaymentRequests = async (
   apiUrl: string,
-  statusSortDirection: SortDirection,
   createdSortDirection: SortDirection,
   amountSortDirection: SortDirection,
   titleSortDirection: SortDirection,
@@ -25,7 +24,6 @@ const fetchPaymentRequests = async (
   tags?: string[],
 ): Promise<ApiResponse<PaymentRequestPageResponse>> => {
   const sortExpression = formatSortExpression({
-    statusSortDirection: statusSortDirection,
     createdSortDirection: createdSortDirection,
     amountSortDirection: amountSortDirection,
     titleSortDirection: titleSortDirection,
@@ -54,7 +52,6 @@ const fetchPaymentRequests = async (
 export const usePaymentRequests = (
   {
     merchantId,
-    statusSortDirection,
     createdSortDirection,
     amountSortDirection,
     titleSortDirection,
@@ -79,7 +76,6 @@ export const usePaymentRequests = (
     apiUrl,
     authToken,
     merchantId,
-    statusSortDirection,
     createdSortDirection,
     amountSortDirection,
     titleSortDirection,
@@ -103,7 +99,6 @@ export const usePaymentRequests = (
         apiUrl,
         authToken,
         merchantId,
-        statusSortDirection,
         createdSortDirection,
         amountSortDirection,
         titleSortDirection,
@@ -124,7 +119,6 @@ export const usePaymentRequests = (
 
       const newlyFetchedPaymentRequests = await fetchPaymentRequests(
         apiUrl,
-        statusSortDirection,
         createdSortDirection,
         amountSortDirection,
         titleSortDirection,

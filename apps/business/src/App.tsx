@@ -1,11 +1,11 @@
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
+import { Route, Routes } from 'react-router-dom'
 
-import LogoNofrixion from './assets/graphics/nofrixion-logo.svg'
 import HomeUI from './components/HomeUI'
-import Button from './components/ui/Button'
 import AppLogout from './lib/auth/AppLogout'
 import { AuthProvider } from './lib/auth/AuthProvider'
 import { ProtectedRoutes } from './lib/auth/ProtectedRoutes'
+import { RoleProtectedRoute } from './lib/auth/RoleProtectedRoute'
 import { getRoute } from './lib/utils/utils'
 import AccountPayablePage from './pages/accounts-payable/page'
 import AccountReceivablePage from './pages/accounts-receivable/page'
@@ -13,6 +13,7 @@ import AccountDashboardPage from './pages/current-accounts/account-dashboard'
 import CurrentAccountsPage from './pages/current-accounts/page'
 import DashboardPage from './pages/dashboard/page'
 import Layout from './pages/layout'
+import NotFound from './pages/NotFound'
 import PayoutsPage from './pages/payouts/page'
 import PricingPage from './pages/pricing/page'
 import UsersPage from './pages/users/page'
@@ -28,18 +29,48 @@ export const App = () => {
             <Route path={getRoute('/')} element={<HomeUI />} />
             <Route element={<ProtectedRoutes />}>
               <Route path={getRoute('/home')} element={<Layout />}>
-                <Route index element={<DashboardPage />} />
-                <Route path="accounts-payable" element={<AccountPayablePage />} />
-                <Route path="accounts-receivable" element={<AccountReceivablePage />} />
-                <Route path="current-accounts" element={<CurrentAccountsPage />} />
+                <Route element={<RoleProtectedRoute />}>
+                  <Route index element={<DashboardPage />} />
+                </Route>
+                {/* Accounts payable */}
+                <Route element={<RoleProtectedRoute />}>
+                  <Route path="accounts-payable" element={<AccountPayablePage />} />
+                </Route>
                 <Route
-                  path="current-accounts/connected/:bankId"
-                  element={<CurrentAccountsPage />}
-                />
-                <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
-                <Route path="payouts" element={<PayoutsPage />} />
-                <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />
-                <Route path="users" element={<UsersPage />} />
+                  element={
+                    <RoleProtectedRoute minimumRequiredRole={LocalUserRoles.PaymentRequestor} />
+                  }
+                >
+                  <Route path="accounts-receivable" element={<AccountReceivablePage />} />
+                </Route>
+                {/* Current accounts */}
+                <Route element={<RoleProtectedRoute />}>
+                  <Route path="current-accounts" element={<CurrentAccountsPage />} />
+                </Route>
+                <Route element={<RoleProtectedRoute />}>
+                  <Route
+                    path="current-accounts/connected/:bankId"
+                    element={<CurrentAccountsPage />}
+                  />
+                </Route>
+                <Route element={<RoleProtectedRoute />}>
+                  <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
+                </Route>
+                {/* Payouts */}
+                <Route element={<RoleProtectedRoute />}>
+                  <Route path="payouts" element={<PayoutsPage />} />
+                </Route>
+                <Route element={<RoleProtectedRoute />}>
+                  <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />
+                </Route>
+                {/* User management */}
+                <Route
+                  element={
+                    <RoleProtectedRoute minimumRequiredRole={LocalUserRoles.AdminApprover} />
+                  }
+                >
+                  <Route path="users" element={<UsersPage />} />
+                </Route>
                 <Route path="pricing" element={<PricingPage />} />
               </Route>
             </Route>
@@ -48,40 +79,4 @@ export const App = () => {
       </AppLogout>
     </AuthProvider>
   )
-}
-
-function NotFound() {
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  if (location.pathname.startsWith(getRoute('/home'))) {
-    // No route exists
-    return (
-      <>
-        <main className="flex flex-col items-center justify-center p-24 min-h-full">
-          <div className="flex justify-center items-center text-gray-text mb-8">
-            <img src={LogoNofrixion} alt="Nofrixion Logo" width={200} height={200} />
-          </div>
-          <h3>
-            No route exists for <code>{location.pathname}</code>
-          </h3>
-          <Button
-            className="flex mx-auto py-3 px-[24px] mt-8"
-            onClick={() => navigate(getRoute('/home'))}
-          >
-            {'Return to home page'}
-          </Button>
-        </main>
-      </>
-    )
-  } else {
-    // Try to redirect to the new location
-    return (
-      <Navigate
-        to={`${getRoute('/home')}${location.pathname}`}
-        replace
-        state={{ from: location }}
-      />
-    )
-  }
 }

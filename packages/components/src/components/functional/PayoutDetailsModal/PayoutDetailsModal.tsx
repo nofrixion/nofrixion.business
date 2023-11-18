@@ -3,6 +3,7 @@ import {
   SortDirection,
   Tag,
   useAddPayoutTag,
+  useCancelScheduledPayout,
   useCreateTag,
   usePayout,
   useRemovePayoutTag,
@@ -26,6 +27,7 @@ export interface PayoutDetailsModalProps {
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   counterPartyNameSortDirection: SortDirection
+  scheduleDateSortDirection: SortDirection
   statuses: PayoutStatus[]
   page: number
   pageSize: number
@@ -36,6 +38,8 @@ export interface PayoutDetailsModalProps {
   maxAmountFilter?: number
   tagsFilter?: string[]
   merchantTags: LocalTag[]
+  isUserAuthoriser: boolean
+  onEdit: () => void
 }
 
 const PayoutDetailsModal = ({
@@ -49,6 +53,7 @@ const PayoutDetailsModal = ({
   createdSortDirection,
   amountSortDirection,
   counterPartyNameSortDirection,
+  scheduleDateSortDirection,
   statuses,
   page,
   pageSize,
@@ -59,6 +64,8 @@ const PayoutDetailsModal = ({
   maxAmountFilter,
   tagsFilter,
   merchantTags,
+  isUserAuthoriser,
+  onEdit,
 }: PayoutDetailsModalProps) => {
   const [payout, setPayout] = useState<LocalPayout | undefined>(undefined)
 
@@ -71,6 +78,7 @@ const PayoutDetailsModal = ({
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
       counterPartyNameSortDirection: counterPartyNameSortDirection,
+      scheduleDateSortDirection: scheduleDateSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       statuses: statuses,
@@ -99,12 +107,7 @@ const PayoutDetailsModal = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { addPayoutTag } = useAddPayoutTag(
-    {
-      merchantId: merchantId,
-    },
-    { apiUrl: apiUrl, authToken: token },
-  )
+  const { addPayoutTag } = useAddPayoutTag({ apiUrl: apiUrl, authToken: token })
 
   const { removeTag } = useRemovePayoutTag(
     {
@@ -112,6 +115,8 @@ const PayoutDetailsModal = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { cancelScheduledPayout } = useCancelScheduledPayout({ apiUrl: apiUrl, authToken: token })
 
   const onTagAdded = async (tag: LocalTag) => {
     if (payout) {
@@ -169,15 +174,33 @@ const PayoutDetailsModal = ({
     }
   }
 
+  const onScheduleCancelled = async () => {
+    if (payout) {
+      const response = await cancelScheduledPayout(payout.id)
+
+      if (response.error) {
+        makeToast('error', 'Could not cancel scheduled payout.')
+      }
+    }
+  }
+
+  const onModalDismiss = () => {
+    setPayout(undefined)
+    onDismiss()
+  }
+
   return (
     <UIPayoutDetailsModal
-      onDismiss={onDismiss}
+      onDismiss={onModalDismiss}
       onTagAdded={onTagAdded}
       onTagCreated={onTagCreated}
       onTagRemoved={onTagRemoved}
       open={open}
       payout={payout}
       merchantTags={merchantTags}
+      onScheduleCancelled={onScheduleCancelled}
+      isUserAuthoriser={isUserAuthoriser}
+      onEdit={onEdit}
     />
   )
 }

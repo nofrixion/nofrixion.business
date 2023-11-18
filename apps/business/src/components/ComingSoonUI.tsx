@@ -22,7 +22,7 @@ const ComingSoonUI: React.FC<ComingSoonUIProps> = ({ title, comingSoonItems, vid
   const onShowInterestButtonClick = () => {
     setDidShowInterest(true)
     sendSlackMessage(
-      `🔜 ${user?.emailAddress ?? 'Someone'} is interested to know when *${title}* is ready`,
+      `🔜 ${user?.email ?? 'Someone'} is interested to know when *${title}* is ready`,
     )
   }
 
@@ -46,7 +46,7 @@ const ComingSoonUI: React.FC<ComingSoonUIProps> = ({ title, comingSoonItems, vid
             <InfoBox
               title="Thanks for your interest"
               message={`We will send you a message to ${
-                user?.emailAddress ?? 'your email'
+                user?.email ?? 'your email'
               } when this feature is ready to test.`}
             />
           )}

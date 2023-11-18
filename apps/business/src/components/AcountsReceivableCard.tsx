@@ -1,4 +1,5 @@
-import Card from '../components/ui/atoms/Card/Card'
+import Card from '@nofrixion/components/src/components/ui/atoms/Card/Card'
+
 import { cn } from '../lib/utils/utils'
 
 interface AcountsReceivableCardProps {

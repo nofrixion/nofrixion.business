@@ -31,6 +31,8 @@ const getSpecificStatusClasses = (status: string) => {
       status === UserStatus.Active,
     "fill-negative-red [&>span]:text-negative-red data-[state='active']:border-[#DA0C30]":
       status === PayoutStatus.FAILED,
+    "fill-blue-text [&>span]:text-blue-text data-[state='active']:border-[#0088CC]":
+      status === PayoutStatus.SCHEDULED,
   })
 }
 
@@ -60,6 +62,8 @@ const getDisplayTextForStatus = (status: string) => {
       return 'Active'
     case UserStatus.RolePending:
       return 'Role pending'
+    case PayoutStatus.SCHEDULED:
+      return 'Scheduled'
     default:
       return 'All'
   }
@@ -74,6 +78,7 @@ const showIndicator = (status: string) => {
     case PayoutStatus.PENDING:
     case PayoutStatus.PENDING_APPROVAL:
     case PayoutStatus.PROCESSED:
+    case PayoutStatus.SCHEDULED:
     case PayoutStatus.FAILED:
     case UserStatus.Invited:
     case UserStatus.Active:
@@ -100,7 +105,7 @@ const Tab = ({
     <Tabs.Trigger
       value={status}
       className={classNames(
-        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 xl:px-8 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
+        'flex flex-col items-center xl:items-start w-36 h-20 px-2 pt-2 pb-4 rounded-lg lg:w-full lg:h-28 xl:pl-6 xl:pr-4 lg:pt-6 lg:pb-8 bg-white border-2 border-transparent transition hover:border-border-grey',
         getSpecificStatusClasses(status),
       )}
     >

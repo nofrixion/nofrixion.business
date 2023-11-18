@@ -197,6 +197,23 @@ public class ApproveController : Controller
                                 
                                 return RedirectResultError(baseUrl, approveResult.ID, payoutApproveResponse.Problem);
                             }
+                        
+                        case ApproveTypesEnum.Beneficiary:
+
+                            var beneficiaryApproveResponse = await _moneyMoovClient.BeneficiaryClient().AuthoriseBeneficiaryAsync(tokenResponse.AccessToken, approveResult.ID);
+
+                            if (beneficiaryApproveResponse.Problem.IsEmpty)
+                            {
+                                _logger.LogInformation($"{approveResult.ApproveType} {approveResult.ID} successfully approved by user ID {User.WhoAmI()}.");
+                                
+                                return Redirect( $"{baseUrl}{approveResult.ID}/success");
+                            }
+                            else
+                            {
+                                _logger.LogWarning($"Failed to approve {approveResult.ApproveType} {approveResult.ID} for user ID {User.WhoAmI()}. {beneficiaryApproveResponse.Problem.ToTextErrorMessage()}");
+                                
+                                return RedirectResultError(baseUrl, approveResult.ID, beneficiaryApproveResponse.Problem);
+                            }
 
                         default:
 

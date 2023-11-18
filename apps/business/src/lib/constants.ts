@@ -1,3 +1,5 @@
+import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
+
 import IconAccountsPayable from '../assets/icons/accounts-payable.svg'
 import IconAccountsReceivable from '../assets/icons/accounts-receivable.svg'
 import IconCurrentAccounts from '../assets/icons/current-accounts.svg'
@@ -17,6 +19,7 @@ interface INavItem {
   isActive?: boolean
   isHidden?: boolean
   isHome?: boolean
+  minimumRequiredRole: LocalUserRoles
 }
 
 const navItems: INavItem[] = [
@@ -25,26 +28,31 @@ const navItems: INavItem[] = [
     label: 'Dashboard',
     href: getRoute('/home'),
     isHome: true,
+    minimumRequiredRole: LocalUserRoles.User,
   },
   {
     leftIcon: IconCurrentAccounts,
     label: 'Current Accounts',
     href: 'current-accounts',
+    minimumRequiredRole: LocalUserRoles.User,
   },
   {
     leftIcon: IconAccountsReceivable,
     label: 'Accounts Receivable',
     href: 'accounts-receivable',
+    minimumRequiredRole: LocalUserRoles.PaymentRequestor,
   },
   {
     leftIcon: IconAccountsPayable,
     label: 'Accounts Payable (soon)',
     href: 'accounts-payable',
+    minimumRequiredRole: LocalUserRoles.User,
   },
   {
     leftIcon: IconPayouts,
     label: 'Payouts',
     href: 'payouts',
+    minimumRequiredRole: LocalUserRoles.User,
   },
 ]
 

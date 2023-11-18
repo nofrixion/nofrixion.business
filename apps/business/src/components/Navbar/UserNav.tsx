@@ -115,17 +115,19 @@ const UserNav = () => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           )}
-          <DropdownMenuItem
-            onSelect={() => navigate('users')}
-            disabled={currentRoute.indexOf('/home/users') !== -1}
-            icon={{
-              src: UsersIcon,
-              alt: 'Users',
-            }}
-            className={commonCss}
-          >
-            Users
-          </DropdownMenuItem>
+          {user?.isAdmin && (
+            <DropdownMenuItem
+              onSelect={() => navigate('users')}
+              disabled={currentRoute.indexOf('/home/users') !== -1}
+              icon={{
+                src: UsersIcon,
+                alt: 'Users',
+              }}
+              className={commonCss}
+            >
+              Users
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onSelect={() => navigate('pricing')}
             disabled={currentRoute.indexOf('/home/pricing') !== -1}

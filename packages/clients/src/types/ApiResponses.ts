@@ -14,6 +14,7 @@ import {
   PaymentProcessorsEnum,
   PaymentResult,
   PayoutStatus,
+  TimeFrequencyEnum,
   UserInviteStatusEnum,
   UserRoles,
   UserStatus,
@@ -293,6 +294,7 @@ export interface Transaction {
   id: string
   merchantID: string
   accountID: string
+  accountName: string
   amount: number
   currency: Currency
   description: string
@@ -336,6 +338,7 @@ export interface User {
   emailAddress: string
   firstName: string
   lastName: string
+  roles: UserRole[]
 }
 
 export interface Payout {
@@ -363,9 +366,13 @@ export interface Payout {
   sourceAccountIban: string
   destination?: Counterparty
   tags: Tag[]
+  scheduled?: boolean
+  scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export interface PayoutUpdate {
+  ID?: string
   accountID?: string
   type?: AccountIdentifierType
   description?: string
@@ -376,6 +383,9 @@ export interface PayoutUpdate {
   destination?: Counterparty
   tags?: Tag[]
   tagIds?: string[]
+  scheduled?: boolean
+  scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export type PayoutMetrics = {
@@ -384,8 +394,9 @@ export type PayoutMetrics = {
   inProgress: number
   pendingApproval: number
   failed: number
+  scheduled: number
   totalAmountsByCurrency: Record<
-    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed',
+    'all' | 'paid' | 'pendingApproval' | 'inProgress' | 'failed' | 'scheduled',
     Record<'eur' | 'gbp', number | undefined>
   >
 }
@@ -520,4 +531,36 @@ export type UserRole = {
   lastName: string
   emailAddress: string
   roleType: UserRoles
+}
+
+export type AccountTransactionMetrics = {
+  accountID: string
+  accountName: string
+  currency: Currency
+  balance: number
+  availableBalance: number
+  totalIncomingAmount: number
+  totalOutgoingAmount: number
+  numberOfTransactions: number
+  numberOfIncomingTransactions: number
+  numberOfOutgoingTransactions: number
+}
+
+export type AccountTransactionMetricsPageResponse = PageResponse<AccountTransactionMetrics>
+
+export type AccountMetrics = {
+  merchantID: string
+  currency: Currency
+  totalBalance: number
+  totalAvailableBalance: number
+  numberOfAccounts: number
+  periodicBalances: PeriodicBalance[]
+  periodicBalancesFromDate: Date
+  periodicBalancesToDate: Date
+  periodicBalancesFrequency: TimeFrequencyEnum
+}
+
+export type PeriodicBalance = {
+  balanceAt: Date
+  balance: number
 }

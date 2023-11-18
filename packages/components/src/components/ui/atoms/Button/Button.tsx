@@ -53,6 +53,14 @@ export const buttonVariants = cva(
           'font-normal',
           'leading-6',
         ],
+        confirm_negative: [
+          'bg-error-bg',
+          'text-negative-red',
+          'hover:text-highlighted-negative-red',
+          'hover:border-highlighted-negative-red',
+          'font-normal',
+          'leading-6',
+        ],
       },
       size: {
         large: ['text-base', 'px-3', 'py-3', 'md:px-6'],
@@ -77,6 +85,7 @@ const icon = cva('w-full h-full', {
       tertiary: ['text-[#454D54]'],
       tertiary_negative: ['text-negative-red'],
       text: ['text-[#454D54]', 'hover:text-grey-text-hover'],
+      confirm_negative: ['text-negative-red'],
     },
   },
   defaultVariants: {

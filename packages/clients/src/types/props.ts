@@ -1,5 +1,11 @@
 import { Counterparty, Tag } from './ApiResponses'
-import { AccountIdentifierType, Currency, PayoutStatus, SortDirection } from './Enums'
+import {
+  AccountIdentifierType,
+  Currency,
+  PayoutStatus,
+  SortDirection,
+  TimeFrequencyEnum,
+} from './Enums'
 
 export interface PagedResponseProps
   extends FilterResponseProps,
@@ -18,6 +24,10 @@ export interface PaymentRequestPageProps
     MerchantProps {}
 
 export interface PayoutPageProps extends PagedResponseProps, FilterResponseProps {}
+
+export interface AccountsWithTransactionsMetricsProps
+  extends PagedResponseProps,
+    FilterResponseProps {}
 
 export interface UserRoleAndUserInvitePageProps extends PagedResponseProps, FilterResponseProps {}
 
@@ -95,7 +105,6 @@ export interface usePaymentRequestsProps
     PaymentRequestProps,
     PaymentRequestPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   titleSortDirection: SortDirection
@@ -110,6 +119,7 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   createdSortDirection: SortDirection
   amountSortDirection: SortDirection
   counterPartyNameSortDirection: SortDirection
+  scheduleDateSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   statuses: PayoutStatus[]
@@ -207,10 +217,17 @@ export interface CreatePayoutProps {
   invoiceID?: string
   allowIncomplete: boolean
   paymentRequestId?: string
+  scheduled?: boolean
+  scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export interface PayoutProps {
   payoutId?: string
+}
+
+export interface DeleteConnectedAccountProps {
+  accountId: string
 }
 
 export interface ConsentProps {
@@ -221,4 +238,33 @@ export interface ConsentProps {
 
 export interface UserInviteProps {
   inviteId?: string
+}
+
+export interface useAccountsWithTransactionMetricsProps
+  extends MerchantProps,
+    AccountsWithTransactionsMetricsProps {
+  fromDateMS?: number
+  toDateMS?: number
+  numberOfTransactionsSortDirection: SortDirection
+}
+
+export interface AccountsMetricsProps extends MerchantProps {
+  fromDate?: Date
+  toDate?: Date
+  timeFrequency?: TimeFrequencyEnum
+}
+
+export interface UpdatePayoutProps {
+  payoutID: string
+  accountID?: string
+  type?: AccountIdentifierType
+  description?: string
+  currency?: Currency
+  amount?: number
+  yourReference?: string
+  theirReference?: string
+  destination?: Counterparty
+  scheduled?: boolean
+  scheduleDate?: Date
+  beneficiaryID?: string
 }

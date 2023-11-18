@@ -27,7 +27,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
   onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name',
+    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
     direction: SortDirection,
   ) => void
   onPayoutClicked?: (payout: LocalPayout) => void
@@ -39,6 +39,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   selectedPayouts: string[]
   isLoadingMetrics: boolean
   payoutsExist: boolean
+  isUserAuthoriser: boolean
 }
 
 const PayoutsTable: React.FC<PayoutsTableProps> = ({
@@ -55,6 +56,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   selectedPayouts,
   isLoadingMetrics,
   payoutsExist,
+  isUserAuthoriser,
   ...props
 }) => {
   const [allPayoutsSelected, setAllPayoutsSelected] = useState(false)
@@ -111,7 +113,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
           <Table {...props}>
             <TableHeader>
               <TableRow className="hover:bg-transparent cursor-auto">
-                {status && status === PayoutStatus.PENDING_APPROVAL && (
+                {isUserAuthoriser && status && status === PayoutStatus.PENDING_APPROVAL && (
                   <TableHead
                     className="w-0"
                     onClick={() => toggleAllPayoutAuthoriseStatuses(!allPayoutsSelected)}
@@ -134,6 +136,12 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                   <ColumnHeader
                     label={'Created'}
                     onSort={(direction) => onSort('date', direction)}
+                  />
+                </TableHead>
+                <TableHead>
+                  <ColumnHeader
+                    label={'Scheduled'}
+                    onSort={(direction) => onSort('scheduleDate', direction)}
                   />
                 </TableHead>
                 <TableHead>
@@ -178,6 +186,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     </TableCell>
 
                     <TableCell className="w-48">
+                      <div className="w-full h-2 bg-[#E0E9EB] rounded-lg" />
+                    </TableCell>
+
+                    <TableCell className="w-48">
                       <div className="w-1/4 ml-auto h-2 bg-[#E0E9EB] rounded-lg" />
                     </TableCell>
 
@@ -206,7 +218,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     key={`${payout}-${index}`}
                     onClick={(event) => onPayoutClickedHandler(event, payout)}
                   >
-                    {status && status === PayoutStatus.PENDING_APPROVAL && (
+                    {isUserAuthoriser && status && status === PayoutStatus.PENDING_APPROVAL && (
                       <TableCell
                         onClick={(event) => {
                           event.stopPropagation()
@@ -231,6 +243,11 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                       {payout.inserted && formatDateWithYear(new Date(payout.inserted))}
                     </TableCell>
                     <TableCell className="w-48">
+                      {payout.scheduled && payout.scheduled === true
+                        ? payout.scheduleDate && formatDateWithYear(new Date(payout.scheduleDate))
+                        : 'Immediately'}
+                    </TableCell>
+                    <TableCell className="w-48">
                       <div className="truncate">{payout.destination?.name}</div>
                     </TableCell>
                     <TableCell className="text-right truncate tabular-nums font-medium text-base/5 py-4 px-6 w-48">
@@ -242,7 +259,7 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                     <TableCell>
                       <div className="flex ml-auto justify-items-end items-center w-fit">
                         <TagList labels={payout.tags.map((tag) => tag.name)} />
-                        {payout.status === PayoutStatus.PENDING_APPROVAL && (
+                        {payout.status === PayoutStatus.PENDING_APPROVAL && isUserAuthoriser && (
                           <PayoutAuthoriseForm id={payout.id} size="x-small" className="pl-4" />
                         )}
                       </div>

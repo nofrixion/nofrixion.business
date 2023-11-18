@@ -2,6 +2,8 @@ import {
   Account,
   AccountIdentifier,
   AccountIdentifierType,
+  AccountMetrics,
+  AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
   PartialPaymentMethods,
@@ -15,6 +17,7 @@ import {
   Payout,
   PayoutStatus,
   type Tag,
+  TimeFrequencyEnum,
   Transaction,
   TransactionTypeValue,
   User,
@@ -23,28 +26,35 @@ import {
   Wallets,
 } from '@nofrixion/moneymoov'
 
+import { ChartPoint } from '../components/ui/molecules/Chart/AccountChart'
 import {
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
+  LocalTimeFrequencyEnum,
   LocalWallets,
 } from '../types/LocalEnums'
 import {
   LocalAccount,
   LocalAccountIdentifier,
+  LocalAccountMetrics,
+  LocalAccountWithTransactionMetrics,
   LocalAddress,
   LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
+  LocalPaymentProcessor,
   LocalPaymentRequest,
   LocalPaymentRequestCaptureAttempt,
   LocalPaymentRequestRefundAttempt,
   LocalPaymentStatus,
   LocalPayout,
+  LocalPeriodicBalance,
   LocalTag,
   LocalTransaction,
   LocalUser,
+  LocalUserRoles,
 } from '../types/LocalTypes'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
@@ -276,11 +286,34 @@ const remotePaymentRequestToLocalPaymentRequest = (
       return 'failed'
     }
 
-    if (remotePaymentAttempt.status === PaymentResult.FullyPaid) {
+    if (remotePaymentAttempt.settledAt || remotePaymentAttempt.cardAuthorisedAt) {
       return 'received'
     }
 
     return 'unknown'
+  }
+
+  const parseApiPaymentProcessorToLocalPaymentProcessor = (
+    paymentProcessor: string | undefined,
+  ): LocalPaymentProcessor | undefined => {
+    switch (paymentProcessor) {
+      case 'Modulr':
+        return LocalPaymentProcessor.Modulr
+      case 'Plaid':
+        return LocalPaymentProcessor.Plaid
+      case 'Yapily':
+        return LocalPaymentProcessor.Yapily
+      case 'Stripe':
+        return LocalPaymentProcessor.Stripe
+      case 'Checkout':
+        return LocalPaymentProcessor.Checkout
+      case 'CyberSource':
+        return LocalPaymentProcessor.CyberSource
+      case 'NoFrixion':
+        return LocalPaymentProcessor.NoFrixion
+      default:
+        return LocalPaymentProcessor.None
+    }
   }
 
   const parseApiPaymentAttemptsToLocalPaymentAttempts = (
@@ -311,6 +344,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             cardAuthorisedAmount,
             cardAuthorisedAt,
             reconciledTransactionID,
+            paymentProcessor,
           } = remotePaymentAttempt
 
           localPaymentAttempts.push({
@@ -329,19 +363,10 @@ const remotePaymentRequestToLocalPaymentRequest = (
             status: parseApiStatusToLocalStatus(status),
             reconciledTransactionID: reconciledTransactionID,
             paymentStatus: getPaymentAttemptPaymentStatus(remotePaymentAttempt),
+            paymentProcessor: parseApiPaymentProcessorToLocalPaymentProcessor(paymentProcessor),
           })
         })
       return localPaymentAttempts
-    }
-  }
-
-  const parseApiUserToLocalUser = (remoteUser: User): LocalUser => {
-    const { id, emailAddress, firstName, lastName } = remoteUser
-    return {
-      id: id,
-      email: emailAddress,
-      firstName: firstName,
-      lastName: lastName,
     }
   }
 
@@ -385,6 +410,25 @@ const remotePaymentRequestToLocalPaymentRequest = (
       ? parseApiUserToLocalUser(remotePaymentRequest.createdByUser)
       : undefined,
     merchantTokenDescription: remotePaymentRequest.merchantTokenDescription,
+    remoteStatus: remotePaymentRequest.status,
+  }
+}
+
+const parseApiUserToLocalUser = (remoteUser: User, merchantId?: string): LocalUser => {
+  const { id, emailAddress, firstName, lastName } = remoteUser
+  const userRole =
+    parseApiUserRoleToLocalUserRole(
+      remoteUser.roles.find((role) => role.merchantID === merchantId)?.roleType,
+    ) ?? LocalUserRoles.NewlyRegistered
+
+  return {
+    id: id,
+    email: emailAddress,
+    firstName: firstName,
+    lastName: lastName,
+    role: userRole,
+    isAdmin: userRole >= LocalUserRoles.AdminApprover,
+    isAuthoriser: userRole >= LocalUserRoles.Approver,
   }
 }
 
@@ -471,8 +515,10 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
     return {
       id: transaction.id,
       date: new Date(transaction.transactionDate),
+      accountName: transaction.accountName,
       counterParty: parseApiCounterPartyToLocalCounterParty(transaction.counterparty),
       amount: transaction.amount,
+      currency: transaction.currency,
       balanceAfterTx: transaction.balance,
       reference:
         transaction.amount > 0
@@ -506,6 +552,9 @@ const remotePayoutToLocal = (payout: Payout): LocalPayout => {
       ? parseApiCounterPartyToLocalCounterParty(payout.destination)
       : undefined,
     tags: payout.tags.map((tag) => parseApiTagToLocalTag(tag)),
+    scheduled: payout.scheduled,
+    scheduleDate: payout.scheduleDate,
+    beneficiaryID: payout.beneficiaryID,
   }
 }
 
@@ -588,6 +637,7 @@ const payoutStatusToStatus = (
   | 'failed'
   | 'pending_approval'
   | 'inprogress'
+  | 'scheduled'
   | null
   | undefined => {
   switch (status) {
@@ -603,6 +653,8 @@ const payoutStatusToStatus = (
     case PayoutStatus.FAILED:
     case PayoutStatus.REJECTED:
       return 'failed'
+    case PayoutStatus.SCHEDULED:
+      return 'scheduled'
     default:
       return undefined
   }
@@ -634,13 +686,129 @@ const userRoleToDisplay = (status: UserRoles) => {
   }
 }
 
+const remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics,
+): LocalAccountWithTransactionMetrics => {
+  const {
+    accountID,
+    accountName,
+    balance,
+    availableBalance,
+    totalIncomingAmount,
+    totalOutgoingAmount,
+    numberOfTransactions,
+    currency,
+    numberOfIncomingTransactions,
+    numberOfOutgoingTransactions,
+  } = remoteAccountsWithTransactionMetrics
+
+  return {
+    accountID: accountID,
+    accountName: accountName,
+    balance: balance,
+    availableBalance: availableBalance,
+    totalIncomingAmount: totalIncomingAmount,
+    totalOutgoingAmount: totalOutgoingAmount,
+    numberOfTransactions: numberOfTransactions,
+    currency: currency,
+    numberOfIncomingTransactions: numberOfIncomingTransactions,
+    numberOfOutgoingTransactions: numberOfOutgoingTransactions,
+  }
+}
+
+const remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics = (
+  remoteAccountsWithTransactionMetrics: AccountTransactionMetrics[],
+): LocalAccountWithTransactionMetrics[] => {
+  return remoteAccountsWithTransactionMetrics.map((remoteAccountWithTransactionMetrics) => {
+    return remoteAccountWithTransactionMetricsToLocalAccountWithTransactionMetrics(
+      remoteAccountWithTransactionMetrics,
+    )
+  })
+}
+
+const remoteTimeFrequencyToLocalTimeFrequency = (
+  remoteTimeFrequency: TimeFrequencyEnum,
+): LocalTimeFrequencyEnum => {
+  switch (remoteTimeFrequency) {
+    case TimeFrequencyEnum.Daily:
+      return LocalTimeFrequencyEnum.Daily
+    default:
+      return LocalTimeFrequencyEnum.None
+  }
+}
+
+const remoteAccountMetricsToLocalAccountMetrics = (
+  remoteAccountMetrics: AccountMetrics,
+): LocalAccountMetrics => {
+  const {
+    merchantID,
+    currency,
+    totalBalance,
+    totalAvailableBalance,
+    numberOfAccounts,
+    periodicBalances,
+    periodicBalancesFromDate,
+    periodicBalancesToDate,
+    periodicBalancesFrequency,
+  } = remoteAccountMetrics
+
+  return {
+    merchantID: merchantID,
+    currency: currency,
+    totalBalance: totalBalance,
+    totalAvailableBalance: totalAvailableBalance,
+    numberOfAccounts: numberOfAccounts,
+    periodicBalances: periodicBalances,
+    periodicBalancesFromDate: periodicBalancesFromDate,
+    periodicBalancesToDate: periodicBalancesToDate,
+    periodicBalancesFrequency: remoteTimeFrequencyToLocalTimeFrequency(periodicBalancesFrequency),
+  }
+}
+
+const periodicBalancesToChartPoints = (periodicBalances: LocalPeriodicBalance[]): ChartPoint[] => {
+  return periodicBalances.map((periodicBalance) => {
+    return {
+      x: new Date(periodicBalance.balanceAt),
+      y: periodicBalance.balance,
+    }
+  })
+}
+
+const remoteAccountMetricsArrayToLocalAccountMetricsArray = (
+  remoteAccountMetrics: AccountMetrics[],
+): LocalAccountMetrics[] => {
+  return remoteAccountMetrics.map((remoteAccountMetric) => {
+    return remoteAccountMetricsToLocalAccountMetrics(remoteAccountMetric)
+  })
+}
+
+const parseApiUserRoleToLocalUserRole = (remoteUserRole: UserRoles | undefined): LocalUserRoles => {
+  switch (remoteUserRole) {
+    case UserRoles.User:
+      return LocalUserRoles.User
+    case UserRoles.Approver:
+      return LocalUserRoles.Approver
+    case UserRoles.AdminApprover:
+      return LocalUserRoles.AdminApprover
+    case UserRoles.PaymentRequestor:
+      return LocalUserRoles.PaymentRequestor
+    default:
+      return LocalUserRoles.NewlyRegistered
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
   parseApiTagToLocalTag,
+  parseApiUserRoleToLocalUserRole,
+  parseApiUserToLocalUser,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
+  periodicBalancesToChartPoints,
+  remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsToLocalAccounts,
+  remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
   remoteBeneficiariesToLocalBeneficiaries,
   remoteBeneficiaryToLocalBeneficiary,
   remotePaymentRequestToLocalPaymentRequest,

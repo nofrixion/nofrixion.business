@@ -4,7 +4,7 @@ import { Navigate, Outlet, useLocation, useParams } from 'react-router-dom'
 import { Loader } from '../../components/ui/Loader/Loader'
 import { useAuth } from '../../lib/auth/useAuth'
 import { useErrorsStore } from '../stores/useErrorsStore'
-import { tryParseApiError } from '../utils/errorUtils'
+import { tryParseApiError, tryParseConnectedAccountError } from '../utils/errorUtils'
 import { getRoute } from '../utils/utils'
 import { AuthContextType } from './AuthProvider'
 
@@ -22,6 +22,12 @@ export const ProtectedRoutes = () => {
 
     if (apiError) {
       addError(apiError)
+    }
+
+    const connectedAccountError = tryParseConnectedAccountError(location.search)
+
+    if (connectedAccountError) {
+      addError(connectedAccountError)
     }
   }, [location])
 

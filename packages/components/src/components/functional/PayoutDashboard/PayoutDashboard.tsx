@@ -13,14 +13,16 @@ import {
   useMerchantTags,
   usePayoutMetrics,
   usePayouts,
+  useUser,
 } from '@nofrixion/moneymoov'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
 import {
   parseApiTagToLocalTag,
+  parseApiUserToLocalUser,
   remoteAccountsToLocalAccounts,
   remoteBeneficiariesToLocalBeneficiaries,
   remotePayoutsToLocal,
@@ -30,8 +32,8 @@ import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashb
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
-import CreatePayoutModal from '../CreatePayoutModal/CreatePayoutModal'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
+import SavePayoutModal from '../SavePayoutModal/SavePayoutModal'
 
 export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
@@ -80,6 +82,9 @@ const PayoutDashboardMain = ({
     SortDirection.NONE,
   )
   const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [scheduleDateSortDirection, setScheduleDateSortDirection] = useState<SortDirection>(
+    SortDirection.NONE,
+  )
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([])
@@ -102,6 +107,7 @@ const PayoutDashboardMain = ({
   const [selectedPayouts, setSelectedPayouts] = useState<string[]>([])
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
   const authoriseFormRef = useRef<HTMLFormElement>(null)
+  const [isUserAuthoriser, setIsUserAuthoriser] = useState<boolean>(false)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -135,6 +141,7 @@ const PayoutDashboardMain = ({
       createdSortDirection: createdSortDirection,
       statusSortDirection: statusSortDirection,
       counterPartyNameSortDirection: counterPartyNameSortDirection,
+      scheduleDateSortDirection: scheduleDateSortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       status: status,
@@ -147,6 +154,12 @@ const PayoutDashboardMain = ({
     },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const selectedPayout = useMemo<LocalPayout | undefined>(() => {
+    return payouts
+      ? remotePayoutsToLocal(payouts).find((x) => x.id === selectedPayoutId)
+      : undefined
+  }, [selectedPayoutId, payouts])
 
   useEffect(() => {
     if (isLoadingPayouts) {
@@ -187,6 +200,10 @@ const PayoutDashboardMain = ({
     { merchantId: merchantId },
     { apiUrl: apiUrl, authToken: token },
   )
+
+  const { data: userResponse } = useUser({
+    apiUrl: apiUrl,
+  })
 
   const [localMerchantTags, setLocalMerchantTags] = useState<LocalTag[]>([] as LocalTag[])
 
@@ -261,6 +278,9 @@ const PayoutDashboardMain = ({
       case PayoutStatus.FAILED:
         setQueryStatuses([PayoutStatus.FAILED, PayoutStatus.REJECTED, PayoutStatus.UNKNOWN])
         break
+      case PayoutStatus.SCHEDULED:
+        setQueryStatuses([PayoutStatus.SCHEDULED])
+        break
     }
   }, [status])
 
@@ -274,6 +294,16 @@ const PayoutDashboardMain = ({
       authoriseFormRef.current?.submit()
     }
   }, [batchId])
+
+  useEffect(() => {
+    if (userResponse?.status === 'success') {
+      const user = parseApiUserToLocalUser(userResponse.data, merchantId)
+
+      setIsUserAuthoriser(user.isAuthoriser)
+    } else if (userResponse?.status === 'error') {
+      console.log('Error fetching user', userResponse.error)
+    }
+  }, [userResponse])
 
   const handleApiError = (error: ApiError) => {
     if (error && error.status === 401) {
@@ -290,7 +320,7 @@ const PayoutDashboardMain = ({
   }
 
   const onSort = (
-    column: 'status' | 'date' | 'amount' | 'counterParty.name',
+    column: 'status' | 'date' | 'amount' | 'counterParty.name' | 'scheduleDate',
     direction: SortDirection,
   ) => {
     switch (column) {
@@ -305,6 +335,9 @@ const PayoutDashboardMain = ({
         break
       case 'counterParty.name':
         setCounterPartyNameSortDirection(direction)
+        break
+      case 'scheduleDate':
+        setScheduleDateSortDirection(direction)
         break
     }
   }
@@ -384,6 +417,10 @@ const PayoutDashboardMain = ({
     }
   }
 
+  const onPayoutEditClicked = () => {
+    setCreatePayoutClicked(true)
+  }
+
   return (
     <div>
       <UIPayoutDashboard
@@ -426,6 +463,7 @@ const PayoutDashboardMain = ({
         selectedPayouts={selectedPayouts}
         onApproveBatchPayouts={onApproveBatchPayouts}
         payoutsExist={payoutsExists}
+        isUserAuthoriser={isUserAuthoriser}
       />
 
       <PayoutDetailsModal
@@ -438,6 +476,7 @@ const PayoutDashboardMain = ({
         statusSortDirection={statusSortDirection}
         createdSortDirection={createdSortDirection}
         counterPartyNameSortDirection={counterPartyNameSortDirection}
+        scheduleDateSortDirection={scheduleDateSortDirection}
         page={page}
         pageSize={pageSize}
         dateRange={dateRange}
@@ -448,10 +487,12 @@ const PayoutDashboardMain = ({
         maxAmountFilter={maxAmountFilter}
         tagsFilter={tagsFilter}
         merchantTags={localMerchantTags}
+        isUserAuthoriser={isUserAuthoriser}
+        onEdit={onPayoutEditClicked}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
-        <CreatePayoutModal
+        <SavePayoutModal
           accounts={remoteAccountsToLocalAccounts(accounts)}
           beneficiaries={remoteBeneficiariesToLocalBeneficiaries(beneficiaries)}
           apiUrl={apiUrl}
@@ -461,6 +502,8 @@ const PayoutDashboardMain = ({
             setCreatePayoutClicked(false)
           }}
           merchantId={merchantId}
+          isUserAuthoriser={isUserAuthoriser}
+          selectedPayout={selectedPayout}
         />
       )}
 

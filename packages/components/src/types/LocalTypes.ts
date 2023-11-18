@@ -1,4 +1,4 @@
-import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import { Currency, PaymentResult, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
   FieldID,
@@ -6,6 +6,7 @@ import {
   LocalAddressType,
   LocalPartialPaymentMethods,
   LocalPaymentMethodTypes,
+  LocalTimeFrequencyEnum,
   LocalWallets,
   SubTransactionType,
 } from './LocalEnums'
@@ -45,6 +46,7 @@ export interface LocalPaymentRequest {
   customerName?: string
   createdByUser?: LocalUser
   merchantTokenDescription?: string
+  remoteStatus: PaymentResult
 }
 
 export interface LocalCounterparty {
@@ -82,6 +84,7 @@ export interface LocalPaymentAttempt {
   status: LocalPaymentStatus
   reconciledTransactionID?: string
   paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
+  paymentProcessor?: LocalPaymentProcessor
 }
 
 export interface SubTransaction {
@@ -184,9 +187,11 @@ export interface LocalTag {
 
 export interface LocalTransaction {
   id: string
+  accountName: string
   date: Date
   counterParty: LocalCounterparty
   amount: number
+  currency: Currency
   balanceAfterTx?: number
   reference: string
   description: string
@@ -212,6 +217,9 @@ export interface LocalPayout {
   sourceAccountIban: string
   destination?: LocalCounterparty
   tags: LocalTag[]
+  scheduled?: boolean
+  scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export interface LocalAccount {
@@ -265,4 +273,68 @@ export interface LocalUser {
   firstName: string
   lastName: string
   email: string
+  role?: LocalUserRoles
+  isAdmin: boolean
+  isAuthoriser: boolean
+}
+
+export enum LocalPaymentProcessor {
+  None = 'None',
+  CyberSource = 'CyberSource',
+  Checkout = 'Checkout',
+  Stripe = 'Stripe',
+  Modulr = 'Modulr',
+  Plaid = 'Plaid',
+  Yapily = 'Yapily',
+  NoFrixion = 'Nofrixion',
+}
+
+export interface LocalSettledTransaction {
+  settledAt?: Date
+  amount: number
+  currency: Currency.EUR | Currency.GBP
+  processor?: LocalPaymentProcessor
+  paymentMethod: LocalPaymentMethodTypes
+  isRefund: boolean
+  wallet?: LocalWallets
+}
+
+export interface LocalAccountWithTransactionMetrics {
+  accountID: string
+  accountName: string
+  availableBalance: number
+  balance: number
+  currency: Currency
+  totalIncomingAmount: number
+  totalOutgoingAmount: number
+  numberOfTransactions: number
+  numberOfIncomingTransactions: number
+  numberOfOutgoingTransactions: number
+}
+
+export interface LocalAccountMetrics {
+  merchantID: string
+  totalAvailableBalance: number
+  totalBalance: number
+  currency: Currency
+  numberOfAccounts: number
+  periodicBalances: LocalPeriodicBalance[]
+  periodicBalancesFromDate: Date
+  periodicBalancesToDate: Date
+  periodicBalancesFrequency: LocalTimeFrequencyEnum
+}
+
+export interface LocalPeriodicBalance {
+  balanceAt: Date
+  balance: number
+}
+
+// This isn't an exact copy of the enum in the API.
+// The roles are sorted in order of least to most privileged.
+export enum LocalUserRoles {
+  NewlyRegistered = 1,
+  PaymentRequestor = 2,
+  User = 3,
+  Approver = 4,
+  AdminApprover = 5,
 }

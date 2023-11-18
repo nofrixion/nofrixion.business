@@ -42,6 +42,24 @@ export const Icons = {
       <path d="M2 2L12 12L2 22" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'card/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M12.29 4.66675H2.37697C1.80068 4.66675 1.3335 5.15177 1.3335 5.75008V12.2501C1.3335 12.8484 1.80068 13.3334 2.37697 13.3334H12.29C12.8663 13.3334 13.3335 12.8484 13.3335 12.2501V5.75008C13.3335 5.15177 12.8663 4.66675 12.29 4.66675Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M1.3335 6.9231H13.3335" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M11.3333 8.66675H10" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.84042 8.66675H2.6665" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3.99984 10.6667H2.6665" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M2.6665 4.65605V3.41659C2.6665 2.81828 3.15964 2.33325 3.76795 2.33325H14.2317C14.84 2.33325 15.3332 2.81828 15.3332 3.41659V9.91659C15.3332 10.5149 14.84 10.9999 14.2317 10.9999H13.4754"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
   'card/24': (className: string) => (
     <SVG className={className} size="24">
       <path
@@ -79,6 +97,27 @@ export const Icons = {
         strokeLinejoin="round"
       />
       <path d="M21 7.5H3" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'wallets/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path d="M11.2955 11.6448H2.6665" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M11.3332 8.86948V13.5072C11.3332 13.8147 11.1927 14.1096 10.9427 14.327C10.6926 14.5445 10.3534 14.6666 9.99984 14.6666H3.99984C3.64621 14.6666 3.30708 14.5445 3.05703 14.327C2.80698 14.1096 2.6665 13.8147 2.6665 13.5072V2.49267C2.6665 2.18518 2.80698 1.89027 3.05703 1.67284C3.30708 1.4554 3.64621 1.33325 3.99984 1.33325H8.99984"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.4826 8.46523C13.6821 8.46523 15.4652 6.68214 15.4652 4.48261C15.4652 2.28307 13.6821 0.5 11.4826 0.5C9.28307 0.5 7.5 2.28307 7.5 4.48261C7.5 6.68214 9.28307 8.46523 11.4826 8.46523Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.6774 2.29761H12.3413C11.7618 2.29761 11.206 2.52781 10.7962 2.93759C10.3864 3.34737 10.1562 3.90315 10.1562 4.48267C10.1562 5.06218 10.3864 5.61795 10.7962 6.02773C11.206 6.43751 11.7618 6.66772 12.3413 6.66772H12.6774"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M9.49756 4.6333H11.7982" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
   'wallets/24': (className: string) => (
@@ -355,6 +394,12 @@ export const Icons = {
         strokeLinejoin="round"
       />
       <path d="M1 11H11" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'next/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M6 0.999999L11 6L6 11" />
+      <path d="M11 6L1 6" />
     </SVG>
   ),
   'arrow-down/8': (className: string) => (
@@ -650,6 +695,75 @@ export const Icons = {
       />
       <path d="M6.57056 6V4.125" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M6.57056 6L8.91406 8.344" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'scheduled/12': (className: string) => (
+    <SVG className={cn(className, 'fill-current stroke-none')} size="12" viewBox="0 0">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M4.15378 1.0005C4.15378 0.867892 4.1011 0.740715 4.00733 0.646947C3.91356 0.553178 3.78639 0.5005 3.65378 0.5005C3.52117 0.5005 3.39399 0.553178 3.30022 0.646947C3.20646 0.740715 3.15378 0.867892 3.15378 1.0005V1.9415H2.37578C1.71428 1.9415 1.15378 2.5015 1.15378 3.1625V10.092C1.15378 10.7525 1.71428 11.313 2.37478 11.313H9.93278C10.5933 11.313 11.1538 10.7525 11.1538 10.092V3.1625C11.1538 2.5025 10.5933 1.942 9.93278 1.942H9.15378V1C9.15378 0.867392 9.1011 0.740215 9.00733 0.646447C8.91356 0.552678 8.78639 0.5 8.65378 0.5C8.52117 0.5 8.39399 0.552678 8.30022 0.646447C8.20646 0.740215 8.15378 0.867392 8.15378 1V1.942H4.15378V1.0005ZM2.15428 5.469H10.1538V10.092C10.1538 10.2 10.0413 10.313 9.93328 10.313H2.37528C2.26728 10.313 2.15428 10.2 2.15428 10.092V5.469Z"
+      />
+    </SVG>
+  ),
+  'scheduled/16': (className: string) => (
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16" viewBox="0 -1">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M5.33337 0.667333C5.33337 0.490522 5.26314 0.320953 5.13811 0.195929C5.01309 0.0709046 4.84352 0.000666658 4.66671 0.000666658C4.4899 0.000666658 4.32033 0.0709046 4.1953 0.195929C4.07028 0.320953 4.00004 0.490522 4.00004 0.667333V1.922H2.96271C2.08071 1.922 1.33337 2.66867 1.33337 3.55V12.7893C1.33337 13.67 2.08071 14.4173 2.96137 14.4173H13.0387C13.9194 14.4173 14.6667 13.67 14.6667 12.7893V3.55C14.6667 2.67 13.9194 1.92267 13.0387 1.92267H12V0.666667C12 0.489856 11.9298 0.320286 11.8048 0.195262C11.6798 0.0702379 11.5102 0 11.3334 0C11.1566 0 10.987 0.0702379 10.862 0.195262C10.7369 0.320286 10.6667 0.489856 10.6667 0.666667V1.92267H5.33337V0.667333ZM2.66737 6.62533H13.3334V12.7893C13.3334 12.9333 13.1834 13.084 13.0394 13.084H2.96204C2.81804 13.084 2.66737 12.9333 2.66737 12.7893V6.62533Z"
+      />
+    </SVG>
+  ),
+  'calendar/16': (className: string) => (
+    <SVG className={cn(className, '')} size="16">
+      <g id="16px/Calendar">
+        <path
+          id="Vector"
+          d="M14.5012 2.5H1.50122C0.948936 2.5 0.501221 2.94772 0.501221 3.5V14.5C0.501221 15.0523 0.948936 15.5 1.50122 15.5H14.5012C15.0535 15.5 15.5012 15.0523 15.5012 14.5V3.5C15.5012 2.94772 15.0535 2.5 14.5012 2.5Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M0.501221 6.5H15.5012"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path id="Vector_3" d="M4.50122 4V0.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector_4" d="M11.5012 4V0.5" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+    </SVG>
+  ),
+  'info/16': (className: string) => (
+    <SVG className={cn(className, '')} size="16">
+      <g id="16px/Info" clipPath="url(#clip0_10157_54785)">
+        <path
+          id="Vector"
+          d="M9.5 11H9C8.73478 11 8.48043 10.8946 8.29289 10.7071C8.10536 10.5196 8 10.2652 8 10V7.5C8 7.36739 7.94732 7.24022 7.85355 7.14645C7.75978 7.05268 7.63261 7 7.5 7H7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M7.75 5C7.6837 5 7.62011 4.97366 7.57322 4.92678C7.52634 4.87989 7.5 4.8163 7.5 4.75C7.5 4.6837 7.52634 4.62011 7.57322 4.57322C7.62011 4.52634 7.6837 4.5 7.75 4.5"
+        />
+        <path
+          id="Vector_3"
+          d="M7.75 5C7.8163 5 7.87989 4.97366 7.92678 4.92678C7.97366 4.87989 8 4.8163 8 4.75C8 4.6837 7.97366 4.62011 7.92678 4.57322C7.87989 4.52634 7.8163 4.5 7.75 4.5"
+        />
+        <path
+          id="Vector_4"
+          d="M8 15.5C12.142 15.5 15.5 12.142 15.5 8C15.5 3.858 12.142 0.5 8 0.5C3.858 0.5 0.5 3.858 0.5 8C0.5 12.142 3.858 15.5 8 15.5Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_10157_54785">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
     </SVG>
   ),
 } as const

@@ -19,3 +19,25 @@ export const tryParseApiError = (id?: string, result?: string, search?: string) 
     }
   }
 }
+
+export const tryParseConnectedAccountError = (search?: string) => {
+  if (search) {
+    const params = new URLSearchParams(search)
+
+    const connectedAccountError = params.get('error')
+
+    if (connectedAccountError) {
+      const errorMessage = decodeURIComponent(search).split('=')[1].replace(/\+/g, ' ')
+
+      const apiError = {
+        detail: errorMessage,
+      } as ApiError
+
+      return {
+        type: ErrorType.CONNECTEDACCOUNT,
+        id: 'ca-error',
+        error: apiError,
+      }
+    }
+  }
+}

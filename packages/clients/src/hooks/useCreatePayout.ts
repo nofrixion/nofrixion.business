@@ -1,4 +1,5 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query'
+import { startOfDay } from 'date-fns'
 import { useCallback } from 'react'
 
 import { PayoutClient } from '../clients/PayoutClient'
@@ -25,8 +26,17 @@ const createPayoutAsync = async (
   description?: string,
   yourReference?: string,
   invoiceID?: string,
+  scheduled?: boolean,
+  scheduleDate?: Date,
+  beneficiaryID?: string,
 ): Promise<ApiResponse<Payout>> => {
   const payoutClient = new PayoutClient({ apiUrl, authToken })
+
+  // The schedule time needs to be the start of the day
+  if (scheduleDate) {
+    scheduleDate = startOfDay(scheduleDate)
+  }
+
   const payoutCreate: PayoutCreate = {
     accountID: accountID,
     type: type,
@@ -38,6 +48,9 @@ const createPayoutAsync = async (
     destination: destination,
     invoiceID: invoiceID,
     allowIncomplete: allowIncomplete,
+    scheduled: scheduled,
+    scheduleDate: scheduleDate,
+    beneficiaryID: beneficiaryID,
   }
   const payoutCreateResponse = await payoutClient.create(payoutCreate)
 
@@ -71,6 +84,10 @@ export const useCreatePayout = ({
         authToken,
         variables.description,
         variables.yourReference,
+        variables.invoiceID,
+        variables.scheduled,
+        variables.scheduleDate,
+        variables.beneficiaryID,
       ),
     onSuccess: (data: ApiResponse<Payout>) => {
       if (data.status === 'success') {
@@ -94,6 +111,9 @@ export const useCreatePayout = ({
       destination,
       invoiceID,
       allowIncomplete,
+      scheduled,
+      scheduleDate,
+      beneficiaryID,
     }: CreatePayoutProps) => {
       const result = await mutation.mutateAsync({
         accountID,
@@ -106,6 +126,9 @@ export const useCreatePayout = ({
         destination,
         invoiceID,
         allowIncomplete,
+        scheduled,
+        scheduleDate,
+        beneficiaryID,
       })
 
       return result

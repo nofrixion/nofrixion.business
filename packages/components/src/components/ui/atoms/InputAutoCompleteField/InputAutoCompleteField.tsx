@@ -43,7 +43,7 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
         >
           {({ open }) => (
             <div className="relative">
-              <div className="relative w-full ">
+              <div className="relative w-full">
                 <Combobox.Input
                   className="pl-3 border border-border-grey rounded-[0.25rem] h-12 w-full inline-block font-normal text-sm/6 text-default-text disabled:bg-[#F6F8F9]"
                   displayValue={(value: string) => value}
@@ -103,15 +103,13 @@ const InputAutoCompleteField = forwardRef<HTMLInputElement, InputAutoCompleteFie
                         value={suggestion}
                       >
                         {({ selected }) => (
-                          <>
-                            <span
-                              className={`block leading-6 text-sm ${
-                                selected ? 'font-medium' : 'font-normal'
-                              }`}
-                            >
-                              {suggestion}
-                            </span>
-                          </>
+                          <span
+                            className={`block leading-6 text-sm ${
+                              selected ? 'font-medium' : 'font-normal'
+                            }`}
+                          >
+                            {suggestion}
+                          </span>
                         )}
                       </Combobox.Option>
                     ))}

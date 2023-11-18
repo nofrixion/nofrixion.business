@@ -122,12 +122,14 @@ export abstract class BaseApiClient {
    * @param url The request url
    * @param method The Http Method.
    * @param postData Optional. The data to post if specified.
+   * @param overrideContentType Optional. The content type to override the default content type.
    * @returns A response of type TResponse if successful. An ApiError if not successful.
    */
   protected async httpRequest<TResponse>(
     url: string,
     method: HttpMethod,
     postData?: unknown,
+    overrideContentType?: string,
   ): Promise<ApiResponse<TResponse>> {
     if (this.debug) {
       console.log(`Requesting: ${method} ${url}`)
@@ -135,9 +137,11 @@ export abstract class BaseApiClient {
 
     let contentType = 'application/json'
 
-    // Send form encoding on POST and PUT
-    // Axios will automatically serialize the postData object to form urlencoded format
-    if (method === HttpMethod.POST || method === HttpMethod.PUT) {
+    if (overrideContentType) {
+      contentType = overrideContentType
+    } else if (method === HttpMethod.POST || method === HttpMethod.PUT) {
+      // Send form encoding on POST and PUT
+      // Axios will automatically serialize the postData object to form urlencoded format
       contentType = 'application/x-www-form-urlencoded'
     }
 

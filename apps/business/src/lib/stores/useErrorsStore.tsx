@@ -3,6 +3,7 @@ import { create } from 'zustand'
 
 export enum ErrorType {
   PAYOUT = 'PAYOUT',
+  CONNECTEDACCOUNT = 'CONNECTEDACCOUNT',
 }
 
 export type Error = {

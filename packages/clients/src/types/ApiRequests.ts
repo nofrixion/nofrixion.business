@@ -86,6 +86,9 @@ export type PayoutCreate = {
   invoiceID?: string
   allowIncomplete: boolean
   tagIds?: string[]
+  scheduled?: boolean
+  scheduleDate?: Date
+  beneficiaryID?: string
 }
 
 export type BatchApprove = {
@@ -103,6 +106,7 @@ export type ConsentRequest = {
   callbackUrl?: string
   successWebHookUrl?: string
   IsConnectedAccounts: boolean
+  failureCallbackUrl?: string
 }
 
 export type UserInviteCreate = {

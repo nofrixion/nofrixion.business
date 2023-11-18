@@ -1,4 +1,25 @@
-import { PaymentRequestMetrics, useAccounts, usePaymentRequestMetrics } from '@nofrixion/moneymoov'
+import {
+  AccountStatisticsCard,
+  LatestTransactionsCard,
+} from '@nofrixion/components/src/components/ui/molecules'
+import {
+  remoteAccountMetricsArrayToLocalAccountMetricsArray,
+  remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics,
+  remoteTransactionsToLocal,
+} from '@nofrixion/components/src/utils/parsers'
+import {
+  AccountMetrics,
+  AccountTransactionMetrics,
+  Currency,
+  PaymentRequestMetrics,
+  SortDirection,
+  TimeFrequencyEnum,
+  Transaction,
+  useAccountMetrics,
+  useAccountsWithTransactionMetrics,
+  usePaymentRequestMetrics,
+  useTransactionsForMerchant,
+} from '@nofrixion/moneymoov'
 import { addDays, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -6,12 +27,10 @@ import { useNavigate } from 'react-router-dom'
 import AccountPayableCard from '../../components/AccountPayableCard'
 import AcountsReceivableCard from '../../components/AcountsReceivableCard'
 import { Loader } from '../../components/ui/Loader/Loader'
-import AccountsCarousel from '../../components/ui/molecules/AccountsCarousel'
 import { AuthContextType } from '../../lib/auth/AuthProvider'
 import { useAuth } from '../../lib/auth/useAuth'
 import { NOFRIXION_API_URL } from '../../lib/constants'
 import useMerchantStore from '../../lib/stores/useMerchantStore'
-import { Account } from '../../lib/types/localTypes'
 
 const last30Days = addDays(new Date(), -30)
 
@@ -20,15 +39,58 @@ const DashboardPage = () => {
   const navigate = useNavigate()
   const { authState } = useAuth() as AuthContextType
 
-  const [accounts, setAccounts] = useState<Account[]>([])
+  const [accounts, setAccounts] = useState<AccountTransactionMetrics[]>([])
+  const [accountMetrics, setAccountMetrics] = useState<AccountMetrics[]>([])
   const [metrics, setMetrics] = useState<PaymentRequestMetrics>()
+  const [transactions, setTransactions] = useState<Transaction[]>([])
 
-  const { data: accountsResponse, isLoading: isAccountsLoading } = useAccounts(
-    { merchantId: merchant?.id, connectedAccounts: true },
+  const { data: accountMetricsResponse, isLoading: isAccountMetricsLoading } = useAccountMetrics(
+    {
+      merchantId: merchant?.id,
+      fromDate: startOfDay(last30Days),
+      toDate: startOfDay(new Date()),
+      timeFrequency: TimeFrequencyEnum.Daily,
+    },
     {
       apiUrl: NOFRIXION_API_URL,
     },
   )
+  const [currency, setCurrency] = useState<Currency | undefined>(undefined)
+  const { data: accountsWithTransactionMetricsResponse, isLoading: isAccountsLoading } =
+    useAccountsWithTransactionMetrics(
+      {
+        pageSize: 3,
+        merchantId: merchant?.id,
+        pageNumber: 1,
+        fromDateMS: startOfDay(last30Days).getTime(),
+        numberOfTransactionsSortDirection: SortDirection.DESC,
+        currency: currency,
+      },
+      {
+        apiUrl: NOFRIXION_API_URL,
+      },
+    )
+
+  const isDashboardLoading = isAccountMetricsLoading || isAccountsLoading
+
+  const singleCurrency =
+    !isAccountMetricsLoading && accountMetrics.length === 1 ? accountMetrics[0].currency : undefined
+
+  useEffect(() => {
+    if (singleCurrency && accountMetrics.length === 1) {
+      setCurrency(singleCurrency)
+    } else if (accountMetrics.length > 1) {
+      setCurrency(Currency.EUR)
+    }
+  }, [singleCurrency, accountMetrics])
+
+  useEffect(() => {
+    if (merchant) {
+      setCurrency(undefined)
+      setAccountMetrics([])
+      setAccounts([])
+    }
+  }, [merchant])
 
   const { data: metricsResponse, isLoading: isMetricsLoading } = usePaymentRequestMetrics(
     { merchantId: merchant?.id, fromDateMS: startOfDay(last30Days).getTime() },
@@ -37,25 +99,48 @@ const DashboardPage = () => {
     },
   )
 
+  const { data: transactionsResponse, isLoading: isTransactionsLoading } =
+    useTransactionsForMerchant(
+      { merchantId: merchant?.id },
+      { pageSize: 9 },
+      {
+        apiUrl: NOFRIXION_API_URL,
+      },
+    )
   useEffect(() => {
-    if (accountsResponse?.status === 'success') {
-      setAccounts(accountsResponse.data)
-    } else if (accountsResponse?.status === 'error') {
-      console.error(accountsResponse.error)
-      // authState?.logOut && authState?.logOut()
+    if (accountsWithTransactionMetricsResponse?.status === 'success') {
+      setAccounts(accountsWithTransactionMetricsResponse.data.content)
+    } else if (accountsWithTransactionMetricsResponse?.status === 'error') {
+      console.error(accountsWithTransactionMetricsResponse.error)
     }
-  }, [accountsResponse, authState])
+  }, [accountsWithTransactionMetricsResponse, authState])
+
+  useEffect(() => {
+    if (accountMetricsResponse?.status === 'success') {
+      setAccountMetrics(accountMetricsResponse.data)
+    } else if (accountMetricsResponse?.status === 'error') {
+      console.error(accountMetricsResponse.error)
+    }
+  }, [accountMetricsResponse, authState])
 
   useEffect(() => {
     if (metricsResponse?.status === 'success') {
       setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
       console.error(metricsResponse.error)
-      // authState?.logOut && authState?.logOut()
     }
   }, [authState, metricsResponse])
 
-  if (isAccountsLoading || isMetricsLoading) {
+  useEffect(() => {
+    if (transactionsResponse?.status === 'success') {
+      setTransactions(transactionsResponse.data.content)
+    } else if (transactionsResponse?.status === 'error') {
+      console.error(transactionsResponse.error)
+      // authState?.logOut && authState?.logOut()
+    }
+  }, [authState, transactionsResponse])
+
+  if (isMetricsLoading) {
     return (
       <div className="flex justify-center items-center h-full">
         <Loader className="flex items-center justify-center p-24 min-h-screen" />
@@ -67,8 +152,28 @@ const DashboardPage = () => {
     <>
       <h1 className="text-[1.75rem]/8 font-medium mb-8 md:mb-16 md:px-4">Your current status</h1>
       <div>
-        <div className="-mx-8 md:-mx-14">
-          {!isAccountsLoading && accounts && <AccountsCarousel accounts={accounts} />}
+        <div className="flex flex-col xl:flex-row gap-4">
+          <AccountStatisticsCard
+            accounts={remoteAccountsWithTransactionMetricsToLocalAccountsWithTransactionMetrics(
+              accounts,
+            )}
+            isLoading={isDashboardLoading}
+            currency={currency}
+            onCurrencyChange={isAccountMetricsLoading || singleCurrency ? undefined : setCurrency}
+            className="md:pb-6 w-full xl:w-1/2"
+            accountMetrics={remoteAccountMetricsArrayToLocalAccountMetricsArray(accountMetrics)}
+            onShowViewAll={() => {
+              navigate('current-accounts')
+            }}
+            onAccountClick={(accountID) => {
+              navigate(`current-accounts/${accountID}`)
+            }}
+          />
+          <LatestTransactionsCard
+            transactions={remoteTransactionsToLocal(transactions)}
+            isLoading={isTransactionsLoading}
+            className="md:pb-6 w-full xl:w-1/2"
+          />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 mt-4">
