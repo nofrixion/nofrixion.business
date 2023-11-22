@@ -867,6 +867,7 @@ const payoutStatusToActivitySatus = (status: PayoutEventTypesEnum): string => {
     case PayoutEventTypesEnum.Queued:
       return 'Queued'
     case PayoutEventTypesEnum.Created:
+    case PayoutEventTypesEnum.Edited:
       return 'Pending authorisation'
     default:
       return ''
