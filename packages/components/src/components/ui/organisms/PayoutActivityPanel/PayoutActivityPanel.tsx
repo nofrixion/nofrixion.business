@@ -38,13 +38,13 @@ const PayoutActivityPanel = ({ activities }: PayoutActivityPanelProps) => {
     <div className="mt-16 mx-8 pb-28">
       <div className="text-default-text text-2xl font-semibold mb-10">Activity</div>
       <div className="flex flex-col gap-8 w-full relative">
-        {activities && activities.length >= 0 && (
+        {activities && activities.length > 1 && (
           <div
             style={{
               height: `${timelineHeight}`,
             }}
             className="ml-[0.46875rem] mt-[19px] w-px bg-border-grey absolute"
-          ></div>
+          />
         )}
         {activities &&
           activities
