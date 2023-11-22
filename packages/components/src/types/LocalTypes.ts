@@ -1,4 +1,4 @@
-import { Currency, PaymentResult, PayoutStatus } from '@nofrixion/moneymoov'
+import { Currency, PaymentResult, PayoutEventTypesEnum, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
   FieldID,
@@ -220,6 +220,7 @@ export interface LocalPayout {
   scheduled?: boolean
   scheduleDate?: Date
   beneficiaryID?: string
+  activities: PayoutActivity[]
 }
 
 export interface LocalAccount {
@@ -337,4 +338,11 @@ export enum LocalUserRoles {
   User = 3,
   Approver = 4,
   AdminApprover = 5,
+}
+
+export interface PayoutActivity {
+  text: string
+  timestamp: Date
+  status: string
+  eventType: PayoutEventTypesEnum
 }
