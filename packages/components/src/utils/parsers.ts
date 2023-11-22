@@ -803,9 +803,15 @@ const parseApiUserRoleToLocalUserRole = (remoteUserRole: UserRoles | undefined):
 }
 
 const payoutToEventActivities = (user: User, payout: Payout): PayoutActivity[] => {
-  return payout.events?.map((payoutEvent) => {
-    return payoutEventToActivity(user, payoutEvent, payout)
-  })
+  return payout.events
+    ?.filter(
+      (item) =>
+        item?.eventType !== PayoutEventTypesEnum.Unknown &&
+        item?.eventType !== PayoutEventTypesEnum.Webhook,
+    )
+    .map((payoutEvent) => {
+      return payoutEventToActivity(user, payoutEvent, payout)
+    })
 }
 
 const payoutEventToActivity = (
@@ -827,12 +833,14 @@ const toActivityText = (user: User, event: PayoutEvent, payout: Payout): string 
   switch (event.eventType) {
     case PayoutEventTypesEnum.Created:
       return `Created by ${userName}`
+    case PayoutEventTypesEnum.Edited:
+      return `Edited by ${userName}`
     case PayoutEventTypesEnum.Authorise:
       return `Authorised by ${userName}`
     case PayoutEventTypesEnum.Initiate:
-      return 'Waiting for bank'
+      return "Waiting for bank's authorisation"
     case PayoutEventTypesEnum.Queued:
-      return 'Waiting for...'
+      return "Submitted for bank's authorisation"
     case PayoutEventTypesEnum.Settle:
       return 'Successfully paid'
     case PayoutEventTypesEnum.Failure:

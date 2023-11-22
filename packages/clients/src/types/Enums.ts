@@ -253,4 +253,5 @@ export const enum PayoutEventTypesEnum {
   Created = 'Created',
   Queued = 'Queued',
   Scheduled = 'Scheduled',
+  Edited = 'Edited',
 }
