@@ -11,16 +11,14 @@ export interface PayoutActivityPanelProps {
 
 const eventTypeToIconName = (eventType: PayoutEventTypesEnum): IconNames => {
   switch (eventType) {
-    case PayoutEventTypesEnum.Authorise:
-      return 'authorise/16'
     case PayoutEventTypesEnum.Created:
-      return 'created/16'
-    case PayoutEventTypesEnum.Failure:
-      return 'failed-red/16'
     case PayoutEventTypesEnum.Initiate:
-      return 'created/16'
     case PayoutEventTypesEnum.Queued:
       return 'created/16'
+    case PayoutEventTypesEnum.Authorise:
+      return 'authorise/16'
+    case PayoutEventTypesEnum.Failure:
+      return 'failed-red/16'
     case PayoutEventTypesEnum.Scheduled:
       return 'scheduled/16'
     case PayoutEventTypesEnum.Settle:
