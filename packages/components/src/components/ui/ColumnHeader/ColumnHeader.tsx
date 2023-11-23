@@ -1,7 +1,7 @@
-import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 
 import { cn } from '../../../utils'
+import { Icon } from '../atoms'
 
 export enum SortDirection {
   NONE = 'NONE',
@@ -27,7 +27,7 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
     } else if (sortDirection === SortDirection.DESC) {
       setSortDirection(SortDirection.ASC)
     } else {
-      setSortDirection(SortDirection.NONE)
+      setSortDirection(SortDirection.DESC)
     }
   }
 
@@ -46,34 +46,13 @@ const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
           className="ml-2.5 space-y-1 w-2.5 transition opacity-0 group-hover:opacity-100 data-[direction-selected='true']:opacity-100"
           data-direction-selected={sortDirection != SortDirection.NONE}
         >
-          <svg
-            className={classNames({
-              'stroke-control-grey-hover': sortDirection === SortDirection.ASC,
-              'stroke-control-grey':
-                sortDirection === SortDirection.NONE || sortDirection === SortDirection.DESC,
-            })}
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M1 5L5 1L9 5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <svg
-            className={classNames({
-              'stroke-control-grey-hover': sortDirection === SortDirection.DESC,
-              'stroke-control-grey':
-                sortDirection === SortDirection.NONE || sortDirection === SortDirection.ASC,
-            })}
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M9 1L5 5L1 1" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          {sortDirection == SortDirection.ASC && (
+            <Icon name="sort-up/12" className="stroke-control-grey-hover" />
+          )}
+
+          {sortDirection == SortDirection.DESC && (
+            <Icon name="sort-down/12" className="stroke-control-grey-hover" />
+          )}
         </div>
       )}
     </button>
