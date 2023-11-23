@@ -6,7 +6,9 @@ import {
   useCancelScheduledPayout,
   useCreateTag,
   usePayout,
+  User,
   useRemovePayoutTag,
+  useUser,
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
@@ -68,6 +70,17 @@ const PayoutDetailsModal = ({
   onEdit,
 }: PayoutDetailsModalProps) => {
   const [payout, setPayout] = useState<LocalPayout | undefined>(undefined)
+  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined)
+
+  const { data: userResponse } = useUser({
+    apiUrl: apiUrl,
+  })
+
+  useEffect(() => {
+    if (userResponse?.status === 'success') {
+      setCurrentUser(userResponse.data)
+    }
+  }, [userResponse])
 
   const { data: payoutResponse } = usePayout(
     {
@@ -94,7 +107,7 @@ const PayoutDetailsModal = ({
 
   useEffect(() => {
     if (payoutResponse?.status === 'success') {
-      setPayout(remotePayoutToLocal(payoutResponse.data))
+      setPayout(remotePayoutToLocal(payoutResponse.data, currentUser))
     } else if (payoutResponse?.status === 'error') {
       makeToast('error', 'Could not get payout details.')
     }

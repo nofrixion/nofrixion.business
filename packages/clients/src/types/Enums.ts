@@ -242,3 +242,18 @@ export const enum TimeFrequencyEnum {
   None = 'None',
   Daily = 'Daily',
 }
+
+export const enum PayoutEventTypesEnum {
+  Unknown = 'Unknown',
+  Authorise = 'Authorise',
+  Initiate = 'Initiate',
+  Webhook = 'Webhook',
+  Settle = 'Settle',
+  Failure = 'Failure',
+  Created = 'Created',
+  Queued = 'Queued',
+  Scheduled = 'Scheduled',
+  BeneficiaryUpdated = 'BeneficiaryUpdated',
+  BeneficiaryDisabled = 'BeneficiaryDisabled',
+  Edited = 'Edited',
+}

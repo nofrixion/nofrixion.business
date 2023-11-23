@@ -766,6 +766,35 @@ export const Icons = {
       </defs>
     </SVG>
   ),
+  'failed-red/16': (className: string) => (
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16">
+      <circle cx="8" cy="8" r="8" fill="#F32448" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M6.20712 4.7929C5.8166 4.40237 5.18343 4.40236 4.7929 4.79288C4.40237 5.1834 4.40236 5.81657 4.79288 6.2071L6.58667 8.00093L4.7931 9.79455C4.40258 10.1851 4.40259 10.8182 4.79312 11.2088C5.18365 11.5993 5.81681 11.5993 6.20733 11.2087L8.00087 9.41517L9.7944 11.2087C10.1849 11.5993 10.8181 11.5993 11.2086 11.2088C11.5991 10.8182 11.5992 10.1851 11.2086 9.79455L9.41506 8.00093L11.2089 6.2071C11.5994 5.81657 11.5994 5.1834 11.2088 4.79288C10.8183 4.40236 10.1851 4.40237 9.79462 4.7929L8.00087 6.5867L6.20712 4.7929Z"
+        fill="white"
+      />
+    </SVG>
+  ),
+  'created/16': (className: string) => (
+    <SVG className={cn(className, 'fill-current stroke-none')} size="16">
+      <circle cx="8" cy="8" r="8" fill="#454D54" />
+      <circle cx="8.00008" cy="8.00008" r="3.33333" fill="white" />
+    </SVG>
+  ),
+  'success/16': (className: string) => (
+    <SVG className={cn(className, 'fill-none stroke-none')} size="16">
+      <circle cx="8" cy="8" r="8" fill="#29A37A" />
+      <path
+        d="M4.25 8.26316L6.61842 10.6316L11.75 5.5"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
 } as const
 
 export type IconNames = keyof typeof Icons
