@@ -141,7 +141,9 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
             </div>
             <div className="flex gap-6 mt-2">
               {isLoadingAccount && (
-                <div className="animate-pulse w-56 h-2 my-4 bg-[#E0E9EB] rounded-full" />
+                <div className="h-8 py-3">
+                  <div className="animate-pulse w-56 h-2 bg-[#E0E9EB] rounded-full" />
+                </div>
               )}
 
               {!isLoadingAccount &&
@@ -173,8 +175,8 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           <div className="flex flex-col items-end ml-auto">
             {isLoadingAccount && (
               <>
-                <div className="animate-pulse w-48 h-[18px] mb-[9px] bg-[#E0E9EB] rounded-full" />
-                <div className="animate-pulse w-24 h-2 my-2 bg-[#E0E9EB] rounded-full" />
+                <div className="animate-pulse w-48 h-[18px] my-2 bg-[#E0E9EB] rounded-full" />
+                <div className="animate-pulse w-24 h-2 mt-3.5 bg-[#E0E9EB] rounded-full" />
               </>
             )}
 
