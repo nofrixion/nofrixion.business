@@ -832,7 +832,9 @@ const toActivityText = (user: User, event: PayoutEvent, payout: Payout): string 
 
   switch (event.eventType) {
     case PayoutEventTypesEnum.Created:
-      return `Created by ${userName}`
+      return event.ruleName
+        ? `Automatically created by ${event.ruleName}`
+        : `Created by ${userName}`
     case PayoutEventTypesEnum.Edited:
       return `Edited by ${userName}`
     case PayoutEventTypesEnum.Authorise:

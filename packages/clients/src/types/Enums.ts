@@ -253,5 +253,7 @@ export const enum PayoutEventTypesEnum {
   Created = 'Created',
   Queued = 'Queued',
   Scheduled = 'Scheduled',
+  BeneficiaryUpdated = 'BeneficiaryUpdated',
+  BeneficiaryDisabled = 'BeneficiaryDisabled',
   Edited = 'Edited',
 }

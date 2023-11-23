@@ -379,6 +379,7 @@ export interface PayoutEvent {
   timestamp: Date
   status: PayoutStatus
   eventType: PayoutEventTypesEnum
+  ruleName?: string
 }
 
 export interface PayoutUpdate {

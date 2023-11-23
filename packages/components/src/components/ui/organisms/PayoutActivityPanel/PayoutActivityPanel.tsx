@@ -66,7 +66,7 @@ const PayoutActivityPanel = ({ activities }: PayoutActivityPanelProps) => {
                     </div>
                   )}
                   <div className="flex flex-col w-full mt-5">
-                    <div className="text-default-text font-normal text-[13px] pl-4 text-left">
+                    <div className="text-default-text font-normal text-[13px] pl-4 text-left truncate w-[95%]">
                       {activity.text}
                     </div>
                     <div className="text-grey-text font-normal text-[13px] pl-4 text-left">
