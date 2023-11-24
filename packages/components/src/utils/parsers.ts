@@ -15,6 +15,8 @@ import {
   type PaymentRequestRefundAttempt,
   PaymentResult,
   Payout,
+  PayoutEvent,
+  PayoutEventTypesEnum,
   PayoutStatus,
   type Tag,
   TimeFrequencyEnum,
@@ -55,7 +57,9 @@ import {
   LocalTransaction,
   LocalUser,
   LocalUserRoles,
+  PayoutActivity,
 } from '../types/LocalTypes'
+import { formatDateWithYear } from './formatters'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
   return {
@@ -530,7 +534,7 @@ const remoteTransactionsToLocal = (transactions: Transaction[]): LocalTransactio
   })
 }
 
-const remotePayoutToLocal = (payout: Payout): LocalPayout => {
+const remotePayoutToLocal = (payout: Payout, user?: User): LocalPayout => {
   return {
     id: payout.id,
     accountID: payout.accountID,
@@ -555,6 +559,7 @@ const remotePayoutToLocal = (payout: Payout): LocalPayout => {
     scheduled: payout.scheduled,
     scheduleDate: payout.scheduleDate,
     beneficiaryID: payout.beneficiaryID,
+    activities: user ? payoutToEventActivities(user, payout) : [],
   }
 }
 
@@ -797,6 +802,80 @@ const parseApiUserRoleToLocalUserRole = (remoteUserRole: UserRoles | undefined):
   }
 }
 
+const payoutToEventActivities = (user: User, payout: Payout): PayoutActivity[] => {
+  return payout.events
+    ?.filter(
+      (item) =>
+        item?.eventType !== PayoutEventTypesEnum.Unknown &&
+        item?.eventType !== PayoutEventTypesEnum.Webhook,
+    )
+    .map((payoutEvent) => {
+      return payoutEventToActivity(user, payoutEvent, payout)
+    })
+}
+
+const payoutEventToActivity = (
+  user: User,
+  payoutEvent: PayoutEvent,
+  payout: Payout,
+): PayoutActivity => {
+  return {
+    text: toActivityText(user, payoutEvent, payout),
+    timestamp: new Date(payoutEvent.timestamp),
+    status: payoutStatusToActivitySatus(payoutEvent.eventType),
+    eventType: payoutEvent.eventType,
+  }
+}
+
+const toActivityText = (user: User, event: PayoutEvent, payout: Payout): string => {
+  const userName = user.id === event.userID ? 'you' : event.userName
+
+  switch (event.eventType) {
+    case PayoutEventTypesEnum.Created:
+      return event.ruleName
+        ? `Automatically created by ${event.ruleName}`
+        : `Created by ${userName}`
+    case PayoutEventTypesEnum.Edited:
+      return `Edited by ${userName}`
+    case PayoutEventTypesEnum.Authorise:
+      return `Authorised by ${userName}`
+    case PayoutEventTypesEnum.Initiate:
+      return "Waiting for bank's authorisation"
+    case PayoutEventTypesEnum.Queued:
+      return "Submitted for bank's authorisation"
+    case PayoutEventTypesEnum.Settle:
+      return 'Successfully paid'
+    case PayoutEventTypesEnum.Failure:
+      return 'Failed'
+    case PayoutEventTypesEnum.Scheduled:
+      return `Scheduled for ${formatDateWithYear(
+        payout.scheduleDate ? new Date(payout.scheduleDate) : new Date(),
+      )}`
+    default:
+      return 'Unknown'
+  }
+}
+
+const payoutStatusToActivitySatus = (status: PayoutEventTypesEnum): string => {
+  switch (status) {
+    case PayoutEventTypesEnum.Authorise:
+    case PayoutEventTypesEnum.Scheduled:
+      return ''
+    case PayoutEventTypesEnum.Failure:
+    case PayoutEventTypesEnum.Settle:
+      return 'Processed'
+    case PayoutEventTypesEnum.Initiate:
+      return 'Queued upstream'
+    case PayoutEventTypesEnum.Queued:
+      return 'Queued'
+    case PayoutEventTypesEnum.Created:
+    case PayoutEventTypesEnum.Edited:
+      return 'Pending authorisation'
+    default:
+      return ''
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -805,6 +884,7 @@ export {
   parseApiUserToLocalUser,
   parseLocalTagToApiTag,
   payoutStatusToStatus,
+  payoutToEventActivities,
   periodicBalancesToChartPoints,
   remoteAccountMetricsArrayToLocalAccountMetricsArray,
   remoteAccountsToLocalAccounts,

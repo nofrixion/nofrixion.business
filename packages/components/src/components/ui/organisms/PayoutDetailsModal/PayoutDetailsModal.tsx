@@ -10,6 +10,7 @@ import AccountDetails from '../../molecules/Account/AccountDetails'
 import ConfrimButton from '../../molecules/ConfirmButton/ConfirmButton'
 import TagManager from '../../Tags/TagManager/TagManager'
 import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
+import PayoutActivityPanel from '../PayoutActivityPanel/PayoutActivityPanel'
 
 export interface PayoutDetailsModalProps {
   payout?: LocalPayout
@@ -52,7 +53,7 @@ const PayoutDetailsModal = ({
         }}
         className="w-full lg:w-[37.5rem] outline-none"
       >
-        <div className="bg-white max-h-full h-full">
+        <div className="bg-white max-h-full h-full overflow-auto">
           {payout && (
             <>
               {payout && payout.status === PayoutStatus.PENDING_APPROVAL && (
@@ -158,6 +159,9 @@ const PayoutDetailsModal = ({
                 </div>
               </div>
             </>
+          )}
+          {payout && payout?.activities && payout.activities.length > 0 && (
+            <PayoutActivityPanel activities={payout.activities} />
           )}
         </div>
       </SheetContent>

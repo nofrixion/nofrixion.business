@@ -108,7 +108,7 @@ const AccountDashboardMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
 
-  const { data: accountResponse } = useAccount(
+  const { data: accountResponse, isLoading: isLoadingAccount } = useAccount(
     { merchantId: merchantId, connectedAccounts: true },
     {
       accountId,
@@ -238,6 +238,7 @@ const AccountDashboardMain = ({
       onRenewConnection={handleOnRenewConnection}
       isConnectingToBank={isConnectingToBank}
       isLoadingTransactions={isLoadingTransactions}
+      isLoadingAccount={isLoadingAccount}
     />
   )
 }
