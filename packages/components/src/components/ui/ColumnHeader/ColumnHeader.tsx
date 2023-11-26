@@ -36,7 +36,7 @@ const ColumnHeader = ({ label, sortDirection, onSort }: ColumnHeaderProps) => {
 
       {onSort && (
         <div
-          className="ml-2.5 space-y-1 w-2.5 transition opacity-0 group-hover:opacity-100 data-[direction-selected='true']:opacity-100"
+          className="ml-1 space-y-1 w-2.5 transition opacity-0 group-hover:opacity-100 data-[direction-selected='true']:opacity-100"
           data-direction-selected={sortDirection != SortDirection.NONE}
         >
           {sortDirection == SortDirection.ASC && (
