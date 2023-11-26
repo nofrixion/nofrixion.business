@@ -18,9 +18,6 @@ const fetchPaymentRequest = async (
 export const usePaymentRequest = (
   {
     merchantId,
-    createdSortDirection,
-    amountSortDirection,
-    titleSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -31,6 +28,7 @@ export const usePaymentRequest = (
     minAmount,
     maxAmount,
     tags,
+    sortBy,
   }: usePaymentRequestsProps,
   { paymentRequestId }: usePaymentRequestProps,
   { apiUrl, authToken }: ApiProps,
@@ -41,9 +39,6 @@ export const usePaymentRequest = (
     apiUrl,
     authToken,
     merchantId,
-    createdSortDirection,
-    amountSortDirection,
-    titleSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -54,6 +49,7 @@ export const usePaymentRequest = (
     minAmount,
     maxAmount,
     tags,
+    sortBy,
   ]
   const SINGLE_PAYMENT_REQUEST_QUERY_KEY = [
     'PaymentRequest',

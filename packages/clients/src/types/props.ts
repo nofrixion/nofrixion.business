@@ -251,7 +251,12 @@ export interface useAccountsWithTransactionMetricsProps
     AccountsWithTransactionsMetricsProps {
   fromDateMS?: number
   toDateMS?: number
-  numberOfTransactionsSortDirection: SortDirection
+  sortBy?: SortByAccountsWithTransactionMetrics
+}
+
+export interface SortByAccountsWithTransactionMetrics {
+  name: 'numberOfTransactions'
+  direction: SortDirection
 }
 
 export interface AccountsMetricsProps extends MerchantProps {

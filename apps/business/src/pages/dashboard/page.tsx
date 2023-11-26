@@ -63,7 +63,10 @@ const DashboardPage = () => {
         merchantId: merchant?.id,
         pageNumber: 1,
         fromDateMS: startOfDay(last30Days).getTime(),
-        numberOfTransactionsSortDirection: SortDirection.DESC,
+        sortBy: {
+          name: 'numberOfTransactions',
+          direction: SortDirection.DESC,
+        },
         currency: currency,
       },
       {
