@@ -52,9 +52,6 @@ const PaymentRequestDetailsModal = ({
   onCardRefund,
   onBankRefund,
   onCapture,
-  createdSortDirection,
-  amountSortDirection,
-  titleSortDirection,
   pageNumber,
   pageSize,
   fromDateMS,
@@ -66,6 +63,7 @@ const PaymentRequestDetailsModal = ({
   maxAmount,
   tags,
   accounts,
+  sortBy,
 }: PaymentRequestDetailsModalProps) => {
   const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined)
 
@@ -93,9 +91,6 @@ const PaymentRequestDetailsModal = ({
   const { data: paymentRequestResponse } = usePaymentRequest(
     {
       merchantId: merchantId,
-      createdSortDirection: createdSortDirection,
-      amountSortDirection: amountSortDirection,
-      titleSortDirection: titleSortDirection,
       pageNumber: pageNumber,
       pageSize: pageSize,
       fromDateMS: fromDateMS,
@@ -106,6 +101,7 @@ const PaymentRequestDetailsModal = ({
       minAmount: minAmount,
       maxAmount: maxAmount,
       tags: tags,
+      sortBy: sortBy,
     },
     {
       paymentRequestId: selectedPaymentRequestID,

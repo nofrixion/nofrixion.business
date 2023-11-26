@@ -28,6 +28,7 @@ import {
   LocalPaymentRequestCreate,
   LocalTag,
 } from '../../../types/LocalTypes'
+import { SortByPaymentRequests } from '../../../types/Sort'
 import {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -83,13 +84,12 @@ const PaymentRequestDashboardMain = ({
   onUnauthorized,
 }: PaymentRequestDashboardProps) => {
   const [page, setPage] = useState(1)
-  const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
+  const [sortBy, setSortBy] = useState<SortByPaymentRequests>({
+    direction: SortDirection.NONE,
+    name: 'created',
+  })
 
   const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
-  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
-  const [titleSortDirection, setTitleSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   const [status, setStatus] = useState<PaymentRequestStatus>(PaymentRequestStatus.All)
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -145,9 +145,6 @@ const PaymentRequestDashboardMain = ({
 
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
-      amountSortDirection: amountSortDirection,
-      createdSortDirection: createdSortDirection,
-      titleSortDirection: titleSortDirection,
       merchantId: merchantId,
       pageNumber: page,
       pageSize: pageSize,
@@ -160,6 +157,7 @@ const PaymentRequestDashboardMain = ({
       maxAmount: maxAmountFilter,
       tags: tagsFilter,
       preservePreviousPageData: showMoreClicked,
+      sortBy: sortBy,
     },
     { apiUrl: apiUrl, authToken: token },
   )
@@ -543,10 +541,13 @@ const PaymentRequestDashboardMain = ({
           setMaxAmount={setMaxAmountFilter}
           tags={tags}
           setTags={setTags}
-          createdSortDirection={createdSortDirection}
-          setCreatedSortDirection={setCreatedSortDirection}
-          amountSortDirection={amountSortDirection}
-          setAmountSortDirection={setAmountSortDirection}
+          sortBy={sortBy}
+          onSort={(sortInfo) =>
+            setSortBy({
+              name: sortInfo.name,
+              direction: sortInfo.direction,
+            } as SortByPaymentRequests)
+          }
           firstDate={
             // Set first date to the first day of the year the merchant was created
             merchant?.status == 'success'
@@ -611,9 +612,8 @@ const PaymentRequestDashboardMain = ({
           pageSize={pageSize}
           totalRecords={totalRecords}
           onPageChanged={setPage}
-          setCreatedSortDirection={setCreatedSortDirection}
-          setAmountSortDirection={setAmountSortDirection}
-          setTitleSortDirection={setTitleSortDirection}
+          sortBy={sortBy}
+          onSort={setSortBy}
           onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
           onPaymentRequestDeleteClicked={onDeletePaymentRequest}
           onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
@@ -666,9 +666,7 @@ const PaymentRequestDashboardMain = ({
         onCardRefund={onCardRefundClick}
         onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
-        createdSortDirection={createdSortDirection}
-        amountSortDirection={amountSortDirection}
-        titleSortDirection={titleSortDirection}
+        sortBy={sortBy}
         pageNumber={page}
         pageSize={pageSize}
         fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}

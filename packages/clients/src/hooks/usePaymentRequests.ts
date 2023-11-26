@@ -1,15 +1,12 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { PaymentRequestClient } from '../clients'
-import { formatSortExpression, SortDirection } from '../types'
+import { formatSortExpression } from '../types'
 import { ApiResponse, PaymentRequestPageResponse } from '../types/ApiResponses'
-import { ApiProps, usePaymentRequestsProps } from '../types/props'
+import { ApiProps, SortByPaymentRequests, usePaymentRequestsProps } from '../types/props'
 
 const fetchPaymentRequests = async (
   apiUrl: string,
-  createdSortDirection: SortDirection,
-  amountSortDirection: SortDirection,
-  titleSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
   pageNumber?: number,
@@ -22,12 +19,9 @@ const fetchPaymentRequests = async (
   minAmount?: number,
   maxAmount?: number,
   tags?: string[],
+  sortBy?: SortByPaymentRequests,
 ): Promise<ApiResponse<PaymentRequestPageResponse>> => {
-  const sortExpression = formatSortExpression({
-    createdSortDirection: createdSortDirection,
-    amountSortDirection: amountSortDirection,
-    titleSortDirection: titleSortDirection,
-  })
+  const sortExpression = sortBy ? formatSortExpression(sortBy) : ''
 
   const client = new PaymentRequestClient({ apiUrl, authToken })
 
@@ -52,9 +46,6 @@ const fetchPaymentRequests = async (
 export const usePaymentRequests = (
   {
     merchantId,
-    createdSortDirection,
-    amountSortDirection,
-    titleSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -66,6 +57,7 @@ export const usePaymentRequests = (
     maxAmount,
     tags,
     preservePreviousPageData = false,
+    sortBy,
   }: usePaymentRequestsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
@@ -76,9 +68,6 @@ export const usePaymentRequests = (
     apiUrl,
     authToken,
     merchantId,
-    createdSortDirection,
-    amountSortDirection,
-    titleSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -89,6 +78,7 @@ export const usePaymentRequests = (
     minAmount,
     maxAmount,
     tags,
+    sortBy,
   ]
 
   return useQuery<ApiResponse<PaymentRequestPageResponse>, Error>({
@@ -99,9 +89,6 @@ export const usePaymentRequests = (
         apiUrl,
         authToken,
         merchantId,
-        createdSortDirection,
-        amountSortDirection,
-        titleSortDirection,
         pageNumber && pageNumber - 1,
         pageSize,
         fromDateMS,
@@ -112,6 +99,7 @@ export const usePaymentRequests = (
         minAmount,
         maxAmount,
         tags,
+        sortBy,
       ]
 
       const previousPaymentRequestsResult: ApiResponse<PaymentRequestPageResponse> | undefined =
@@ -119,9 +107,6 @@ export const usePaymentRequests = (
 
       const newlyFetchedPaymentRequests = await fetchPaymentRequests(
         apiUrl,
-        createdSortDirection,
-        amountSortDirection,
-        titleSortDirection,
         authToken,
         merchantId,
         pageNumber,
@@ -134,6 +119,7 @@ export const usePaymentRequests = (
         minAmount,
         maxAmount,
         tags,
+        sortBy,
       )
 
       if (newlyFetchedPaymentRequests.status === 'success' && preservePreviousPageData) {

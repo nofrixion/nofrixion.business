@@ -88,12 +88,12 @@ export interface useTransactionsProps extends AccountProps {
   fromDateMS?: number
   toDateMS?: number
   search?: string
-  dateSortDirection?: SortDirection
-  toSortDirection?: SortDirection
-  referenceSortDirection?: SortDirection
-  amountSortDirection?: SortDirection
-  descriptionSortDirection?: SortDirection
-  typeSortDirection?: SortDirection
+  sortBy?: SortByTransactions
+}
+
+export interface SortByTransactions {
+  name: 'created' | 'to' | 'reference' | 'amount' | 'description' | 'type'
+  direction: SortDirection
 }
 
 export interface usePaymentRequestProps extends MerchantProps, PaymentRequestProps {
@@ -105,32 +105,38 @@ export interface usePaymentRequestsProps
     PaymentRequestProps,
     PaymentRequestPageProps {
   merchantId: string
-  createdSortDirection: SortDirection
-  amountSortDirection: SortDirection
-  titleSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   preservePreviousPageData?: boolean
+  sortBy?: SortByPaymentRequests
+}
+
+export interface SortByPaymentRequests {
+  name: 'created' | 'amount' | 'title'
+  direction: SortDirection
 }
 
 export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
-  createdSortDirection: SortDirection
-  amountSortDirection: SortDirection
-  counterPartyNameSortDirection: SortDirection
-  scheduleDateSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   statuses: PayoutStatus[]
+  sortBy?: SortByPayouts
+}
+
+export interface SortByPayouts {
+  name: 'created' | 'status' | 'amount' | 'counterPartyName' | 'scheduleDate'
+  direction: SortDirection
 }
 
 export interface useUsersAndInvitesProps extends MerchantProps, PayoutPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
-  lastModifiedSortDirection: SortDirection
-  nameSortDirection: SortDirection
-  roleSortDirection: SortDirection
+  sortBy?: SortByUsersAndInvites
+}
+
+export interface SortByUsersAndInvites {
+  name: 'status' | 'lastModified' | 'name' | 'role'
+  direction: SortDirection
 }
 
 export interface useUsersAndInvitesMetricsProps extends MerchantProps, PayoutPageProps {

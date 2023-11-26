@@ -1,4 +1,5 @@
-﻿import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+﻿import { SortByPaymentRequests, SortByPayouts, SortByTransactions } from '../../../types/Sort'
+import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
 import { SelectSorter, TSorterOptions } from '../../ui/molecules'
 import AmountFilter from '../AmountFilter/AmountFilter'
 import DateRangePicker, { DateRange } from '../DateRangePicker/DateRangePicker'
@@ -17,10 +18,8 @@ export interface FilterControlsRowProps {
   setMaxAmount?: (maxAmount?: number) => void
   tags: FilterableTag[]
   setTags: (tags: FilterableTag[]) => void
-  createdSortDirection: SortDirection
-  setCreatedSortDirection?: (direction: SortDirection) => void
-  amountSortDirection: SortDirection
-  setAmountSortDirection?: (direction: SortDirection) => void
+  sortBy?: SortByTransactions | SortByPayouts | SortByPaymentRequests
+  onSort: (sortBy: SortByTransactions | SortByPayouts | SortByPaymentRequests) => void
   firstDate?: Date
 }
 
@@ -36,41 +35,35 @@ const FilterControlsRow = ({
   setMaxAmount,
   tags,
   setTags,
-  createdSortDirection,
-  setCreatedSortDirection,
-  amountSortDirection,
-  setAmountSortDirection,
+  sortBy,
+  onSort,
   firstDate,
 }: FilterControlsRowProps) => {
   const onValueChanged = (value: TSorterOptions) => {
     switch (value) {
       case 'mostRecentFirst':
-        setCreatedSortDirection && setCreatedSortDirection(SortDirection.DESC)
-        setAmountSortDirection && setAmountSortDirection(SortDirection.NONE)
+        onSort({ name: 'created', direction: SortDirection.DESC })
         break
       case 'oldestFirst':
-        setCreatedSortDirection && setCreatedSortDirection(SortDirection.ASC)
-        setAmountSortDirection && setAmountSortDirection(SortDirection.NONE)
+        onSort({ name: 'created', direction: SortDirection.ASC })
         break
       case 'amountHighToLow':
-        setAmountSortDirection && setAmountSortDirection(SortDirection.DESC)
-        setCreatedSortDirection && setCreatedSortDirection(SortDirection.NONE)
+        onSort({ name: 'amount', direction: SortDirection.DESC })
         break
       case 'amountLowToHigh':
-        setAmountSortDirection && setAmountSortDirection(SortDirection.ASC)
-        setCreatedSortDirection && setCreatedSortDirection(SortDirection.NONE)
+        onSort({ name: 'amount', direction: SortDirection.ASC })
         break
     }
   }
 
   const getSorterValue = () => {
-    if (createdSortDirection === SortDirection.DESC) {
+    if (sortBy?.name == 'created' && sortBy.direction === SortDirection.DESC) {
       return 'mostRecentFirst'
-    } else if (createdSortDirection === SortDirection.ASC) {
+    } else if (sortBy?.name == 'created' && sortBy.direction === SortDirection.ASC) {
       return 'oldestFirst'
-    } else if (amountSortDirection === SortDirection.DESC) {
+    } else if (sortBy?.name == 'amount' && sortBy.direction === SortDirection.DESC) {
       return 'amountHighToLow'
-    } else if (amountSortDirection === SortDirection.ASC) {
+    } else if (sortBy?.name == 'amount' && sortBy.direction === SortDirection.ASC) {
       return 'amountLowToHigh'
     } else {
       return 'mostRecentFirst'

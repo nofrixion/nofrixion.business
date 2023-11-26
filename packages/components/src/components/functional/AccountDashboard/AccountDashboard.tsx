@@ -16,6 +16,7 @@ import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
+import { SortByTransactions } from '../../../types/Sort'
 import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
@@ -82,10 +83,10 @@ const AccountDashboardMain = ({
 
   const [searchFilter, setSearchFilter] = useState<string>('')
   const [isConnectingToBank, setIsConnectingToBank] = useState(false)
-  const [transactionDateSortDirection, setTransactionDateDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
-  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [sortDirection, setSortDirection] = useState<SortByTransactions>({
+    direction: SortDirection.NONE,
+    name: 'created',
+  })
 
   const onAccountNameChange = async (newAccountName: string) => {
     await updateAccountName({
@@ -99,8 +100,7 @@ const AccountDashboardMain = ({
       accountId,
       pageNumber: page,
       pageSize: pageSize,
-      dateSortDirection: transactionDateSortDirection,
-      amountSortDirection: amountSortDirection,
+      sortBy: sortDirection,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       search: searchFilter,
@@ -180,15 +180,8 @@ const AccountDashboardMain = ({
     setPage(page)
   }
 
-  const onSort = (column: 'date' | 'amount', direction: SortDirection) => {
-    switch (column) {
-      case 'date':
-        setTransactionDateDirection(direction)
-        break
-      case 'amount':
-        setAmountSortDirection(direction)
-        break
-    }
+  const onSort = ({ name, direction }: SortByTransactions) => {
+    setSortDirection({ name, direction })
   }
 
   const onDateChange = (dateRange: DateRange) => {

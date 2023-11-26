@@ -2,6 +2,7 @@ import { Pagination, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
+import { SortByPayouts } from '../../../../types/Sort'
 import { cn } from '../../../../utils'
 import { formatAmount, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
@@ -26,10 +27,7 @@ export interface PayoutsTableProps extends React.HTMLAttributes<HTMLDivElement> 
   payouts: LocalPayout[] | undefined
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
-    direction: SortDirection,
-  ) => void
+  onSort: (sortInfo: SortByPayouts) => void
   onPayoutClicked?: (payout: LocalPayout) => void
   isLoading?: boolean
   selectedPayoutId: string | undefined
@@ -60,6 +58,10 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
   ...props
 }) => {
   const [allPayoutsSelected, setAllPayoutsSelected] = useState(false)
+  const [sortBy, setSortBy] = useState<SortByPayouts>({
+    name: 'created',
+    direction: SortDirection.NONE,
+  })
 
   const onPayoutClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
@@ -92,6 +94,11 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
           onRemovePayoutForAuthorise(payout.id)
         })
     }
+  }
+
+  const handleOnSort = (sortInfo: SortByPayouts) => {
+    setSortBy(sortInfo)
+    onSort(sortInfo)
   }
 
   useEffect(() => {
@@ -128,32 +135,39 @@ const PayoutsTable: React.FC<PayoutsTableProps> = ({
                 )}
                 <TableHead className="w-[150px]">
                   <ColumnHeader
-                    label={'Status'}
-                    onSort={(direction) => onSort('status', direction)}
+                    label="Status"
+                    sortDirection={sortBy.name === 'status' ? sortBy.direction : undefined}
+                    onSort={(direction) => handleOnSort({ name: 'status', direction })}
                   />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
                     label={'Created'}
-                    onSort={(direction) => onSort('date', direction)}
+                    sortDirection={sortBy.name === 'created' ? sortBy.direction : undefined}
+                    onSort={(direction) => handleOnSort({ name: 'created', direction })}
                   />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
                     label={'Scheduled'}
-                    onSort={(direction) => onSort('scheduleDate', direction)}
+                    sortDirection={sortBy.name === 'scheduleDate' ? sortBy.direction : undefined}
+                    onSort={(direction) => handleOnSort({ name: 'scheduleDate', direction })}
                   />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
                     label={'Payee'}
-                    onSort={(direction) => onSort('counterParty.name', direction)}
+                    sortDirection={
+                      sortBy.name === 'counterPartyName' ? sortBy.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'counterPartyName', direction })}
                   />
                 </TableHead>
                 <TableHead className="text-right px-0">
                   <ColumnHeader
                     label={'Amount'}
-                    onSort={(direction) => onSort('amount', direction)}
+                    sortDirection={sortBy.name === 'amount' ? sortBy.direction : undefined}
+                    onSort={(direction) => handleOnSort({ name: 'amount', direction })}
                   />
                 </TableHead>
                 <TableHead>{/* Currency */}</TableHead>

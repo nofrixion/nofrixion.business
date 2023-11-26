@@ -1,10 +1,11 @@
-import { Pagination, PayoutMetrics, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
+import { Pagination, PayoutMetrics, PayoutStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
+import { SortByPayouts } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
@@ -28,10 +29,8 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   isLoading: boolean
   selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
-  onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
-    direction: SortDirection,
-  ) => void
+  onSort: (sortInfo: SortByPayouts) => void
+  sortBy: SortByPayouts
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void
@@ -44,10 +43,6 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onPayoutClicked?: (paymentRequest: LocalPayout) => void
   tags: FilterableTag[]
   setTags: (tags: FilterableTag[]) => void
-  createdSortDirection: SortDirection
-  setCreatedSortDirection?: (direction: SortDirection) => void
-  amountSortDirection: SortDirection
-  setAmountSortDirection?: (direction: SortDirection) => void
   status: PayoutStatus
   onAddPayoutForAuthorise: (payoutId: string) => void
   onRemovePayoutForAuthorise: (payoutId: string) => void
@@ -81,10 +76,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   selectedPayoutId,
   tags,
   setTags,
-  createdSortDirection,
-  setCreatedSortDirection,
-  amountSortDirection,
-  setAmountSortDirection,
+  sortBy,
   status,
   onAddPayoutForAuthorise,
   onRemovePayoutForAuthorise,
@@ -172,10 +164,13 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             setMaxAmount={setMaxAmount}
             tags={tags}
             setTags={setTags}
-            createdSortDirection={createdSortDirection}
-            setCreatedSortDirection={setCreatedSortDirection}
-            amountSortDirection={amountSortDirection}
-            setAmountSortDirection={setAmountSortDirection}
+            sortBy={sortBy}
+            onSort={(sortInfo) =>
+              onSort({
+                name: sortInfo.name,
+                direction: sortInfo.direction,
+              } as SortByPayouts)
+            }
             firstDate={
               merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
             }

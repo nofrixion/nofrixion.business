@@ -1,8 +1,9 @@
 import { Pagination } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
-import * as React from 'react'
+import { useState } from 'react'
 
 import { LocalTransaction } from '../../../../types/LocalTypes'
+import { SortByTransactions } from '../../../../types/Sort'
 import { cn } from '../../../../utils'
 import { formatAmount } from '../../../../utils/formatters'
 import { Icon } from '../../atoms'
@@ -22,7 +23,7 @@ export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElem
   transactions: LocalTransaction[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  onSort: (sortInfo: SortByTransactions) => void
   isShowingConnectedAccount?: boolean
   isLoading?: boolean
 }
@@ -36,6 +37,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   isShowingConnectedAccount = false,
   ...props
 }) => {
+  const [sortBy, setSortBy] = useState<SortByTransactions>({
+    name: 'created',
+    direction: SortDirection.NONE,
+  })
+
   const renderBasicInfoLayout = (
     upperText: string,
     lowerText: string | undefined,
@@ -49,6 +55,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
     )
   }
 
+  const handleOnSort = (name: 'created' | 'amount', direction: SortDirection) => {
+    setSortBy({ name, direction })
+    onSort({ name, direction })
+  }
+
   return (
     <div {...props}>
       {(isLoading || (!isLoading && transactions && transactions.length > 0)) && (
@@ -57,15 +68,20 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             <TableHeader>
               <TableRow className="hover:bg-transparent cursor-auto">
                 <TableHead className="w-[150px]">
-                  <ColumnHeader label={'Date'} onSort={(direction) => onSort('date', direction)} />
+                  <ColumnHeader
+                    label="Date"
+                    sortDirection={sortBy.name === 'created' ? sortBy.direction : undefined}
+                    onSort={(direction) => handleOnSort('created', direction)}
+                  />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader label={'To/ From'} />
                 </TableHead>
                 <TableHead className="text-right">
                   <ColumnHeader
-                    label={'Amount'}
-                    onSort={(direction) => onSort('amount', direction)}
+                    label="Amount"
+                    sortDirection={sortBy.name === 'amount' ? sortBy.direction : undefined}
+                    onSort={(direction) => handleOnSort('amount', direction)}
                   />
                 </TableHead>
                 <TableHead>

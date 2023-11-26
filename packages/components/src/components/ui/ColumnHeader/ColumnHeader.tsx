@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import { cn } from '../../../utils'
 import { Icon } from '../atoms'
 
@@ -11,23 +9,18 @@ export enum SortDirection {
 
 export interface ColumnHeaderProps {
   label: string
+  sortDirection?: SortDirection
   onSort?: (event: SortDirection) => void
 }
 
-const ColumnHeader = ({ label, onSort }: ColumnHeaderProps) => {
-  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.NONE)
-
-  useEffect(() => {
-    onSort && onSort(sortDirection)
-  }, [sortDirection])
-
+const ColumnHeader = ({ label, sortDirection, onSort }: ColumnHeaderProps) => {
   const doSort = () => {
     if (sortDirection === SortDirection.NONE) {
-      setSortDirection(SortDirection.DESC)
+      onSort && onSort(SortDirection.DESC)
     } else if (sortDirection === SortDirection.DESC) {
-      setSortDirection(SortDirection.ASC)
+      onSort && onSort(SortDirection.ASC)
     } else {
-      setSortDirection(SortDirection.DESC)
+      onSort && onSort(SortDirection.DESC)
     }
   }
 
