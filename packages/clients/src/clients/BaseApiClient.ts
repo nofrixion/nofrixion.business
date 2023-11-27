@@ -6,13 +6,13 @@ import { PagedResponseProps } from '../types/props'
 
 export abstract class BaseApiClient {
   authToken?: string
-  indempotent?: boolean
+  idempotent?: boolean
   debug: boolean
 
   constructor(authToken?: string, idempotent?: boolean, debug?: boolean) {
     this.authToken = authToken
     this.debug = debug ?? false
-    this.indempotent = idempotent ?? false
+    this.idempotent = idempotent ?? false
   }
 
   /**
@@ -153,7 +153,8 @@ export abstract class BaseApiClient {
       'X-CSRF': '1',
     }
 
-    if (this.indempotent) {
+    // Add the 'idempotency-key' header if this is an idempotent POST request
+    if (this.idempotent && method === HttpMethod.POST) {
       headers = { ...headers, ...{ 'idempotency-key': window.crypto.randomUUID() } }
     }
 
