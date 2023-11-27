@@ -124,25 +124,25 @@ const PayoutDetailsModal = ({
                 {payout.scheduleDate && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Payment date</div>
-                    <div>{formatDateWithYear(new Date(payout.scheduleDate))}</div>
+                    <div className="w-2/3">{formatDateWithYear(new Date(payout.scheduleDate))}</div>
                   </div>
                 )}
                 {payout.theirReference && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Their reference</div>
-                    <div>{payout.theirReference}</div>
+                    <div className="w-2/3 break-all">{payout.theirReference}</div>
                   </div>
                 )}
                 {payout.yourReference && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Your reference</div>
-                    <div>{payout.yourReference}</div>
+                    <div className="w-2/3 break-all">{payout.yourReference}</div>
                   </div>
                 )}
                 {payout.description && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Description</div>
-                    <div className="w-2/3">{payout.description}</div>
+                    <div className="w-2/3 break-all">{payout.description}</div>
                   </div>
                 )}
                 <div className="flex text-sm mt-8">

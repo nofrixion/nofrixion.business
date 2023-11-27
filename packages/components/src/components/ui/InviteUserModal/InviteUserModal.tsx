@@ -34,9 +34,9 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
 
   const handleValidation = (): boolean => {
     let validationFailed = false
-    if (!emailAddress) {
+
+    if (emailAddress && validateEmail(emailAddress)) {
       setIsInviteButtonDisabled(false)
-      setFormError('Please fill all the required fields')
       validationFailed = true
     }
 
@@ -46,7 +46,9 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
   const onInviteClick = async () => {
     setIsInviteButtonDisabled(true)
     setSendInviteClicked(true)
-    if (handleValidation()) {
+
+    if (!handleValidation()) {
+      setIsInviteButtonDisabled(false)
       return
     } else {
       await onInvite(merchantID, emailAddress!)
@@ -54,6 +56,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
       setIsInviteButtonDisabled(false)
     }
   }
+
   const resetFields = () => {
     setEmailAddress(undefined)
     setFormError(undefined)
@@ -87,6 +90,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
                 <div className="text-left mt-2">
                   <InputTextField
                     label="Email address"
+                    type="email"
                     value={emailAddress ?? ''}
                     onChange={(value) => {
                       setFormError(undefined)
