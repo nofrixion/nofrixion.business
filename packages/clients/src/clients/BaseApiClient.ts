@@ -6,11 +6,13 @@ import { PagedResponseProps } from '../types/props'
 
 export abstract class BaseApiClient {
   authToken?: string
+  indempotent?: boolean
   debug: boolean
 
-  constructor(authToken?: string, debug?: boolean) {
+  constructor(authToken?: string, idempotent?: boolean, debug?: boolean) {
     this.authToken = authToken
     this.debug = debug ?? false
+    this.indempotent = idempotent ?? false
   }
 
   /**
@@ -145,16 +147,22 @@ export abstract class BaseApiClient {
       contentType = 'application/x-www-form-urlencoded'
     }
 
+    let headers = {
+      Authorization: `Bearer ${this.authToken}`,
+      'content-type': contentType,
+      'X-CSRF': '1',
+    }
+
+    if (this.indempotent) {
+      headers = { ...headers, ...{ 'idempotency-key': window.crypto.randomUUID() } }
+    }
+
     try {
       const { data } = await axios<TResponse>({
         method: method,
         url: url,
         data: postData,
-        headers: {
-          Authorization: `Bearer ${this.authToken}`,
-          'content-type': contentType,
-          'X-CSRF': '1',
-        },
+        headers: headers,
       })
 
       return {
