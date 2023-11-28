@@ -118,7 +118,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                         currency={cardPaymentAttempt.currency}
                         onCurrencyChange={() => {}}
                         allowCurrencyChange={false}
-                        value={formatter.format(Number(amountToCapture))}
+                        value={amountToCapture}
                         onChange={(value) => setAmountToCapture(value)}
                       />
                     </div>
