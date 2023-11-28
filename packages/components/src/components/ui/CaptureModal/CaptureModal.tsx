@@ -116,7 +116,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                     <div className="md:w-40">
                       <InputAmountField
                         currency={cardPaymentAttempt.currency}
-                        onCurrencyChange={() => {}}
+                        onCurrencyChange={() => { }}
                         allowCurrencyChange={false}
                         value={formatter.format(Number(amountToCapture))}
                         onChange={(value) => setAmountToCapture(value)}
@@ -129,7 +129,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                     <AnimatePresence>
                       {validationErrorMessage && (
                         <motion.div
-                          className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
+                          className="mt-6 bg-warning-yellow text-sm p-3 rounded"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}

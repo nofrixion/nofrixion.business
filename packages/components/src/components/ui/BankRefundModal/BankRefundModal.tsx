@@ -118,7 +118,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <div className="md:w-40">
                       <InputAmountField
                         currency={bankPaymentAttempt.currency}
-                        onCurrencyChange={() => {}}
+                        onCurrencyChange={() => { }}
                         allowCurrencyChange={false}
                         value={amountToRefund}
                         onChange={(value) => setAmountToRefund(value)}
@@ -132,7 +132,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <AnimatePresence>
                       {validationErrorMessage && (
                         <motion.div
-                          className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
+                          className="mt-6 bg-warning-yellow text-sm p-3 rounded"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
