@@ -34,7 +34,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
   const [amountToRefund, setAmountToRefund] = useState(
     cardPaymentAttempt
       ? isVoid(cardPaymentAttempt)
-        ? cardPaymentAttempt.amount
+        ? cardPaymentAttempt.amount.toString()
         : maxRefundableAmount.toString()
       : '',
   )
@@ -139,9 +139,9 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       <div className="md:w-40">
                         <InputAmountField
                           currency={cardPaymentAttempt.currency}
-                          onCurrencyChange={() => {}}
+                          onCurrencyChange={() => { }}
                           allowCurrencyChange={false}
-                          value={formatter.format(Number(amountToRefund))}
+                          value={amountToRefund}
                           onChange={(value) => {
                             setAmountToRefund(value)
                           }}
