@@ -136,7 +136,7 @@ const Row = ({
       </td>
 
       <td className={classNames(commonTdClasses, `text-13px custom-backdrop-blur-${id}`)}>
-        <Contact name={customerName} email={title} size="small" />
+        <Contact name={title} email={customerName} size="small" />
       </td>
 
       <td
