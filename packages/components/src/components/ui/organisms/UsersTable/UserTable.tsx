@@ -1,7 +1,7 @@
 import { Pagination, UserRoleAndUserInvite, UserStatus } from '@nofrixion/moneymoov'
 import { sub } from 'date-fns'
 
-import { SortByUsersAndInvites } from '../../../../types/Sort'
+import { DoubleSortByUsersAndInvites, SortByUsersAndInvites } from '../../../../types/Sort'
 import { cn } from '../../../../utils'
 import { formatDateWithYearAndTime } from '../../../../utils/formatters'
 import { userRoleToDisplay, userStatusToStatus } from '../../../../utils/parsers'
@@ -25,8 +25,8 @@ export interface UserTableProps extends React.HTMLAttributes<HTMLDivElement> {
   users: UserRoleAndUserInvite[] | undefined
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  sortBy: SortByUsersAndInvites
-  onSort: (sortInfo: SortByUsersAndInvites) => void
+  sortBy: DoubleSortByUsersAndInvites
+  onSort: (sortInfo: DoubleSortByUsersAndInvites) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   onResendInvitation?: (inviteID?: string) => void
   isLoading?: boolean
@@ -70,6 +70,24 @@ const UserTable: React.FC<UserTableProps> = ({
     makeToast('success', 'Link copied to clipboard')
   }
 
+  const handleOnSort = (sortInfo: SortByUsersAndInvites) => {
+    // If primary sort is the same as the new sort, then we need to toggle the direction
+    // If primary sort is different, then we need to set the new sort as primary and the old primary as secondary
+    if (sortBy.primary.name === sortInfo.name) {
+      const newSort = {
+        primary: sortInfo,
+        secondary: sortBy.secondary,
+      }
+      onSort(newSort)
+    } else {
+      const newSort = {
+        primary: sortInfo,
+        secondary: sortBy.primary,
+      }
+      onSort(newSort)
+    }
+  }
+
   return (
     <div className="flex justify-center w-full" {...props}>
       {users && users.length > 0 && (
@@ -80,29 +98,37 @@ const UserTable: React.FC<UserTableProps> = ({
                 <TableHead className="w-[150px]">
                   <ColumnHeader
                     label={'Status'}
-                    sortDirection={sortBy.name === 'status' ? sortBy.direction : undefined}
-                    onSort={(direction) => onSort({ name: 'status', direction })}
+                    sortDirection={
+                      sortBy.primary.name === 'status' ? sortBy.primary.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'status', direction })}
                   />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
                     label={'User Name'}
-                    sortDirection={sortBy.name === 'name' ? sortBy.direction : undefined}
-                    onSort={(direction) => onSort({ name: 'name', direction })}
+                    sortDirection={
+                      sortBy.primary.name === 'name' ? sortBy.primary.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'name', direction })}
                   />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
                     label={'Role'}
-                    sortDirection={sortBy.name === 'role' ? sortBy.direction : undefined}
-                    onSort={(direction) => onSort({ name: 'role', direction })}
+                    sortDirection={
+                      sortBy.primary.name === 'role' ? sortBy.primary.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'role', direction })}
                   />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader
                     label={'Last Modified'}
-                    sortDirection={sortBy.name === 'lastModified' ? sortBy.direction : undefined}
-                    onSort={(direction) => onSort({ name: 'lastModified', direction })}
+                    sortDirection={
+                      sortBy.primary.name === 'lastModified' ? sortBy.primary.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'lastModified', direction })}
                   />
                 </TableHead>
                 <TableHead>{/* Action buttons */}</TableHead>

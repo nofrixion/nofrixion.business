@@ -91,10 +91,8 @@ export interface useTransactionsProps extends AccountProps {
   sortBy?: SortByTransactions
 }
 
-export interface SortByTransactions {
-  name: 'created' | 'to' | 'reference' | 'amount' | 'description' | 'type'
-  direction: SortDirection
-}
+type SortByTransactionsOptions = 'created' | 'to' | 'reference' | 'amount' | 'description' | 'type'
+export type SortByTransactions = SortBy<SortByTransactionsOptions>
 
 export interface usePaymentRequestProps extends MerchantProps, PaymentRequestProps {
   merchantId: string
@@ -111,10 +109,8 @@ export interface usePaymentRequestsProps
   sortBy?: SortByPaymentRequests
 }
 
-export interface SortByPaymentRequests {
-  name: 'created' | 'amount' | 'title'
-  direction: SortDirection
-}
+type SortByPaymentRequestsOptions = 'created' | 'amount' | 'title'
+export type SortByPaymentRequests = SortBy<SortByPaymentRequestsOptions>
 
 export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   merchantId: string
@@ -124,20 +120,16 @@ export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   sortBy?: SortByPayouts
 }
 
-export interface SortByPayouts {
-  name: 'created' | 'status' | 'amount' | 'counterPartyName' | 'scheduleDate'
-  direction: SortDirection
-}
+type SortByPayoutsOptions = 'created' | 'status' | 'amount' | 'counterPartyName' | 'scheduleDate'
+export type SortByPayouts = SortBy<SortByPayoutsOptions>
 
 export interface useUsersAndInvitesProps extends MerchantProps, PayoutPageProps {
   merchantId: string
   sortBy?: SortByUsersAndInvites
 }
 
-export interface SortByUsersAndInvites {
-  name: 'status' | 'lastModified' | 'name' | 'role'
-  direction: SortDirection
-}
+type SortByUsersAndInvitesOptions = 'status' | 'lastModified' | 'name' | 'role'
+export type SortByUsersAndInvites = SortBy<SortByUsersAndInvitesOptions>
 
 export interface useUsersAndInvitesMetricsProps extends MerchantProps, PayoutPageProps {
   merchantId: string
@@ -278,4 +270,14 @@ export interface UpdatePayoutProps {
   scheduled?: boolean
   scheduleDate?: Date
   beneficiaryID?: string
+}
+
+interface IndividualSortBy<T> {
+  name: T
+  direction: SortDirection
+}
+
+interface SortBy<T> {
+  primary: IndividualSortBy<T>
+  secondary?: IndividualSortBy<T>
 }

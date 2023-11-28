@@ -20,7 +20,7 @@ const fetchAccountsWithTransactionsMetrics = async (
   currency?: string,
   sortBy?: SortByAccountsWithTransactionMetrics,
 ): Promise<ApiResponse<AccountTransactionMetricsPageResponse>> => {
-  const sortExpression = sortBy ? formatSortExpression(sortBy) : ''
+  const sortExpression = sortBy ? formatSortExpression({ primary: sortBy }) : ''
 
   const client = new MerchantClient({ apiUrl, authToken })
 

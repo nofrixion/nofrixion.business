@@ -28,7 +28,7 @@ import {
   LocalPaymentRequestCreate,
   LocalTag,
 } from '../../../types/LocalTypes'
-import { SortByPaymentRequests } from '../../../types/Sort'
+import { DoubleSortByPaymentRequests } from '../../../types/Sort'
 import {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -84,9 +84,11 @@ const PaymentRequestDashboardMain = ({
   onUnauthorized,
 }: PaymentRequestDashboardProps) => {
   const [page, setPage] = useState(1)
-  const [sortBy, setSortBy] = useState<SortByPaymentRequests>({
-    direction: SortDirection.NONE,
-    name: 'created',
+  const [sortBy, setSortBy] = useState<DoubleSortByPaymentRequests>({
+    primary: {
+      direction: SortDirection.NONE,
+      name: 'created',
+    },
   })
 
   const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
@@ -483,6 +485,10 @@ const PaymentRequestDashboardMain = ({
     }
   }, [metrics])
 
+  const onSort = (sortInfo: DoubleSortByPaymentRequests) => {
+    setSortBy(sortInfo)
+  }
+
   const paymentRequestStatusToMetricsStatus = (
     status: PaymentRequestStatus,
   ): 'paid' | 'partiallyPaid' | 'unpaid' | 'authorized' | 'all' => {
@@ -542,12 +548,7 @@ const PaymentRequestDashboardMain = ({
           tags={tags}
           setTags={setTags}
           sortBy={sortBy}
-          onSort={(sortInfo) =>
-            setSortBy({
-              name: sortInfo.name,
-              direction: sortInfo.direction,
-            } as SortByPaymentRequests)
-          }
+          onSort={(sortInfo) => onSort(sortInfo as DoubleSortByPaymentRequests)}
           firstDate={
             // Set first date to the first day of the year the merchant was created
             merchant?.status == 'success'
@@ -613,7 +614,7 @@ const PaymentRequestDashboardMain = ({
           totalRecords={totalRecords}
           onPageChanged={setPage}
           sortBy={sortBy}
-          onSort={setSortBy}
+          onSort={onSort}
           onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
           onPaymentRequestDeleteClicked={onDeletePaymentRequest}
           onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}

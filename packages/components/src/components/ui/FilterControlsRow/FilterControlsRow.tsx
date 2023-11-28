@@ -1,4 +1,8 @@
-﻿import { SortByPaymentRequests, SortByPayouts, SortByTransactions } from '../../../types/Sort'
+﻿import {
+  DoubleSortByPaymentRequests,
+  DoubleSortByPayouts,
+  SortByPaymentRequests,
+} from '../../../types/Sort'
 import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
 import { SelectSorter, TSorterOptions } from '../../ui/molecules'
 import AmountFilter from '../AmountFilter/AmountFilter'
@@ -18,8 +22,8 @@ export interface FilterControlsRowProps {
   setMaxAmount?: (maxAmount?: number) => void
   tags: FilterableTag[]
   setTags: (tags: FilterableTag[]) => void
-  sortBy?: SortByTransactions | SortByPayouts | SortByPaymentRequests
-  onSort: (sortBy: SortByTransactions | SortByPayouts | SortByPaymentRequests) => void
+  sortBy?: DoubleSortByPayouts | DoubleSortByPaymentRequests
+  onSort: (sortBy: DoubleSortByPayouts | SortByPaymentRequests) => void
   firstDate?: Date
 }
 
@@ -57,13 +61,19 @@ const FilterControlsRow = ({
   }
 
   const getSorterValue = () => {
-    if (sortBy?.name == 'created' && sortBy.direction === SortDirection.DESC) {
+    if (sortBy?.primary.name == 'created' && sortBy.primary.direction === SortDirection.DESC) {
       return 'mostRecentFirst'
-    } else if (sortBy?.name == 'created' && sortBy.direction === SortDirection.ASC) {
+    } else if (
+      sortBy?.primary.name == 'created' &&
+      sortBy.primary.direction === SortDirection.ASC
+    ) {
       return 'oldestFirst'
-    } else if (sortBy?.name == 'amount' && sortBy.direction === SortDirection.DESC) {
+    } else if (
+      sortBy?.primary.name == 'amount' &&
+      sortBy.primary.direction === SortDirection.DESC
+    ) {
       return 'amountHighToLow'
-    } else if (sortBy?.name == 'amount' && sortBy.direction === SortDirection.ASC) {
+    } else if (sortBy?.primary.name == 'amount' && sortBy.primary.direction === SortDirection.ASC) {
       return 'amountLowToHigh'
     } else {
       return 'mostRecentFirst'

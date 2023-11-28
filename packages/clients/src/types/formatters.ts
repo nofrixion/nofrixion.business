@@ -1,24 +1,31 @@
 import { SortDirection } from './Enums'
 
+type SortByTransactionsOptions =
+  | 'status'
+  | 'created'
+  | 'contact'
+  | 'amount'
+  | 'date'
+  | 'to'
+  | 'reference'
+  | 'description'
+  | 'type'
+  | 'counterPartyName'
+  | 'lastModified'
+  | 'name'
+  | 'role'
+  | 'title'
+  | 'numberOfTransactions'
+  | 'scheduleDate'
+
+interface SortBy<T> {
+  name: T
+  direction: SortDirection
+}
+
 interface SortExpressionProps {
-  name?:
-    | 'status'
-    | 'created'
-    | 'contact'
-    | 'amount'
-    | 'date'
-    | 'to'
-    | 'reference'
-    | 'description'
-    | 'type'
-    | 'counterPartyName'
-    | 'lastModified'
-    | 'name'
-    | 'role'
-    | 'title'
-    | 'numberOfTransactions'
-    | 'scheduleDate'
-  direction?: SortDirection
+  primary?: SortBy<SortByTransactionsOptions>
+  secondary?: SortBy<SortByTransactionsOptions>
 }
 
 /**
@@ -27,12 +34,29 @@ interface SortExpressionProps {
  * @returns An expression to sort the order of the records. Example "Amount desc,Inserted asc".
  */
 
-const formatSortExpression = ({ name, direction }: SortExpressionProps): string => {
+const formatSortExpression = ({ primary, secondary }: SortExpressionProps): string => {
   let sortExpression = ''
 
-  if (!name || !direction || direction === SortDirection.NONE) {
+  if (!primary?.name || !primary?.direction || primary?.direction === SortDirection.NONE) {
     return sortExpression
   }
+
+  sortExpression = getInitialSortExpression(primary.name, primary.direction)
+
+  if (!secondary?.name || !secondary?.direction || secondary?.direction === SortDirection.NONE) {
+    return sortExpression
+  }
+
+  sortExpression += `,${getInitialSortExpression(secondary.name, secondary.direction)}`
+
+  return sortExpression
+}
+
+const getInitialSortExpression = (
+  name: SortByTransactionsOptions,
+  direction: SortDirection,
+): string => {
+  let sortExpression = ''
 
   switch (name) {
     case 'status':
@@ -81,6 +105,7 @@ const formatSortExpression = ({ name, direction }: SortExpressionProps): string 
       sortExpression = `ScheduleDate ${direction}`
       break
   }
+
   return sortExpression
 }
 

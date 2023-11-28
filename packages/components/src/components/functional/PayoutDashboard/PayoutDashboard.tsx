@@ -20,7 +20,7 @@ import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
-import { SortByPayouts } from '../../../types/Sort'
+import { DoubleSortByPayouts } from '../../../types/Sort'
 import {
   parseApiTagToLocalTag,
   parseApiUserToLocalUser,
@@ -75,9 +75,11 @@ const PayoutDashboardMain = ({
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [payouts, setPayouts] = useState<Payout[] | undefined>(undefined)
   const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
-  const [sortBy, setSortDirection] = useState<SortByPayouts>({
-    name: 'created',
-    direction: SortDirection.NONE,
+  const [sortBy, setSortDirection] = useState<DoubleSortByPayouts>({
+    primary: {
+      name: 'created',
+      direction: SortDirection.NONE,
+    },
   })
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
@@ -309,7 +311,7 @@ const PayoutDashboardMain = ({
     setDateRange(dateRange)
   }
 
-  const onSort = (sortInfo: SortByPayouts) => {
+  const onSort = (sortInfo: DoubleSortByPayouts) => {
     setSortDirection(sortInfo)
   }
 

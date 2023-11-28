@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTag } from '../../../types/LocalTypes'
-import { SortByPayouts } from '../../../types/Sort'
+import { DoubleSortByPayouts } from '../../../types/Sort'
 import { parseLocalTagToApiTag, remotePayoutToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import UIPayoutDetailsModal from '../../ui/organisms/PayoutDetailsModal/PayoutDetailsModal'
@@ -25,7 +25,7 @@ export interface PayoutDetailsModalProps {
   open: boolean
   onDismiss: () => void
   merchantId: string
-  sortBy: SortByPayouts
+  sortBy: DoubleSortByPayouts
   statuses: PayoutStatus[]
   page: number
   pageSize: number

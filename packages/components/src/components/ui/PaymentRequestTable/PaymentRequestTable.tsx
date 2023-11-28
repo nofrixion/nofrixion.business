@@ -2,7 +2,7 @@ import { PaymentResult } from '@nofrixion/moneymoov'
 import classNames from 'classnames'
 
 import { LocalPaymentRequest } from '../../../types/LocalTypes'
-import { SortByPaymentRequests } from '../../../types/Sort'
+import { DoubleSortByPaymentRequests, SortByPaymentRequests } from '../../../types/Sort'
 import ColumnHeader from '../ColumnHeader/ColumnHeader'
 import { Loader } from '../Loader/Loader'
 import Pager from '../Pager/Pager'
@@ -20,8 +20,8 @@ export interface PaymentRequestTableProps {
   onPaymentRequestDeleteClicked: (paymentRequest: LocalPaymentRequest) => void
   onPaymentRequestCopyLinkClicked: (paymentRequest: LocalPaymentRequest) => void
   onPageChanged?: (newPage: number) => void
-  sortBy?: SortByPaymentRequests
-  onSort?: (sortInfo: SortByPaymentRequests) => void
+  sortBy?: DoubleSortByPaymentRequests
+  onSort?: (sortInfo: DoubleSortByPaymentRequests) => void
   onCreatePaymentRequest?: () => void
   onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
   isLoading?: boolean
@@ -63,6 +63,24 @@ const PaymentRequestTable = ({
     }
   }
 
+  const handleOnSort = (sortInfo: SortByPaymentRequests) => {
+    // If primary sort is the same as the new sort, then we need to toggle the direction
+    // If primary sort is different, then we need to set the new sort as primary and the old primary as secondary
+    if (sortBy?.primary.name === sortInfo.name) {
+      const newSort = {
+        primary: sortInfo,
+        secondary: sortBy?.secondary,
+      }
+      onSort && onSort(newSort)
+    } else {
+      const newSort = {
+        primary: sortInfo,
+        secondary: sortBy?.primary,
+      }
+      onSort && onSort(newSort)
+    }
+  }
+
   return (
     <div className="flex justify-center w-full">
       {/* Show table when loading so the skeletons are visible */}
@@ -85,15 +103,19 @@ const PaymentRequestTable = ({
               <th className={classNames(commonThClasses, '2xl:w-36 xl:w-28 lg:w-24 text-left')}>
                 <ColumnHeader
                   label="Created"
-                  sortDirection={sortBy?.name === 'created' ? sortBy.direction : undefined}
-                  onSort={(direction) => onSort && onSort({ name: 'created', direction })}
+                  sortDirection={
+                    sortBy?.primary.name === 'created' ? sortBy.primary.direction : undefined
+                  }
+                  onSort={(direction) => handleOnSort({ name: 'created', direction })}
                 />
               </th>
               <th className={classNames(commonThClasses, '2xl:w-44 xl:w-32 lg:w-28 text-left')}>
                 <ColumnHeader
                   label="For"
-                  sortDirection={sortBy?.name === 'title' ? sortBy.direction : undefined}
-                  onSort={(direction) => onSort && onSort({ name: 'title', direction })}
+                  sortDirection={
+                    sortBy?.primary.name === 'title' ? sortBy.primary.direction : undefined
+                  }
+                  onSort={(direction) => handleOnSort({ name: 'title', direction })}
                 />
               </th>
               <th
@@ -101,8 +123,10 @@ const PaymentRequestTable = ({
               >
                 <ColumnHeader
                   label="Requested"
-                  sortDirection={sortBy?.name === 'amount' ? sortBy.direction : undefined}
-                  onSort={(direction) => onSort && onSort({ name: 'amount', direction })}
+                  sortDirection={
+                    sortBy?.primary.name === 'amount' ? sortBy.primary.direction : undefined
+                  }
+                  onSort={(direction) => handleOnSort({ name: 'amount', direction })}
                 />
               </th>
               <th className={classNames(commonThClasses, '2xl:w-44 xl:w-40 lg:w-36 text-right')}>
@@ -116,10 +140,10 @@ const PaymentRequestTable = ({
               </th>
 
               {/* 
-              Tags column 
-              However, it's used to display the
-              pagination component in the table header
-            */}
+                Tags column 
+                However, it's used to display the
+                pagination component in the table header
+              */}
               <th colSpan={2} className={classNames(commonThClasses, 'w-68')}>
                 <Pager
                   pageSize={pageSize}

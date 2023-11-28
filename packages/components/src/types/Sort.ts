@@ -1,16 +1,27 @@
 import { SortDirection } from '@nofrixion/moneymoov'
 
-export interface Sort<T> {
+interface Sort<T> {
   name: T
   direction: SortDirection
 }
 
-export type SortByTransactions = Sort<'created' | 'amount'>
+export interface DoubleSort<T> {
+  primary: Sort<T>
+  secondary?: Sort<T>
+}
 
-export type SortByPayouts = Sort<
-  'created' | 'status' | 'amount' | 'counterPartyName' | 'scheduleDate'
->
+export type SortByTransactions = Sort<SortByTransactionsOptions>
+type SortByTransactionsOptions = 'created' | 'amount'
+export type DoubleSortByTransactions = DoubleSort<SortByTransactionsOptions>
 
-export type SortByPaymentRequests = Sort<'created' | 'amount' | 'title'>
+type SortByPayoutsOptions = 'created' | 'status' | 'amount' | 'counterPartyName' | 'scheduleDate'
+export type SortByPayouts = Sort<SortByPayoutsOptions>
+export type DoubleSortByPayouts = DoubleSort<SortByPayoutsOptions>
 
-export type SortByUsersAndInvites = Sort<'status' | 'lastModified' | 'name' | 'role'>
+type SortByPaymentRequestsOptions = 'created' | 'amount' | 'title'
+export type SortByPaymentRequests = Sort<SortByPaymentRequestsOptions>
+export type DoubleSortByPaymentRequests = DoubleSort<SortByPaymentRequestsOptions>
+
+type SortByUsersAndInvitesOptions = 'status' | 'lastModified' | 'name' | 'role'
+export type SortByUsersAndInvites = Sort<SortByUsersAndInvitesOptions>
+export type DoubleSortByUsersAndInvites = DoubleSort<SortByUsersAndInvitesOptions>

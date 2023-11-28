@@ -16,7 +16,7 @@ import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../types/LocalTypes'
-import { SortByTransactions } from '../../../types/Sort'
+import { DoubleSortByTransactions } from '../../../types/Sort'
 import { remotePayoutsToLocal, remoteTransactionsToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountDashboard as UIAccountDashboard } from '../../ui/pages/AccountDashboard/AccountDashboard'
@@ -83,9 +83,11 @@ const AccountDashboardMain = ({
 
   const [searchFilter, setSearchFilter] = useState<string>('')
   const [isConnectingToBank, setIsConnectingToBank] = useState(false)
-  const [sortDirection, setSortDirection] = useState<SortByTransactions>({
-    direction: SortDirection.NONE,
-    name: 'created',
+  const [sortDirection, setSortDirection] = useState<DoubleSortByTransactions>({
+    primary: {
+      direction: SortDirection.NONE,
+      name: 'created',
+    },
   })
 
   const onAccountNameChange = async (newAccountName: string) => {
@@ -180,8 +182,8 @@ const AccountDashboardMain = ({
     setPage(page)
   }
 
-  const onSort = ({ name, direction }: SortByTransactions) => {
-    setSortDirection({ name, direction })
+  const onSort = (sortInfo: DoubleSortByTransactions) => {
+    setSortDirection(sortInfo)
   }
 
   const onDateChange = (dateRange: DateRange) => {

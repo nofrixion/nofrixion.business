@@ -11,7 +11,7 @@ import {
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
-import { SortByUsersAndInvites } from '../../../types/Sort'
+import { DoubleSortByUsersAndInvites } from '../../../types/Sort'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
@@ -60,9 +60,11 @@ const UserDashboardMain = ({
   const [users, setUsers] = useState<UserRoleAndUserInvite[] | undefined>(undefined)
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
-  const [sortBy, setSortBy] = useState<SortByUsersAndInvites>({
-    direction: SortDirection.NONE,
-    name: 'lastModified',
+  const [sortBy, setSortBy] = useState<DoubleSortByUsersAndInvites>({
+    primary: {
+      direction: SortDirection.NONE,
+      name: 'lastModified',
+    },
   })
 
   const [selectedUser, setSelectedUser] = useState<UserRoleAndUserInvite | undefined>(undefined)

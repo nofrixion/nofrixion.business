@@ -9,7 +9,7 @@ import { set } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
-import { SortByTransactions } from '../../../../types/Sort'
+import { DoubleSortByTransactions } from '../../../../types/Sort'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
 import AccountConnection from '../../atoms/AccountConnection/AccountConnection'
@@ -29,7 +29,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   searchFilter: string
   merchantCreatedAt?: Date
   onPageChange: (page: number) => void
-  onSort: (sortInfo: SortByTransactions) => void
+  onSort: (sortInfo: DoubleSortByTransactions) => void
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void

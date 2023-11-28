@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
 import { LocalPayout } from '../../../../types/LocalTypes'
-import { SortByPayouts } from '../../../../types/Sort'
+import { DoubleSortByPayouts } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
@@ -29,8 +29,8 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   isLoading: boolean
   selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
-  onSort: (sortInfo: SortByPayouts) => void
-  sortBy: SortByPayouts
+  onSort: (sortInfo: DoubleSortByPayouts) => void
+  sortBy: DoubleSortByPayouts
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void
@@ -165,12 +165,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             tags={tags}
             setTags={setTags}
             sortBy={sortBy}
-            onSort={(sortInfo) =>
-              onSort({
-                name: sortInfo.name,
-                direction: sortInfo.direction,
-              } as SortByPayouts)
-            }
+            onSort={(sortInfo) => onSort(sortInfo as DoubleSortByPayouts)}
             firstDate={
               merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
             }
