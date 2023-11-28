@@ -139,7 +139,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       <div className="md:w-40">
                         <InputAmountField
                           currency={cardPaymentAttempt.currency}
-                          onCurrencyChange={() => { }}
+                          onCurrencyChange={() => {}}
                           allowCurrencyChange={false}
                           value={formatter.format(Number(amountToRefund))}
                           onChange={(value) => {

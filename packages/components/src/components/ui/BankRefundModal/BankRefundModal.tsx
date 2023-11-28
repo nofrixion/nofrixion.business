@@ -118,7 +118,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <div className="md:w-40">
                       <InputAmountField
                         currency={bankPaymentAttempt.currency}
-                        onCurrencyChange={() => { }}
+                        onCurrencyChange={() => {}}
                         allowCurrencyChange={false}
                         value={amountToRefund}
                         onChange={(value) => setAmountToRefund(value)}
