@@ -14,22 +14,11 @@ const FileInput = ({ onFileAdded }: FileInputProps) => {
     hiddenFileInput.current && hiddenFileInput.current.click()
   }
 
-  const onFileChange = (file: File) => {
-    if (file && file.type === 'text/csv') {
-      file.text().then((text) => {
-        console.log(text)
-      })
-      onFileAdded(file)
-    } else {
-      // TODO: Show error message
-      console.error('File is not a csv')
-    }
-  }
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
+
     if (file) {
-      onFileChange(file)
+      onFileAdded(file)
     }
   }
 
@@ -41,7 +30,7 @@ const FileInput = ({ onFileAdded }: FileInputProps) => {
     const file = event.dataTransfer.files && event.dataTransfer.files[0]
 
     if (file) {
-      onFileChange(file)
+      onFileAdded(file)
     }
   }
 

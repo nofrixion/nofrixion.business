@@ -11,6 +11,7 @@ import {
   LocalPayout,
 } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
+import { validateIBAN } from '../../../../utils/validation'
 import { Button, Icon, Sheet, SheetContent } from '../../atoms'
 import InputTextField from '../../atoms/InputTextField/InputTextField'
 import { RadioGroup, RadioGroupItem } from '../../atoms/RadioGroup/RadioGroup'
@@ -22,6 +23,7 @@ import { SelectAccount } from '../../molecules/Select/SelectAccount/SelectAccoun
 import { SelectBeneficiary } from '../../molecules/Select/SelectBeneficiary/SelectBeneficiary'
 import AnimateHeightWrapper from '../../utils/AnimateHeight'
 import { SingleDatePicker } from '../SingleDatePicker/SingleDatePicker'
+
 export interface SavePayoutModalProps {
   onCreatePayout?: (
     sourceAccount: LocalAccount,
@@ -458,35 +460,9 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   }
 
   const onValidateDestinationAccountIBAN = (destinationAccountIBAN: string): string | undefined => {
-    const ibanReplaceRegex = /^[a-zA-Z]{2}[0-9]{2}([a-zA-Z0-9]){11,30}$/g
+    const valid = validateIBAN(destinationAccountIBAN)
 
-    if (destinationAccountIBAN.length > 0 && !ibanReplaceRegex.test(destinationAccountIBAN)) {
-      return `The IBAN is not valid. Please check for incorrectly entered characters.`
-    }
-
-    const bank = destinationAccountIBAN.slice(4) + destinationAccountIBAN.slice(0, 4)
-    const asciiShift = 55
-    const sb = []
-
-    for (const c of bank) {
-      let v
-      if (/[A-Z]/.test(c)) {
-        v = c.charCodeAt(0) - asciiShift
-      } else {
-        v = parseInt(c, 10)
-      }
-      sb.push(v)
-    }
-
-    const checkSumString = sb.join('')
-    let checksum = parseInt(checkSumString[0], 10)
-
-    for (let i = 1; i < checkSumString.length; i++) {
-      const v = parseInt(checkSumString.charAt(i), 10)
-      checksum = (checksum * 10 + v) % 97
-    }
-
-    if (checksum !== 1) {
+    if (!valid) {
       return `The IBAN is not valid. Please check for incorrectly entered characters.`
     }
   }

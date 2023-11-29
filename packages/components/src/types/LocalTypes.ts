@@ -346,3 +346,23 @@ export interface PayoutActivity {
   status: string
   eventType: PayoutEventTypesEnum
 }
+
+export interface InvoicePayment {
+  InvoiceNumber: string
+  PaymentTerms: string
+  InvoiceDate: string
+  DueDate: string
+  Contact: string
+  DestinationIban: string
+  DestinationAccountNumber: string
+  DestinationSortCode: string
+  Currency: string
+  Subtotal: string
+  Discounts: string
+  Taxes: string
+  TotalAmount: string
+  OutstandingAmount: string
+  InvoiceStatus: string
+  Reference: string
+  RemittanceEmail: string
+}
