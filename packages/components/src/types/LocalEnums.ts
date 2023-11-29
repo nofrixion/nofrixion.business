@@ -59,3 +59,31 @@ export enum LocalTimeFrequencyEnum {
   None = 'None',
   Daily = 'Daily',
 }
+
+export enum LocalPaymentAttemptEventType {
+  AuthenticationSetupStarted = 'Authentication setup started',
+  AuthenticationFailure = 'Authentication failure',
+  Authorised = 'Authorised',
+  AuthorisationFailed = 'Authorisation failed',
+  Received = 'Received',
+  SettlementFailed = 'Settlement failed',
+  RefundInitiated = 'Refund initiated',
+  Refunded = 'Refunded',
+  RefundFailed = 'Refund failed',
+  Captured = 'Captured',
+  CaptureFailed = 'Capture failed',
+  Voided = 'Voided',
+  RefundAwaitingApproval = 'Refund awaiting approval',
+  RefundCancelled = 'Refund cancelled',
+  BankPaymentInitiated = 'Bank payment initiated',
+}
+
+export enum LocalPaymentAttemptStatus {
+  Received = 'Received',
+  InProgress = 'In progress',
+  Authorised = 'Authorised',
+  Voided = 'Voided',
+  Failed = 'Failed',
+  Refunded = 'Refunded',
+  PartiallyRefunded = 'Partially refunded',
+}

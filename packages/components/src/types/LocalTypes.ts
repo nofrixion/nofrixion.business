@@ -5,6 +5,7 @@ import {
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
+  LocalPaymentAttemptStatus,
   LocalPaymentMethodTypes,
   LocalTimeFrequencyEnum,
   LocalWallets,
@@ -85,6 +86,17 @@ export interface LocalPaymentAttempt {
   reconciledTransactionID?: string
   paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
   paymentProcessor?: LocalPaymentProcessor
+  statusIconName: string
+  events: LocalPaymentAttemptEvent[]
+  displayStatus: LocalPaymentAttemptStatus
+}
+
+export interface LocalPaymentAttemptEvent {
+  occurredAt: Date
+  amount: number
+  currency: Currency.EUR | Currency.GBP
+  refundedAmount: number
+  statusIconName: string
 }
 
 export interface SubTransaction {
