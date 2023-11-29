@@ -7,7 +7,7 @@ import { Button, Icon } from '../../ui/atoms'
 import Checkbox from '../Checkbox/Checkbox'
 
 export interface CustomModalProps extends BaseModalProps {
-  title: string
+  title?: string
   children: React.ReactNode
   onApplyEnabled?: boolean
   buttonRowClassName?: string
