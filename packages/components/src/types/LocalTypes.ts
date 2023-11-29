@@ -86,9 +86,9 @@ export interface LocalPaymentAttempt {
   reconciledTransactionID?: string
   paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
   paymentProcessor?: LocalPaymentProcessor
-  statusIconName: string
-  events: LocalPaymentAttemptEvent[]
-  displayStatus: LocalPaymentAttemptStatus
+  statusIconName?: string
+  events?: LocalPaymentAttemptEvent[]
+  displayStatus?: LocalPaymentAttemptStatus
 }
 
 export interface LocalPaymentAttemptEvent {
