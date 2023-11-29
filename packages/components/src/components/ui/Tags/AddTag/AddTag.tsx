@@ -54,6 +54,11 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
       (tag) => tag.name?.toLowerCase() === tagName.toLowerCase(),
     )
 
+    // If the tag already exists, don't add it
+    if (existingTag && tags.findIndex((tag) => tag.name === existingTag.name) !== -1) {
+      return
+    }
+
     if (existingTag) {
       onTagAdded && onTagAdded(existingTag)
     } else {
