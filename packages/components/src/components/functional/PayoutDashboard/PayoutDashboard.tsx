@@ -20,6 +20,7 @@ import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { DoubleSortByPayouts } from '../../../types/Sort'
 import {
   parseApiTagToLocalTag,
   parseApiUserToLocalUser,
@@ -74,17 +75,12 @@ const PayoutDashboardMain = ({
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [payouts, setPayouts] = useState<Payout[] | undefined>(undefined)
   const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
-  const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
-  const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
-  const [counterPartyNameSortDirection, setCounterPartyNameSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
-  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
-  const [scheduleDateSortDirection, setScheduleDateSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
+  const [sortBy, setSortDirection] = useState<DoubleSortByPayouts>({
+    primary: {
+      name: 'created',
+      direction: SortDirection.NONE,
+    },
+  })
 
   const [createPayoutClicked, setCreatePayoutClicked] = useState<boolean>(false)
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([])
@@ -137,11 +133,7 @@ const PayoutDashboardMain = ({
       merchantId: merchantId,
       pageNumber: page,
       pageSize: pageSize,
-      amountSortDirection: amountSortDirection,
-      createdSortDirection: createdSortDirection,
-      statusSortDirection: statusSortDirection,
-      counterPartyNameSortDirection: counterPartyNameSortDirection,
-      scheduleDateSortDirection: scheduleDateSortDirection,
+      sortBy: sortBy,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       status: status,
@@ -319,27 +311,8 @@ const PayoutDashboardMain = ({
     setDateRange(dateRange)
   }
 
-  const onSort = (
-    column: 'status' | 'date' | 'amount' | 'counterParty.name' | 'scheduleDate',
-    direction: SortDirection,
-  ) => {
-    switch (column) {
-      case 'status':
-        setStatusSortDirection(direction)
-        break
-      case 'date':
-        setCreatedSortDirection(direction)
-        break
-      case 'amount':
-        setAmountSortDirection(direction)
-        break
-      case 'counterParty.name':
-        setCounterPartyNameSortDirection(direction)
-        break
-      case 'scheduleDate':
-        setScheduleDateSortDirection(direction)
-        break
-    }
+  const onSort = (sortInfo: DoubleSortByPayouts) => {
+    setSortDirection(sortInfo)
   }
 
   const onCreatePayout = () => {
@@ -453,10 +426,7 @@ const PayoutDashboardMain = ({
         selectedPayoutId={selectedPayoutId}
         tags={tags}
         setTags={setTags}
-        createdSortDirection={createdSortDirection}
-        setCreatedSortDirection={setCreatedSortDirection}
-        amountSortDirection={amountSortDirection}
-        setAmountSortDirection={setAmountSortDirection}
+        sortBy={sortBy}
         status={status}
         onAddPayoutForAuthorise={addPayoutForAuthorise}
         onRemovePayoutForAuthorise={removePayoutForAuthorise}
@@ -468,15 +438,11 @@ const PayoutDashboardMain = ({
 
       <PayoutDetailsModal
         open={!!selectedPayoutId}
-        amountSortDirection={amountSortDirection}
         apiUrl={apiUrl}
         selectedPayoutId={selectedPayoutId}
         onDismiss={onPayoutDetailsModalDismiss}
         merchantId={merchantId}
-        statusSortDirection={statusSortDirection}
-        createdSortDirection={createdSortDirection}
-        counterPartyNameSortDirection={counterPartyNameSortDirection}
-        scheduleDateSortDirection={scheduleDateSortDirection}
+        sortBy={sortBy}
         page={page}
         pageSize={pageSize}
         dateRange={dateRange}

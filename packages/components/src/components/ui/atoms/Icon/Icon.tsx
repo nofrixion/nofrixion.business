@@ -716,7 +716,7 @@ export const Icons = {
     </SVG>
   ),
   'calendar/16': (className: string) => (
-    <SVG className={cn(className, '')} size="16">
+    <SVG className={className} size="16">
       <g id="16px/Calendar">
         <path
           id="Vector"
@@ -736,7 +736,7 @@ export const Icons = {
     </SVG>
   ),
   'info/16': (className: string) => (
-    <SVG className={cn(className, '')} size="16">
+    <SVG className={className} size="16">
       <g id="16px/Info" clipPath="url(#clip0_10157_54785)">
         <path
           id="Vector"
@@ -764,6 +764,18 @@ export const Icons = {
           <rect width="16" height="16" fill="white" />
         </clipPath>
       </defs>
+    </SVG>
+  ),
+  'sort-down/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M6 11V1" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 8L6 11L9 8" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
+  'sort-up/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M6 1L6 11" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 4L6 1L3 4" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
   'failed-red/16': (className: string) => (

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { TransactionsClient } from '../clients'
-import { formatSortExpression, SortDirection } from '../types'
+import { formatSortExpression } from '../types'
 import { ApiResponse, PageResponse, Transaction } from '../types/ApiResponses'
-import { ApiProps, useTransactionsProps } from '../types/props'
+import { ApiProps, SortByTransactions, useTransactionsProps } from '../types/props'
 
 type TransactionPageResponse = PageResponse<Transaction>
 
@@ -16,21 +16,9 @@ const fetchTransactions = async (
   fromDateMS?: number,
   toDateMS?: number,
   search?: string,
-  dateSortDirection?: SortDirection,
-  toSortDirection?: SortDirection,
-  referenceSortDirection?: SortDirection,
-  amountSortDirection?: SortDirection,
-  descriptionSortDirection?: SortDirection,
-  typeSortDirection?: SortDirection,
+  sortBy?: SortByTransactions,
 ): Promise<ApiResponse<TransactionPageResponse>> => {
-  const sortExpression = formatSortExpression({
-    dateSortDirection: dateSortDirection,
-    toSortDirection: toSortDirection,
-    referenceSortDirection: referenceSortDirection,
-    amountSortDirection: amountSortDirection,
-    descriptionSortDirection: descriptionSortDirection,
-    typeSortDirection: typeSortDirection,
-  })
+  const sortExpression = sortBy ? formatSortExpression(sortBy) : ''
 
   const client = new TransactionsClient({ apiUrl, authToken })
 
@@ -48,20 +36,7 @@ const fetchTransactions = async (
 }
 
 export const useTransactions = (
-  {
-    accountId,
-    pageNumber,
-    pageSize,
-    fromDateMS,
-    toDateMS,
-    search,
-    dateSortDirection,
-    toSortDirection,
-    referenceSortDirection,
-    amountSortDirection,
-    descriptionSortDirection,
-    typeSortDirection,
-  }: useTransactionsProps,
+  { accountId, pageNumber, pageSize, fromDateMS, toDateMS, search, sortBy }: useTransactionsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
   const QUERY_KEY = [
@@ -74,12 +49,7 @@ export const useTransactions = (
     apiUrl,
     authToken,
     search,
-    dateSortDirection,
-    toSortDirection,
-    referenceSortDirection,
-    amountSortDirection,
-    descriptionSortDirection,
-    typeSortDirection,
+    sortBy,
   ]
 
   return useQuery<ApiResponse<TransactionPageResponse>, Error>(
@@ -94,12 +64,7 @@ export const useTransactions = (
         fromDateMS,
         toDateMS,
         search,
-        dateSortDirection,
-        toSortDirection,
-        referenceSortDirection,
-        amountSortDirection,
-        descriptionSortDirection,
-        typeSortDirection,
+        sortBy,
       ),
     {
       enabled: !!accountId,
