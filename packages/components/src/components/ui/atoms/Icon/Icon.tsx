@@ -107,30 +107,10 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M2.00879 12H19.9874"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16.9908 15H14.9932"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10.2593 15H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6.00348 18H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M2.00879 12H19.9874" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.9908 15H14.9932" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.2593 15H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.00348 18H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4.00586 8.48006V6.62307C4.00586 5.72667 4.74468 5 5.65607 5H21.333C22.2444 5 22.9832 5.72667 22.9832 6.62307V16.3615C22.9832 17.2579 22.2444 17.9845 21.333 17.9845H20.1998"
         stroke="#454D54"
@@ -150,30 +130,10 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M2.00879 12H19.9874"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16.9908 15H14.9932"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10.2593 15H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6.00348 18H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M2.00879 12H19.9874" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.9908 15H14.9932" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.2593 15H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.00348 18H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4.00586 8.48006V6.62307C4.00586 5.72667 4.74468 5 5.65607 5H21.333C22.2444 5 22.9832 5.72667 22.9832 6.62307V16.3615C22.9832 17.2579 22.2444 17.9845 21.333 17.9845H20.1998"
         stroke="#454D54"
@@ -196,30 +156,10 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M2.00879 12H19.9874"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16.9908 15H14.9932"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10.2593 15H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6.00348 18H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M2.00879 12H19.9874" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.9908 15H14.9932" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.2593 15H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.00348 18H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4.00586 8.48006V6.62307C4.00586 5.72667 4.74468 5 5.65607 5H21.333C22.2444 5 22.9832 5.72667 22.9832 6.62307V16.3615C22.9832 17.2579 22.2444 17.9845 21.333 17.9845H20.1998"
         stroke="#454D54"
@@ -244,30 +184,10 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M2.00879 12H19.9874"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16.9908 15H14.9932"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10.2593 15H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6.00348 18H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M2.00879 12H19.9874" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.9908 15H14.9932" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.2593 15H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.00348 18H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4.00586 8.48006V6.62307C4.00586 5.72667 4.74468 5 5.65607 5H21.333C22.2444 5 22.9832 5.72667 22.9832 6.62307V16.3615C22.9832 17.2579 22.2444 17.9845 21.333 17.9845H20.1998"
         stroke="#454D54"
@@ -291,30 +211,10 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M2.00879 12H19.9874"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16.9908 15H14.9932"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10.2593 15H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6.00348 18H4.00586"
-        stroke="#454D54"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M2.00879 12H19.9874" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.9908 15H14.9932" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.2593 15H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.00348 18H4.00586" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4.00586 8.48006V6.62307C4.00586 5.72667 4.74468 5 5.65607 5H21.333C22.2444 5 22.9832 5.72667 22.9832 6.62307V16.3615C22.9832 17.2579 22.2444 17.9845 21.333 17.9845H20.1998"
         stroke="#454D54"
@@ -359,28 +259,33 @@ export const Icons = {
       <path d="M21 9.5H3" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
       <circle cx="22" cy="8" r="6" fill="#454D54" />
       <path d="M22 8V6.125" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
-      <path
-        d="M22 8L24.3435 10.344"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M22 8L24.3435 10.344" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
   'bankFailed/28': (className: string) => (
     <SVG className={className} size="28">
-  <path d="M3 23L3.75943 20.3415C3.78784 20.2422 3.84236 20.1557 3.91528 20.0944C3.98819 20.0331 4.0758 20.0001 4.16571 20H19.8343C19.9242 20.0001 20.0118 20.0331 20.0847 20.0944C20.1576 20.1557 20.2122 20.2422 20.2406 20.3415L21 22.996" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M5 12H19V20H5V12Z" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M22 23H2" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M7.5 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M10 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M14 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M16.5 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M20.9778 9.66065C21.0094 9.56246 21.0072 9.45597 20.9715 9.35928C20.9359 9.26258 20.869 9.18166 20.7822 9.13025L12.2181 4.06002C12.1523 4.0207 12.0777 4 12.0017 4C11.9258 4 11.8512 4.0207 11.7854 4.06002L3.21777 9.12666C3.131 9.17807 3.06411 9.259 3.02846 9.35569C2.9928 9.45239 2.99059 9.55888 3.02219 9.65707L3.68336 11.6936C3.71205 11.7827 3.7671 11.8603 3.84071 11.9153C3.91433 11.9703 4.00279 11.9999 4.09357 12H19.9134C20.0041 11.9999 20.0926 11.9703 20.1662 11.9153C20.2398 11.8603 20.2949 11.7827 20.3236 11.6936L20.9778 9.66065Z" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <path d="M21 9.5H3" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round"/>
-  <circle cx="22" cy="8" r="6" fill="#F32448"/>
-  <path d="M19.3335 5.33337L24.6668 10.6667" stroke="white" strokeLinecap="round"/>
-  <path d="M24.6665 5.33337L19.3332 10.6667" stroke="white" strokeLinecap="round"/>
+      <path
+        d="M3 23L3.75943 20.3415C3.78784 20.2422 3.84236 20.1557 3.91528 20.0944C3.98819 20.0331 4.0758 20.0001 4.16571 20H19.8343C19.9242 20.0001 20.0118 20.0331 20.0847 20.0944C20.1576 20.1557 20.2122 20.2422 20.2406 20.3415L21 22.996"
+        stroke="#454D54"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M5 12H19V20H5V12Z" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 23H2" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7.5 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.5 12V20" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M20.9778 9.66065C21.0094 9.56246 21.0072 9.45597 20.9715 9.35928C20.9359 9.26258 20.869 9.18166 20.7822 9.13025L12.2181 4.06002C12.1523 4.0207 12.0777 4 12.0017 4C11.9258 4 11.8512 4.0207 11.7854 4.06002L3.21777 9.12666C3.131 9.17807 3.06411 9.259 3.02846 9.35569C2.9928 9.45239 2.99059 9.55888 3.02219 9.65707L3.68336 11.6936C3.71205 11.7827 3.7671 11.8603 3.84071 11.9153C3.91433 11.9703 4.00279 11.9999 4.09357 12H19.9134C20.0041 11.9999 20.0926 11.9703 20.1662 11.9153C20.2398 11.8603 20.2949 11.7827 20.3236 11.6936L20.9778 9.66065Z"
+        stroke="#454D54"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M21 9.5H3" stroke="#454D54" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="22" cy="8" r="6" fill="#F32448" />
+      <path d="M19.3335 5.33337L24.6668 10.6667" stroke="white" strokeLinecap="round" />
+      <path d="M24.6665 5.33337L19.3332 10.6667" stroke="white" strokeLinecap="round" />
     </SVG>
   ),
   'bank/24': (className: string) => (

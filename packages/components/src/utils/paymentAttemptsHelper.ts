@@ -213,5 +213,3 @@ export const getSettledTransactions = (
     return new Date(b.settledAt ?? 0).getTime() - new Date(a.settledAt ?? 0).getTime()
   })
 }
-
-
