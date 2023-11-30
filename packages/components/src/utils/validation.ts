@@ -12,42 +12,38 @@ export interface ValidationResult {
 }
 
 const InvoiceSchema = object({
-  // InvoiceNumber: string({
-  //   required_error: 'InvoiceNumber is required',
-  //   invalid_type_error: 'InvoiceNumber must be a string',
-  // })
-  //   .optional()
-  //   .or(literal('')),
-  // PaymentTerms: string({
-  //   invalid_type_error: 'PaymentTerms must be a string',
-  // }),
+  InvoiceNumber: string().optional(),
+  PaymentTerms: string().optional(),
   InvoiceDate: string().min(1, 'InvoiceDate is required'), // TODO: Support proper date format
   DueDate: string().min(1, 'DueDate is required'),
   Contact: string().min(1, 'Contact is required'),
-  // DestinationAccount: string({
-  //   required_error: 'DestinationAccount is required',
-  //   invalid_type_error: 'DestinationAccount must be a string',
-  // })
-  //   .optional()
-  //   //.min(1, 'DestinationAccount is required')
-  //   .refine((data) => validateIBAN(data as string), 'DestinationAccount is not a valid IBAN'),
-  DestinationIban: string(),
-  DestinationAccountNumber: string(),
-  DestinationSortCode: string(),
+  DestinationIban: string().optional(),
+  DestinationAccountNumber: coerce
+    .number({
+      invalid_type_error: 'DestinationAccountNumber must be a number',
+    })
+    .optional(),
+  DestinationSortCode: coerce
+    .number({
+      invalid_type_error: 'DestinationSortCode must be a number',
+    })
+    .optional(),
   Currency: z.enum(CURRENCIES),
-  // Currency: string({
-  //   required_error: 'Currency is required',
-  //   invalid_type_error: 'Currency must be a string',
-  // }).length(3, 'Currency is required'), // TODO: Validate enum
-  // Subtotal: coerce.number({
-  //   invalid_type_error: 'Subtotal must be a number',
-  // }),
-  // Discounts: coerce.number({
-  //   invalid_type_error: 'Discounts must be a number',
-  // }),
-  // Taxes: coerce.number({
-  //   invalid_type_error: 'Taxes must be a number',
-  // }),
+  Subtotal: coerce
+    .number({
+      invalid_type_error: 'Subtotal must be a number',
+    })
+    .optional(),
+  Discounts: coerce
+    .number({
+      invalid_type_error: 'Discounts must be a number',
+    })
+    .optional(),
+  Taxes: coerce
+    .number({
+      invalid_type_error: 'Taxes must be a number',
+    })
+    .optional(),
   TotalAmount: coerce
     .number({
       required_error: 'TotalAmount is required',
@@ -60,14 +56,8 @@ const InvoiceSchema = object({
       invalid_type_error: 'OutstandingAmount must be a number',
     })
     .min(0, 'OutstandingAmount must be greater than 0'),
-  // InvoiceStatus: string({
-  //   required_error: 'InvoiceStatus is required',
-  //   invalid_type_error: 'InvoiceStatus must be a string',
-  // }).min(1, 'InvoiceStatus is required'),
-  // Reference: string({
-  //   required_error: 'Reference is required',
-  //   invalid_type_error: 'Reference must be a string',
-  // }).min(1, 'Reference is required'),
+  InvoiceStatus: string(),
+  Reference: string(),
   RemittanceEmail: string()
     .email('RemittanceEmail is not a valid email')
     .optional()
@@ -98,6 +88,10 @@ const validateEmail = (email: string) => {
 }
 
 const validateIBAN = (iban: string): boolean => {
+  if (!iban || iban.length === 0) {
+    return false
+  }
+
   const ibanReplaceRegex = /^[a-zA-Z]{2}[0-9]{2}([a-zA-Z0-9]){11,30}$/g
 
   if (iban.length > 0 && !ibanReplaceRegex.test(iban)) {

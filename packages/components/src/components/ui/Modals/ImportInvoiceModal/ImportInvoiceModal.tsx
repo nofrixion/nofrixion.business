@@ -35,6 +35,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
           header: true,
           skipEmptyLines: true,
           complete: (results: ParseResult<InvoicePayment>) => {
+            // TODO: Validate headers
             const validationResults = validateInvoices(results.data as InvoicePayment[])
 
             setValidationResults(validationResults)
