@@ -2,7 +2,10 @@ import { coerce, literal, object, string, z } from 'zod'
 
 import { InvoicePayment } from '../types/LocalTypes'
 
-const CURRENCIES = ['GBP', 'EUR'] as const
+enum Currency {
+  GBP = 'GBP',
+  EUR = 'EUR',
+}
 
 export interface ValidationResult {
   lineNumber: number
@@ -28,7 +31,10 @@ const InvoiceSchema = object({
       invalid_type_error: 'DestinationSortCode must be a number',
     })
     .optional(),
-  Currency: z.enum(CURRENCIES),
+  Currency: z.nativeEnum(Currency, {
+    invalid_type_error: 'Invalid currency. Must be GBP or EUR',
+    required_error: 'Currency is required',
+  }),
   Subtotal: coerce
     .number({
       invalid_type_error: 'Subtotal must be a number',
