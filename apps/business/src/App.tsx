@@ -2,7 +2,6 @@ import { LocalUserRoles } from '@nofrixion/components/src/types/LocalTypes'
 import { Route, Routes } from 'react-router-dom'
 
 import HomeUI from './components/HomeUI'
-import AppLogout from './lib/auth/AppLogout'
 import { AuthProvider } from './lib/auth/AuthProvider'
 import { ProtectedRoutes } from './lib/auth/ProtectedRoutes'
 import { RoleProtectedRoute } from './lib/auth/RoleProtectedRoute'
@@ -22,61 +21,57 @@ import Root from './root'
 export const App = () => {
   return (
     <AuthProvider>
-      <AppLogout>
-        <Routes>
-          <Route element={<Root />}>
-            <Route path="*" element={<NotFound />} />
-            <Route path={getRoute('/')} element={<HomeUI />} />
-            <Route element={<ProtectedRoutes />}>
-              <Route path={getRoute('/home')} element={<Layout />}>
-                <Route element={<RoleProtectedRoute />}>
-                  <Route index element={<DashboardPage />} />
-                </Route>
-                {/* Accounts payable */}
-                <Route element={<RoleProtectedRoute />}>
-                  <Route path="accounts-payable" element={<AccountPayablePage />} />
-                </Route>
-                <Route
-                  element={
-                    <RoleProtectedRoute minimumRequiredRole={LocalUserRoles.PaymentRequestor} />
-                  }
-                >
-                  <Route path="accounts-receivable" element={<AccountReceivablePage />} />
-                </Route>
-                {/* Current accounts */}
-                <Route element={<RoleProtectedRoute />}>
-                  <Route path="current-accounts" element={<CurrentAccountsPage />} />
-                </Route>
-                <Route element={<RoleProtectedRoute />}>
-                  <Route
-                    path="current-accounts/connected/:bankId"
-                    element={<CurrentAccountsPage />}
-                  />
-                </Route>
-                <Route element={<RoleProtectedRoute />}>
-                  <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
-                </Route>
-                {/* Payouts */}
-                <Route element={<RoleProtectedRoute />}>
-                  <Route path="payouts" element={<PayoutsPage />} />
-                </Route>
-                <Route element={<RoleProtectedRoute />}>
-                  <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />
-                </Route>
-                {/* User management */}
-                <Route
-                  element={
-                    <RoleProtectedRoute minimumRequiredRole={LocalUserRoles.AdminApprover} />
-                  }
-                >
-                  <Route path="users" element={<UsersPage />} />
-                </Route>
-                <Route path="pricing" element={<PricingPage />} />
+      <Routes>
+        <Route element={<Root />}>
+          <Route path="*" element={<NotFound />} />
+          <Route path={getRoute('/')} element={<HomeUI />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path={getRoute('/home')} element={<Layout />}>
+              <Route element={<RoleProtectedRoute />}>
+                <Route index element={<DashboardPage />} />
               </Route>
+              {/* Accounts payable */}
+              <Route element={<RoleProtectedRoute />}>
+                <Route path="accounts-payable" element={<AccountPayablePage />} />
+              </Route>
+              <Route
+                element={
+                  <RoleProtectedRoute minimumRequiredRole={LocalUserRoles.PaymentRequestor} />
+                }
+              >
+                <Route path="accounts-receivable" element={<AccountReceivablePage />} />
+              </Route>
+              {/* Current accounts */}
+              <Route element={<RoleProtectedRoute />}>
+                <Route path="current-accounts" element={<CurrentAccountsPage />} />
+              </Route>
+              <Route element={<RoleProtectedRoute />}>
+                <Route
+                  path="current-accounts/connected/:bankId"
+                  element={<CurrentAccountsPage />}
+                />
+              </Route>
+              <Route element={<RoleProtectedRoute />}>
+                <Route path="current-accounts/:accountId" element={<AccountDashboardPage />} />
+              </Route>
+              {/* Payouts */}
+              <Route element={<RoleProtectedRoute />}>
+                <Route path="payouts" element={<PayoutsPage />} />
+              </Route>
+              <Route element={<RoleProtectedRoute />}>
+                <Route path="payouts/:payoutId/:result" element={<PayoutsPage />} />
+              </Route>
+              {/* User management */}
+              <Route
+                element={<RoleProtectedRoute minimumRequiredRole={LocalUserRoles.AdminApprover} />}
+              >
+                <Route path="users" element={<UsersPage />} />
+              </Route>
+              <Route path="pricing" element={<PricingPage />} />
             </Route>
           </Route>
-        </Routes>
-      </AppLogout>
+        </Route>
+      </Routes>
     </AuthProvider>
   )
 }
