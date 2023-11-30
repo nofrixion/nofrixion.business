@@ -5,6 +5,7 @@ import {
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
+  LocalPaymentAttemptEventType,
   LocalPaymentAttemptStatus,
   LocalPaymentMethodTypes,
   LocalTimeFrequencyEnum,
@@ -76,9 +77,15 @@ export interface LocalPaymentAttempt {
   currency: Currency.EUR | Currency.GBP
   processor?: string
   last4DigitsOfCardNumber?: string
+  settledAt?: Date
   settledAmount: number
+  settleFailedAt?: Date
   authorisedAmount: number
+  cardPayerAuthenticationSetupFailedAt?: Date
+  cardAuthorisedAt?: Date
+  cardAuthoriseFailedAt?: Date
   cardAuthorisedAmount?: number
+  authorisedAt?: Date
   captureAttempts: LocalPaymentRequestCaptureAttempt[]
   refundAttempts: LocalPaymentRequestRefundAttempt[]
   wallet?: LocalWallets | undefined
@@ -86,17 +93,17 @@ export interface LocalPaymentAttempt {
   reconciledTransactionID?: string
   paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
   paymentProcessor?: LocalPaymentProcessor
-  statusIconName?: string
   events?: LocalPaymentAttemptEvent[]
-  displayStatus?: LocalPaymentAttemptStatus
+  displayStatus: LocalPaymentAttemptStatus
 }
 
 export interface LocalPaymentAttemptEvent {
+  eventType: LocalPaymentAttemptEventType
   occurredAt: Date
-  amount: number
   currency: Currency.EUR | Currency.GBP
-  refundedAmount: number
-  statusIconName: string
+  refundedAmount?: number
+  capturedAmount?: number
+  isCardVoid?: boolean
 }
 
 export interface SubTransaction {

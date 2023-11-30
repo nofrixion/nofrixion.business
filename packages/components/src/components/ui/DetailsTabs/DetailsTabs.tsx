@@ -4,9 +4,9 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import { useState } from 'react'
 
 import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
+import PaymentAttemptsList from '../PaymentAttemptsList/PaymentAttemptsList'
 import PaymentInfo from '../PaymentInfo/PaymentInfo'
 import ScrollArea from '../ScrollArea/ScrollArea'
-import Transactions from '../Transactions/Transactions'
 
 const tabs = ['Transactions', 'Payment info']
 
@@ -84,7 +84,7 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
         </Tabs.List>
         <TabContent value={tabs[0]} selectedTab={selectedTab}>
           <ScrollArea>
-            <Transactions
+            {/* <Transactions
               transactions={paymentRequest.paymentAttempts.filter(
                 (x) =>
                   (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0) || x.authorisedAmount > 0,
@@ -93,7 +93,23 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
               onRefund={onRefund}
               onVoid={onVoid}
               onCapture={onCapture}
-            ></Transactions>
+            ></Transactions> */}
+
+            <PaymentAttemptsList
+              paymentAttempts={paymentRequest.paymentAttempts.filter(
+                (x) =>
+                  x.cardAuthorisedAt ||
+                  x.authorisedAt ||
+                  x.settledAt ||
+                  x.cardPayerAuthenticationSetupFailedAt ||
+                  x.cardAuthoriseFailedAt ||
+                  x.settleFailedAt,
+              )}
+              cardAuthoriseOnly={!paymentRequest.captureFunds}
+              onRefund={onRefund}
+              onVoid={onVoid}
+              onCapture={onCapture}
+            ></PaymentAttemptsList>
           </ScrollArea>
         </TabContent>
         <TabContent value={tabs[1]} selectedTab={selectedTab}>
