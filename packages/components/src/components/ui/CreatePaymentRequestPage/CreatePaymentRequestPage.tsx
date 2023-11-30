@@ -649,7 +649,7 @@ const CreatePaymentRequestPage = ({
                         {showSubmitError && (
                           <AnimateHeightWrapper layoutId="submit-error">
                             <motion.div
-                              className="border-2 border-solid border-negativeRed rounded px-4 py-6 flex flex-row space-x-4"
+                              className="border-4 border-solid border-negative-red rounded px-4 py-6 flex flex-row space-x-4"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}

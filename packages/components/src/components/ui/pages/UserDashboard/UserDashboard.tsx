@@ -1,12 +1,7 @@
-import {
-  Pagination,
-  SortDirection,
-  UserMetrics,
-  UserRoleAndUserInvite,
-  UserStatus,
-} from '@nofrixion/moneymoov'
+import { Pagination, UserMetrics, UserRoleAndUserInvite, UserStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 
+import { DoubleSortByUsersAndInvites } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
 import UserTable from '../../organisms/UsersTable/UserTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
@@ -22,7 +17,8 @@ export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement>
   isLoadingMetrics: boolean
   status: UserStatus
   onPageChange: (page: number) => void
-  onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
+  sortBy: DoubleSortByUsersAndInvites
+  onSort: (sortInfo: DoubleSortByUsersAndInvites) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   onInviteUser: () => void
   onResendInvitation?: (inviteID?: string) => void
@@ -38,6 +34,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
   isLoadingMetrics,
   status,
   onPageChange,
+  sortBy,
   onSort,
   onInviteUser,
   onUserClicked,
@@ -98,6 +95,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
               totalSize: pagination.totalSize,
             }}
             onPageChange={onPageChange}
+            sortBy={sortBy}
             onSort={onSort}
             isLoading={isLoading}
             onUserClicked={onUserClicked}

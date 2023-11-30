@@ -4,13 +4,12 @@ import {
   BankSettings,
   Currency,
   Pagination,
-  SortDirection,
 } from '@nofrixion/moneymoov'
 import { set } from 'date-fns'
-import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
+import { DoubleSortByTransactions } from '../../../../types/Sort'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
 import AccountConnection from '../../atoms/AccountConnection/AccountConnection'
@@ -30,7 +29,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   searchFilter: string
   merchantCreatedAt?: Date
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  onSort: (sortInfo: DoubleSortByTransactions) => void
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
@@ -83,7 +82,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
     setIsRenewConnectionModalOpen(false)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalAccountName(account?.accountName ?? '')
   }, [account?.accountName])
 

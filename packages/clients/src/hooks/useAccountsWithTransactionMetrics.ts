@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { MerchantClient } from '../clients'
-import { formatSortExpression, SortDirection } from '../types'
+import { formatSortExpression } from '../types'
 import { AccountTransactionMetricsPageResponse, ApiResponse } from '../types/ApiResponses'
-import { ApiProps, useAccountsWithTransactionMetricsProps } from '../types/props'
+import {
+  ApiProps,
+  SortByAccountsWithTransactionMetrics,
+  useAccountsWithTransactionMetricsProps,
+} from '../types/props'
 
 const fetchAccountsWithTransactionsMetrics = async (
   apiUrl: string,
-  numberOfTransactionsSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
   pageNumber?: number,
@@ -15,10 +18,9 @@ const fetchAccountsWithTransactionsMetrics = async (
   fromDateMS?: number,
   toDateMS?: number,
   currency?: string,
+  sortBy?: SortByAccountsWithTransactionMetrics,
 ): Promise<ApiResponse<AccountTransactionMetricsPageResponse>> => {
-  const sortExpression = formatSortExpression({
-    numberOfTransactionsSortDirection: numberOfTransactionsSortDirection,
-  })
+  const sortExpression = sortBy ? formatSortExpression({ primary: sortBy }) : ''
 
   const client = new MerchantClient({ apiUrl, authToken })
 
@@ -43,7 +45,7 @@ export const useAccountsWithTransactionMetrics = (
     fromDateMS,
     toDateMS,
     currency,
-    numberOfTransactionsSortDirection,
+    sortBy,
   }: useAccountsWithTransactionMetricsProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
@@ -52,12 +54,12 @@ export const useAccountsWithTransactionMetrics = (
     apiUrl,
     authToken,
     merchantId,
-    numberOfTransactionsSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
     toDateMS,
     currency,
+    sortBy,
   ]
 
   return useQuery<ApiResponse<AccountTransactionMetricsPageResponse>, Error>(
@@ -65,7 +67,6 @@ export const useAccountsWithTransactionMetrics = (
     () =>
       fetchAccountsWithTransactionsMetrics(
         apiUrl,
-        numberOfTransactionsSortDirection,
         authToken,
         merchantId,
         pageNumber,
@@ -73,6 +74,7 @@ export const useAccountsWithTransactionMetrics = (
         fromDateMS,
         toDateMS,
         currency,
+        sortBy,
       ),
     {
       enabled: !!merchantId,

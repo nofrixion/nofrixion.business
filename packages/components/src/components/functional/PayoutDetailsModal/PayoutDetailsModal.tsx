@@ -1,6 +1,5 @@
 import {
   PayoutStatus,
-  SortDirection,
   Tag,
   useAddPayoutTag,
   useCancelScheduledPayout,
@@ -13,6 +12,7 @@ import {
 import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { DoubleSortByPayouts } from '../../../types/Sort'
 import { parseLocalTagToApiTag, remotePayoutToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import UIPayoutDetailsModal from '../../ui/organisms/PayoutDetailsModal/PayoutDetailsModal'
@@ -25,11 +25,7 @@ export interface PayoutDetailsModalProps {
   open: boolean
   onDismiss: () => void
   merchantId: string
-  statusSortDirection: SortDirection
-  createdSortDirection: SortDirection
-  amountSortDirection: SortDirection
-  counterPartyNameSortDirection: SortDirection
-  scheduleDateSortDirection: SortDirection
+  sortBy: DoubleSortByPayouts
   statuses: PayoutStatus[]
   page: number
   pageSize: number
@@ -51,11 +47,7 @@ const PayoutDetailsModal = ({
   open,
   onDismiss,
   merchantId,
-  statusSortDirection,
-  createdSortDirection,
-  amountSortDirection,
-  counterPartyNameSortDirection,
-  scheduleDateSortDirection,
+  sortBy,
   statuses,
   page,
   pageSize,
@@ -87,11 +79,7 @@ const PayoutDetailsModal = ({
       merchantId: merchantId,
       pageNumber: page,
       pageSize: pageSize,
-      amountSortDirection: amountSortDirection,
-      createdSortDirection: createdSortDirection,
-      statusSortDirection: statusSortDirection,
-      counterPartyNameSortDirection: counterPartyNameSortDirection,
-      scheduleDateSortDirection: scheduleDateSortDirection,
+      sortBy: sortBy,
       fromDateMS: dateRange.fromDate && dateRange.fromDate.getTime(),
       toDateMS: dateRange.toDate && dateRange.toDate.getTime(),
       statuses: statuses,
