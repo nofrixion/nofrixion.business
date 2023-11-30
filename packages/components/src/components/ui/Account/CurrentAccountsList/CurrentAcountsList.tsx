@@ -6,6 +6,7 @@ import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
 import RevokeConnectionModal from '../../Modals/RevokeConnectionModal/RevokeConnectionModal'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -22,6 +23,10 @@ export interface CurrentAccountsListProps {
   banks?: BankSettings[]
   isConnectingToBank: boolean
   areConnectedAccountsEnabled?: boolean
+  systemErrorTitle?: string
+  systemErrorMessage?: string
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const CurrentAcountsList = ({
@@ -35,6 +40,10 @@ const CurrentAcountsList = ({
   banks,
   isConnectingToBank,
   areConnectedAccountsEnabled = true,
+  systemErrorTitle,
+  systemErrorMessage,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
@@ -54,6 +63,12 @@ const CurrentAcountsList = ({
     setIsRenewConnectionModalOpen(false)
     setExternalAccountConnectDisabled(false)
     setIsRevokeConnectionModalOpen(false)
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
   }
 
   const handleOnApply = (bank: BankSettings) => {
@@ -194,6 +209,14 @@ const CurrentAcountsList = ({
           />
         </>
       )}
+
+      {/* System error modal */}
+      <SystemErrorModal
+        open={isSystemErrorOpen}
+        title={systemErrorTitle}
+        message={systemErrorMessage}
+        onDismiss={handlOnCloseSystemErrorModal}
+      />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
     </div>

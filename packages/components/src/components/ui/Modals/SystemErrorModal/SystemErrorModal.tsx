@@ -3,8 +3,8 @@ import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
 
 export interface SystemErrorModalProps extends BaseModalProps {
   onDismiss: () => void
-  title: string
-  message: string
+  title?: string
+  message?: string
 }
 
 const SystemErrorModal = ({ title, message, onDismiss, open }: SystemErrorModalProps) => {
@@ -19,17 +19,15 @@ const SystemErrorModal = ({ title, message, onDismiss, open }: SystemErrorModalP
       onDismiss={handleOnDismiss}
       buttonText="Understood"
       showDefault={false}
+      showSupport={true}
     >
-      <div className="flex justify-center h-full">
-        my-8
-        <Icon name="error/48" className="text-negative-red" />
-        <div>
-          <h3 className="text-2xl font-semibold leading-8 md:leading-6">{title}</h3>
+      <div className='mt-6 md:mt-12 h-full'>
+        <div className="flex flex-col items-center">
+          <Icon name="error/48" className="text-negative-red" />
         </div>
+        <h3 className="text-2xl font-semibold leading-8 md:leading-6 my-8 text-default-text">{title}</h3>
+        <p className='text-sm font-normal leading-5 text-default-text'>{message}</p>
       </div>
-      <p>{message}</p>
-
-      <a href="https://tally.so#tally-open=3NX0Ap">Contact support</a>
     </CustomModal>
   )
 }

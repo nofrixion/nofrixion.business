@@ -13,6 +13,7 @@ export interface CustomModalProps extends BaseModalProps {
   buttonRowClassName?: string
   buttonText?: string
   buttonClaseName?: string
+  showSupport?: boolean
 }
 
 export interface BaseModalProps {
@@ -37,6 +38,7 @@ const CustomModal = ({
   showDefault = true,
   buttonText = 'Apply',
   buttonClaseName = 'w-full md:w-[10.625rem] px-16 ml-auto',
+  showSupport = false,
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -89,11 +91,13 @@ const CustomModal = ({
                 transition={{ duration: 0.2 }}
               >
                 <div className="flex flex-col min-h-full justify-center overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title asChild>
-                    <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-0 mt-12">
-                      {title}
-                    </h3>
-                  </Dialog.Title>
+                  {title && (
+                    <Dialog.Title asChild>
+                      <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-0 mt-12">
+                        {title}
+                      </h3>
+                    </Dialog.Title>
+                  )}
                   <div className="px-6 md:px-12">{children}</div>
                   <div
                     className={cn(
@@ -108,6 +112,13 @@ const CustomModal = ({
                           value={isDefaultChecked}
                           onChange={setIsDefaultChecked}
                         />
+                      </div>
+                    )}
+
+                    {showSupport && (
+                      <div className='flex mr-4 items-center'>
+                        <Icon name="support/16" className="text-control-grey-hover" />
+                        <a className='ml-2 font-normal text-xs leading-4 text-default-text py-1 underline' href="https://tally.so#tally-open=3NX0Ap">Contact support</a>
                       </div>
                     )}
 

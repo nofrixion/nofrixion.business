@@ -67,6 +67,10 @@ const CurrentAccountsMain = ({
   const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
   const { userSettings, updateUserSettings } = useUserSettings()
 
+  const [systemErrorTitle, setSystemErrorTitle] = useState<string | undefined>(undefined)
+  const [systemErrorMessage, setSystemErrorMessage] = useState<string | undefined>(undefined)
+  const [isSystemErrorModalOpen, setIsSystemErrorModalOpen] = useState<boolean>(false)
+
   const { data: accounts, isLoading: isAccountsLoading } = useAccounts(
     { connectedAccounts: true, merchantId: merchantId },
     { apiUrl, authToken: token },
@@ -109,7 +113,9 @@ const CurrentAccountsMain = ({
     )?.error
 
     if (error) {
-      makeToast('error', `Consent authorisation error: ${error.detail}`)
+      setSystemErrorTitle("Open banking consent authorisation failed")
+      setSystemErrorMessage(error.detail)
+      setIsSystemErrorModalOpen(true)
     }
 
     if (errorID && error) {
@@ -145,8 +151,10 @@ const CurrentAccountsMain = ({
       })
 
       if (response.status === 'error') {
-        console.error(response.error)
-        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+        setSystemErrorTitle(`Could not connect to ${bank.bankName}`)
+        setSystemErrorMessage(response.error.detail)
+        setIsSystemErrorModalOpen(true)
+
       } else if (response.data.authorisationUrl) {
         // Redirect to the banks authorisation url
         window.location.href = response.data.authorisationUrl
@@ -165,6 +173,10 @@ const CurrentAccountsMain = ({
     }
   }
 
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorModalOpen(false)
+  }
+
   const handleOnRenewConnection = async (account: Account) => {
     if (account && account.consentID) {
       setIsConnectingToBank(true)
@@ -175,8 +187,10 @@ const CurrentAccountsMain = ({
       })
 
       if (response.status === 'error') {
-        console.error(response.error)
-        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+        setSystemErrorTitle(`Renew connected account has failed`)
+        setSystemErrorMessage(response.error.detail)
+        setIsSystemErrorModalOpen(true)
+
       } else if (response.data.authorisationUrl) {
         window.location.href = response.data.authorisationUrl
       }
@@ -190,7 +204,10 @@ const CurrentAccountsMain = ({
       const response = await deleteConnectedAccount(account.id)
 
       if (response.error) {
-        makeToast('error', response.error.title)
+        setSystemErrorTitle("Revoking connected account connection has failed")
+        setSystemErrorMessage(response.error.detail)
+        setIsSystemErrorModalOpen(true)
+
         return
       }
 
@@ -207,10 +224,10 @@ const CurrentAccountsMain = ({
       const responses = await Promise.all(promises)
 
       if (responses.some((r) => r.error)) {
-        makeToast(
-          'error',
-          'Error revoking account connections. Some connections may not have been revoked.',
-        )
+        setSystemErrorTitle("Revoking connected account connections has failed")
+        setSystemErrorMessage("Some connections may not have been revoked.")
+        setIsSystemErrorModalOpen(true)
+
         return
       }
 
@@ -240,6 +257,10 @@ const CurrentAccountsMain = ({
           onRevokeConnection={handleOnRevokeConnection}
           // Disable connected accounts if it's a web component
           areConnectedAccountsEnabled={!isWebComponent}
+          systemErrorTitle={systemErrorTitle}
+          systemErrorMessage={systemErrorMessage}
+          isSystemErrorOpen={isSystemErrorModalOpen}
+          onCloseSystemError={onCloseSystemErrorModal}
         />
       )}
     </>
