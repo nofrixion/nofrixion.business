@@ -38,11 +38,11 @@ import {
 } from '../../../utils/parsers'
 import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage'
 import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+import DashboardTab from '../../ui/DashboardTab/DashboardTab'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow'
 import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable'
 import ScrollArea from '../../ui/ScrollArea/ScrollArea'
-import Tab from '../../ui/Tab/Tab'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal'
@@ -565,35 +565,35 @@ const PaymentRequestDashboardMain = ({
         >
           {/* Keep the Tab to still get accessibility functions through the keyboard */}
           <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.All}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.all ?? 0}
               totalAmountInEuros={metrics?.totalAmountsByCurrency?.all?.eur}
               totalAmountInPounds={metrics?.totalAmountsByCurrency?.all?.gbp}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.None}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.unpaid ?? 0}
               totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'unpaid')}
               totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'unpaid')}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.Authorized}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.authorized ?? 0}
               totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'authorized')}
               totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'authorized')}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.PartiallyPaid}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.partiallyPaid ?? 0}
               totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'partiallyPaid')}
               totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'partiallyPaid')}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.FullyPaid}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.paid ?? 0}
