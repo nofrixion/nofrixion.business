@@ -71,8 +71,8 @@ const InvoiceSchema = object({
       invalid_type_error: 'OutstandingAmount must be a number',
     })
     .min(0, 'OutstandingAmount must be greater than 0'),
-  InvoiceStatus: string(),
-  Reference: string(),
+  InvoiceStatus: string().optional(),
+  Reference: string().optional(),
   RemittanceEmail: string()
     .email('RemittanceEmail is not a valid email')
     .optional()
