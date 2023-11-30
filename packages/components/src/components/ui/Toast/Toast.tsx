@@ -22,7 +22,14 @@ const makeToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
 }
 
 const CloseButton = ({ closeToast }: CloseButtonProps) => (
-  <button onClick={closeToast} className="top-0 bottom-0 my-auto">
+  <button
+    // Prevets sheet from closing when clicking on the close button
+    onPointerDown={(event) => {
+      event.stopPropagation()
+    }}
+    onClick={closeToast}
+    className="top-0 bottom-0 my-auto"
+  >
     <svg
       width="12"
       height="12"
@@ -49,17 +56,20 @@ const CloseButton = ({ closeToast }: CloseButtonProps) => (
 
 const Toaster = ({ positionY, positionX, duration = 5000 }: ToastProps) => {
   return (
-    <ToastContainer
-      position={`${positionY}-${positionX}`}
-      autoClose={duration}
-      hideProgressBar={true}
-      limit={3}
-      transition={Slide}
-      className="text-sm leading-[18px] font-normal"
-      icon={false}
-      theme="colored"
-      closeButton={CloseButton}
-    />
+    // Prevets sheet from closing when clicking on the close button
+    <div onPointerDown={(event) => event.stopPropagation()}>
+      <ToastContainer
+        position={`${positionY}-${positionX}`}
+        autoClose={duration}
+        hideProgressBar={true}
+        limit={3}
+        transition={Slide}
+        className="text-sm leading-[18px] font-normal pointer-events-auto"
+        icon={false}
+        theme="colored"
+        closeButton={CloseButton}
+      />
+    </div>
   )
 }
 
