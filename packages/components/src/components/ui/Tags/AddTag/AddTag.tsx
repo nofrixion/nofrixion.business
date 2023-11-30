@@ -7,6 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { v4 as uuidv4 } from 'uuid'
 
 import { LocalTag } from '../../../../types/LocalTypes'
+import { makeToast } from '../../Toast/Toast'
 
 export interface TagProps {
   tags: LocalTag[]
@@ -51,11 +52,13 @@ const AddTag = ({ tags, availableTags, onTagAdded, onTagCreated }: TagProps) => 
 
   const saveTag = () => {
     const existingTag = availableTags.find(
-      (tag) => tag.name?.toLowerCase() === tagName.toLowerCase(),
+      (tag) => tag.name?.trim().toLowerCase() === tagName.trim().toLowerCase(),
     )
 
     // If the tag already exists, don't add it
     if (existingTag && tags.findIndex((tag) => tag.name === existingTag.name) !== -1) {
+      makeToast('warning', `'${tagName}' tag was already added`)
+      reset()
       return
     }
 
