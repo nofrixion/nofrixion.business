@@ -3,7 +3,6 @@ import { parse, ParseResult } from 'papaparse'
 import { Fragment, useEffect, useState } from 'react'
 
 import { LocalInvoicePayment, ValidationResult } from '../../../../types/LocalTypes'
-import { localInvoicePaymentsToRemoteInvoicePayments } from '../../../../utils/parsers'
 import { validateInvoices } from '../../../../utils/validation'
 import FileInput from '../../atoms/FileInput/FileInput'
 import BackArrow from '../../utils/BackArrow'
@@ -17,13 +16,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
   const [validationResults, setValidationResults] = useState<ValidationResult[] | null>(null)
 
   useEffect(() => {
-    console.log(validationResults?.filter((result) => !result.valid))
-
-    const remoteInvoices = localInvoicePaymentsToRemoteInvoicePayments(
-      validationResults?.map((result) => result.result),
-    )
-
-    console.log(remoteInvoices)
+    console.log(validationResults)
   }, [validationResults])
 
   const handleFileAdded = (file: File) => {
