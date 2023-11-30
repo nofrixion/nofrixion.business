@@ -123,3 +123,23 @@ export type UserRoleCreate = {
   emailAddress: string
   userRole: UserRoles
 }
+
+export interface InvoicePayment {
+  invoiceNumber?: string
+  paymentTerms?: string
+  invoiceDate: Date
+  dueDate: Date
+  contact: string
+  destinationIban?: string
+  destinationAccountNumber?: string
+  destinationSortCode?: string
+  currency: string
+  subtotal?: number
+  discounts?: number
+  taxes?: number
+  totalAmount?: number
+  outstandingAmount?: number
+  invoiceStatus?: string
+  reference?: string
+  remittanceEmail?: string
+}

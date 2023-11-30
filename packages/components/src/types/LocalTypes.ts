@@ -347,7 +347,7 @@ export interface PayoutActivity {
   eventType: PayoutEventTypesEnum
 }
 
-export interface InvoicePayment {
+export interface LocalInvoicePayment {
   InvoiceNumber: string
   PaymentTerms: string
   InvoiceDate: string
@@ -365,4 +365,11 @@ export interface InvoicePayment {
   InvoiceStatus: string
   Reference: string
   RemittanceEmail: string
+}
+
+export interface ValidationResult {
+  lineNumber: number
+  valid: boolean
+  errors?: string[]
+  result: LocalInvoicePayment
 }

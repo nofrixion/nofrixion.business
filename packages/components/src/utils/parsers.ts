@@ -6,6 +6,7 @@ import {
   AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
+  InvoicePayment,
   PartialPaymentMethods,
   PaymentMethodTypes,
   type PaymentRequest,
@@ -45,6 +46,7 @@ import {
   LocalAddress,
   LocalBeneficiary,
   LocalCounterparty,
+  LocalInvoicePayment,
   LocalPaymentAttempt,
   LocalPaymentProcessor,
   LocalPaymentRequest,
@@ -876,9 +878,66 @@ const payoutStatusToActivitySatus = (status: PayoutEventTypesEnum): string => {
   }
 }
 
+const localInvoicePaymentsToRemoteInvoicePayments = (
+  localInvoicePayments: LocalInvoicePayment[] | undefined,
+): InvoicePayment[] => {
+  if (!localInvoicePayments) {
+    return []
+  }
+  return localInvoicePayments.map((localInvoicePayment) => {
+    return localInvoicePaymentToRemoteInvoicePayment(localInvoicePayment)
+  })
+}
+
+const localInvoicePaymentToRemoteInvoicePayment = (
+  localInvoicePayment: LocalInvoicePayment,
+): InvoicePayment => {
+  const {
+    InvoiceNumber,
+    PaymentTerms,
+    InvoiceDate,
+    DueDate,
+    Contact,
+    DestinationIban,
+    DestinationAccountNumber,
+    DestinationSortCode,
+    Currency,
+    Subtotal,
+    Discounts,
+    Taxes,
+    TotalAmount,
+    OutstandingAmount,
+    InvoiceStatus,
+    Reference,
+    RemittanceEmail,
+  } = localInvoicePayment
+
+  return {
+    invoiceNumber: InvoiceNumber,
+    paymentTerms: PaymentTerms,
+    invoiceDate: new Date(InvoiceDate),
+    dueDate: new Date(DueDate),
+    contact: Contact,
+    destinationIban: DestinationIban ? DestinationIban : undefined,
+    destinationAccountNumber: DestinationAccountNumber ? DestinationAccountNumber : undefined,
+    destinationSortCode: DestinationSortCode ? DestinationSortCode : undefined,
+    currency: Currency,
+    subtotal: Subtotal ? parseFloat(Subtotal) : undefined,
+    discounts: Discounts ? parseFloat(Discounts) : undefined,
+    taxes: Taxes ? parseFloat(Taxes) : undefined,
+    totalAmount: TotalAmount ? parseFloat(TotalAmount) : undefined,
+    outstandingAmount: OutstandingAmount ? parseFloat(OutstandingAmount) : undefined,
+    invoiceStatus: InvoiceStatus,
+    reference: Reference,
+    remittanceEmail: RemittanceEmail,
+  }
+}
+
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
+  localInvoicePaymentsToRemoteInvoicePayments,
+  localInvoicePaymentToRemoteInvoicePayment,
   parseApiTagToLocalTag,
   parseApiUserRoleToLocalUserRole,
   parseApiUserToLocalUser,

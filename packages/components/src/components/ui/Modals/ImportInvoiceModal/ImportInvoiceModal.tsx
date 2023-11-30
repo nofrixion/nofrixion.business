@@ -2,8 +2,9 @@ import { Dialog, Transition } from '@headlessui/react'
 import { parse, ParseResult } from 'papaparse'
 import { Fragment, useEffect, useState } from 'react'
 
-import { InvoicePayment } from '../../../../types/LocalTypes'
-import { validateInvoices, ValidationResult } from '../../../../utils/validation'
+import { LocalInvoicePayment, ValidationResult } from '../../../../types/LocalTypes'
+import { localInvoicePaymentsToRemoteInvoicePayments } from '../../../../utils/parsers'
+import { validateInvoices } from '../../../../utils/validation'
 import FileInput from '../../atoms/FileInput/FileInput'
 import BackArrow from '../../utils/BackArrow'
 
@@ -17,6 +18,12 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
 
   useEffect(() => {
     console.log(validationResults?.filter((result) => !result.valid))
+
+    const remoteInvoices = localInvoicePaymentsToRemoteInvoicePayments(
+      validationResults?.map((result) => result.result),
+    )
+
+    console.log(remoteInvoices)
   }, [validationResults])
 
   const handleFileAdded = (file: File) => {
@@ -34,15 +41,15 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
         parse(reader.result as string, {
           header: true,
           skipEmptyLines: true,
-          complete: (results: ParseResult<InvoicePayment>) => {
+          complete: (results: ParseResult<LocalInvoicePayment>) => {
             // TODO: Validate headers
-            const validationResults = validateInvoices(results.data as InvoicePayment[])
+            const validationResults = validateInvoices(results.data as LocalInvoicePayment[])
 
             setValidationResults(validationResults)
           },
           error: (err: any) => {
             // TODO: Handle parsing errors
-            console.log(err)
+            console.error('PARSE ERROR', err)
           },
         })
       }

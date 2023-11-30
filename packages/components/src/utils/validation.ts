@@ -1,24 +1,33 @@
-import { coerce, literal, object, string, z } from 'zod'
+import { coerce, literal, nativeEnum, object, string } from 'zod'
 
-import { InvoicePayment } from '../types/LocalTypes'
+import { LocalInvoicePayment, ValidationResult } from '../types/LocalTypes'
 
 enum Currency {
   GBP = 'GBP',
   EUR = 'EUR',
 }
 
-export interface ValidationResult {
-  lineNumber: number
-  valid: boolean
-  errors?: string[]
-  result: InvoicePayment
-}
-
 const InvoiceSchema = object({
   InvoiceNumber: string().optional(),
   PaymentTerms: string().optional(),
-  InvoiceDate: string().min(1, 'InvoiceDate is required'), // TODO: Support proper date format
-  DueDate: string().min(1, 'DueDate is required'),
+  InvoiceDate: string().pipe(
+    coerce.date({
+      errorMap: (issue, { defaultError }) => ({
+        message:
+          issue.code === 'invalid_date'
+            ? 'InvoiceDate must be in the format YYYY-MM-DD'
+            : defaultError,
+      }),
+    }),
+  ),
+  DueDate: string().pipe(
+    coerce.date({
+      errorMap: (issue, { defaultError }) => ({
+        message:
+          issue.code === 'invalid_date' ? 'DueDate must be in the format YYYY-MM-DD' : defaultError,
+      }),
+    }),
+  ),
   Contact: string().min(1, 'Contact is required'),
   DestinationIban: string().optional(),
   DestinationAccountNumber: coerce
@@ -31,7 +40,7 @@ const InvoiceSchema = object({
       invalid_type_error: 'DestinationSortCode must be a number',
     })
     .optional(),
-  Currency: z.nativeEnum(Currency, {
+  Currency: nativeEnum(Currency, {
     invalid_type_error: 'Invalid currency. Must be GBP or EUR',
     required_error: 'Currency is required',
   }),
@@ -133,10 +142,9 @@ const validateIBAN = (iban: string): boolean => {
   return true
 }
 
-const validateInvoices = (invoicePayments: InvoicePayment[]): ValidationResult[] => {
+const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationResult[] => {
   const results: ValidationResult[] = []
 
-  console.log('invoicePayments', invoicePayments)
   invoicePayments.map((invoicePayment, index) => {
     const result = InvoiceSchema.safeParse(invoicePayment)
 
