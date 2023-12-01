@@ -7,12 +7,12 @@ import { useState } from 'react'
 import { LocalPayout } from '../../../../types/LocalTypes'
 import { DoubleSortByPayouts } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
+import DashboardTab from '../../DashboardTab/DashboardTab'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
 import { Loader } from '../../Loader/Loader'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
-import Tab from '../../Tab/Tab'
 import { FilterableTag } from '../../TagFilter/TagFilter'
 import { Toaster } from '../../Toast/Toast'
 import LayoutWrapper from '../../utils/LayoutWrapper'
@@ -180,42 +180,42 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
           >
             {/* Keep the Tab to still get accessibility functions through the keyboard */}
             <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.All}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.all ?? 0}
                 totalAmountInEuros={payoutMetrics?.totalAmountsByCurrency?.all?.eur}
                 totalAmountInPounds={payoutMetrics?.totalAmountsByCurrency?.all?.gbp}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.PENDING_APPROVAL}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.pendingApproval ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'pendingApproval')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'pendingApproval')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.SCHEDULED}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.scheduled ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'scheduled')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'scheduled')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.PENDING}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.inProgress ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'inProgress')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'inProgress')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.FAILED}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.failed ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'failed')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'failed')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.PROCESSED}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.paid ?? 0}
