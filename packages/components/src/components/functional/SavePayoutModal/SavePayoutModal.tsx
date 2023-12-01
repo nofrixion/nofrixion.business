@@ -13,6 +13,7 @@ import {
   LocalBeneficiary,
   LocalCounterparty,
   LocalPayout,
+  SystemError,
 } from '../../../types/LocalTypes'
 import { localCounterPartyToRemoteCounterParty } from '../../../utils/parsers'
 import UISavePayoutModal from '../../ui/organisms/SavePayoutModal/SavePayoutModal'
@@ -29,6 +30,7 @@ export interface SavePayoutModalProps {
   onDismiss: () => void // Callback function that will be called when the modal is asked to be closed.
   isUserAuthoriser: boolean
   selectedPayout?: LocalPayout // Payout that's been currently edited. This serves as a create/edit toggle.
+  onSystemError: (systemError: SystemError) => void
 }
 
 const SavePayoutModal = ({
@@ -40,6 +42,7 @@ const SavePayoutModal = ({
   beneficiaries,
   isUserAuthoriser,
   selectedPayout,
+  onSystemError,
 }: SavePayoutModalProps) => {
   const { createPayout } = useCreatePayout({ apiUrl: apiUrl, authToken: token })
   const { updatePayout } = useUpdatePayout({ apiUrl: apiUrl, authToken: token })
@@ -91,7 +94,7 @@ const SavePayoutModal = ({
     const response = await createPayout(payoutCreate)
 
     if (response.status === 'error') {
-      makeToast('error', 'Could not create payout.')
+      onSystemError({ title: 'Create payout has failed', message: response.error.detail })
     } else {
       if (createAndApprove) {
         setPayoutID(response.data.id)
@@ -103,7 +106,10 @@ const SavePayoutModal = ({
 
       if (createAndApprove) {
         await sleep(10000).then(() => {
-          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+          onSystemError({
+            title: 'Payout authorisation error',
+            message: 'Could not redirect to approve payout. Please try again.',
+          })
         })
       }
 
@@ -149,7 +155,7 @@ const SavePayoutModal = ({
     const response = await updatePayout(payoutUpdate)
 
     if (response.error) {
-      makeToast('error', 'Could not edit payout details.')
+      onSystemError({ title: 'Update payout details has failed', message: response.error.detail })
     } else {
       if (updateAndApprove) {
         setPayoutID(selectedPayout.id)

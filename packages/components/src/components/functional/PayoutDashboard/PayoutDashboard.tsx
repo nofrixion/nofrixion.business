@@ -19,7 +19,7 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { ApproveType, LocalPayout, LocalTag, SystemError } from '../../../types/LocalTypes'
 import { DoubleSortByPayouts } from '../../../types/Sort'
 import {
   parseApiTagToLocalTag,
@@ -104,6 +104,9 @@ const PayoutDashboardMain = ({
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
   const authoriseFormRef = useRef<HTMLFormElement>(null)
   const [isUserAuthoriser, setIsUserAuthoriser] = useState<boolean>(false)
+
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -394,6 +397,15 @@ const PayoutDashboardMain = ({
     setCreatePayoutClicked(true)
   }
 
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
+  }
+
   return (
     <div>
       <UIPayoutDashboard
@@ -434,6 +446,9 @@ const PayoutDashboardMain = ({
         onApproveBatchPayouts={onApproveBatchPayouts}
         payoutsExist={payoutsExists}
         isUserAuthoriser={isUserAuthoriser}
+        systemError={systemError}
+        isSystemErrorOpen={isSystemErrorOpen}
+        onCloseSystemError={onCloseSystemErrorModal}
       />
 
       <PayoutDetailsModal
@@ -470,6 +485,7 @@ const PayoutDashboardMain = ({
           merchantId={merchantId}
           isUserAuthoriser={isUserAuthoriser}
           selectedPayout={selectedPayout}
+          onSystemError={handleSystemErrorMessage}
         />
       )}
 
