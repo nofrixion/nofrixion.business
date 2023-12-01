@@ -47,25 +47,25 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
     }
 
     if (file) {
-      const headers = [
-        'InvoiceNumber',
-        'PaymentTerms',
-        'InvoiceDate',
-        'DueDate',
-        'Contact',
-        'DestinationIban',
-        'DestinationAccountNumber',
-        'DestinationSortCode',
-        'Currency',
-        'Subtotal',
-        'Discounts',
-        'Taxes',
-        'TotalAmount',
-        'OutstandingAmount',
-        'InvoiceStatus',
-        'Reference',
-        'RemittanceEmail',
-      ]
+      // const headers = [
+      //   'InvoiceNumber',
+      //   'PaymentTerms',
+      //   'InvoiceDate',
+      //   'DueDate',
+      //   'Contact',
+      //   'DestinationIban',
+      //   'DestinationAccountNumber',
+      //   'DestinationSortCode',
+      //   'Currency',
+      //   'Subtotal',
+      //   'Discounts',
+      //   'Taxes',
+      //   'TotalAmount',
+      //   'OutstandingAmount',
+      //   'InvoiceStatus',
+      //   'Reference',
+      //   'RemittanceEmail',
+      // ]
       // const parsedInvoices: LocalInvoicePayment[] = []
       const reader = new FileReader()
 
@@ -76,20 +76,20 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
           header: true,
           skipEmptyLines: true,
           complete: (results: ParseResult<LocalInvoicePayment>) => {
-            console.log('results complete', results)
+            // console.log('results complete', results)
 
             // TODO: Validate headers
-            headers.forEach((header) => {
-              if (!results.meta.fields?.includes(header)) {
-                console.log(`Header ${header} are missing`)
-              }
-            })
+            // headers.forEach((header) => {
+            //   if (!results.meta.fields?.includes(header)) {
+            //     console.log(`Header ${header} are missing`)
+            //   }
+            // })
 
-            if (headers.some((header) => !results.meta.fields?.includes(header))) {
-              console.log('Some headers are missing')
-              setIsError(true)
-              return
-            }
+            // if (headers.some((header) => !results.meta.fields?.includes(header))) {
+            //   console.log('Some headers are missing')
+            //   setIsError(true)
+            //   return
+            // }
 
             const validationResults = validateInvoices(results.data as LocalInvoicePayment[])
 

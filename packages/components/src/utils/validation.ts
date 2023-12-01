@@ -1,4 +1,4 @@
-import { coerce, literal, nativeEnum, object, string } from 'zod'
+import { coerce, literal, nativeEnum, object, string, ZodIssue } from 'zod'
 
 import { LocalInvoicePayment, ValidationResult } from '../types/LocalTypes'
 
@@ -10,26 +10,13 @@ enum Currency {
 const InvoiceSchema = object({
   InvoiceNumber: string().optional(),
   PaymentTerms: string().optional(),
-  InvoiceDate: string().pipe(
-    coerce.date({
-      errorMap: (issue, { defaultError }) => ({
-        message:
-          issue.code === 'invalid_date'
-            ? 'InvoiceDate must be in the format YYYY-MM-DD'
-            : defaultError,
-      }),
-    }),
-  ),
-  DueDate: string().pipe(
-    coerce.date({
-      errorMap: (issue, { defaultError }) => ({
-        message:
-          issue.code === 'invalid_date' ? 'DueDate must be in the format YYYY-MM-DD' : defaultError,
-      }),
-    }),
-  ),
-  Contact: string().min(1, 'Contact is required'),
   DestinationIban: string().optional(),
+  InvoiceStatus: string().optional(),
+  Reference: string().optional(),
+  RemittanceEmail: string()
+    .email('RemittanceEmail is not a valid email')
+    .optional()
+    .or(literal('')),
   DestinationAccountNumber: coerce
     .number({
       invalid_type_error: 'DestinationAccountNumber must be a number',
@@ -40,10 +27,6 @@ const InvoiceSchema = object({
       invalid_type_error: 'DestinationSortCode must be a number',
     })
     .optional(),
-  Currency: nativeEnum(Currency, {
-    invalid_type_error: 'Invalid currency. Must be GBP or EUR',
-    required_error: 'Currency is required',
-  }),
   Subtotal: coerce
     .number({
       invalid_type_error: 'Subtotal must be a number',
@@ -59,6 +42,35 @@ const InvoiceSchema = object({
       invalid_type_error: 'Taxes must be a number',
     })
     .optional(),
+  InvoiceDate: string()
+    .nullish()
+    .pipe(
+      coerce.date({
+        errorMap: (issue, { defaultError }) => ({
+          message:
+            issue.code === 'invalid_date'
+              ? 'InvoiceDate must be in the format YYYY-MM-DD'
+              : defaultError,
+        }),
+      }),
+    ),
+  DueDate: string()
+    .nullish()
+    .pipe(
+      coerce.date({
+        errorMap: (issue, { defaultError }) => ({
+          message:
+            issue.code === 'invalid_date'
+              ? 'DueDate must be in the format YYYY-MM-DD'
+              : defaultError,
+        }),
+      }),
+    ),
+  Contact: string().nullish().and(string().min(1, 'Contact is required')),
+  Currency: nativeEnum(Currency, {
+    invalid_type_error: 'Invalid currency. Must be GBP or EUR',
+    required_error: 'Currency is required',
+  }),
   TotalAmount: coerce
     .number({
       required_error: 'TotalAmount is required',
@@ -71,12 +83,6 @@ const InvoiceSchema = object({
       invalid_type_error: 'OutstandingAmount must be a number',
     })
     .min(0, 'OutstandingAmount must be greater than 0'),
-  InvoiceStatus: string().optional(),
-  Reference: string().optional(),
-  RemittanceEmail: string()
-    .email('RemittanceEmail is not a valid email')
-    .optional()
-    .or(literal('')),
 })
   .refine((data) => {
     if (data.Currency === 'EUR' && validateIBAN(data.DestinationIban as string) === false) {
@@ -145,9 +151,17 @@ const validateIBAN = (iban: string): boolean => {
 const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationResult[] => {
   const results: ValidationResult[] = []
 
+  const formatErrpr = (issue: ZodIssue) => {
+    if (issue.code === 'invalid_type') {
+      return `${issue.path.join('.')} must be a ${issue.expected}`
+    }
+    return issue.message
+  }
+
   invoicePayments.map((invoicePayment, index) => {
     const result = InvoiceSchema.safeParse(invoicePayment)
 
+    console.log(result)
     if (result.success) {
       results.push({
         lineNumber: index + 1,
@@ -158,12 +172,13 @@ const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationRes
       results.push({
         lineNumber: index + 1,
         valid: false,
-        errors: result.error.issues.map((issue) => issue.message),
+        errors: result.error.issues.map((issue) => formatErrpr(issue)),
         result: invoicePayment,
       })
     }
   })
 
+  console.log('RESULTS', results)
   return results
 }
 
