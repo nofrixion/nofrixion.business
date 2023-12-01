@@ -48,100 +48,98 @@ const PaymentAttempt = ({
 
   const refundedAmount = getAmountRefunded(paymentAttempt)
   return (
-    <>
-      <Fragment key={key}>
-        <button className={cn('w-full', className)} onClick={() => setIsExpanded((prev) => !prev)}>
-          <div className="group whitespace-nowrap flex flex-row items-center">
-            <div className="flex flex-row items-center w-44 mr-4">
-              <span className="mr-2">{statusIconName && <Icon name={statusIconName} />}</span>
-              <span className="text-[0.813rem] leading-6">{paymentAttempt.displayStatus}</span>
+    <Fragment key={key}>
+      <button className={cn('w-full', className)} onClick={() => setIsExpanded((prev) => !prev)}>
+        <div className="group whitespace-nowrap flex flex-row items-center">
+          <div className="flex flex-row items-center w-44 mr-4">
+            <span className="mr-2">{statusIconName && <Icon name={statusIconName} />}</span>
+            <span className="text-[0.813rem] leading-6">{paymentAttempt.displayStatus}</span>
+          </div>
+          <div className="w-[5.938rem]">
+            <div className="flex flex-row gap-2">
+              {paymentAttempt.amount > 0 && (
+                <span className="text-sm font-medium leading-6 tabular-nums">
+                  {paymentAttempt.currency === Currency.EUR ? '€' : '£'}
+                  {formatter.format(Number(paymentAttempt.amount))}
+                </span>
+              )}
+              {refundedAmount > 0 && !paymentAttempt.refundAttempts.find((x) => x.isCardVoid) && (
+                <span className="text-sm font-medium leading-6 tabular-nums text-[#73808C]">
+                  - {paymentAttempt.currency === Currency.EUR ? '€' : '£'}
+                  {formatter.format(Number(getAmountRefunded(paymentAttempt)))}
+                </span>
+              )}
             </div>
-            <div className="w-[5.938rem]">
-              <div className="flex flex-row gap-2">
-                {paymentAttempt.amount > 0 && (
-                  <span className="text-sm font-medium leading-6 tabular-nums">
-                    {paymentAttempt.currency === Currency.EUR ? '€' : '£'}
-                    {formatter.format(Number(paymentAttempt.amount))}
-                  </span>
-                )}
-                {refundedAmount > 0 && !paymentAttempt.refundAttempts.find((x) => x.isCardVoid) && (
-                  <span className="text-sm font-medium leading-6 tabular-nums text-[#73808C]">
-                    - {paymentAttempt.currency === Currency.EUR ? '€' : '£'}
-                    {formatter.format(Number(getAmountRefunded(paymentAttempt)))}
-                  </span>
-                )}
-              </div>
-            </div>
+          </div>
 
-            <div className="w-[13.778] flex flex-row items-center gap-2 ml-auto">
-              <div className="flex gap-2">
-                {isCaptureable(paymentAttempt) && (
-                  <Button
-                    variant="primary"
-                    size="x-small"
-                    className="px-2 w-min"
-                    onClick={(e) => {
-                      onCapture(paymentAttempt)
-                      e.stopPropagation()
-                    }}
-                  >
-                    Capture
-                  </Button>
-                )}
-                {isRefundable(paymentAttempt) && (
+          <div className="w-[13.778] flex flex-row items-center gap-2 ml-auto">
+            <div className="flex gap-2">
+              {isCaptureable(paymentAttempt) && (
+                <Button
+                  variant="primary"
+                  size="x-small"
+                  className="px-2 w-min"
+                  onClick={(e) => {
+                    onCapture(paymentAttempt)
+                    e.stopPropagation()
+                  }}
+                >
+                  Capture
+                </Button>
+              )}
+              {isRefundable(paymentAttempt) && (
+                <Button
+                  variant="secondary"
+                  size="x-small"
+                  className="px-2 w-min"
+                  onClick={(e) => {
+                    onRefund(paymentAttempt)
+                    e.stopPropagation()
+                  }}
+                >
+                  <div className="flex flex-row gap-2 items-center">
+                    <Icon name="return/12" />
+                    <span>Refund</span>
+                  </div>
+                </Button>
+              )}
+              {paymentAttempt.paymentMethod === LocalPaymentMethodTypes.Card &&
+                isVoid(paymentAttempt) && (
                   <Button
                     variant="secondary"
                     size="x-small"
                     className="px-2 w-min"
                     onClick={(e) => {
-                      onRefund(paymentAttempt)
+                      onVoid(paymentAttempt)
                       e.stopPropagation()
                     }}
                   >
                     <div className="flex flex-row gap-2 items-center">
-                      <Icon name="return/12" />
-                      <span>Refund</span>
+                      <Icon name="void/12" />
+                      <span>Void</span>
                     </div>
                   </Button>
                 )}
-                {paymentAttempt.paymentMethod === LocalPaymentMethodTypes.Card &&
-                  isVoid(paymentAttempt) && (
-                    <Button
-                      variant="secondary"
-                      size="x-small"
-                      className="px-2 w-min"
-                      onClick={(e) => {
-                        onVoid(paymentAttempt)
-                        e.stopPropagation()
-                      }}
-                    >
-                      <div className="flex flex-row gap-2 items-center">
-                        <Icon name="void/12" />
-                        <span>Void</span>
-                      </div>
-                    </Button>
-                  )}
-              </div>
-              {paymentAttempt.events && paymentAttempt.events.length > 0 && (
-                <Icon name="arrow-down/12" />
-              )}
             </div>
-          </div>
-          <AnimatePresence>
-            {isExpanded && (
-              <AnimateHeightWrapper layoutId={`${paymentAttempt.attemptKey}`}>
-                {paymentAttempt.events && paymentAttempt.events.length > 0 && (
-                  <PaymentAttemptEventsList
-                    paymentAttemptEvents={paymentAttempt.events}
-                    className="pt-1"
-                  />
-                )}
-              </AnimateHeightWrapper>
+            {paymentAttempt.events && paymentAttempt.events.length > 0 && (
+              <Icon name="arrow-down/12" />
             )}
-          </AnimatePresence>
-        </button>
-      </Fragment>
-    </>
+          </div>
+        </div>
+        <AnimatePresence>
+          {isExpanded && (
+            <AnimateHeightWrapper layoutId={`${paymentAttempt.attemptKey}`}>
+              {paymentAttempt.events && paymentAttempt.events.length > 0 && (
+                <PaymentAttemptEventsList
+                  paymentAttemptEvents={paymentAttempt.events}
+                  className="pt-1"
+                />
+              )}
+            </AnimateHeightWrapper>
+          )}
+        </AnimatePresence>
+      </button>
+    </Fragment>
   )
 }
 

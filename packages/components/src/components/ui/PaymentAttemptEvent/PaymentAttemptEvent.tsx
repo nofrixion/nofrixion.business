@@ -27,8 +27,6 @@ const PaymentAttemptEvent = ({ paymentAttemptEvent, key, className }: PaymentAtt
       case LocalPaymentAttemptEventType.CaptureFailed:
       case LocalPaymentAttemptEventType.RefundFailed:
         return <Icon name="close/12" className="text-negative-red"></Icon>
-      case LocalPaymentAttemptEventType.RefundCancelled:
-        return <Icon name="void/12"></Icon>
       case LocalPaymentAttemptEventType.Authorised:
         return <Icon name="authorise/12"></Icon>
 
@@ -53,39 +51,37 @@ const PaymentAttemptEvent = ({ paymentAttemptEvent, key, className }: PaymentAtt
     }
   }
   return (
-    <>
-      <Fragment key={key}>
-        <div className={cn('group whitespace-nowrap flex flex-row items-center', className)}>
-          <div className="flex flex-row items-center mr-[18px]">
-            <span>
-              <PaymentAttemptEventIcon eventType={paymentAttemptEvent.eventType} />
-            </span>
-          </div>
-          <div className="w-60 text-left">
-            <span className="text-xs font-normal leading-6">{paymentAttemptEvent.eventType}</span>
-            <span> </span>
-            {paymentAttemptEvent.refundedAmount &&
-              paymentAttemptEvent.refundedAmount > 0 &&
-              !paymentAttemptEvent.isCardVoid && (
-                <span className="text-xs font-normal leading-6 text-[#73808C]">
-                  - {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
-                  {formatter.format(Number(paymentAttemptEvent.refundedAmount))}
-                </span>
-              )}
-            {paymentAttemptEvent.capturedAmount && paymentAttemptEvent.capturedAmount > 0 && (
+    <Fragment key={key}>
+      <div className={cn('group whitespace-nowrap flex flex-row items-center', className)}>
+        <div className="flex flex-row items-center mr-[18px]">
+          <span>
+            <PaymentAttemptEventIcon eventType={paymentAttemptEvent.eventType} />
+          </span>
+        </div>
+        <div className="w-60 text-left">
+          <span className="text-xs font-normal leading-6">{paymentAttemptEvent.eventType}</span>
+          <span> </span>
+          {paymentAttemptEvent.refundedAmount &&
+            paymentAttemptEvent.refundedAmount > 0 &&
+            !paymentAttemptEvent.isCardVoid && (
               <span className="text-xs font-normal leading-6 text-[#73808C]">
                 - {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
-                {formatter.format(Number(paymentAttemptEvent.capturedAmount))}
+                {formatter.format(Number(paymentAttemptEvent.refundedAmount))}
               </span>
             )}
-          </div>
-
-          <div className="w-[13.778] flex flex-row items-center gap-2 ml-auto text-xs font-normal leading-6 text-grey-text">
-            <span>{formatDateWithYearAndTime(paymentAttemptEvent.occurredAt)}</span>
-          </div>
+          {paymentAttemptEvent.capturedAmount && paymentAttemptEvent.capturedAmount > 0 && (
+            <span className="text-xs font-normal leading-6 text-[#73808C]">
+              - {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
+              {formatter.format(Number(paymentAttemptEvent.capturedAmount))}
+            </span>
+          )}
         </div>
-      </Fragment>
-    </>
+
+        <div className="w-[13.778] flex flex-row items-center gap-2 ml-auto text-xs font-normal leading-6 text-grey-text">
+          <span>{formatDateWithYearAndTime(paymentAttemptEvent.occurredAt)}</span>
+        </div>
+      </div>
+    </Fragment>
   )
 }
 

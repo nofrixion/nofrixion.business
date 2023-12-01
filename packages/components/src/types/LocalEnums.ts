@@ -75,7 +75,6 @@ export enum LocalPaymentAttemptEventType {
   CaptureFailed = 'Capture failed',
   Voided = 'Voided',
   RefundAwaitingApproval = 'Refund awaiting approval',
-  RefundCancelled = 'Refund cancelled',
   BankPaymentInitiated = 'Bank payment initiated',
 }
 

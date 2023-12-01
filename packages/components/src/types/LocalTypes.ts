@@ -95,6 +95,7 @@ export interface LocalPaymentAttempt {
   paymentProcessor?: LocalPaymentProcessor
   events?: LocalPaymentAttemptEvent[]
   displayStatus: LocalPaymentAttemptStatus
+  latestEventOccurredAt: Date
 }
 
 export interface LocalPaymentAttemptEvent {

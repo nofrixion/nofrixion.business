@@ -85,15 +85,22 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
         <TabContent value={tabs[0]} selectedTab={selectedTab}>
           <ScrollArea>
             <PaymentAttemptsList
-              paymentAttempts={paymentRequest.paymentAttempts.filter(
-                (x) =>
-                  x.cardAuthorisedAt ||
-                  x.authorisedAt ||
-                  x.settledAt ||
-                  x.cardPayerAuthenticationSetupFailedAt ||
-                  x.cardAuthoriseFailedAt ||
-                  x.settleFailedAt,
-              )}
+              paymentAttempts={paymentRequest.paymentAttempts
+                .filter(
+                  (x) =>
+                    x.cardAuthorisedAt ||
+                    x.authorisedAt ||
+                    x.settledAt ||
+                    x.cardPayerAuthenticationSetupFailedAt ||
+                    x.cardAuthoriseFailedAt ||
+                    x.settleFailedAt,
+                )
+                .sort((a, b) => {
+                  return (
+                    new Date(b.latestEventOccurredAt ?? 0).getTime() -
+                    new Date(a.latestEventOccurredAt ?? 0).getTime()
+                  )
+                })}
               cardAuthoriseOnly={!paymentRequest.captureFunds}
               onRefund={onRefund}
               onVoid={onVoid}

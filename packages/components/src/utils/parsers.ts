@@ -213,7 +213,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
-  const getPaymentAttemptEvents = (
+  const extractEventsFromPaymentAttempt = (
     paymentRequest: PaymentRequest,
     paymentAttempt: PaymentRequestPaymentAttempt,
   ): LocalPaymentAttemptEvent[] => {
@@ -307,14 +307,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
               currency: paymentAttempt.currency,
               refundedAmount: refundAttempt.refundSettledAmount,
             })
-          } else if (refundAttempt.refundCancelledAt) {
-            events.push({
-              eventType: LocalPaymentAttemptEventType.RefundCancelled,
-              occurredAt: new Date(refundAttempt.refundCancelledAt),
-              currency: paymentAttempt.currency,
-              refundedAmount: refundAttempt.refundCancelledAmount,
-            })
-          } else if (refundAttempt.refundInitiatedAt) {
+          } else if (refundAttempt.refundInitiatedAt && !refundAttempt.refundCancelledAt) {
             events.push({
               eventType: LocalPaymentAttemptEventType.RefundAwaitingApproval,
               occurredAt: new Date(refundAttempt.refundInitiatedAt),
@@ -506,6 +499,10 @@ const remotePaymentRequestToLocalPaymentRequest = (
             settleFailedAt,
           } = remotePaymentAttempt
 
+          const events = extractEventsFromPaymentAttempt(remotePaymentRequest, remotePaymentAttempt)
+
+          const latestEventOccurredAt = new Date(events[0].occurredAt)
+
           localPaymentAttempts.push({
             attemptKey: attemptKey,
             occurredAt: new Date(settledAt ?? authorisedAt ?? cardAuthorisedAt ?? 0),
@@ -532,7 +529,8 @@ const remotePaymentRequestToLocalPaymentRequest = (
             paymentStatus: getPaymentAttemptPaymentStatusForTable(remotePaymentAttempt),
             paymentProcessor: parseApiPaymentProcessorToLocalPaymentProcessor(paymentProcessor),
             displayStatus: getPaymentAttemptStatus(remotePaymentAttempt),
-            events: getPaymentAttemptEvents(remotePaymentRequest, remotePaymentAttempt),
+            events: events,
+            latestEventOccurredAt: latestEventOccurredAt,
           })
         })
       return localPaymentAttempts
