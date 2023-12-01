@@ -88,11 +88,6 @@ const PaymentAttempt = ({
                     Capture
                   </Button>
                 )}
-                {paymentAttempt.status === 'authorized' && (
-                  <span className="text-grey-text text-[10px] leading-4 block px-1 border rounded border-solid border-border-grey-highlighted">
-                    Authorized
-                  </span>
-                )}
                 {isRefundable(paymentAttempt) && (
                   <Button
                     variant="secondary"
