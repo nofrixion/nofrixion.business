@@ -2,11 +2,11 @@ import { PaymentRequestStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { Meta, StoryFn } from '@storybook/react'
 
-import Tab from './Tab'
+import DashboardTab from './DashboardTab'
 
 export default {
-  title: 'UI/Tab',
-  component: Tab,
+  title: 'UI/Dashboard Tab',
+  component: DashboardTab,
   argTypes: {
     totalRecords: { control: 'number' },
     isLoading: { control: 'boolean' },
@@ -16,14 +16,14 @@ export default {
   args: {
     isLoading: false,
   },
-} as Meta<typeof Tab>
+} as Meta<typeof DashboardTab>
 
-const Template: StoryFn<typeof Tab> = (args) => {
+const Template: StoryFn<typeof DashboardTab> = (args) => {
   return (
     <Tabs.Root onValueChange={() => {}}>
       {/* Keep the Tab to still get accessibility functions through the keyboard */}
       <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-        <Tab {...args}></Tab>
+        <DashboardTab {...args}></DashboardTab>
       </Tabs.List>
       <Tabs.Content value=""></Tabs.Content>
     </Tabs.Root>

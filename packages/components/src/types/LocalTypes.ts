@@ -346,3 +346,30 @@ export interface PayoutActivity {
   status: string
   eventType: PayoutEventTypesEnum
 }
+
+export interface LocalInvoicePayment {
+  InvoiceNumber: string
+  PaymentTerms: string
+  InvoiceDate: string
+  DueDate: string
+  Contact: string
+  DestinationIban: string
+  DestinationAccountNumber: string
+  DestinationSortCode: string
+  Currency: string
+  Subtotal: string
+  Discounts: string
+  Taxes: string
+  TotalAmount: string
+  OutstandingAmount: string
+  InvoiceStatus: string
+  Reference: string
+  RemittanceEmail: string
+}
+
+export interface ValidationResult {
+  lineNumber: number
+  valid: boolean
+  errors?: string[]
+  result: LocalInvoicePayment
+}

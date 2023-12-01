@@ -3,9 +3,9 @@ import * as Tabs from '@radix-ui/react-tabs'
 
 import { DoubleSortByUsersAndInvites } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
+import DashboardTab from '../../DashboardTab/DashboardTab'
 import UserTable from '../../organisms/UsersTable/UserTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
-import Tab from '../../Tab/Tab'
 import { Toaster } from '../../Toast/Toast'
 
 export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -62,22 +62,22 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
           >
             {/* Keep the Tab to still get accessibility functions through the keyboard */}
             <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-              <Tab
+              <DashboardTab
                 status={UserStatus.All}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.all ?? 0}
               />
-              <Tab
+              <DashboardTab
                 status={UserStatus.Invited}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.invited ?? 0}
               />
-              <Tab
+              <DashboardTab
                 status={UserStatus.RolePending}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.rolePending ?? 0}
               />
-              <Tab
+              <DashboardTab
                 status={UserStatus.Active}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.active ?? 0}
