@@ -346,3 +346,8 @@ export interface PayoutActivity {
   status: string
   eventType: PayoutEventTypesEnum
 }
+
+export interface SystemError {
+  title: string
+  message: string
+}

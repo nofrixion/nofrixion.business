@@ -14,6 +14,7 @@ export interface CustomModalProps extends BaseModalProps {
   buttonText?: string
   buttonClaseName?: string
   showSupport?: boolean
+  contentClassName?: string
 }
 
 export interface BaseModalProps {
@@ -39,6 +40,7 @@ const CustomModal = ({
   buttonText = 'Apply',
   buttonClaseName = 'w-full md:w-[10.625rem] px-16 ml-auto',
   showSupport = false,
+  contentClassName = 'max-w-md',
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -80,7 +82,10 @@ const CustomModal = ({
             </Dialog.Overlay>
             <Dialog.Content
               forceMount
-              className="fixed top-[50%] left-[50%] w-full max-w-md translate-x-[-50%] translate-y-[-50%] z-50"
+              className={cn(
+                'fixed top-[50%] left-[50%] w-full translate-x-[-50%] translate-y-[-50%] z-50',
+                contentClassName,
+              )}
               onEscapeKeyDown={handleOnDismiss}
               onInteractOutside={handleOnDismiss}
             >
@@ -116,9 +121,14 @@ const CustomModal = ({
                     )}
 
                     {showSupport && (
-                      <div className='flex mr-4 items-center'>
+                      <div className="flex mr-4 items-center">
                         <Icon name="support/16" className="text-control-grey-hover" />
-                        <a className='ml-2 font-normal text-xs leading-4 text-default-text py-1 underline' href="https://tally.so#tally-open=3NX0Ap">Contact support</a>
+                        <a
+                          className="ml-2 font-normal text-xs leading-4 text-default-text py-1 underline"
+                          href="https://tally.so#tally-open=3NX0Ap"
+                        >
+                          Contact support
+                        </a>
                       </div>
                     )}
 

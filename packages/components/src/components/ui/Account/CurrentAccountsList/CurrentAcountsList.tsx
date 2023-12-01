@@ -2,6 +2,7 @@ import { Account, BankSettings } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
+import { SystemError } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
@@ -23,8 +24,7 @@ export interface CurrentAccountsListProps {
   banks?: BankSettings[]
   isConnectingToBank: boolean
   areConnectedAccountsEnabled?: boolean
-  systemErrorTitle?: string
-  systemErrorMessage?: string
+  systemError?: SystemError
   isSystemErrorOpen?: boolean
   onCloseSystemError?: () => void
 }
@@ -40,8 +40,7 @@ const CurrentAcountsList = ({
   banks,
   isConnectingToBank,
   areConnectedAccountsEnabled = true,
-  systemErrorTitle,
-  systemErrorMessage,
+  systemError,
   isSystemErrorOpen = false,
   onCloseSystemError,
 }: CurrentAccountsListProps) => {
@@ -213,8 +212,8 @@ const CurrentAcountsList = ({
       {/* System error modal */}
       <SystemErrorModal
         open={isSystemErrorOpen}
-        title={systemErrorTitle}
-        message={systemErrorMessage}
+        title={systemError?.title}
+        message={systemError?.message}
         onDismiss={handlOnCloseSystemErrorModal}
       />
 
