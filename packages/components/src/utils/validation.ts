@@ -151,7 +151,7 @@ const validateIBAN = (iban: string): boolean => {
 const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationResult[] => {
   const results: ValidationResult[] = []
 
-  const formatErrpr = (issue: ZodIssue) => {
+  const formatError = (issue: ZodIssue) => {
     if (issue.code === 'invalid_type') {
       return `${issue.path.join('.')} must be a ${issue.expected}`
     }
@@ -161,7 +161,6 @@ const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationRes
   invoicePayments.map((invoicePayment, index) => {
     const result = InvoiceSchema.safeParse(invoicePayment)
 
-    console.log(result)
     if (result.success) {
       results.push({
         lineNumber: index + 1,
@@ -172,13 +171,12 @@ const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationRes
       results.push({
         lineNumber: index + 1,
         valid: false,
-        errors: result.error.issues.map((issue) => formatErrpr(issue)),
+        errors: result.error.issues.map((issue) => formatError(issue)),
         result: invoicePayment,
       })
     }
   })
 
-  console.log('RESULTS', results)
   return results
 }
 
