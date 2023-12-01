@@ -4,6 +4,7 @@ import { Fragment, useState } from 'react'
 
 import { LocalPaymentMethodTypes } from '../../../types/LocalEnums'
 import { LocalPaymentAttempt } from '../../../types/LocalTypes'
+import { cn } from '../../../utils'
 import {
   getAmountRefunded,
   getStatusIconName,
@@ -49,11 +50,11 @@ const PaymentAttempt = ({
   return (
     <>
       <Fragment key={key}>
-        <div className={className}>
+        <button className={cn('w-full', className)} onClick={() => setIsExpanded((prev) => !prev)}>
           <div className="group whitespace-nowrap flex flex-row items-center">
             <div className="flex flex-row items-center w-44 mr-4">
               <span className="mr-2">{statusIconName && <Icon name={statusIconName} />}</span>
-              <span>{paymentAttempt.displayStatus}</span>
+              <span className="text-[0.813rem] leading-6">{paymentAttempt.displayStatus}</span>
             </div>
             <div className="w-[5.938rem]">
               <div className="flex flex-row gap-2">
@@ -79,7 +80,10 @@ const PaymentAttempt = ({
                     variant="primary"
                     size="x-small"
                     className="px-2 w-min"
-                    onClick={() => onCapture(paymentAttempt)}
+                    onClick={(e) => {
+                      onCapture(paymentAttempt)
+                      e.stopPropagation()
+                    }}
                   >
                     Capture
                   </Button>
@@ -94,7 +98,10 @@ const PaymentAttempt = ({
                     variant="secondary"
                     size="x-small"
                     className="px-2 w-min"
-                    onClick={() => onRefund(paymentAttempt)}
+                    onClick={(e) => {
+                      onRefund(paymentAttempt)
+                      e.stopPropagation()
+                    }}
                   >
                     <div className="flex flex-row gap-2 items-center">
                       <Icon name="return/12" />
@@ -108,7 +115,10 @@ const PaymentAttempt = ({
                       variant="secondary"
                       size="x-small"
                       className="px-2 w-min"
-                      onClick={() => onVoid(paymentAttempt)}
+                      onClick={(e) => {
+                        onVoid(paymentAttempt)
+                        e.stopPropagation()
+                      }}
                     >
                       <div className="flex flex-row gap-2 items-center">
                         <Icon name="void/12" />
@@ -118,9 +128,7 @@ const PaymentAttempt = ({
                   )}
               </div>
               {paymentAttempt.events && paymentAttempt.events.length > 0 && (
-                <button onClick={() => setIsExpanded((prev) => !prev)}>
-                  <Icon name="arrow-down/12" />
-                </button>
+                <Icon name="arrow-down/12" />
               )}
             </div>
           </div>
@@ -136,7 +144,7 @@ const PaymentAttempt = ({
               </AnimateHeightWrapper>
             )}
           </AnimatePresence>
-        </div>
+        </button>
       </Fragment>
     </>
   )

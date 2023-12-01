@@ -61,7 +61,7 @@ const PaymentAttemptEvent = ({ paymentAttemptEvent, key, className }: PaymentAtt
               <PaymentAttemptEventIcon eventType={paymentAttemptEvent.eventType} />
             </span>
           </div>
-          <div className="w-60">
+          <div className="w-60 text-left">
             <span className="text-xs font-normal leading-6">{paymentAttemptEvent.eventType}</span>
             <span> </span>
             {paymentAttemptEvent.refundedAmount &&

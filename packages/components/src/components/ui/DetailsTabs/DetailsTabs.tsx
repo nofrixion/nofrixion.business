@@ -8,7 +8,7 @@ import PaymentAttemptsList from '../PaymentAttemptsList/PaymentAttemptsList'
 import PaymentInfo from '../PaymentInfo/PaymentInfo'
 import ScrollArea from '../ScrollArea/ScrollArea'
 
-const tabs = ['Transactions', 'Payment info']
+const tabs = ['Payment attempts', 'Payment info']
 
 interface TabProps {
   value: string
@@ -84,17 +84,6 @@ const DetailsTabs: React.FC<DetailsTabsProps> = ({
         </Tabs.List>
         <TabContent value={tabs[0]} selectedTab={selectedTab}>
           <ScrollArea>
-            {/* <Transactions
-              transactions={paymentRequest.paymentAttempts.filter(
-                (x) =>
-                  (x.cardAuthorisedAmount && x.cardAuthorisedAmount > 0) || x.authorisedAmount > 0,
-              )}
-              cardAuthoriseOnly={!paymentRequest.captureFunds}
-              onRefund={onRefund}
-              onVoid={onVoid}
-              onCapture={onCapture}
-            ></Transactions> */}
-
             <PaymentAttemptsList
               paymentAttempts={paymentRequest.paymentAttempts.filter(
                 (x) =>
