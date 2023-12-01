@@ -1,7 +1,6 @@
 import { PaymentRequestPaymentAttempt, PaymentResult } from '@nofrixion/moneymoov'
 
 import {
-  LocalPaymentAttemptEventType,
   LocalPaymentAttemptStatus,
   LocalPaymentMethodTypes,
   SubTransactionType,
@@ -317,51 +316,4 @@ export const getPaymentAttemptStatus = (
   }
 
   return LocalPaymentAttemptStatus.InProgress
-}
-
-export const getPaymentAttemptEventIconName = (
-  eventType: LocalPaymentAttemptEventType,
-):
-  | 'start/12'
-  | 'close/12'
-  | 'authorise/12'
-  | 'success-tick/12'
-  | 'return/12'
-  | 'capture/12'
-  | 'void/12'
-  | 'pending/12' => {
-  switch (eventType) {
-    case LocalPaymentAttemptEventType.AuthenticationSetupStarted:
-      return 'start/12'
-    case LocalPaymentAttemptEventType.AuthenticationFailure:
-      return 'close/12'
-    case LocalPaymentAttemptEventType.Authorised:
-      return 'authorise/12'
-    case LocalPaymentAttemptEventType.AuthorisationFailed:
-      return 'close/12'
-    case LocalPaymentAttemptEventType.Received:
-      return 'success-tick/12'
-    case LocalPaymentAttemptEventType.SettlementFailed:
-      return 'close/12'
-    case LocalPaymentAttemptEventType.Refunded:
-      return 'return/12'
-    case LocalPaymentAttemptEventType.PartiallyRefunded:
-      return 'return/12'
-    case LocalPaymentAttemptEventType.RefundFailed:
-      return 'close/12'
-    case LocalPaymentAttemptEventType.Captured:
-      return 'capture/12'
-    case LocalPaymentAttemptEventType.CaptureFailed:
-      return 'close/12'
-    case LocalPaymentAttemptEventType.Voided:
-      return 'void/12'
-    case LocalPaymentAttemptEventType.RefundAwaitingApproval:
-      return 'pending/12'
-    case LocalPaymentAttemptEventType.RefundCancelled:
-      return 'close/12'
-    case LocalPaymentAttemptEventType.BankPaymentInitiated:
-      return 'start/12'
-    default:
-      return 'start/12'
-  }
 }

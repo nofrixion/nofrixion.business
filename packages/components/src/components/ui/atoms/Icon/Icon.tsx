@@ -94,7 +94,7 @@ export const Icons = {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="22" cy="8" r="6" fill="#454D54" />
+      <circle cx="22" cy="8" r="6" fill="#454D54" stroke="none" />
       <path d="M22 8V6.125" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M22 8L24.3435 10.344" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
