@@ -19,7 +19,7 @@ const PaymentAttemptEventsList = ({
           key={index}
           className={cn(
             index === paymentAttemptEvents.length - 1 ? 'pt-1' : 'py-1 border-b border-[#F1F2F3]',
-            'pl-[0.438rem] ',
+            'pl-[0.375rem] pr-[1.5rem]',
           )}
         ></PaymentAttemptEvent>
       ))}

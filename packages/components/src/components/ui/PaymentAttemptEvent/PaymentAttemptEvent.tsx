@@ -42,7 +42,7 @@ const PaymentAttemptEvent = ({ paymentAttemptEvent, key, className }: PaymentAtt
         return <Icon name="capture/12"></Icon>
       case LocalPaymentAttemptEventType.Voided:
         return <Icon name="void/12"></Icon>
-      case LocalPaymentAttemptEventType.RefundAwaitingApproval:
+      case LocalPaymentAttemptEventType.RefundAwaitingAuthorisation:
         return <Icon name="pending/12"></Icon>
       case LocalPaymentAttemptEventType.AuthenticationSetupStarted:
       case LocalPaymentAttemptEventType.BankPaymentInitiated:
@@ -58,23 +58,39 @@ const PaymentAttemptEvent = ({ paymentAttemptEvent, key, className }: PaymentAtt
             <PaymentAttemptEventIcon eventType={paymentAttemptEvent.eventType} />
           </span>
         </div>
+
         <div className="w-60 text-left">
-          <span className="text-xs font-normal leading-6">{paymentAttemptEvent.eventType}</span>
-          <span> </span>
           {paymentAttemptEvent.refundedAmount &&
             paymentAttemptEvent.refundedAmount > 0 &&
-            !paymentAttemptEvent.isCardVoid && (
-              <span className="text-xs font-normal leading-6 text-[#73808C]">
-                - {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
+            !paymentAttemptEvent.isCardVoid &&
+            paymentAttemptEvent.eventType ===
+              LocalPaymentAttemptEventType.RefundAwaitingAuthorisation && (
+              <span className="text-xs font-normal leading-6 mr-1">
+                {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
                 {formatter.format(Number(paymentAttemptEvent.refundedAmount))}
               </span>
             )}
-          {paymentAttemptEvent.capturedAmount && paymentAttemptEvent.capturedAmount > 0 && (
-            <span className="text-xs font-normal leading-6 text-[#73808C]">
-              - {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
-              {formatter.format(Number(paymentAttemptEvent.capturedAmount))}
-            </span>
-          )}
+          <span className="text-xs font-normal leading-6">{paymentAttemptEvent.eventType}</span>
+
+          {paymentAttemptEvent.refundedAmount &&
+            paymentAttemptEvent.refundedAmount > 0 &&
+            !paymentAttemptEvent.isCardVoid &&
+            paymentAttemptEvent.eventType !==
+              LocalPaymentAttemptEventType.RefundAwaitingAuthorisation && (
+              <span className="text-xs font-normal leading-6 ml-1">
+                {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
+                {formatter.format(Number(paymentAttemptEvent.refundedAmount))}
+              </span>
+            )}
+          {(paymentAttemptEvent.capturedAmount &&
+            paymentAttemptEvent.capturedAmount > 0 &&
+            paymentAttemptEvent.eventType === LocalPaymentAttemptEventType.PartiallyCaptured) ||
+            (paymentAttemptEvent.eventType === LocalPaymentAttemptEventType.Captured && (
+              <span className="text-xs font-normal leading-6 ml-1">
+                {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
+                {formatter.format(Number(paymentAttemptEvent.capturedAmount))}
+              </span>
+            ))}
         </div>
 
         <div className="w-[13.778] flex flex-row items-center gap-2 ml-auto text-xs font-normal leading-6 text-grey-text">

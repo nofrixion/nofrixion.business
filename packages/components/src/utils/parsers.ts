@@ -309,7 +309,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
             })
           } else if (refundAttempt.refundInitiatedAt && !refundAttempt.refundCancelledAt) {
             events.push({
-              eventType: LocalPaymentAttemptEventType.RefundAwaitingApproval,
+              eventType: LocalPaymentAttemptEventType.RefundAwaitingAuthorisation,
               occurredAt: new Date(refundAttempt.refundInitiatedAt),
               currency: paymentAttempt.currency,
               refundedAmount: refundAttempt.refundInitiatedAmount,

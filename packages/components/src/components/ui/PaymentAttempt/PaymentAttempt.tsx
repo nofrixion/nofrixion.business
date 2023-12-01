@@ -64,9 +64,11 @@ const PaymentAttempt = ({
                 </span>
               )}
               {refundedAmount > 0 && !paymentAttempt.refundAttempts.find((x) => x.isCardVoid) && (
-                <span className="text-sm font-medium leading-6 tabular-nums text-[#73808C]">
-                  - {paymentAttempt.currency === Currency.EUR ? '€' : '£'}
+                <span className="text-[0.688rem] font-normal leading-6 tabular-nums text-grey-text">
+                  <span>{'('}</span>
+                  {paymentAttempt.currency === Currency.EUR ? '€' : '£'}
                   {formatter.format(Number(getAmountRefunded(paymentAttempt)))}
+                  <span>{' refunded)'}</span>
                 </span>
               )}
             </div>
@@ -121,9 +123,9 @@ const PaymentAttempt = ({
                   </Button>
                 )}
             </div>
-            {paymentAttempt.events && paymentAttempt.events.length > 0 && (
-              <Icon name="arrow-down/12" />
-            )}
+            {paymentAttempt.events &&
+              paymentAttempt.events.length > 0 &&
+              (isExpanded === false ? <Icon name="arrow-down/12" /> : <Icon name="arrow-up/12" />)}
           </div>
         </div>
         <AnimatePresence>

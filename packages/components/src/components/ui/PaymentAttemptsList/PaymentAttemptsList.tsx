@@ -1,4 +1,5 @@
 import { LocalPaymentAttempt } from '../../../types/LocalTypes'
+import { cn } from '../../../utils'
 import PaymentAttempt from '../PaymentAttempt/PaymentAttempt'
 
 export interface PaymentAttemptsListProps {
@@ -18,6 +19,9 @@ const PaymentAttemptsList = ({
 }: PaymentAttemptsListProps) => {
   return (
     <>
+      {paymentAttempts.length === 0 && (
+        <div className="text-center text-default-text text-base pt-9">No payment attempts yet</div>
+      )}
       {paymentAttempts.map((paymentAttempt, index) => (
         <PaymentAttempt
           paymentAttempt={paymentAttempt}
@@ -26,7 +30,7 @@ const PaymentAttemptsList = ({
           onVoid={onVoid}
           cardAuthoriseOnly={cardAuthoriseOnly}
           key={index}
-          className="py-2 border-b border-[#F1F2F3]"
+          className={cn(index === 0 ? 'pb-2' : 'py-2', 'border-b border-[#F1F2F3]')}
         ></PaymentAttempt>
       ))}
     </>

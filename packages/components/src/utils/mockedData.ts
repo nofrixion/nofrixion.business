@@ -232,7 +232,7 @@ export const mockPaymentAttemptEvents: LocalPaymentAttemptEvent[] = [
     refundedAmount: 5,
   },
   {
-    eventType: LocalPaymentAttemptEventType.RefundAwaitingApproval,
+    eventType: LocalPaymentAttemptEventType.RefundAwaitingAuthorisation,
     occurredAt: new Date('2023-05-18T00:00:00.000Z'),
     currency: Currency.EUR,
     refundedAmount: 5,

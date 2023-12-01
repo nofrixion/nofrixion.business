@@ -761,6 +761,11 @@ export const Icons = {
       </defs>
     </SVG>
   ),
+  'arrow-up/12': (className: string) => (
+    <SVG className={className} size="12">
+      <path d="M11 8L6 3L1 8" strokeLinecap="round" strokeLinejoin="round" />
+    </SVG>
+  ),
   'arrow-down/12': (className: string) => (
     <SVG className={className} size="12">
       <path d="M1 3L6 8L11 3" strokeLinecap="round" strokeLinejoin="round" />
