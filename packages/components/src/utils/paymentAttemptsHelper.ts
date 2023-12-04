@@ -1,4 +1,10 @@
-import { LocalPaymentMethodTypes, SubTransactionType } from '../types/LocalEnums'
+import { PaymentRequestPaymentAttempt, PaymentResult } from '@nofrixion/moneymoov'
+
+import {
+  LocalPaymentAttemptStatus,
+  LocalPaymentMethodTypes,
+  SubTransactionType,
+} from '../types/LocalEnums'
 import { LocalPaymentAttempt, LocalSettledTransaction, SubTransaction } from '../types/LocalTypes'
 
 export const getMaxCapturableAmount = (paymentAttempt: LocalPaymentAttempt): number => {
@@ -212,4 +218,102 @@ export const getSettledTransactions = (
   return settledTransactions.sort((a, b) => {
     return new Date(b.settledAt ?? 0).getTime() - new Date(a.settledAt ?? 0).getTime()
   })
+}
+
+export const getStatusIconName = (
+  paymentMethod: LocalPaymentMethodTypes,
+  status: LocalPaymentAttemptStatus,
+):
+  | 'cardAuthorised/28'
+  | 'cardPaid/28'
+  | 'cardVoided/28'
+  | 'cardRefunded/28'
+  | 'cardFailed/28'
+  | 'cardInProgress/28'
+  | 'bankPaid/28'
+  | 'bankRefunded/28'
+  | 'bankFailed/28'
+  | 'bankInProgress/28'
+  | undefined => {
+  if (paymentMethod === LocalPaymentMethodTypes.Card) {
+    switch (status) {
+      case LocalPaymentAttemptStatus.Authorised:
+        return 'cardAuthorised/28'
+      case LocalPaymentAttemptStatus.Received:
+        return 'cardPaid/28'
+      case LocalPaymentAttemptStatus.Voided:
+        return 'cardVoided/28'
+      case LocalPaymentAttemptStatus.Refunded:
+        return 'cardRefunded/28'
+      case LocalPaymentAttemptStatus.PartiallyRefunded:
+        return 'cardRefunded/28'
+      case LocalPaymentAttemptStatus.Failed:
+        return 'cardFailed/28'
+      case LocalPaymentAttemptStatus.InProgress:
+        return 'cardInProgress/28'
+      default:
+        return 'cardInProgress/28'
+    }
+  }
+
+  if (paymentMethod === LocalPaymentMethodTypes.Pisp) {
+    switch (status) {
+      case LocalPaymentAttemptStatus.Received:
+        return 'bankPaid/28'
+      case LocalPaymentAttemptStatus.Refunded:
+        return 'bankRefunded/28'
+      case LocalPaymentAttemptStatus.PartiallyRefunded:
+        return 'bankRefunded/28'
+      case LocalPaymentAttemptStatus.Failed:
+        return 'bankFailed/28'
+      case LocalPaymentAttemptStatus.InProgress:
+        return 'bankInProgress/28'
+      default:
+        return 'bankInProgress/28'
+    }
+  }
+}
+
+export const getPaymentAttemptStatus = (
+  remotePaymentAttempt: PaymentRequestPaymentAttempt,
+): LocalPaymentAttemptStatus => {
+  if (
+    remotePaymentAttempt.refundAttempts.find((x) => x.refundSettledAt && x.isCardVoid) &&
+    remotePaymentAttempt.status === PaymentResult.None
+  ) {
+    return LocalPaymentAttemptStatus.Voided
+  }
+
+  if (
+    remotePaymentAttempt.refundAttempts.find((x) => x.refundSettledAt) &&
+    remotePaymentAttempt.status === PaymentResult.PartiallyPaid
+  ) {
+    return LocalPaymentAttemptStatus.PartiallyRefunded
+  }
+  if (
+    remotePaymentAttempt.refundAttempts.find((x) => x.refundSettledAt) &&
+    remotePaymentAttempt.status === PaymentResult.None
+  ) {
+    return LocalPaymentAttemptStatus.Refunded
+  }
+  if (remotePaymentAttempt.settledAt || remotePaymentAttempt.cardAuthorisedAt) {
+    return LocalPaymentAttemptStatus.Received
+  }
+  if (
+    remotePaymentAttempt.status === PaymentResult.None &&
+    (remotePaymentAttempt.settleFailedAt ||
+      remotePaymentAttempt.cardAuthoriseFailedAt ||
+      remotePaymentAttempt.cardPayerAuthenticationSetupFailedAt)
+  ) {
+    return LocalPaymentAttemptStatus.Failed
+  }
+
+  if (
+    remotePaymentAttempt.status === PaymentResult.Authorized ||
+    remotePaymentAttempt.initiatedAt
+  ) {
+    return LocalPaymentAttemptStatus.InProgress
+  }
+
+  return LocalPaymentAttemptStatus.InProgress
 }

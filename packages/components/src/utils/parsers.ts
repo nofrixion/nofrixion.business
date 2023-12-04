@@ -34,6 +34,7 @@ import {
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
+  LocalPaymentAttemptEventType,
   LocalPaymentMethodTypes,
   LocalTimeFrequencyEnum,
   LocalWallets,
@@ -48,6 +49,7 @@ import {
   LocalCounterparty,
   LocalInvoicePayment,
   LocalPaymentAttempt,
+  LocalPaymentAttemptEvent,
   LocalPaymentProcessor,
   LocalPaymentRequest,
   LocalPaymentRequestCaptureAttempt,
@@ -62,6 +64,7 @@ import {
   PayoutActivity,
 } from '../types/LocalTypes'
 import { formatDateWithYear } from './formatters'
+import { getPaymentAttemptStatus } from './paymentAttemptsHelper'
 
 const parseApiTagToLocalTag = (tag: Tag): LocalTag => {
   return {
@@ -212,6 +215,148 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
+  const extractEventsFromPaymentAttempt = (
+    paymentRequest: PaymentRequest,
+    paymentAttempt: PaymentRequestPaymentAttempt,
+  ): LocalPaymentAttemptEvent[] => {
+    const events: LocalPaymentAttemptEvent[] = []
+    if (paymentAttempt.paymentMethod === PaymentMethodTypes.Card) {
+      if (paymentAttempt.refundAttempts.length > 0) {
+        paymentAttempt.refundAttempts.forEach((refundAttempt) => {
+          if (refundAttempt.refundSettledAt) {
+            events.push({
+              eventType:
+                refundAttempt.refundSettledAmount === paymentAttempt.cardAuthorisedAmount
+                  ? refundAttempt.isCardVoid
+                    ? LocalPaymentAttemptEventType.Voided
+                    : LocalPaymentAttemptEventType.Refunded
+                  : LocalPaymentAttemptEventType.PartiallyRefunded,
+              occurredAt: new Date(refundAttempt.refundSettledAt),
+              currency: paymentAttempt.currency,
+              refundedAmount: refundAttempt.refundSettledAmount,
+              isCardVoid: refundAttempt.isCardVoid,
+            })
+          }
+        })
+      }
+      if (paymentAttempt.captureAttempts.length > 0) {
+        paymentAttempt.captureAttempts.forEach((captureAttempt) => {
+          if (captureAttempt.capturedAt) {
+            events.push({
+              eventType:
+                captureAttempt.capturedAmount === paymentAttempt.cardAuthorisedAmount
+                  ? paymentRequest.cardAuthorizeOnly
+                    ? LocalPaymentAttemptEventType.Captured
+                    : LocalPaymentAttemptEventType.Received
+                  : LocalPaymentAttemptEventType.PartiallyCaptured,
+              occurredAt: new Date(captureAttempt.capturedAt),
+              currency: paymentAttempt.currency,
+              capturedAmount: captureAttempt.capturedAmount,
+            })
+          }
+
+          if (captureAttempt.captureFailedAt) {
+            events.push({
+              eventType: paymentRequest.cardAuthorizeOnly
+                ? LocalPaymentAttemptEventType.CaptureFailed
+                : LocalPaymentAttemptEventType.AuthorisationFailed,
+              occurredAt: new Date(captureAttempt.captureFailedAt),
+              currency: paymentAttempt.currency,
+            })
+          }
+        })
+      }
+      if (paymentAttempt.cardAuthorisedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.Authorised,
+          occurredAt: new Date(paymentAttempt.cardAuthorisedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+      if (paymentAttempt.cardAuthoriseFailedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.AuthorisationFailed,
+          occurredAt: new Date(paymentAttempt.cardAuthoriseFailedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+      if (paymentAttempt.cardPayerAuthenticationSetupFailedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.AuthenticationFailure,
+          occurredAt: new Date(paymentAttempt.cardPayerAuthenticationSetupFailedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+      if (paymentAttempt.initiatedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.AuthenticationSetupStarted,
+          occurredAt: new Date(paymentAttempt.initiatedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+    }
+
+    if (paymentAttempt.paymentMethod === PaymentMethodTypes.Pisp) {
+      if (paymentAttempt.refundAttempts.length > 0) {
+        paymentAttempt.refundAttempts.forEach((refundAttempt) => {
+          if (refundAttempt.refundSettledAt) {
+            events.push({
+              eventType:
+                refundAttempt.refundSettledAmount === paymentAttempt.settledAmount
+                  ? LocalPaymentAttemptEventType.Refunded
+                  : LocalPaymentAttemptEventType.PartiallyRefunded,
+              occurredAt: new Date(refundAttempt.refundSettledAt),
+              currency: paymentAttempt.currency,
+              refundedAmount: refundAttempt.refundSettledAmount,
+            })
+          } else if (refundAttempt.refundInitiatedAt && !refundAttempt.refundCancelledAt) {
+            events.push({
+              eventType: LocalPaymentAttemptEventType.RefundAwaitingAuthorisation,
+              occurredAt: new Date(refundAttempt.refundInitiatedAt),
+              currency: paymentAttempt.currency,
+              refundedAmount: refundAttempt.refundInitiatedAmount,
+            })
+          }
+        })
+      }
+
+      if (paymentAttempt.settledAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.Received,
+          occurredAt: new Date(paymentAttempt.settledAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+
+      if (paymentAttempt.settleFailedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.SettlementFailed,
+          occurredAt: new Date(paymentAttempt.settleFailedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+
+      if (paymentAttempt.authorisedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.Authorised,
+          occurredAt: new Date(paymentAttempt.authorisedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+
+      if (paymentAttempt.initiatedAt) {
+        events.push({
+          eventType: LocalPaymentAttemptEventType.BankPaymentInitiated,
+          occurredAt: new Date(paymentAttempt.initiatedAt),
+          currency: paymentAttempt.currency,
+        })
+      }
+    }
+    return events.sort((a, b) => {
+      return new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime()
+    })
+  }
+
   const parseApiPartialPaymentMethodToLocalPartialPaymentMethod = (
     partialPaymentMethod: PartialPaymentMethods,
   ): LocalPartialPaymentMethods => {
@@ -276,7 +421,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
     }
   }
 
-  const getPaymentAttemptPaymentStatus = (
+  const getPaymentAttemptPaymentStatusForTable = (
     remotePaymentAttempt: PaymentRequestPaymentAttempt,
   ): 'received' | 'pending' | 'failed' | 'unknown' => {
     if (remotePaymentAttempt.status === PaymentResult.Authorized) {
@@ -351,7 +496,14 @@ const remotePaymentRequestToLocalPaymentRequest = (
             cardAuthorisedAt,
             reconciledTransactionID,
             paymentProcessor,
+            cardAuthoriseFailedAt,
+            cardPayerAuthenticationSetupFailedAt,
+            settleFailedAt,
           } = remotePaymentAttempt
+
+          const events = extractEventsFromPaymentAttempt(remotePaymentRequest, remotePaymentAttempt)
+
+          const latestEventOccurredAt = new Date(events[0].occurredAt)
 
           localPaymentAttempts.push({
             attemptKey: attemptKey,
@@ -361,15 +513,26 @@ const remotePaymentRequestToLocalPaymentRequest = (
             currency: currency,
             processor: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
             settledAmount: settledAmount,
+            authorisedAt: authorisedAt ? new Date(authorisedAt) : undefined,
             captureAttempts: parseApiCaptureAttemptsToLocalCaptureAttempts(captureAttempts),
             refundAttempts: parseApiRefundAttemptsToLocalRefundAttempts(refundAttempts),
             authorisedAmount: authorisedAmount,
+            settledAt: settledAt ? new Date(settledAt) : undefined,
             cardAuthorisedAmount: cardAuthorisedAmount,
+            cardAuthorisedAt: cardAuthorisedAt ? new Date(cardAuthorisedAt) : undefined,
+            cardAuthoriseFailedAt: cardAuthoriseFailedAt
+              ? new Date(cardAuthoriseFailedAt)
+              : undefined,
+            cardPayerAuthenticationSetupFailedAt: cardPayerAuthenticationSetupFailedAt,
+            settleFailedAt: settleFailedAt ? new Date(settleFailedAt) : undefined,
             wallet: walletName ? parseApiWalletTypeToLocalWalletType(walletName) : undefined,
             status: parseApiStatusToLocalStatus(status),
             reconciledTransactionID: reconciledTransactionID,
-            paymentStatus: getPaymentAttemptPaymentStatus(remotePaymentAttempt),
+            paymentStatus: getPaymentAttemptPaymentStatusForTable(remotePaymentAttempt),
             paymentProcessor: parseApiPaymentProcessorToLocalPaymentProcessor(paymentProcessor),
+            displayStatus: getPaymentAttemptStatus(remotePaymentAttempt),
+            events: events,
+            latestEventOccurredAt: latestEventOccurredAt,
           })
         })
       return localPaymentAttempts
