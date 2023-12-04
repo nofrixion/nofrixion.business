@@ -43,6 +43,7 @@ const ConnectBankModal = ({
       buttonText="Continue to your bank"
       buttonClaseName="w-full md:w-auto ml-auto"
       onApplyEnabled={!isConnectingToBank}
+      contentClassName=" max-w-[33rem]"
     >
       <AnimatePresence>
         {banks && banks.length > 0 && (

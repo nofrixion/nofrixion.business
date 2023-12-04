@@ -25,6 +25,7 @@ const RenewConnectionModal = ({
       buttonText="Continue"
       onApplyEnabled={!isConnectingToBank}
       buttonClaseName="w-full md:w-auto ml-auto px-11 py-3"
+      contentClassName=" max-w-[33rem]"
     >
       <AnimatePresence>
         <AnimateHeightWrapper layoutId="select-priority-bank">

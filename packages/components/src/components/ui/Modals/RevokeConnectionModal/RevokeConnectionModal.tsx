@@ -29,6 +29,7 @@ const RevokeConnectionModal = ({
       showDefault={false}
       buttonText="Revoke connection"
       buttonClaseName="bg-negative-red rounded-full px-6 py-3 text-white font-semibold text-base hover:bg-darker-negative-red w-full md:w-auto ml-auto transition"
+      contentClassName=" max-w-[33rem]"
     >
       <AnimatePresence>
         <AnimateHeightWrapper layoutId="revoke-account">
