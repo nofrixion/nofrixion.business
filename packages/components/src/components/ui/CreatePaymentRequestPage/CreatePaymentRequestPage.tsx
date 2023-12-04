@@ -14,7 +14,6 @@ import { Fragment, useEffect, useState } from 'react'
 
 import AlertIcon from '../../../assets/icons/alert-icon.svg'
 import NextIcon from '../../../assets/icons/next-icon.svg'
-import RedAlertIcon from '../../../assets/icons/red-alert-icon.svg'
 import { FieldID } from '../../../types/LocalEnums'
 import {
   AutoSuggestions,
@@ -30,6 +29,7 @@ import { validateEmail } from '../../../utils/validation'
 import { Button } from '../../ui/atoms/Button/Button'
 import InputTextField from '../atoms/InputTextField/InputTextField'
 import EditOptionCard from '../EditOptionCard/EditOptionCard'
+import InlineError from '../InlineError/InlineError'
 import InputAmountField from '../InputAmountField/InputAmountField'
 import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
 import { Loader } from '../Loader/Loader'
@@ -316,6 +316,10 @@ const CreatePaymentRequestPage = ({
           const error = apiError.errors![key]
           errorMessages = errorMessages.concat(error)
         })
+      }
+
+      if (apiError.detail) {
+        errorMessages.push(apiError.detail)
       }
 
       setSubmitErrorMessages(errorMessages)
@@ -647,44 +651,10 @@ const CreatePaymentRequestPage = ({
                         duration={0.6}
                       >
                         {showSubmitError && (
-                          <AnimateHeightWrapper layoutId="submit-error">
-                            <motion.div
-                              className="border-4 border-solid border-negative-red rounded px-4 py-6 flex flex-row space-x-4"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                            >
-                              <img
-                                src={RedAlertIcon}
-                                alt="Warning"
-                                title="Warning"
-                                className="w-4 h-4"
-                              />
-                              <div className="[&>p]:text-default-text [&>p]:text-13px [&>p]:leading-5 [&>p]:font-normal [&>p]:py-1">
-                                <span className="text-base leading-4 font-semibold text-default-text block mb-2">
-                                  The payment request couldn&apos;t be created
-                                </span>
-                                {submitErrorMessages && submitErrorMessages.length > 0 ? (
-                                  submitErrorMessages.map((message, index) => (
-                                    <p key={'submit-error-' + index.toString()}>{message}</p>
-                                  ))
-                                ) : (
-                                  <p>
-                                    Please try again. If the problem persists, you can contact us at{' '}
-                                    <a
-                                      className="underline"
-                                      href="mailto:support@nofrixion.com"
-                                      target="_blank"
-                                      rel="noreferrer"
-                                    >
-                                      support@nofrixion.com
-                                    </a>
-                                    .
-                                  </p>
-                                )}
-                              </div>
-                            </motion.div>
-                          </AnimateHeightWrapper>
+                          <InlineError
+                            title="The payment request couldn't be created"
+                            messages={submitErrorMessages}
+                          />
                         )}
                         <Button
                           variant={isSubmitting ? 'text' : 'primaryDark'}

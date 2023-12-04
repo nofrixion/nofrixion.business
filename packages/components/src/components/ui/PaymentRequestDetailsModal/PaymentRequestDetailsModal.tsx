@@ -8,6 +8,7 @@ import {
   LocalPaymentAttempt,
   LocalPaymentRequest,
   LocalTag,
+  SystemError,
 } from '../../../types/LocalTypes'
 import BankRefundModal from '../BankRefundModal/BankRefundModal'
 import CaptureModal from '../CaptureModal/CaptureModal'
@@ -32,6 +33,7 @@ export interface PaymentRequestDetailsModalProps {
   open: boolean
   onDismiss: () => void
   accounts: LocalAccount[]
+  bankRefundError: SystemError | undefined
 }
 
 const PaymentRequestDetailsModal = ({
@@ -47,6 +49,7 @@ const PaymentRequestDetailsModal = ({
   open,
   onDismiss,
   accounts,
+  bankRefundError,
 }: PaymentRequestDetailsModalProps) => {
   const [selectedTransactionForCardRefund, setSelectedTransactionForCardRefund] =
     useState<LocalPaymentAttempt>()
@@ -145,6 +148,7 @@ const PaymentRequestDetailsModal = ({
           accounts={accounts?.filter((account) => account.currency === paymentRequest.currency)}
           paymentRequest={paymentRequest}
           bankPaymentAttempt={selectedTransactionForBankRefund}
+          bankRefundError={bankRefundError}
         />
       )}
     </>

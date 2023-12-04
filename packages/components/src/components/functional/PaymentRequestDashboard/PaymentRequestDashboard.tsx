@@ -122,6 +122,7 @@ const PaymentRequestDashboardMain = ({
 
   const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
   const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
+  const [bankRefundError, setBankRefundError] = useState<SystemError | undefined>(undefined)
 
   const pageSize = 20
 
@@ -430,7 +431,7 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error creating refund.')
+        setBankRefundError({ title: 'Bank refund has failed', message: result.error.detail })
         handleApiError(result.error)
       } else {
         makeToast('success', 'Refund successfully submitted for approval.')
@@ -702,6 +703,7 @@ const PaymentRequestDashboardMain = ({
             ? remoteAccountsToLocalAccounts(accounts.data)
             : []
         }
+        bankRefundError={bankRefundError}
       ></PaymentRequestDetailsModal>
     </div>
   )

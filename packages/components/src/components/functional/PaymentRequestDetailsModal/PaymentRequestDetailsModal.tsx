@@ -14,6 +14,7 @@ import {
   LocalCounterparty,
   LocalPaymentRequest,
   LocalTag,
+  SystemError,
 } from '../../../types/LocalTypes'
 import {
   parseLocalTagToApiTag,
@@ -40,6 +41,7 @@ interface PaymentRequestDetailsModalProps extends usePaymentRequestsProps {
     paymentInitiationID: string,
   ) => Promise<void>
   onCapture: (authorizationID: string, amount: number) => Promise<void>
+  bankRefundError: SystemError | undefined
 }
 const PaymentRequestDetailsModal = ({
   token,
@@ -64,6 +66,7 @@ const PaymentRequestDetailsModal = ({
   tags,
   accounts,
   sortBy,
+  bankRefundError,
 }: PaymentRequestDetailsModalProps) => {
   const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined)
 
@@ -193,6 +196,7 @@ const PaymentRequestDetailsModal = ({
       onTagCreated={onTagCreated}
       onTagRemoved={onTagRemoved}
       onDismiss={onModalDismiss}
+      bankRefundError={bankRefundError}
     />
   )
 }

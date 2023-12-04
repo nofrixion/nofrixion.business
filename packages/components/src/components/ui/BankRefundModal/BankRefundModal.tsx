@@ -7,12 +7,14 @@ import {
   LocalCounterparty,
   LocalPaymentAttempt,
   LocalPaymentRequest,
+  SystemError,
 } from '../../../types/LocalTypes'
 import { localCurrency } from '../../../utils/constants'
 import { formatAmount } from '../../../utils/formatters'
 import { getMaxRefundableAmount } from '../../../utils/paymentAttemptsHelper'
 import { formatCurrency } from '../../../utils/uiFormaters'
 import { Button, Icon, Sheet, SheetContent } from '../atoms'
+import InlineError from '../InlineError/InlineError'
 import InputAmountField from '../InputAmountField/InputAmountField'
 import { Loader } from '../Loader/Loader'
 import { SelectAccount } from '../molecules/Select/SelectAccount/SelectAccount'
@@ -28,6 +30,7 @@ export interface BankRefundModalProps {
   accounts: LocalAccount[]
   bankPaymentAttempt: LocalPaymentAttempt | undefined
   paymentRequest: LocalPaymentRequest | undefined
+  bankRefundError: SystemError | undefined
 }
 
 const BankRefundModal: React.FC<BankRefundModalProps> = ({
@@ -36,6 +39,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
   accounts,
   bankPaymentAttempt,
   paymentRequest,
+  bankRefundError,
 }) => {
   const [isRefundButtonDisabled, setIsRefundButtonDisabled] = useState(false)
   const [validationErrorMessage, setValidationErrorMessage] = useState('')
@@ -199,7 +203,16 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <p className="font-semibold w-full break-words text-sm/5">Refund</p>
                   </div>
                 </div>
+
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
+                  {bankRefundError && (
+                    <div className="lg:mb-14">
+                      <InlineError
+                        title={bankRefundError.title}
+                        messages={[bankRefundError.message]}
+                      />
+                    </div>
+                  )}
                   <Button
                     variant="primaryDark"
                     size="large"
