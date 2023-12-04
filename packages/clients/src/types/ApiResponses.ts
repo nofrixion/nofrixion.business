@@ -148,6 +148,7 @@ export type PaymentRequestRefundAttempt = {
 export type PaymentRequestCaptureAttempt = {
   capturedAt?: Date
   capturedAmount: number
+  captureFailedAt?: Date
 }
 
 export interface Pagination {

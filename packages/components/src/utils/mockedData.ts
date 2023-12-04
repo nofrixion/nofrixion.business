@@ -12,6 +12,8 @@ import {
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
+  LocalPaymentAttemptEventType,
+  LocalPaymentAttemptStatus,
   LocalPaymentMethodTypes,
   LocalWallets,
 } from '../types/LocalEnums'
@@ -22,6 +24,7 @@ import {
   LocalBeneficiary,
   LocalCounterparty,
   LocalPaymentAttempt,
+  LocalPaymentAttemptEvent,
   LocalPaymentRequest,
   LocalPayout,
   LocalTransaction,
@@ -195,6 +198,90 @@ export const mockAccounts: Account[] = [
   },
 ]
 
+export const mockPaymentAttemptEvents: LocalPaymentAttemptEvent[] = [
+  {
+    eventType: LocalPaymentAttemptEventType.AuthenticationSetupStarted,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.AuthenticationFailure,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.Authorised,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.AuthorisationFailed,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.Refunded,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+    refundedAmount: 5,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.PartiallyRefunded,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+    refundedAmount: 5,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.RefundAwaitingAuthorisation,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+    refundedAmount: 5,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.Received,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.Voided,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.BankPaymentInitiated,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.RefundCancelled,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+    refundedAmount: 5,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.SettlementFailed,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.Captured,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+    capturedAmount: 5,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.CaptureFailed,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+  },
+  {
+    eventType: LocalPaymentAttemptEventType.PartiallyCaptured,
+    occurredAt: new Date('2023-05-18T00:00:00.000Z'),
+    currency: Currency.EUR,
+    capturedAmount: 5,
+  },
+]
+
 export const mockPaymentAttempts: LocalPaymentAttempt[] = [
   {
     attemptKey: 'a3b752d2-c0a6-4846-90e5-d783bb4ec005',
@@ -212,6 +299,8 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.PartiallyRefunded,
+    events: mockPaymentAttemptEvents,
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -229,12 +318,13 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Refunded,
   },
   {
     attemptKey: 'ca2eb453-9c12-4f8f-b8b2-7c1c6af842ba',
     occurredAt: new Date('2023-05-18T00:00:00.000Z'),
     paymentMethod: LocalPaymentMethodTypes.Pisp,
-    amount: 924852422.99,
+    amount: 92.99,
     currency: Currency.EUR,
     processor: 'Revolut',
     last4DigitsOfCardNumber: '1234',
@@ -246,6 +336,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Received,
   },
   {
     attemptKey: '43535f79-a9f2-4331-9a78-db731e467c49',
@@ -263,6 +354,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.InProgress,
   },
   {
     attemptKey: 'a9f6c19a-0172-47a6-803a-c3f59899cafc',
@@ -279,6 +371,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: LocalWallets.ApplePay,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Failed,
   },
   {
     attemptKey: '7bbb2998-8d78-4b2a-9334-84444c9915c8',
@@ -295,6 +388,7 @@ export const mockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: LocalWallets.GooglePay,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Voided,
   },
 ]
 
@@ -315,6 +409,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Received,
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -332,6 +427,7 @@ export const partiallyPaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Received,
   },
 ]
 export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
@@ -351,6 +447,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Received,
   },
   {
     attemptKey: 'f4c6e747-6fd6-4a3c-be3b-4d3edd258b35',
@@ -368,6 +465,7 @@ export const overpaidMockPaymentAttempts: LocalPaymentAttempt[] = [
     wallet: undefined,
     status: 'paid',
     paymentStatus: 'received',
+    displayStatus: LocalPaymentAttemptStatus.Received,
   },
 ]
 
