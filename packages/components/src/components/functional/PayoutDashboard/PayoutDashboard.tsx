@@ -388,7 +388,10 @@ const PayoutDashboardMain = ({
         const batchId = response.data.id
         setBatchId(batchId)
       } else {
-        makeToast('error', 'Error creating payout batch.')
+        handleSystemErrorMessage({
+          title: 'Create batch payout has failed',
+          message: response.error.detail,
+        })
       }
     }
   }
@@ -470,6 +473,7 @@ const PayoutDashboardMain = ({
         merchantTags={localMerchantTags}
         isUserAuthoriser={isUserAuthoriser}
         onEdit={onPayoutEditClicked}
+        onSystemError={handleSystemErrorMessage}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (

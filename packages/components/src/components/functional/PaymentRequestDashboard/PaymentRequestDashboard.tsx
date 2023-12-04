@@ -27,6 +27,7 @@ import {
   LocalPaymentRequest,
   LocalPaymentRequestCreate,
   LocalTag,
+  SystemError,
 } from '../../../types/LocalTypes'
 import { DoubleSortByPaymentRequests } from '../../../types/Sort'
 import {
@@ -118,6 +119,9 @@ const PaymentRequestDashboardMain = ({
     LocalPaymentRequestCreate | undefined
   >(undefined)
   const [showMoreClicked, setShowMoreClicked] = useState(false)
+
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
 
   const pageSize = 20
 
@@ -290,7 +294,10 @@ const PaymentRequestDashboardMain = ({
     const response = await deletePaymentRequest(paymentRequest.id)
 
     if (response.error) {
-      makeToast('error', response.error.title)
+      handleSystemErrorMessage({
+        title: 'Delete payment request has failed',
+        message: response.error.detail,
+      })
 
       handleApiError(response.error)
 
@@ -508,6 +515,15 @@ const PaymentRequestDashboardMain = ({
     }
   }
 
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
+  }
+
   const paymentRequestsExists =
     !isLoadingMetrics &&
     metrics &&
@@ -626,6 +642,9 @@ const PaymentRequestDashboardMain = ({
           selectedPaymentRequestID={selectedPaymentRequestID}
           paymentRequestsExist={paymentRequestsExists}
           isLoadingMetrics={isLoadingMetrics}
+          systemError={systemError}
+          isSystemErrorOpen={isSystemErrorOpen}
+          onCloseSystemError={onCloseSystemErrorModal}
         />
       </div>
 

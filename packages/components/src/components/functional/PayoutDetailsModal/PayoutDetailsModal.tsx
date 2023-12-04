@@ -11,7 +11,7 @@ import {
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
-import { LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { LocalPayout, LocalTag, SystemError } from '../../../types/LocalTypes'
 import { DoubleSortByPayouts } from '../../../types/Sort'
 import { parseLocalTagToApiTag, remotePayoutToLocal } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
@@ -38,6 +38,7 @@ export interface PayoutDetailsModalProps {
   merchantTags: LocalTag[]
   isUserAuthoriser: boolean
   onEdit: () => void
+  onSystemError: (systemError: SystemError) => void
 }
 
 const PayoutDetailsModal = ({
@@ -60,6 +61,7 @@ const PayoutDetailsModal = ({
   merchantTags,
   isUserAuthoriser,
   onEdit,
+  onSystemError,
 }: PayoutDetailsModalProps) => {
   const [payout, setPayout] = useState<LocalPayout | undefined>(undefined)
   const [currentUser, setCurrentUser] = useState<User | undefined>(undefined)
@@ -180,7 +182,10 @@ const PayoutDetailsModal = ({
       const response = await cancelScheduledPayout(payout.id)
 
       if (response.error) {
-        makeToast('error', 'Could not cancel scheduled payout.')
+        onSystemError({
+          title: 'Scheduled payout cancellation has failed',
+          message: response.error.detail,
+        })
       }
     }
   }

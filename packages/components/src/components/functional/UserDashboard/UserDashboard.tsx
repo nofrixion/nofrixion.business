@@ -11,6 +11,7 @@ import {
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
+import { SystemError } from '../../../types/LocalTypes'
 import { DoubleSortByUsersAndInvites } from '../../../types/Sort'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -71,6 +72,9 @@ const UserDashboardMain = ({
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
   const [inviteUserClicked, setInviteUserClicked] = useState(false)
+
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
 
   const { data: usersResponse, isLoading: isLoadingUsers } = useUsersAndInvites(
     {
@@ -147,7 +151,10 @@ const UserDashboardMain = ({
     if (response.status === 'success') {
       makeToast('success', 'Invitation resent successfully.')
     } else if (response.status === 'error') {
-      makeToast('error', 'Error resending invitation. ' + response.error.detail)
+      handleSystemErrorMessage({
+        title: 'Resending user invitation has failed ',
+        message: response.error.detail,
+      })
       console.error(response.error)
     }
   }
@@ -155,6 +162,15 @@ const UserDashboardMain = ({
   const onDismissUserDetailsModal = () => {
     setSelectedUser(undefined)
     setSelectedUserId(undefined)
+  }
+
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
   }
 
   return (
@@ -177,6 +193,9 @@ const UserDashboardMain = ({
         isLoadingMetrics={isLoadingMetrics}
         status={status}
         setStatus={setStatus}
+        systemError={systemError}
+        isSystemErrorOpen={isSystemErrorOpen}
+        onCloseSystemError={onCloseSystemErrorModal}
       />
 
       {merchantId && (
@@ -188,6 +207,7 @@ const UserDashboardMain = ({
           onDismiss={() => {
             setInviteUserClicked(false)
           }}
+          onSystemError={handleSystemErrorMessage}
         />
       )}
 
@@ -200,6 +220,7 @@ const UserDashboardMain = ({
           user={selectedUser}
           open={!!selectedUser}
           onDismiss={onDismissUserDetailsModal}
+          onSystemError={handleSystemErrorMessage}
         />
       )}
     </div>

@@ -9,6 +9,7 @@ import {
 } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
+import { SystemError } from '../../../types/LocalTypes'
 import RevokeUserAccessModal from '../../ui/Modals/RevokeUserAccessModal/RevokeUserAccessModal'
 import UIUserDetailsModal from '../../ui/organisms/UserDetailsModal/UserDetailsModal'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -21,6 +22,7 @@ export interface UserDetailsModalProps {
   user?: UserRoleAndUserInvite
   open: boolean
   onDismiss: () => void
+  onSystemError: (systemError: SystemError) => void
 }
 
 const UserDetailsModal = ({
@@ -31,6 +33,7 @@ const UserDetailsModal = ({
   user,
   merchantId,
   merchantName,
+  onSystemError,
 }: UserDetailsModalProps) => {
   const { updateUserRole } = useUpdateUserRole({ apiUrl: apiUrl, authToken: token })
   const { deleteUserRole } = useDeleteUserRole({ apiUrl: apiUrl, authToken: token })
@@ -62,7 +65,10 @@ const UserDetailsModal = ({
     const response = await updateUserRole(userRoleCreate)
 
     if (response.status === 'error') {
-      makeToast('error', 'Could not update user role. ' + response.error.detail)
+      onSystemError({
+        title: 'Update user role has failed ',
+        message: response.error.detail,
+      })
     } else {
       makeToast('success', 'User role updated.')
 
@@ -81,7 +87,10 @@ const UserDetailsModal = ({
     const response = await deleteUserRole(userRoleId)
 
     if (response.status === 'error') {
-      makeToast('error', 'Could not delete user role. ' + response.error.detail)
+      onSystemError({
+        title: 'Revoke user access has failed',
+        message: response.error.detail,
+      })
     } else {
       makeToast('success', 'User role deleted.')
       onDismiss()

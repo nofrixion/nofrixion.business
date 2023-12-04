@@ -167,7 +167,10 @@ const SavePayoutModal = ({
 
       if (updateAndApprove) {
         await sleep(10000).then(() => {
-          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+          onSystemError({
+            title: 'Payout authorisation error',
+            message: 'Could not redirect to approve payout. Please try again.',
+          })
         })
       }
 
