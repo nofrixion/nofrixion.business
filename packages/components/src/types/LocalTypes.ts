@@ -367,6 +367,11 @@ export interface PayoutActivity {
   eventType: PayoutEventTypesEnum
 }
 
+export interface SystemError {
+  title: string
+  message: string
+}
+
 export interface LocalInvoicePayment {
   InvoiceNumber: string
   PaymentTerms: string

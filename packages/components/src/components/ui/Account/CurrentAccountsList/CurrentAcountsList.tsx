@@ -2,10 +2,12 @@ import { Account, BankSettings } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
+import { SystemError } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
 import RevokeConnectionModal from '../../Modals/RevokeConnectionModal/RevokeConnectionModal'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -22,6 +24,9 @@ export interface CurrentAccountsListProps {
   banks?: BankSettings[]
   isConnectingToBank: boolean
   areConnectedAccountsEnabled?: boolean
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const CurrentAcountsList = ({
@@ -35,6 +40,9 @@ const CurrentAcountsList = ({
   banks,
   isConnectingToBank,
   areConnectedAccountsEnabled = true,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
@@ -54,6 +62,12 @@ const CurrentAcountsList = ({
     setIsRenewConnectionModalOpen(false)
     setExternalAccountConnectDisabled(false)
     setIsRevokeConnectionModalOpen(false)
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
   }
 
   const handleOnApply = (bank: BankSettings) => {
@@ -194,6 +208,14 @@ const CurrentAcountsList = ({
           />
         </>
       )}
+
+      {/* System error modal */}
+      <SystemErrorModal
+        open={isSystemErrorOpen}
+        title={systemError?.title}
+        message={systemError?.message}
+        onDismiss={handlOnCloseSystemErrorModal}
+      />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
     </div>

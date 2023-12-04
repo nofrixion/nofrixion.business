@@ -15,6 +15,7 @@ import {
   useErrorsStore,
 } from '../../../../../../apps/business/src/lib/stores/useErrorsStore'
 import { useUserSettings } from '../../../lib/stores/useUserSettingsStore'
+import { SystemError } from '../../../types/LocalTypes'
 import { addConnectedBanks, getRoute } from '../../../utils/utils'
 import CurrentAcountsList from '../../ui/Account/CurrentAccountsList/CurrentAcountsList'
 import { Loader } from '../../ui/Loader/Loader'
@@ -67,6 +68,9 @@ const CurrentAccountsMain = ({
   const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
   const { userSettings, updateUserSettings } = useUserSettings()
 
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
+
   const { data: accounts, isLoading: isAccountsLoading } = useAccounts(
     { connectedAccounts: true, merchantId: merchantId },
     { apiUrl, authToken: token },
@@ -109,7 +113,10 @@ const CurrentAccountsMain = ({
     )?.error
 
     if (error) {
-      makeToast('error', `Consent authorisation error: ${error.detail}`)
+      handleSystemErrorMessage({
+        title: 'Open banking consent authorisation failed',
+        message: error.detail,
+      })
     }
 
     if (errorID && error) {
@@ -145,8 +152,10 @@ const CurrentAccountsMain = ({
       })
 
       if (response.status === 'error') {
-        console.error(response.error)
-        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+        handleSystemErrorMessage({
+          title: `Could not connect to ${bank.bankName}`,
+          message: response.error.detail,
+        })
       } else if (response.data.authorisationUrl) {
         // Redirect to the banks authorisation url
         window.location.href = response.data.authorisationUrl
@@ -165,6 +174,15 @@ const CurrentAccountsMain = ({
     }
   }
 
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
+  }
+
   const handleOnRenewConnection = async (account: Account) => {
     if (account && account.consentID) {
       setIsConnectingToBank(true)
@@ -175,8 +193,10 @@ const CurrentAccountsMain = ({
       })
 
       if (response.status === 'error') {
-        console.error(response.error)
-        makeToast('error', `Could not connect to bank. ${response.error.detail}`)
+        handleSystemErrorMessage({
+          title: `Renew connected account has failed`,
+          message: response.error.detail,
+        })
       } else if (response.data.authorisationUrl) {
         window.location.href = response.data.authorisationUrl
       }
@@ -190,7 +210,11 @@ const CurrentAccountsMain = ({
       const response = await deleteConnectedAccount(account.id)
 
       if (response.error) {
-        makeToast('error', response.error.title)
+        handleSystemErrorMessage({
+          title: 'Revoking connected account connection has failed',
+          message: response.error.detail,
+        })
+
         return
       }
 
@@ -207,10 +231,11 @@ const CurrentAccountsMain = ({
       const responses = await Promise.all(promises)
 
       if (responses.some((r) => r.error)) {
-        makeToast(
-          'error',
-          'Error revoking account connections. Some connections may not have been revoked.',
-        )
+        handleSystemErrorMessage({
+          title: 'Revoking connected account connections has failed',
+          message: 'Some connections may not have been revoked.',
+        })
+
         return
       }
 
@@ -240,6 +265,9 @@ const CurrentAccountsMain = ({
           onRevokeConnection={handleOnRevokeConnection}
           // Disable connected accounts if it's a web component
           areConnectedAccountsEnabled={!isWebComponent}
+          systemError={systemError}
+          isSystemErrorOpen={isSystemErrorOpen}
+          onCloseSystemError={onCloseSystemErrorModal}
         />
       )}
     </>
