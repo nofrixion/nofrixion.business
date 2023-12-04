@@ -82,15 +82,15 @@ const PaymentAttemptEvent = ({ paymentAttemptEvent, key, className }: PaymentAtt
                 {formatter.format(Number(paymentAttemptEvent.refundedAmount))}
               </span>
             )}
-          {(paymentAttemptEvent.capturedAmount &&
+          {paymentAttemptEvent.capturedAmount &&
             paymentAttemptEvent.capturedAmount > 0 &&
-            paymentAttemptEvent.eventType === LocalPaymentAttemptEventType.PartiallyCaptured) ||
-            (paymentAttemptEvent.eventType === LocalPaymentAttemptEventType.Captured && (
+            (paymentAttemptEvent.eventType === LocalPaymentAttemptEventType.PartiallyCaptured ||
+              paymentAttemptEvent.eventType === LocalPaymentAttemptEventType.Captured) && (
               <span className="text-xs font-normal leading-6 ml-1">
                 {paymentAttemptEvent.currency === Currency.EUR ? '€' : '£'}
                 {formatter.format(Number(paymentAttemptEvent.capturedAmount))}
               </span>
-            ))}
+            )}
         </div>
 
         <div className="w-[13.778] flex flex-row items-center gap-2 ml-auto text-xs font-normal leading-6 text-grey-text">
