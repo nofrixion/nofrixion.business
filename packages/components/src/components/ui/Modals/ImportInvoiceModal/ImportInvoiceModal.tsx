@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { parse, ParseResult } from 'papaparse'
 import { Fragment, useEffect, useState } from 'react'
 
-import { LocalInvoicePayment, ValidationResult } from '../../../../types/LocalTypes'
+import { LocalInvoice, ValidationResult } from '../../../../types/LocalTypes'
 import { validateInvoices } from '../../../../utils/validation'
 import FileInput from '../../atoms/FileInput/FileInput'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../atoms/Tabs/Tabs'
@@ -59,8 +59,8 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
         parse(reader.result as string, {
           header: true,
           skipEmptyLines: true,
-          complete: (results: ParseResult<LocalInvoicePayment>) => {
-            const validationResults = validateInvoices(results.data as LocalInvoicePayment[])
+          complete: (results: ParseResult<LocalInvoice>) => {
+            const validationResults = validateInvoices(results.data as LocalInvoice[])
 
             setValidationResults(validationResults)
           },

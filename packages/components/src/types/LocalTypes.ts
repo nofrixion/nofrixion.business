@@ -372,7 +372,7 @@ export interface SystemError {
   message: string
 }
 
-export interface LocalInvoicePayment {
+export interface LocalInvoice {
   InvoiceNumber: string
   PaymentTerms: string
   InvoiceDate: string
@@ -396,5 +396,5 @@ export interface ValidationResult {
   lineNumber: number
   valid: boolean
   errors?: string[]
-  result: LocalInvoicePayment
+  result: LocalInvoice
 }
