@@ -1,3 +1,4 @@
+import { ApiError } from '@nofrixion/moneymoov'
 import { useState } from 'react'
 
 import { Sheet, SheetContent } from '../../../components/ui/atoms'
@@ -8,7 +9,6 @@ import {
   LocalPaymentAttempt,
   LocalPaymentRequest,
   LocalTag,
-  SystemError,
 } from '../../../types/LocalTypes'
 import BankRefundModal from '../BankRefundModal/BankRefundModal'
 import CaptureModal from '../CaptureModal/CaptureModal'
@@ -19,21 +19,20 @@ export interface PaymentRequestDetailsModalProps {
   paymentRequest?: LocalPaymentRequest
   merchantTags: LocalTag[]
   hostedPaymentLink: string
-  onCardRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<void>
+  onCardRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<ApiError | undefined>
   onBankRefund: (
     sourAccount: LocalAccount,
     counterParty: LocalCounterparty,
     amount: number,
     paymentInitiationID: string,
-  ) => Promise<void>
-  onCapture: (authorizationID: string, amount: number) => Promise<void>
+  ) => Promise<ApiError | undefined>
+  onCapture: (authorizationID: string, amount: number) => Promise<ApiError | undefined>
   onTagAdded: (tag: LocalTag) => void
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
   open: boolean
   onDismiss: () => void
   accounts: LocalAccount[]
-  bankRefundError: SystemError | undefined
 }
 
 const PaymentRequestDetailsModal = ({
@@ -49,7 +48,6 @@ const PaymentRequestDetailsModal = ({
   open,
   onDismiss,
   accounts,
-  bankRefundError,
 }: PaymentRequestDetailsModalProps) => {
   const [selectedTransactionForCardRefund, setSelectedTransactionForCardRefund] =
     useState<LocalPaymentAttempt>()
@@ -148,7 +146,6 @@ const PaymentRequestDetailsModal = ({
           accounts={accounts?.filter((account) => account.currency === paymentRequest.currency)}
           paymentRequest={paymentRequest}
           bankPaymentAttempt={selectedTransactionForBankRefund}
-          bankRefundError={bankRefundError}
         />
       )}
     </>

@@ -122,7 +122,6 @@ const PaymentRequestDashboardMain = ({
 
   const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
   const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
-  const [bankRefundError, setBankRefundError] = useState<SystemError | undefined>(undefined)
 
   const pageSize = 20
 
@@ -337,9 +336,9 @@ const PaymentRequestDashboardMain = ({
           active: paymentRequest.paymentMethodTypes.includes(LocalPaymentMethodTypes.Pisp),
           priority: paymentRequest.priorityBankID
             ? {
-                id: paymentRequest.priorityBankID,
-                name: '',
-              }
+              id: paymentRequest.priorityBankID,
+              name: '',
+            }
             : undefined,
         },
         card: {
@@ -385,8 +384,8 @@ const PaymentRequestDashboardMain = ({
         })
 
         if (voidResult.error) {
-          makeToast('error', 'Error processing void.')
           handleApiError(voidResult.error)
+          return voidResult.error
         } else {
           makeToast('success', 'Payment successfully voided.')
         }
@@ -398,8 +397,8 @@ const PaymentRequestDashboardMain = ({
         })
 
         if (refundResult.error) {
-          makeToast('error', 'Error processing refund.')
           handleApiError(refundResult.error)
+          return refundResult.error
         } else {
           makeToast('success', 'Payment successfully refunded.')
         }
@@ -431,8 +430,8 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        setBankRefundError({ title: 'Bank refund has failed', message: result.error.detail })
         handleApiError(result.error)
+        return result.error
       } else {
         makeToast('success', 'Refund successfully submitted for approval.')
       }
@@ -448,8 +447,9 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error capturing Payment.')
         handleApiError(result.error)
+        return result.error
+
       } else {
         makeToast('success', 'Payment successfully captured.')
       }
@@ -703,7 +703,6 @@ const PaymentRequestDashboardMain = ({
             ? remoteAccountsToLocalAccounts(accounts.data)
             : []
         }
-        bankRefundError={bankRefundError}
       ></PaymentRequestDetailsModal>
     </div>
   )

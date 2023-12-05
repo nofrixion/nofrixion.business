@@ -1,4 +1,4 @@
-﻿import { Currency } from '@nofrixion/moneymoov'
+﻿import { ApiError, Currency } from '@nofrixion/moneymoov'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
@@ -25,12 +25,11 @@ export interface BankRefundModalProps {
     counterParty: LocalCounterparty,
     amount: number,
     paymentInitiationID: string,
-  ) => Promise<void>
+  ) => Promise<ApiError | undefined>
   onDismiss: () => void
   accounts: LocalAccount[]
   bankPaymentAttempt: LocalPaymentAttempt | undefined
   paymentRequest: LocalPaymentRequest | undefined
-  bankRefundError: SystemError | undefined
 }
 
 const BankRefundModal: React.FC<BankRefundModalProps> = ({
@@ -39,7 +38,6 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
   accounts,
   bankPaymentAttempt,
   paymentRequest,
-  bankRefundError,
 }) => {
   const [isRefundButtonDisabled, setIsRefundButtonDisabled] = useState(false)
   const [validationErrorMessage, setValidationErrorMessage] = useState('')
@@ -61,6 +59,9 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
     defaultSourceAccount ? defaultSourceAccount : accounts[0],
   )
 
+  const [showRefundError, setShowRefundError] = useState(false)
+  const [bankRefundError, setBankRefundError] = useState<SystemError | undefined>(undefined)
+
   const getCurrencySymbol = (transactionCurrency: Currency) => {
     return transactionCurrency === Currency.EUR
       ? localCurrency.eur.symbol
@@ -68,6 +69,9 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
   }
 
   const onRefundClick = async () => {
+    setShowRefundError(false)
+    setBankRefundError(undefined)
+
     setValidationErrorMessage('')
     const parsedAmount = Number(amountToRefund)
     if (parsedAmount < 0) {
@@ -81,13 +85,20 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
       let parsedAmount = Number(amountToRefund)
       parsedAmount = (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount
 
-      await onRefund(
+      const apiError = await onRefund(
         selectedAccount,
         counterParty,
         parsedAmount,
         bankPaymentAttempt?.attemptKey ? bankPaymentAttempt?.attemptKey : '',
       )
-      onDismiss()
+
+      if (apiError) {
+        setBankRefundError({ title: 'Bank refund has failed', message: apiError.detail })
+        setShowRefundError(true)
+      }
+      else {
+        onDismiss()
+      }
     }
   }
 
@@ -122,7 +133,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <div className="md:w-40">
                       <InputAmountField
                         currency={bankPaymentAttempt.currency}
-                        onCurrencyChange={() => {}}
+                        onCurrencyChange={() => { }}
                         allowCurrencyChange={false}
                         value={amountToRefund}
                         onChange={(value) => setAmountToRefund(value)}
@@ -205,7 +216,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                 </div>
 
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
-                  {bankRefundError && (
+                  {bankRefundError && showRefundError && (
                     <div className="lg:mb-14">
                       <InlineError
                         title={bankRefundError.title}
