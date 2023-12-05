@@ -1,6 +1,6 @@
 import { coerce, literal, nativeEnum, object, string, ZodIssue } from 'zod'
 
-import { LocalInvoicePayment, ValidationResult } from '../types/LocalTypes'
+import { LocalInvoice, ValidationResult } from '../types/LocalTypes'
 
 enum Currency {
   GBP = 'GBP',
@@ -148,7 +148,7 @@ const validateIBAN = (iban: string): boolean => {
   return true
 }
 
-const validateInvoices = (invoicePayments: LocalInvoicePayment[]): ValidationResult[] => {
+const validateInvoices = (invoicePayments: LocalInvoice[]): ValidationResult[] => {
   const results: ValidationResult[] = []
 
   const formatError = (issue: ZodIssue) => {
