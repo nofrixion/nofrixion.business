@@ -8,7 +8,7 @@ const meta: Meta<typeof SavePayoutModal> = {
   title: 'UI/Create Payout Modal',
   component: SavePayoutModal,
   argTypes: {
-    onSavePayout: { control: { type: 'action' } },
+    onCreatePayout: { control: { type: 'action' } },
     onDismiss: { control: { type: 'action' } },
   },
 }

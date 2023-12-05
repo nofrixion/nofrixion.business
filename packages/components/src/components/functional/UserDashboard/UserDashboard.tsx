@@ -207,7 +207,6 @@ const UserDashboardMain = ({
           onDismiss={() => {
             setInviteUserClicked(false)
           }}
-          onSystemError={handleSystemErrorMessage}
         />
       )}
 

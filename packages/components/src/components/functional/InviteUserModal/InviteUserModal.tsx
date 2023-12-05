@@ -1,6 +1,5 @@
 import { UserInviteCreate, useSendUserInvite } from '@nofrixion/moneymoov'
 
-import { SystemError } from '../../../types/LocalTypes'
 import UIInviteUserModal from '../../ui/InviteUserModal/InviteUserModal'
 import { makeToast } from '../../ui/Toast/Toast'
 
@@ -10,7 +9,6 @@ export interface InviteUserModalProps {
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   isOpen: boolean // When true, the modal will be open. When false, the modal will be closed.
   onDismiss: () => void // Callback function that will be called when the modal is asked to be closed.
-  onSystemError: (systemError: SystemError) => void
 }
 
 const InviteUserModal = ({
@@ -19,7 +17,6 @@ const InviteUserModal = ({
   isOpen,
   onDismiss,
   merchantID,
-  onSystemError,
 }: InviteUserModalProps) => {
   const { sendUserInvite } = useSendUserInvite({ apiUrl: apiUrl, authToken: token })
 
@@ -34,10 +31,7 @@ const InviteUserModal = ({
     const response = await sendUserInvite(userInviteCreate)
 
     if (response.status === 'error') {
-      onSystemError({
-        title: 'Invite user to MoneyMoov has failed',
-        message: response.error.detail,
-      })
+      return response.error
     } else {
       makeToast('success', 'Invite sent.')
 

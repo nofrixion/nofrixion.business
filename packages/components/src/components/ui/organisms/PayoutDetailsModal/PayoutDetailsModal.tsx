@@ -1,10 +1,12 @@
-import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import { ApiError, Currency, PayoutStatus } from '@nofrixion/moneymoov'
+import { useState } from 'react'
 
-import { LocalPayout, LocalTag } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalTag, SystemError } from '../../../../types/LocalTypes'
 import { formatAmountAndDecimals, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
+import InlineError from '../../InlineError/InlineError'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
 import ConfrimButton from '../../molecules/ConfirmButton/ConfirmButton'
@@ -20,7 +22,7 @@ export interface PayoutDetailsModalProps {
   onTagAdded: (tag: LocalTag) => void
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
-  onScheduleCancelled: () => void
+  onScheduleCancelled: () => Promise<ApiError | undefined>
   isUserAuthoriser: boolean
   onEdit: () => void
 }
@@ -37,9 +39,26 @@ const PayoutDetailsModal = ({
   isUserAuthoriser,
   onEdit,
 }: PayoutDetailsModalProps) => {
+
+  const [showScheduleError, setShowScheduleError] = useState(false)
+  const [scheduleCancelleError, setScheduleCancelleError] = useState<SystemError | undefined>(undefined)
+
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
       onDismiss()
+      setShowScheduleError(false)
+      setScheduleCancelleError(undefined)
+    }
+  }
+
+  const handleScheduleCancelled = async () => {
+    setShowScheduleError(false)
+    setScheduleCancelleError(undefined)
+
+    const apiError = await onScheduleCancelled()
+    if (apiError) {
+      setScheduleCancelleError({ title: 'Card capture payment has failed', message: apiError.detail })
+      setShowScheduleError(true)
     }
   }
 
@@ -78,7 +97,7 @@ const PayoutDetailsModal = ({
                       size={'medium'}
                       primaryText="Cancel schedule"
                       confirmText="Click again to confirm"
-                      onConfirm={onScheduleCancelled}
+                      onConfirm={handleScheduleCancelled}
                       className="w-[169px]"
                     />
                   </div>
@@ -115,8 +134,8 @@ const PayoutDetailsModal = ({
                       accountNumber={
                         payout.destination?.identifier?.iban ??
                         payout.destination?.identifier?.accountNumber +
-                          ' ' +
-                          payout.destination?.identifier?.sortCode
+                        ' ' +
+                        payout.destination?.identifier?.sortCode
                       }
                     />
                   </div>
@@ -157,9 +176,18 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
+                {showScheduleError && scheduleCancelleError && (
+                  <div className="lg:mb-14 lg:mt-14">
+                    <InlineError
+                      title={scheduleCancelleError.title}
+                      messages={[scheduleCancelleError.message]}
+                    />
+                  </div>
+                )}
               </div>
             </>
           )}
+
           {payout && payout?.activities && payout.activities.length > 0 && (
             <PayoutActivityPanel activities={payout.activities} />
           )}

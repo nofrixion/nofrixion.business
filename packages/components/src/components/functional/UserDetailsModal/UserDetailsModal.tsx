@@ -65,10 +65,7 @@ const UserDetailsModal = ({
     const response = await updateUserRole(userRoleCreate)
 
     if (response.status === 'error') {
-      onSystemError({
-        title: 'Update user role has failed ',
-        message: response.error.detail,
-      })
+      return response.error
     } else {
       makeToast('success', 'User role updated.')
 
