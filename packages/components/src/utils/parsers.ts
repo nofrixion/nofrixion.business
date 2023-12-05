@@ -6,7 +6,7 @@ import {
   AccountTransactionMetrics,
   Beneficiary,
   Counterparty,
-  InvoicePayment,
+  Invoice,
   PartialPaymentMethods,
   PaymentMethodTypes,
   type PaymentRequest,
@@ -47,7 +47,7 @@ import {
   LocalAddress,
   LocalBeneficiary,
   LocalCounterparty,
-  LocalInvoicePayment,
+  LocalInvoice,
   LocalPaymentAttempt,
   LocalPaymentAttemptEvent,
   LocalPaymentProcessor,
@@ -1041,20 +1041,18 @@ const payoutStatusToActivitySatus = (status: PayoutEventTypesEnum): string => {
   }
 }
 
-const localInvoicePaymentsToRemoteInvoicePayments = (
-  localInvoicePayments: LocalInvoicePayment[] | undefined,
-): InvoicePayment[] => {
+const localInvoicesToRemoteInvoices = (
+  localInvoicePayments: LocalInvoice[] | undefined,
+): Invoice[] => {
   if (!localInvoicePayments) {
     return []
   }
   return localInvoicePayments.map((localInvoicePayment) => {
-    return localInvoicePaymentToRemoteInvoicePayment(localInvoicePayment)
+    return localInvoiceToRemoteInvoice(localInvoicePayment)
   })
 }
 
-const localInvoicePaymentToRemoteInvoicePayment = (
-  localInvoicePayment: LocalInvoicePayment,
-): InvoicePayment => {
+const localInvoiceToRemoteInvoice = (localInvoicePayment: LocalInvoice): Invoice => {
   const {
     InvoiceNumber,
     PaymentTerms,
@@ -1099,8 +1097,8 @@ const localInvoicePaymentToRemoteInvoicePayment = (
 export {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
-  localInvoicePaymentsToRemoteInvoicePayments,
-  localInvoicePaymentToRemoteInvoicePayment,
+  localInvoicesToRemoteInvoices,
+  localInvoiceToRemoteInvoice,
   parseApiTagToLocalTag,
   parseApiUserRoleToLocalUserRole,
   parseApiUserToLocalUser,

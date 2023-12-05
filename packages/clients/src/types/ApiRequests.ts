@@ -124,7 +124,7 @@ export type UserRoleCreate = {
   userRole: UserRoles
 }
 
-export interface InvoicePayment {
+export interface Invoice {
   invoiceNumber?: string
   paymentTerms?: string
   invoiceDate: Date
