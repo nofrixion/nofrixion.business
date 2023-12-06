@@ -160,6 +160,7 @@ const PayoutDetailsModal = ({
               </div>
             </>
           )}
+
           {payout && payout?.activities && payout.activities.length > 0 && (
             <PayoutActivityPanel activities={payout.activities} />
           )}

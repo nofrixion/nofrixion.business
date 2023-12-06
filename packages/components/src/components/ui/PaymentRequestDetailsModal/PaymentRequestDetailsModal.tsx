@@ -1,3 +1,4 @@
+import { ApiError } from '@nofrixion/moneymoov'
 import { useState } from 'react'
 
 import { Sheet, SheetContent } from '../../../components/ui/atoms'
@@ -18,14 +19,14 @@ export interface PaymentRequestDetailsModalProps {
   paymentRequest?: LocalPaymentRequest
   merchantTags: LocalTag[]
   hostedPaymentLink: string
-  onCardRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<void>
+  onCardRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<ApiError | undefined>
   onBankRefund: (
     sourAccount: LocalAccount,
     counterParty: LocalCounterparty,
     amount: number,
     paymentInitiationID: string,
-  ) => Promise<void>
-  onCapture: (authorizationID: string, amount: number) => Promise<void>
+  ) => Promise<ApiError | undefined>
+  onCapture: (authorizationID: string, amount: number) => Promise<ApiError | undefined>
   onTagAdded: (tag: LocalTag) => void
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void

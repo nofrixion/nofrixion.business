@@ -1,5 +1,6 @@
 import {
   AccountIdentifierType,
+  ApiError,
   Currency,
   PayoutCreate,
   UpdatePayoutProps,
@@ -91,7 +92,7 @@ const SavePayoutModal = ({
     const response = await createPayout(payoutCreate)
 
     if (response.status === 'error') {
-      makeToast('error', 'Could not create payout.')
+      return response.error
     } else {
       if (createAndApprove) {
         setPayoutID(response.data.id)
@@ -103,7 +104,7 @@ const SavePayoutModal = ({
 
       if (createAndApprove) {
         await sleep(10000).then(() => {
-          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+          return { title: "Payout authorisation error", detail: "Could not redirect to approve payout. Please try again." } as ApiError
         })
       }
 
@@ -149,7 +150,8 @@ const SavePayoutModal = ({
     const response = await updatePayout(payoutUpdate)
 
     if (response.error) {
-      makeToast('error', 'Could not edit payout details.')
+      return response.error
+
     } else {
       if (updateAndApprove) {
         setPayoutID(selectedPayout.id)
@@ -161,7 +163,7 @@ const SavePayoutModal = ({
 
       if (updateAndApprove) {
         await sleep(10000).then(() => {
-          makeToast('error', 'Could not redirect to approve payout. Please try again.')
+          return { title: "Payout authorisation error", detail: "Could not redirect to approve payout. Please try again." } as ApiError
         })
       }
 

@@ -4,13 +4,14 @@ import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-import { LocalPayout } from '../../../../types/LocalTypes'
+import { LocalPayout, SystemError } from '../../../../types/LocalTypes'
 import { DoubleSortByPayouts } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
 import DashboardTab from '../../DashboardTab/DashboardTab'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
 import { Loader } from '../../Loader/Loader'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
 import { FilterableTag } from '../../TagFilter/TagFilter'
@@ -50,6 +51,9 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onApproveBatchPayouts: () => void
   payoutsExist: boolean
   isUserAuthoriser: boolean
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -84,6 +88,9 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   onApproveBatchPayouts,
   payoutsExist,
   isUserAuthoriser,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }) => {
   const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
 
@@ -108,6 +115,12 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   const handleApproveBatchPayouts = async () => {
     setIsApproveButtonDisabled(true)
     onApproveBatchPayouts()
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
   }
 
   return (
@@ -248,6 +261,14 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             isUserAuthoriser={isUserAuthoriser}
           />
         </div>
+
+        {/* System error modal */}
+        <SystemErrorModal
+          open={isSystemErrorOpen}
+          title={systemError?.title}
+          message={systemError?.message}
+          onDismiss={handlOnCloseSystemErrorModal}
+        />
 
         <Toaster positionY="top" positionX="right" duration={3000} />
       </div>

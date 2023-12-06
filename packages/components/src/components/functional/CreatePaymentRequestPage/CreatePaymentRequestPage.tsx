@@ -192,7 +192,6 @@ const CreatePaymentRequestPageMain = ({
     // TODO: Toasts are not working - however, we need to figure out how to handle errors & success cases
     // Maybe we should have a redirectUrl that we can redirect to? This could be a parameter in the web-component
     if (response.status === 'error') {
-      makeToast('error', response.error.title)
       return response.error
     }
 

@@ -1,10 +1,11 @@
 import { PaymentResult } from '@nofrixion/moneymoov'
 import classNames from 'classnames'
 
-import { LocalPaymentRequest } from '../../../types/LocalTypes'
+import { LocalPaymentRequest, SystemError } from '../../../types/LocalTypes'
 import { DoubleSortByPaymentRequests, SortByPaymentRequests } from '../../../types/Sort'
 import ColumnHeader from '../ColumnHeader/ColumnHeader'
 import { Loader } from '../Loader/Loader'
+import SystemErrorModal from '../Modals/SystemErrorModal/SystemErrorModal'
 import Pager from '../Pager/Pager'
 import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard'
 import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow'
@@ -29,6 +30,9 @@ export interface PaymentRequestTableProps {
   selectedPaymentRequestID?: string
   paymentRequestsExist?: boolean
   isLoadingMetrics?: boolean
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const commonThClasses = 'px-4 pb-4 font-normal'
@@ -51,6 +55,9 @@ const PaymentRequestTable = ({
   selectedPaymentRequestID,
   paymentRequestsExist,
   isLoadingMetrics,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }: PaymentRequestTableProps) => {
   const onPaymentRequestClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
@@ -78,6 +85,12 @@ const PaymentRequestTable = ({
         secondary: sortBy?.primary,
       }
       onSort && onSort(newSort)
+    }
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
     }
   }
 
@@ -274,6 +287,15 @@ const PaymentRequestTable = ({
           // Else,  there are no payment requests matching the filters
           <EmptyState state="nothingFound" onCreatePaymentRequest={onCreatePaymentRequest} />
         )}
+
+      {/* System error modal */}
+      <SystemErrorModal
+        open={isSystemErrorOpen}
+        title={systemError?.title}
+        message={systemError?.message}
+        onDismiss={handlOnCloseSystemErrorModal}
+      />
+
       <Toaster positionY="top" positionX="right" duration={5000} />
     </div>
   )
