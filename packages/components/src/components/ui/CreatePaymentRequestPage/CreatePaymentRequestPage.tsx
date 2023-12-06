@@ -99,6 +99,7 @@ const CreatePaymentRequestPage = ({
       isWalletEnabled: true,
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
+      isDestinationAccountEnabled: false,
       isDefault: false,
     })
 
@@ -153,6 +154,7 @@ const CreatePaymentRequestPage = ({
       isCaptureFundsEnabled:
         !userPaymentDefaults?.paymentMethodsDefaults?.cardAuthorizeOnly ?? true,
       priorityBank: findBank(userPaymentDefaults?.paymentMethodsDefaults?.pispPriorityBankID),
+      isDestinationAccountEnabled: false,
       isDefault: !!userPaymentDefaults?.paymentMethodsDefaults,
     })
   }
@@ -204,6 +206,7 @@ const CreatePaymentRequestPage = ({
           ? findBank(prefilledData?.paymentMethods?.bank?.priority?.id)
           : undefined,
         isDefault: false,
+        isDestinationAccountEnabled: false,
       })
     } else {
       fillDefaultPaymentMethods()
@@ -392,6 +395,7 @@ const CreatePaymentRequestPage = ({
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
       isDefault: false,
+      isDestinationAccountEnabled: false,
     })
     setPaymentConditionsFormValue({
       allowPartialPayments: false,

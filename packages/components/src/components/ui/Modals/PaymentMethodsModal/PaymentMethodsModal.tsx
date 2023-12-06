@@ -111,7 +111,9 @@ const PaymentMethodsModal = ({
 
   useEffect(() => {
     setIsDestinationAccountEnabled(false)
-    setDestinationAccount(destinationAccounts.filter((acc) => acc.currency === currency)[0])
+
+    const newDestinationAccount = getDefaultDestinationAccount(destinationAccounts)
+    setDestinationAccount(newDestinationAccount)
 
     // Send destination account new values to override the previous ones
     // as the state is not updated yet
@@ -121,10 +123,34 @@ const PaymentMethodsModal = ({
   }, [currency])
 
   useEffect(() => {
+    if (!isDestinationAccountEnabled) {
+      setDefaultDestinationAccount(destinationAccounts)
+    }
+  }, [isDestinationAccountEnabled])
+
+  useEffect(() => {
     if (isPriorityBankEnabled && !priorityBank) {
       setPriorityBank(banks[0])
     }
   }, [isPriorityBankEnabled])
+
+  const getDefaultDestinationAccount = (destinationAccounts: Account[]): Account => {
+    // Get accounts for the selected currency
+    const filteredByCurrencyAccounts = destinationAccounts.filter(
+      (acc) => acc.currency === currency,
+    )
+
+    // Check if there're default accounts for the selected currency
+    const defaultAccounts = filteredByCurrencyAccounts.filter((acc) => acc.isDefault)
+
+    return defaultAccounts.length > 0 ? defaultAccounts[0] : filteredByCurrencyAccounts[0]
+  }
+
+  const setDefaultDestinationAccount = (destinationAccounts: Account[]) => {
+    // Get accounts for the selected currency
+    const defaultAccount = getDefaultDestinationAccount(destinationAccounts)
+    setDestinationAccount(defaultAccount)
+  }
 
   const sendDataToParent = (data?: Partial<LocalPaymentMethodsFormValue>) => {
     const localData: LocalPaymentMethodsFormValue = {
@@ -133,6 +159,7 @@ const PaymentMethodsModal = ({
       isWalletEnabled,
       isLightningEnabled,
       isCaptureFundsEnabled,
+      isDestinationAccountEnabled,
       destinationAccount:
         isDestinationAccountEnabled && destinationAccount
           ? { id: destinationAccount.id, name: destinationAccount?.accountName }
@@ -166,8 +193,11 @@ const PaymentMethodsModal = ({
       setIsLightningEnabled(currentState.isLightningEnabled)
       setIsCaptureFundsEnabled(currentState.isCaptureFundsEnabled)
       setIsPriorityBankEnabled(currentState.isBankEnabled)
-      setIsDestinationAccountEnabled(false)
-      setDestinationAccount(undefined)
+      setIsDestinationAccountEnabled(currentState.isDestinationAccountEnabled)
+      setDestinationAccount(
+        destinationAccounts.find((acc) => acc.id === currentState.destinationAccount?.id) ??
+          destinationAccount,
+      )
 
       if (currentState.isBankEnabled && currentState.priorityBank) {
         const bank = banks.find((bank) => bank.bankID === currentState.priorityBank?.id)
@@ -254,10 +284,11 @@ const PaymentMethodsModal = ({
             )}
           </AnimatePresence>
           <AnimatePresence>
-            {isBankEnabled && isDestinationAccountEnabled && (
+            {isBankEnabled && (
               <AnimateHeightWrapper layoutId="select-destination-account">
                 <div className="pl-6 md:pl-[3.25rem] pt-4">
                   <Select
+                    disabled={!isDestinationAccountEnabled}
                     options={destinationAccounts
                       .filter((acc) => acc.currency === currency)
                       .map((acc) => {
@@ -280,7 +311,7 @@ const PaymentMethodsModal = ({
                     onChange={(selectedOption) => {
                       setDestinationAccount(
                         destinationAccounts.find((acc) => acc.id === selectedOption.value) ??
-                          destinationAccounts[0],
+                          getDefaultDestinationAccount(destinationAccounts),
                       )
                     }}
                   />

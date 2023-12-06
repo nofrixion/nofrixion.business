@@ -190,6 +190,7 @@ export interface LocalPaymentMethodsFormValue {
     id: string
     name: string
   }
+  isDestinationAccountEnabled: boolean
   destinationAccount?: {
     id: string
     name: string

@@ -5,6 +5,7 @@ export interface SelectProps {
   options: SelectOption[]
   selected: SelectOption
   onChange: (value: SelectOption) => void
+  disabled?: boolean
 }
 
 export interface SelectOption {
@@ -12,17 +13,23 @@ export interface SelectOption {
   label: string
 }
 
-const Select: React.FC<SelectProps> = ({ options, selected: selectedOption, onChange }) => {
+const Select: React.FC<SelectProps> = ({
+  options,
+  selected: selectedOption,
+  onChange,
+  disabled,
+}) => {
   const onChangeValue = (value: SelectOption) => {
     onChange(value)
   }
   return (
     <Listbox
+      disabled={disabled}
       value={selectedOption.value}
       onChange={(value) => onChangeValue(options.find((o) => o.value === value) ?? options[0])}
     >
       <div className="relative">
-        <Listbox.Button className="relative w-full cursor-default rounded-md bg-white p-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-transparent focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-green text-sm/4 px-3 py-4 border border-border-grey font-medium">
+        <Listbox.Button className="relative w-full cursor-default rounded-md bg-white p-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-transparent focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-green text-sm/4 px-3 py-4 border border-border-grey font-medium disabled:bg-main-grey disabled:cursor-not-allowed">
           <span className="block truncate pr-2">{selectedOption.label}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 stroke-default-text hover:stroke-control-grey">
             <svg
