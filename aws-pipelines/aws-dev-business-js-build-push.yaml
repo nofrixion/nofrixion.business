@@ -78,6 +78,19 @@ steps:
       targetFolder: '$(Build.ArtifactStagingDirectory)/dev'
     displayName: 'Copy js files'
 
+  - script: |
+      az --version
+      curl -sL https://packages.microsoft.com/keys/microsoft.asc |
+      gpg --dearmor |
+      sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+      AZ_REPO=$(lsb_release -cs)
+      echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
+      sudo tee /etc/apt/sources.list.d/azure-cli.list
+      sudo apt-get update
+      az upgrade --yes
+      az --version
+    displayName: Upgrade Azure CLI
+
   # Copy main .js file to the $web container.
   - task: AzureCLI@2
     displayName: Copy dev bundle into $web blob container
@@ -96,4 +109,4 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/*' --debug
+        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/$(businessBundleName)' '/dev/$(webComponentsBundleName)' --debug
