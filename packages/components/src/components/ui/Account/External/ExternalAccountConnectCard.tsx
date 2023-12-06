@@ -5,7 +5,7 @@ import { Button } from '../../atoms'
 
 export interface ExternalAccountConnectCardProps {
   onConnectClicked: () => void
-  onMaybeLater: () => void
+  onMaybeLater?: () => void
   disabled?: boolean
 }
 
@@ -38,12 +38,14 @@ const ExternalAccountConnectCard = ({
         >
           Connect account
         </Button>
-        <div
-          className="underline hover:no-underline ml-8 my-auto cursor-pointer"
-          onClick={onMaybeLater}
-        >
-          Maybe later
-        </div>
+        {onMaybeLater && (
+          <div
+            className="underline hover:no-underline ml-8 my-auto cursor-pointer"
+            onClick={onMaybeLater}
+          >
+            Maybe later
+          </div>
+        )}
       </div>
     </div>
   )

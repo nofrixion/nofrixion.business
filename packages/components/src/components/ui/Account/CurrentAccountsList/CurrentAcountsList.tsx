@@ -105,35 +105,38 @@ const CurrentAcountsList = ({
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
-      <div className="flex">
-        <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
-        {areConnectedAccountsEnabled &&
-          userSettings?.connectMaybeLater &&
-          externalAccounts?.length === 0 && (
-            <Button
-              variant={'secondary'}
-              className="h-fit w-fit ml-auto"
-              onClick={handleOnConnectClicked}
-            >
-              <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
-              Connect external account
-            </Button>
-          )}
-      </div>
-      {internalAccounts && (
-        <div className="flex-row mb-8 md:mb-[68px]">
-          {internalAccounts
-            .sort((a, b) => a.accountName?.localeCompare(b.accountName))
-            .map((account, index) => (
-              <AccountCard
-                key={index}
-                account={account}
-                onClick={() => {
-                  onAccountClick && onAccountClick(account)
-                }}
-              />
-            ))}
-        </div>
+      {internalAccounts && internalAccounts.length > 0 && (
+        <>
+          <div className="flex">
+            <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
+            {areConnectedAccountsEnabled &&
+              userSettings?.connectMaybeLater &&
+              externalAccounts?.length === 0 && (
+                <Button
+                  variant={'secondary'}
+                  className="h-fit w-fit ml-auto"
+                  onClick={handleOnConnectClicked}
+                >
+                  <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
+                  Connect external account
+                </Button>
+              )}
+          </div>
+
+          <div className="flex-row mb-8 md:mb-[68px]">
+            {internalAccounts
+              .sort((a, b) => a.accountName?.localeCompare(b.accountName))
+              .map((account, index) => (
+                <AccountCard
+                  key={index}
+                  account={account}
+                  onClick={() => {
+                    onAccountClick && onAccountClick(account)
+                  }}
+                />
+              ))}
+          </div>
+        </>
       )}
 
       {/* External accounts list */}
@@ -178,7 +181,9 @@ const CurrentAcountsList = ({
         externalAccounts?.length === 0 && (
           <ExternalAccountConnectCard
             onConnectClicked={handleOnConnectClicked}
-            onMaybeLater={onMaybeLater}
+            onMaybeLater={
+              internalAccounts && internalAccounts.length > 0 ? onMaybeLater : undefined
+            }
             disabled={externalAccountConnectDisabled}
           />
         )}
