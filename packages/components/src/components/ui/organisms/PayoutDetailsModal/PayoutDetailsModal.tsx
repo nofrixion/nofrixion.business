@@ -39,9 +39,10 @@ const PayoutDetailsModal = ({
   isUserAuthoriser,
   onEdit,
 }: PayoutDetailsModalProps) => {
-
   const [showScheduleError, setShowScheduleError] = useState(false)
-  const [scheduleCancelleError, setScheduleCancelleError] = useState<SystemError | undefined>(undefined)
+  const [scheduleCancelleError, setScheduleCancelleError] = useState<SystemError | undefined>(
+    undefined,
+  )
 
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
@@ -57,7 +58,10 @@ const PayoutDetailsModal = ({
 
     const apiError = await onScheduleCancelled()
     if (apiError) {
-      setScheduleCancelleError({ title: 'Card capture payment has failed', message: apiError.detail })
+      setScheduleCancelleError({
+        title: 'Cancel schedule payout has failed',
+        message: apiError.detail,
+      })
       setShowScheduleError(true)
     }
   }
@@ -134,8 +138,8 @@ const PayoutDetailsModal = ({
                       accountNumber={
                         payout.destination?.identifier?.iban ??
                         payout.destination?.identifier?.accountNumber +
-                        ' ' +
-                        payout.destination?.identifier?.sortCode
+                          ' ' +
+                          payout.destination?.identifier?.sortCode
                       }
                     />
                   </div>
