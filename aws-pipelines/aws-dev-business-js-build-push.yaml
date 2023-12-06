@@ -96,4 +96,4 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/*'
+        az cdn endpoint purge -g "$(cdnRg)" -n "$(cdnName)" --profile-name "$(cdnProfileName)" --content-paths '/dev/*' --debug
