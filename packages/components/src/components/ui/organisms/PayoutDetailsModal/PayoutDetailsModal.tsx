@@ -1,12 +1,10 @@
-import { ApiError, Currency, PayoutStatus } from '@nofrixion/moneymoov'
-import { useState } from 'react'
+import { Currency, PayoutStatus } from '@nofrixion/moneymoov'
 
-import { LocalPayout, LocalTag, SystemError } from '../../../../types/LocalTypes'
+import { LocalPayout, LocalTag } from '../../../../types/LocalTypes'
 import { formatAmountAndDecimals, formatDateWithYear } from '../../../../utils/formatters'
 import { payoutStatusToStatus } from '../../../../utils/parsers'
 import { formatCurrency } from '../../../../utils/uiFormaters'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
-import InlineError from '../../InlineError/InlineError'
 import { Status } from '../../molecules'
 import AccountDetails from '../../molecules/Account/AccountDetails'
 import ConfrimButton from '../../molecules/ConfirmButton/ConfirmButton'
@@ -22,7 +20,7 @@ export interface PayoutDetailsModalProps {
   onTagAdded: (tag: LocalTag) => void
   onTagRemoved: (id: string) => void
   onTagCreated: (tag: LocalTag) => void
-  onScheduleCancelled: () => Promise<ApiError | undefined>
+  onScheduleCancelled: () => void
   isUserAuthoriser: boolean
   onEdit: () => void
 }
@@ -39,30 +37,9 @@ const PayoutDetailsModal = ({
   isUserAuthoriser,
   onEdit,
 }: PayoutDetailsModalProps) => {
-  const [showScheduleError, setShowScheduleError] = useState(false)
-  const [scheduleCancelleError, setScheduleCancelleError] = useState<SystemError | undefined>(
-    undefined,
-  )
-
   const handleOnOpenChange = (open: boolean) => {
     if (!open) {
       onDismiss()
-      setShowScheduleError(false)
-      setScheduleCancelleError(undefined)
-    }
-  }
-
-  const handleScheduleCancelled = async () => {
-    setShowScheduleError(false)
-    setScheduleCancelleError(undefined)
-
-    const apiError = await onScheduleCancelled()
-    if (apiError) {
-      setScheduleCancelleError({
-        title: 'Cancel schedule payout has failed',
-        message: apiError.detail,
-      })
-      setShowScheduleError(true)
     }
   }
 
@@ -101,7 +78,7 @@ const PayoutDetailsModal = ({
                       size={'medium'}
                       primaryText="Cancel schedule"
                       confirmText="Click again to confirm"
-                      onConfirm={handleScheduleCancelled}
+                      onConfirm={onScheduleCancelled}
                       className="w-[169px]"
                     />
                   </div>
@@ -180,14 +157,6 @@ const PayoutDetailsModal = ({
                     />
                   </div>
                 </div>
-                {showScheduleError && scheduleCancelleError && (
-                  <div className="lg:mb-14 lg:mt-14">
-                    <InlineError
-                      title={scheduleCancelleError.title}
-                      messages={[scheduleCancelleError.message]}
-                    />
-                  </div>
-                )}
               </div>
             </>
           )}

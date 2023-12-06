@@ -473,6 +473,7 @@ const PayoutDashboardMain = ({
         merchantTags={localMerchantTags}
         isUserAuthoriser={isUserAuthoriser}
         onEdit={onPayoutEditClicked}
+        onSystemError={handleSystemErrorMessage}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
