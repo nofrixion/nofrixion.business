@@ -1,4 +1,5 @@
 import {
+  Account,
   ApiError,
   ApiResponse,
   BankSettings,
@@ -6,6 +7,7 @@ import {
   ClientSettingsClient,
   PartialPaymentMethods,
   PaymentRequestCreate,
+  useAccounts,
   useBanks,
   useCreatePaymentRequest,
   UserPaymentDefaults,
@@ -104,6 +106,14 @@ const CreatePaymentRequestPageMain = ({
     { apiUrl: apiUrl, authToken: token },
   )
   const [banks, setBanks] = useState<BankSettings[] | undefined>(undefined)
+
+  const [accounts, setAccounts] = useState<Account[] | undefined>(undefined)
+
+  const { data: accountsResponse } = useAccounts(
+    { merchantId: merchantId },
+    { apiUrl: apiUrl, authToken: token },
+  )
+
   const [userPaymentDefaults, setUserPaymentDefaults] = useState<UserPaymentDefaults | undefined>(
     undefined,
   )
@@ -121,6 +131,14 @@ const CreatePaymentRequestPageMain = ({
       console.warn(banksResponse.error)
     }
   }, [banksResponse])
+
+  useEffect(() => {
+    if (accountsResponse?.status === 'success') {
+      setAccounts(accountsResponse.data)
+    } else if (accountsResponse?.status === 'error') {
+      console.warn(accountsResponse.error)
+    }
+  }, [accountsResponse])
 
   useEffect(() => {
     if (userPaymentDefaultsResponse) {
@@ -176,6 +194,7 @@ const CreatePaymentRequestPageMain = ({
       shippingLastName: paymentRequest.lastName,
       notificationEmailAddresses: paymentRequest.notificationEmailAddresses,
       useHostedPaymentPage: true,
+      pispAccountID: paymentRequest.destinationAccountID,
     }
   }
 
@@ -256,6 +275,7 @@ const CreatePaymentRequestPageMain = ({
         isOpen={isOpen}
         onClose={onClose}
         banks={banks ?? []}
+        accounts={accounts ?? []}
         onConfirm={onCreatePaymentRequest}
         userPaymentDefaults={
           isUserPaymentDefaultsLoading ? defaultUserPaymentDefaults : userPaymentDefaults
