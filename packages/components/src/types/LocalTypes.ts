@@ -172,6 +172,7 @@ export interface LocalPaymentRequestCreate {
   }
   tagIds?: string[]
   notificationEmailAddresses?: string
+  destinationAccountID?: string
 }
 
 export interface LocalPaymentConditionsFormValue {
@@ -186,6 +187,11 @@ export interface LocalPaymentMethodsFormValue {
   isLightningEnabled: boolean
   isCaptureFundsEnabled: boolean
   priorityBank?: {
+    id: string
+    name: string
+  }
+  isDestinationAccountEnabled: boolean
+  destinationAccount?: {
     id: string
     name: string
   }

@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import {
+  Account,
   ApiError,
   BankSettings,
   Currency,
@@ -43,6 +44,7 @@ import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 
 export interface CreatePaymentRequestPageProps {
   banks: BankSettings[]
+  accounts: Account[]
   userPaymentDefaults?: UserPaymentDefaults
   onConfirm: (data: LocalPaymentRequestCreate) => Promise<ApiError | undefined>
   isOpen: boolean
@@ -57,6 +59,7 @@ const durationAnimationWidth = 0.3
 
 const CreatePaymentRequestPage = ({
   banks,
+  accounts,
   userPaymentDefaults,
   onConfirm,
   isOpen,
@@ -67,9 +70,7 @@ const CreatePaymentRequestPage = ({
   autoSuggestions,
 }: CreatePaymentRequestPageProps) => {
   const [amount, setAmount] = useState(prefilledData?.amount.toString() ?? '')
-  const [currency, setCurrency] = useState<'EUR' | 'GBP'>(
-    (prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP',
-  )
+  const [currency, setCurrency] = useState<Currency>(prefilledData?.currency ?? Currency.EUR)
   const [productOrService, setProductOrService] = useState(prefilledData?.productOrService ?? '')
   const [description, setDescription] = useState(prefilledData?.description ?? '')
   const [firstName, setFirstName] = useState(prefilledData?.firstName ?? '')
@@ -98,6 +99,7 @@ const CreatePaymentRequestPage = ({
       isWalletEnabled: true,
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
+      isDestinationAccountEnabled: false,
       isDefault: false,
     })
 
@@ -152,6 +154,7 @@ const CreatePaymentRequestPage = ({
       isCaptureFundsEnabled:
         !userPaymentDefaults?.paymentMethodsDefaults?.cardAuthorizeOnly ?? true,
       priorityBank: findBank(userPaymentDefaults?.paymentMethodsDefaults?.pispPriorityBankID),
+      isDestinationAccountEnabled: false,
       isDefault: !!userPaymentDefaults?.paymentMethodsDefaults,
     })
   }
@@ -185,7 +188,7 @@ const CreatePaymentRequestPage = ({
 
   useEffect(() => {
     setAmount(prefilledData?.amount.toString() ?? '')
-    setCurrency((prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP')
+    setCurrency(prefilledData?.currency ?? Currency.EUR)
     setProductOrService(prefilledData?.productOrService ?? '')
     setDescription(prefilledData?.description ?? '')
     setFirstName(prefilledData?.firstName ?? '')
@@ -203,6 +206,7 @@ const CreatePaymentRequestPage = ({
           ? findBank(prefilledData?.paymentMethods?.bank?.priority?.id)
           : undefined,
         isDefault: false,
+        isDestinationAccountEnabled: false,
       })
     } else {
       fillDefaultPaymentMethods()
@@ -228,7 +232,7 @@ const CreatePaymentRequestPage = ({
   }, [prefilledData])
 
   const onCurrencyChange = (currency: string) => {
-    setCurrency(currency as 'EUR' | 'GBP')
+    setCurrency(currency as Currency)
   }
 
   const onMethodsReceived = (data: LocalPaymentMethodsFormValue) => {
@@ -305,6 +309,7 @@ const CreatePaymentRequestPage = ({
         lightning: paymentMethodsFormValue.isLightningEnabled,
       },
       notificationEmailAddresses: paymentNotificationsFormValue.emailAddresses,
+      destinationAccountID: paymentMethodsFormValue.destinationAccount?.id,
     }
 
     const apiError = await onConfirm(paymentRequestToCreate)
@@ -381,7 +386,7 @@ const CreatePaymentRequestPage = ({
 
   const resetStates = () => {
     setAmount('')
-    setCurrency('EUR')
+    setCurrency(Currency.EUR)
     setProductOrService('')
     setDescription('')
     setFirstName('')
@@ -394,6 +399,7 @@ const CreatePaymentRequestPage = ({
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
       isDefault: false,
+      isDestinationAccountEnabled: false,
     })
     setPaymentConditionsFormValue({
       allowPartialPayments: false,
@@ -407,6 +413,9 @@ const CreatePaymentRequestPage = ({
   }
 
   const availableMethodsDetails = [
+    ...(paymentMethodsFormValue.destinationAccount != undefined
+      ? [`*${paymentMethodsFormValue.destinationAccount.name}* set up as destination account.`]
+      : []),
     ...(paymentMethodsFormValue.isBankEnabled && paymentMethodsFormValue.priorityBank
       ? [`*${paymentMethodsFormValue.priorityBank.name}* set up as priority bank.`]
       : []),
@@ -961,7 +970,7 @@ const CreatePaymentRequestPage = ({
 
           {!isUserPaymentDefaultsLoading && (
             <PaymentMethodsModal
-              currencySymbol={currency == 'GBP' ? '£' : '€'}
+              currency={currency}
               amount={amount}
               minimumCurrencyAmount={getMinimumAmountPerCurrency(currency)}
               open={isPaymentMethodsModalOpen}
@@ -974,6 +983,7 @@ const CreatePaymentRequestPage = ({
               onApply={onMethodsReceived}
               onDismiss={() => setIsPaymentMethodsModalOpen(false)}
               banks={banks}
+              destinationAccounts={accounts}
             />
           )}
 
