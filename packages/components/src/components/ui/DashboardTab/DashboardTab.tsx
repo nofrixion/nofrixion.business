@@ -46,7 +46,7 @@ const getDisplayTextForStatus = (status: string) => {
     case PaymentRequestStatus.None:
       return 'Unpaid'
     case PaymentRequestStatus.Authorized:
-      return 'Authorized'
+      return 'Authorised'
     /* Payouts */
     case PayoutStatus.FAILED:
       return 'Failed'
