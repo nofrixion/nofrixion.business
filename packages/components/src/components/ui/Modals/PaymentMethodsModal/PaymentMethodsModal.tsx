@@ -275,7 +275,7 @@ const PaymentMethodsModal = ({
                 <div className="pl-6 md:pl-10 pt-7">
                   <Checkbox
                     label="Change destination account"
-                    infoText="This will be the account where the funds will be sent to if the payment is done via bank transfer."
+                    infoText="This is the account where funds will be transferred for bank payments."
                     value={isDestinationAccountEnabled}
                     onChange={setIsDestinationAccountEnabled}
                   />

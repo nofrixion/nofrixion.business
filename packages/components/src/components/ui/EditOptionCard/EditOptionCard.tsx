@@ -69,7 +69,7 @@ const EditOptionCard = ({
         )}
       </div>
       {!isLoading && details && details.length > 0 && (
-        <div className="flex flex-col mt-2 text-grey-text text-xs md:ml-auto">
+        <div className="flex flex-col mt-2 text-grey-text text-xs/5 md:ml-auto">
           {details?.map((detail, index) => {
             return <span key={`detail-${index}`}>{parseBoldText(detail)}</span>
           })}
