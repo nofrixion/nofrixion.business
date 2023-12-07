@@ -18,7 +18,7 @@ export interface LocalContact {
   email?: string
 }
 
-export type LocalPaymentStatus = 'paid' | 'partial' | 'unpaid' | 'overpaid' | 'authorized'
+export type LocalPaymentStatus = 'paid' | 'partial' | 'unpaid' | 'overpaid' | 'authorised'
 
 export interface LocalPaymentRequest {
   id: string

@@ -111,7 +111,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
       case PaymentResult.OverPaid:
         return 'overpaid'
       case PaymentResult.Authorized:
-        return 'authorized'
+        return 'authorised'
       default:
         return 'unpaid'
     }

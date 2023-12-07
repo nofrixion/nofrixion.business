@@ -14,7 +14,7 @@ const statusVariants = cva(
         partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
         unpaid: ['bg-[#F1F3F4]'],
         overpaid: ['bg-[#D8F2EA]', 'text-[#004D33]'],
-        authorized: ['bg-[#F1F3F4]', 'text-default-text'],
+        authorised: ['bg-[#F1F3F4]', 'text-default-text'],
         pending: ['bg-information-bg'],
         pending_approval: ['bg-warning-yellow', 'text-[#663300]'],
         failed: ['bg-[#FEE7EB]', 'text-[#4D000D]'],
@@ -46,7 +46,7 @@ const iconVariants = cva('w-auto mb-[0.063rem]', {
       partial: ['text-[#B25900]'],
       unpaid: ['text-[#C8D0D0]'],
       overpaid: ['text-positive-green'],
-      authorized: ['text-[#C8D0D0]'],
+      authorised: ['text-[#C8D0D0]'],
       pending: ['text-control-grey-hover'],
       pending_approval: ['text-[#B25900]'],
       failed: ['text-[#F32448]'],
@@ -94,7 +94,7 @@ const iconName: Record<TVariant, Record<'small' | 'medium' | 'large', IconNames>
     medium: 'done/12',
     large: 'done/16',
   },
-  authorized: {
+  authorised: {
     small: 'not-started/12',
     medium: 'not-started/12',
     large: 'not-started/12',
