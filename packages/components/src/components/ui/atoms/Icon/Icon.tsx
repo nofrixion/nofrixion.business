@@ -584,6 +584,54 @@ export const Icons = {
       </defs>
     </SVG>
   ),
+  'outgoing/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M8 10L8 2M8 2L11 5M8 2L5 5M15 11V12C15 12.5304 14.8033 13.0391 14.4533 13.4142C14.1032 13.7893 13.6284 14 13.1333 14L2.86667 14C2.3716 14 1.8968 13.7893 1.54673 13.4142C1.19667 13.0391 1 12.5304 1 12V11"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
+  'payrun/16': (className: string) => (
+    <SVG className={className} size="16">
+      <g clipPath="url(#clip0_10307_56209)">
+        <path
+          d="M13.5 8.5V1.5C13.5 1.23478 13.3946 0.98043 13.2071 0.792893C13.0196 0.605357 12.7652 0.5 12.5 0.5H3.5C3.23478 0.5 2.98043 0.605357 2.79289 0.792893C2.60536 0.98043 2.5 1.23478 2.5 1.5V8.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M14.6667 7.63999C14.7421 7.58283 14.8317 7.5476 14.9259 7.53819C15.02 7.52878 15.1149 7.54555 15.2 7.58666C15.2847 7.62635 15.3561 7.68959 15.4058 7.7688C15.4554 7.84801 15.4812 7.93985 15.48 8.03333V14.5C15.48 14.7652 15.3747 15.0196 15.1871 15.2071C14.9996 15.3946 14.7453 15.5 14.48 15.5H1.50004C1.23482 15.5 0.980467 15.3946 0.792931 15.2071C0.605394 15.0196 0.500038 14.7652 0.500038 14.5V8.03333C0.498877 7.93985 0.524665 7.84801 0.57432 7.7688C0.623975 7.68959 0.695394 7.62635 0.780038 7.58666C0.86522 7.54555 0.960104 7.52878 1.05422 7.53819C1.14833 7.5476 1.23801 7.58283 1.31337 7.63999L6.7667 11.5733C7.11869 11.8491 7.55292 11.9989 8.00004 11.9989C8.44716 11.9989 8.88139 11.8491 9.23337 11.5733L14.6667 7.63999Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M5 5H11" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M5 7H11" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M5 3H11" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip0_10307_56209">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </SVG>
+  ),
+  'import/16': (className: string) => (
+    <SVG className={className} size="16">
+      <path
+        d="M15.5006 11.666L15.5006 13.666C15.5006 13.9312 15.3953 14.1856 15.2077 14.3731C15.0202 14.5607 14.7658 14.666 14.5006 14.666L1.50061 14.666C1.23539 14.666 0.98104 14.5607 0.793504 14.3731C0.605967 14.1856 0.50061 13.9312 0.50061 13.666L0.50061 11.666"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M11 8.5L8 11.5L5 8.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M7.97487 11L7.97487 5C7.97487 4.20435 7.60612 3.44129 6.94975 2.87868C6.29337 2.31607 5.40313 2 4.47487 2C3.54662 2 2.4751 2 2 2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
   'back/12': (className: string) => (
     <SVG className={className} size="12">
       <path d="M6 11L0.999999 6L6 1" strokeLinecap="round" strokeLinejoin="round" />

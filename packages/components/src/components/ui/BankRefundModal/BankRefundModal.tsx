@@ -95,8 +95,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
       if (apiError) {
         setBankRefundError({ title: 'Bank refund has failed', message: apiError.detail })
         setShowRefundError(true)
-      }
-      else {
+      } else {
         onDismiss()
       }
     }
@@ -133,7 +132,7 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     <div className="md:w-40">
                       <InputAmountField
                         currency={bankPaymentAttempt.currency}
-                        onCurrencyChange={() => { }}
+                        onCurrencyChange={() => {}}
                         allowCurrencyChange={false}
                         value={amountToRefund}
                         onChange={(value) => setAmountToRefund(value)}

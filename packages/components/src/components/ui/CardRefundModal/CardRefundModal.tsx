@@ -12,7 +12,11 @@ import InputAmountField from '../InputAmountField/InputAmountField'
 import { Loader } from '../Loader/Loader'
 
 export interface CardRefundModalProps {
-  onRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<ApiError | undefined>
+  onRefund: (
+    authorizationID: string,
+    amount: number,
+    isCardVoid: boolean,
+  ) => Promise<ApiError | undefined>
   onDismiss: () => void
   paymentRequest: LocalPaymentRequest
   cardPaymentAttempt: LocalPaymentAttempt
@@ -79,10 +83,12 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
       }
       const apiError = await onRefund(cardPaymentAttempt.attemptKey, parsedAmount, isCardVoid)
       if (apiError) {
-        setCardRefundError({ title: isCardVoid ? 'Void card payment has failed' : 'Card capture payment has failed', message: apiError.detail })
+        setCardRefundError({
+          title: isCardVoid ? 'Void card payment has failed' : 'Card capture payment has failed',
+          message: apiError.detail,
+        })
         setShowRefundError(true)
-      }
-      else {
+      } else {
         onDismiss()
       }
     }
@@ -151,7 +157,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       <div className="md:w-40">
                         <InputAmountField
                           currency={cardPaymentAttempt.currency}
-                          onCurrencyChange={() => { }}
+                          onCurrencyChange={() => {}}
                           allowCurrencyChange={false}
                           value={amountToRefund}
                           onChange={(value) => {

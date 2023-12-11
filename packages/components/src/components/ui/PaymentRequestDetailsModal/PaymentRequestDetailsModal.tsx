@@ -19,7 +19,11 @@ export interface PaymentRequestDetailsModalProps {
   paymentRequest?: LocalPaymentRequest
   merchantTags: LocalTag[]
   hostedPaymentLink: string
-  onCardRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<ApiError | undefined>
+  onCardRefund: (
+    authorizationID: string,
+    amount: number,
+    isCardVoid: boolean,
+  ) => Promise<ApiError | undefined>
   onBankRefund: (
     sourAccount: LocalAccount,
     counterParty: LocalCounterparty,
