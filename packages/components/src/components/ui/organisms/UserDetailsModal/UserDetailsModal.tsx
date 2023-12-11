@@ -15,7 +15,11 @@ export interface UserDetailsModalProps {
   open: boolean
   merchantId: string
   onDismiss: () => void
-  onUpdateUserRole: (merchantId: string, emailAddress: string, userRole: UserRoles) => Promise<ApiError | undefined>
+  onUpdateUserRole: (
+    merchantId: string,
+    emailAddress: string,
+    userRole: UserRoles,
+  ) => Promise<ApiError | undefined>
   onDeleteUserRole: (userRoleId: string) => void
 }
 
@@ -79,7 +83,11 @@ const UserDetailsModal = ({
     setUserRoleError(undefined)
     setDisabled(true)
 
-    const apiError = await onUpdateUserRole(merchantId, user?.emailAddress ?? '', selectedRole ?? UserRoles.User)
+    const apiError = await onUpdateUserRole(
+      merchantId,
+      user?.emailAddress ?? '',
+      selectedRole ?? UserRoles.User,
+    )
     if (apiError) {
       setUserRoleError({ title: 'Update user role has failed', message: apiError.detail })
       setShowUserRoleError(true)
@@ -186,10 +194,7 @@ const UserDetailsModal = ({
               </div>
               {showUserRoleError && userRoleError && (
                 <div className="lg:mt-14">
-                  <InlineError
-                    title={userRoleError.title}
-                    messages={[userRoleError.message]}
-                  />
+                  <InlineError title={userRoleError.title} messages={[userRoleError.message]} />
                 </div>
               )}
             </div>

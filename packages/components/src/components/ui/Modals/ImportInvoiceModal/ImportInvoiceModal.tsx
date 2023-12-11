@@ -86,7 +86,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="w-full transform bg-white text-left align-middle transition-all min-h-screen lg:px-0 lg:flex">
+            <Dialog.Panel className="w-full transform bg-white text-left align-middle transition-all min-h-screen lg:px-0 lg:flex fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50">
               <div className="flex flex-row mt-[80px] w-full">
                 <BackArrow
                   intent="close"

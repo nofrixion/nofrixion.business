@@ -29,31 +29,31 @@ import {
   remotePayoutsToLocal,
 } from '../../../utils/parsers'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
-import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
+import { AccountsPayableDashboard as UIAccountsPayableDashboard } from '../../ui/pages/AccountsPayableDashboard/AccountsPayableDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 import SavePayoutModal from '../SavePayoutModal/SavePayoutModal'
 
-export interface PayoutDashboardProps {
+export interface AccountsPayableDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
   onUnauthorized: () => void
 }
 
-const PayoutDashboard = ({
+const AccountsPayableDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
-}: PayoutDashboardProps) => {
+}: AccountsPayableDashboardProps) => {
   const queryClient = useQueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PayoutDashboardMain
+      <AccountsPayableDashboardMain
         token={token}
         merchantId={merchantId}
         apiUrl={apiUrl}
@@ -65,12 +65,12 @@ const PayoutDashboard = ({
 
 const pageSize = 20
 
-const PayoutDashboardMain = ({
+const AccountsPayableDashboardMain = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   onUnauthorized,
-}: PayoutDashboardProps) => {
+}: AccountsPayableDashboardProps) => {
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
   const [payouts, setPayouts] = useState<Payout[] | undefined>(undefined)
@@ -410,50 +410,51 @@ const PayoutDashboardMain = ({
   }
 
   return (
-    <div>
-      <UIPayoutDashboard
-        payouts={payouts ? remotePayoutsToLocal(payouts) : undefined}
-        payoutMetrics={metrics}
-        pagination={{
-          pageSize: pageSize,
-          totalSize: totalRecords,
+    <>
+      <UIAccountsPayableDashboard
+        payoutProps={{
+          payouts: payouts ? remotePayoutsToLocal(payouts) : undefined,
+          payoutMetrics: metrics,
+          pagination: {
+            pageSize: pageSize,
+            totalSize: totalRecords,
+          },
+          onPageChange: onPageChange,
+          dateRange: dateRange,
+          onDateChange: onDateChange,
+          onSearch: setSearchFilter,
+          onSort: onSort,
+          searchFilter: searchFilter,
+          isLoading: isLoadingPayouts,
+          isLoadingMetrics: isLoadingMetrics,
+          isInitialState: isInitialState,
+          merchantCreatedAt:
+            merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined,
+          setStatus: setStatus,
+          currency: currencyFilter,
+          setCurrency: setCurrencyFilter,
+          minAmount: minAmountFilter,
+          setMinAmount: setMinAmountFilter,
+          maxAmount: maxAmountFilter,
+          setMaxAmount: setMaxAmountFilter,
+          onPayoutClicked: onPayoutRowClicked,
+          selectedPayoutId: selectedPayoutId,
+          tags: tags,
+          setTags: setTags,
+          sortBy: sortBy,
+          status: status,
+          onAddPayoutForAuthorise: addPayoutForAuthorise,
+          onRemovePayoutForAuthorise: removePayoutForAuthorise,
+          selectedPayouts: selectedPayouts,
+          payoutsExist: payoutsExists,
+          isUserAuthoriser: isUserAuthoriser,
+          systemError: systemError,
+          isSystemErrorOpen: isSystemErrorOpen,
+          onCloseSystemError: onCloseSystemErrorModal,
         }}
-        onPageChange={onPageChange}
-        onDateChange={onDateChange}
-        onSearch={setSearchFilter}
-        onSort={onSort}
-        searchFilter={searchFilter}
-        isLoading={isLoadingPayouts}
-        isLoadingMetrics={isLoadingMetrics}
-        isInitialState={isInitialState}
         onCreatePayout={onCreatePayout}
-        merchantCreatedAt={
-          merchant?.status == 'success' ? new Date(merchant?.data.inserted) : undefined
-        }
-        setStatus={setStatus}
-        currency={currencyFilter}
-        setCurrency={setCurrencyFilter}
-        minAmount={minAmountFilter}
-        setMinAmount={setMinAmountFilter}
-        maxAmount={maxAmountFilter}
-        setMaxAmount={setMaxAmountFilter}
-        onPayoutClicked={onPayoutRowClicked}
-        selectedPayoutId={selectedPayoutId}
-        tags={tags}
-        setTags={setTags}
-        sortBy={sortBy}
-        status={status}
-        onAddPayoutForAuthorise={addPayoutForAuthorise}
-        onRemovePayoutForAuthorise={removePayoutForAuthorise}
-        selectedPayouts={selectedPayouts}
         onApproveBatchPayouts={onApproveBatchPayouts}
-        payoutsExist={payoutsExists}
-        isUserAuthoriser={isUserAuthoriser}
-        systemError={systemError}
-        isSystemErrorOpen={isSystemErrorOpen}
-        onCloseSystemError={onCloseSystemErrorModal}
       />
-
       <PayoutDetailsModal
         open={!!selectedPayoutId}
         apiUrl={apiUrl}
@@ -474,6 +475,7 @@ const PayoutDashboardMain = ({
         isUserAuthoriser={isUserAuthoriser}
         onEdit={onPayoutEditClicked}
         onSystemError={handleSystemErrorMessage}
+        token={token}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
@@ -501,8 +503,8 @@ const PayoutDashboardMain = ({
           approveType={ApproveType.BATCH_PAYOUT}
         />
       )}
-    </div>
+    </>
   )
 }
 
-export default PayoutDashboard
+export default AccountsPayableDashboard
