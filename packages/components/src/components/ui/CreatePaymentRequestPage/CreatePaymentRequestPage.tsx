@@ -300,7 +300,7 @@ const CreatePaymentRequestPage = ({
         card: {
           active: paymentMethodsFormValue.isCardEnabled,
           // Capture funds should always be true when card is disabled
-          // as it's not possible to only authorize on cards if card are disabled
+          // as it's not possible to only authorise on cards if card are disabled
           captureFunds: paymentMethodsFormValue.isCardEnabled
             ? paymentMethodsFormValue.isCaptureFundsEnabled
             : true,

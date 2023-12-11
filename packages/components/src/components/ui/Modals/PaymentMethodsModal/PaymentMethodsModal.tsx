@@ -386,7 +386,7 @@ const PaymentMethodsModal = ({
                 <div className="ml-10 pt-7 md:pb-4">
                   <Checkbox
                     label="Don't capture funds on card payments"
-                    infoText="Enable this option to authorize card payments without immediately capturing the funds. This allows for manual capture or cancellation before completing the transaction."
+                    infoText="Enable this option to authorise card payments without immediately capturing the funds. This allows for manual capture or cancellation before completing the transaction."
                     value={!isCaptureFundsEnabled}
                     onChange={(value) => setIsCaptureFundsEnabled(!value)}
                   />
