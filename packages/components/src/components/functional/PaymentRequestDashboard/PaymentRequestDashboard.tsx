@@ -336,9 +336,9 @@ const PaymentRequestDashboardMain = ({
           active: paymentRequest.paymentMethodTypes.includes(LocalPaymentMethodTypes.Pisp),
           priority: paymentRequest.priorityBankID
             ? {
-              id: paymentRequest.priorityBankID,
-              name: '',
-            }
+                id: paymentRequest.priorityBankID,
+                name: '',
+              }
             : undefined,
         },
         card: {
@@ -449,7 +449,6 @@ const PaymentRequestDashboardMain = ({
       if (result.error) {
         handleApiError(result.error)
         return result.error
-
       } else {
         makeToast('success', 'Payment successfully captured.')
       }
