@@ -1,11 +1,14 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { parse, ParseResult } from 'papaparse'
 import { Fragment, useEffect, useState } from 'react'
 
 import { LocalInvoice, ValidationResult } from '../../../../types/LocalTypes'
 import { validateInvoices } from '../../../../utils/validation'
+import { Button, Icon } from '../../atoms'
 import FileInput from '../../atoms/FileInput/FileInput'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../atoms/Tabs/Tabs'
+import ImportInvoiceTable from '../../organisms/ImportInvoiceTable/ImportInvoiceTable'
 import BackArrow from '../../utils/BackArrow'
 
 export interface ImportInvoiceModalProps {
@@ -16,9 +19,11 @@ export interface ImportInvoiceModalProps {
 const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
   const [validationResults, setValidationResults] = useState<ValidationResult[] | null>(null)
   const [json, setJson] = useState<any>(null)
+  const [invoices, setInvoices] = useState<LocalInvoice[] | undefined>()
   const [isError, setIsError] = useState(false)
   const [selectedTab, setSelectedTab] = useState<'upload' | 'review'>('upload')
   const [isLoading, setIsLoading] = useState(false)
+  const [selectedInvoices, setSelectedInvoices] = useState<string[]>([])
 
   useEffect(() => {
     if (!validationResults) {
@@ -61,8 +66,13 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
           skipEmptyLines: true,
           complete: (results: ParseResult<LocalInvoice>) => {
             const validationResults = validateInvoices(results.data as LocalInvoice[])
-
             setValidationResults(validationResults)
+
+            // If no errors in validation, then we can set the invoices
+            if (validationResults.every((result) => result.valid)) {
+              setSelectedInvoices(results.data.map((invoice) => invoice.InvoiceNumber))
+              setInvoices(results.data as LocalInvoice[])
+            }
           },
           error: (err: any) => {
             console.error('PARSE ERROR', err)
@@ -71,6 +81,10 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
         })
       }
     }
+  }
+
+  const onImportInvoices = () => {
+    console.log('Invoices to import', selectedInvoices)
   }
 
   return (
@@ -86,23 +100,47 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="w-full transform bg-white text-left align-middle transition-all min-h-screen lg:px-0 lg:flex fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50">
-              <div className="flex flex-row mt-[80px] w-full">
+            <Dialog.Panel className="w-full transform bg-white text-left align-middle transition-all min-h-screen lg:px-0 lg:flex fixed inset-0 overflow-y-auto z-50">
+              <div className="flex min-h-full flex-row pt-[80px] w-full">
                 <BackArrow
                   intent="close"
                   onClick={() => {
                     onClose()
                   }}
                 />
-                <div className="flex flex-col w-full -mt-2 pr-[122px]">
+                <div className="-mt-1 ml-[2.875rem] w-full pr-[7.625rem]">
                   <Dialog.Title
                     as="h3"
-                    className="text-[28px] font-semibold inline-block text-clip md:whitespace-nowrap -mr-6 ml-11 h-fit flex-nowrap"
+                    className="text-[28px]/8 font-semibold text-clip md:whitespace-nowrap flex-nowrap flex justify-between h-10"
                   >
                     Import invoices
+                    <AnimatePresence>
+                      {selectedInvoices?.length > 0 && selectedTab == 'review' && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Button
+                            size="large"
+                            onClick={onImportInvoices}
+                            className="w-10 h-10 md:w-full md:h-12"
+                          >
+                            <span className="hidden md:inline-block">
+                              Import{' '}
+                              {selectedInvoices.length == 1
+                                ? 'invoice'
+                                : `${selectedInvoices.length} invoices`}
+                            </span>
+                            <Icon name="add/16" className="md:hidden" />
+                          </Button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </Dialog.Title>
 
-                  <Tabs value={selectedTab} defaultValue="upload" className="w-full ml-11 mt-14">
+                  <Tabs value={selectedTab} defaultValue="upload" className="w-full mt-14">
                     <TabsList>
                       <TabsTrigger
                         value="upload"
@@ -123,7 +161,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                       </TabsTrigger>
                     </TabsList>
                     <TabsContent value="upload" className="w-full">
-                      <div className="ml-1 pt-12 pr-10">
+                      <div className="pt-12 pr-10">
                         <FileInput
                           onFileAdded={handleFileAdded}
                           isError={isError}
@@ -133,9 +171,17 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                         />
                       </div>
                     </TabsContent>
-                    <TabsContent value="review">
+                    <TabsContent value="review" className="mt-14">
+                      {/* TODO: Validate length */}
+                      {invoices && (
+                        <ImportInvoiceTable
+                          invoices={invoices}
+                          selectedInvoices={selectedInvoices}
+                          setSelectedInvoices={setSelectedInvoices}
+                        />
+                      )}
                       <div className="text-xs bg-black text-blue-300 max-h-screen overflow-y-auto">
-                        <pre>{json}</pre>
+                        {!invoices && json && <pre>{json}</pre>}
                       </div>
                     </TabsContent>
                   </Tabs>

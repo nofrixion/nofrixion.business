@@ -7,6 +7,7 @@ const containerVariant = cva('flex flex-col', {
   variants: {
     size: {
       small: [''],
+      normal: [''],
       large: ['pr-6'],
     },
   },
@@ -19,6 +20,7 @@ const nameVariants = cva('', {
   variants: {
     size: {
       small: ['truncate text-13px'],
+      normal: ['truncate text-sm/4 mb-2'],
       large: ['text-[1.25rem]', 'font-semibold', 'leading-7', 'mb-2'],
     },
   },
@@ -31,6 +33,7 @@ const emailVariants = cva('text-grey-text break-all', {
   variants: {
     size: {
       small: ['text-xs truncate'],
+      normal: ['text-xs'],
       large: ['text-sm'],
     },
   },
