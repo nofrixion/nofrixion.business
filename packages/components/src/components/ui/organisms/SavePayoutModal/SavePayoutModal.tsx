@@ -135,8 +135,8 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       .map((item) => item.currency)
       .filter((value, index, self) => self.indexOf(value) === index).length === 1
       ? accounts
-        .map((item) => item.currency)
-        .filter((value, index, self) => self.indexOf(value) === index)[0]
+          .map((item) => item.currency)
+          .filter((value, index, self) => self.indexOf(value) === index)[0]
       : undefined
 
   const [currency, setCurrency] = useState<Currency | undefined>(
@@ -163,7 +163,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       noChanges =
         noChanges &&
         (selectedPayout?.destination?.name ? selectedPayout?.destination?.name : '') ===
-        destinationAccountName
+          destinationAccountName
       if (currency === Currency.EUR) {
         noChanges =
           noChanges && selectedPayout?.destination?.identifier?.iban === destinationAccountIBAN
@@ -372,10 +372,12 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
         )
 
         if (apiError) {
-          setPayoutError({ title: saveAndApprove ? 'Payout authorisation error' : 'Create payout has failed', message: apiError.detail })
+          setPayoutError({
+            title: saveAndApprove ? 'Payout authorisation error' : 'Create payout has failed',
+            message: apiError.detail,
+          })
           setShowPayoutError(true)
         }
-
       } else if (selectedPayout && onUpdatePayout) {
         const apiError = await onUpdatePayout(
           fromAccount!,
@@ -391,7 +393,12 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
         )
 
         if (apiError) {
-          setPayoutError({ title: saveAndApprove ? 'Payout authorisation error' : 'Update payout details has failed', message: apiError.detail })
+          setPayoutError({
+            title: saveAndApprove
+              ? 'Payout authorisation error'
+              : 'Update payout details has failed',
+            message: apiError.detail,
+          })
           setShowPayoutError(true)
         }
       }
@@ -700,8 +707,8 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                             addManuallySelected
                               ? 'addManually'
                               : selectedBeneficiary
-                                ? selectedBeneficiary?.id
-                                : ''
+                              ? selectedBeneficiary?.id
+                              : ''
                           }
                           onValueChange={handleBeneficiaryOnChange}
                           beneficiaries={beneficiaries.filter(
@@ -718,102 +725,102 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                       selectedPayout ||
                       !beneficiaries ||
                       beneficiaries.length === 0) && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, marginTop: 0, marginBottom: 0 }}
-                          animate={{
-                            opacity: 1,
-                            height: 'auto',
-                            marginTop: '32px',
-                            marginBottom: '32px',
-                            transition: { duration: 0.3 },
-                          }}
-                          exit={{
-                            opacity: 0,
-                            height: 0,
-                            marginTop: 0,
-                            marginBottom: 0,
-                            transition: { duration: 0.3 },
-                          }}
-                        >
-                          <div className="items-baseline mt-10">
-                            <div className="text-left">
-                              <InputTextField
-                                label="Account name"
-                                maxLength={40}
-                                value={destinationAccountName ?? ''}
-                                onChange={(value) => setDestinationAccountName(value)}
-                                warningValidation={onValidateDestinationAccountName}
-                                placeholder="The person or company that owns the account"
-                                required
-                                formSubmitted={createPayoutClicked}
-                                disabled={selectedBeneficiary ? true : false}
-                              />
-                            </div>
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0, marginBottom: 0 }}
+                        animate={{
+                          opacity: 1,
+                          height: 'auto',
+                          marginTop: '32px',
+                          marginBottom: '32px',
+                          transition: { duration: 0.3 },
+                        }}
+                        exit={{
+                          opacity: 0,
+                          height: 0,
+                          marginTop: 0,
+                          marginBottom: 0,
+                          transition: { duration: 0.3 },
+                        }}
+                      >
+                        <div className="items-baseline mt-10">
+                          <div className="text-left">
+                            <InputTextField
+                              label="Account name"
+                              maxLength={40}
+                              value={destinationAccountName ?? ''}
+                              onChange={(value) => setDestinationAccountName(value)}
+                              warningValidation={onValidateDestinationAccountName}
+                              placeholder="The person or company that owns the account"
+                              required
+                              formSubmitted={createPayoutClicked}
+                              disabled={selectedBeneficiary ? true : false}
+                            />
                           </div>
-                          <AnimatePresence initial={false}>
-                            {(destinationAccountIBAN ||
-                              ((addManuallySelected ||
-                                selectedPayout ||
-                                !beneficiaries ||
-                                beneficiaries.length === 0) &&
-                                currency === Currency.EUR)) && (
-                                <AnimateHeightWrapper layoutId="eur-account-details">
-                                  <div className="text-left mt-2">
-                                    <InputTextField
-                                      label="Account IBAN"
-                                      value={destinationAccountIBAN ?? ''}
-                                      onChange={(value) =>
-                                        setDestinationAccountIBAN(value.toUpperCase())
-                                      }
-                                      warningValidation={onValidateDestinationAccountIBAN}
-                                      placeholder='e.g. "GB29NWBK60161331926819"'
-                                      required
-                                      formSubmitted={createPayoutClicked}
-                                      disabled={selectedBeneficiary ? true : false}
-                                    />
-                                  </div>
-                                </AnimateHeightWrapper>
-                              )}
-                          </AnimatePresence>
-                          <AnimatePresence initial={false}>
-                            {((destinationAccountSortCode && destinationAccountNumber) ||
-                              ((addManuallySelected ||
-                                selectedPayout ||
-                                !beneficiaries ||
-                                beneficiaries.length === 0) &&
-                                currency === Currency.GBP)) && (
-                                <AnimateHeightWrapper layoutId="gbp-account-details">
-                                  <div className="text-left mt-2">
-                                    <InputTextField
-                                      variant="numeric"
-                                      label="Account number"
-                                      maxLength={8}
-                                      value={destinationAccountNumber ?? ''}
-                                      onChange={(value) => setDestinationAccountNumber(value)}
-                                      placeholder='e.g. "12345678"'
-                                      required
-                                      formSubmitted={createPayoutClicked}
-                                      disabled={selectedBeneficiary ? true : false}
-                                    />
-                                  </div>
-                                  <div className="text-left mt-2">
-                                    <InputTextField
-                                      variant="numeric"
-                                      label="Account sort code"
-                                      maxLength={6}
-                                      value={destinationAccountSortCode ?? ''}
-                                      onChange={(value) => setDestinationAccountSortCode(value)}
-                                      placeholder='e.g. "123456"'
-                                      required
-                                      formSubmitted={createPayoutClicked}
-                                      disabled={selectedBeneficiary ? true : false}
-                                    />
-                                  </div>
-                                </AnimateHeightWrapper>
-                              )}
-                          </AnimatePresence>
-                        </motion.div>
-                      )}
+                        </div>
+                        <AnimatePresence initial={false}>
+                          {(destinationAccountIBAN ||
+                            ((addManuallySelected ||
+                              selectedPayout ||
+                              !beneficiaries ||
+                              beneficiaries.length === 0) &&
+                              currency === Currency.EUR)) && (
+                            <AnimateHeightWrapper layoutId="eur-account-details">
+                              <div className="text-left mt-2">
+                                <InputTextField
+                                  label="Account IBAN"
+                                  value={destinationAccountIBAN ?? ''}
+                                  onChange={(value) =>
+                                    setDestinationAccountIBAN(value.toUpperCase())
+                                  }
+                                  warningValidation={onValidateDestinationAccountIBAN}
+                                  placeholder='e.g. "GB29NWBK60161331926819"'
+                                  required
+                                  formSubmitted={createPayoutClicked}
+                                  disabled={selectedBeneficiary ? true : false}
+                                />
+                              </div>
+                            </AnimateHeightWrapper>
+                          )}
+                        </AnimatePresence>
+                        <AnimatePresence initial={false}>
+                          {((destinationAccountSortCode && destinationAccountNumber) ||
+                            ((addManuallySelected ||
+                              selectedPayout ||
+                              !beneficiaries ||
+                              beneficiaries.length === 0) &&
+                              currency === Currency.GBP)) && (
+                            <AnimateHeightWrapper layoutId="gbp-account-details">
+                              <div className="text-left mt-2">
+                                <InputTextField
+                                  variant="numeric"
+                                  label="Account number"
+                                  maxLength={8}
+                                  value={destinationAccountNumber ?? ''}
+                                  onChange={(value) => setDestinationAccountNumber(value)}
+                                  placeholder='e.g. "12345678"'
+                                  required
+                                  formSubmitted={createPayoutClicked}
+                                  disabled={selectedBeneficiary ? true : false}
+                                />
+                              </div>
+                              <div className="text-left mt-2">
+                                <InputTextField
+                                  variant="numeric"
+                                  label="Account sort code"
+                                  maxLength={6}
+                                  value={destinationAccountSortCode ?? ''}
+                                  onChange={(value) => setDestinationAccountSortCode(value)}
+                                  placeholder='e.g. "123456"'
+                                  required
+                                  formSubmitted={createPayoutClicked}
+                                  disabled={selectedBeneficiary ? true : false}
+                                />
+                              </div>
+                            </AnimateHeightWrapper>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    )}
                   </AnimatePresence>
 
                   <div className="mt-10 items-baseline">
@@ -917,10 +924,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
 
                   {showPayoutError && payoutError && (
                     <div className="lg:mb-14">
-                      <InlineError
-                        title={payoutError.title}
-                        messages={[payoutError.message]}
-                      />
+                      <InlineError title={payoutError.title} messages={[payoutError.message]} />
                     </div>
                   )}
 

@@ -104,7 +104,10 @@ const SavePayoutModal = ({
 
       if (createAndApprove) {
         await sleep(10000).then(() => {
-          return { title: "Payout authorisation error", detail: "Could not redirect to approve payout. Please try again." } as ApiError
+          return {
+            title: 'Payout authorisation error',
+            detail: 'Could not redirect to approve payout. Please try again.',
+          } as ApiError
         })
       }
 
@@ -151,7 +154,6 @@ const SavePayoutModal = ({
 
     if (response.error) {
       return response.error
-
     } else {
       if (updateAndApprove) {
         setPayoutID(selectedPayout.id)
@@ -163,7 +165,10 @@ const SavePayoutModal = ({
 
       if (updateAndApprove) {
         await sleep(10000).then(() => {
-          return { title: "Payout authorisation error", detail: "Could not redirect to approve payout. Please try again." } as ApiError
+          return {
+            title: 'Payout authorisation error',
+            detail: 'Could not redirect to approve payout. Please try again.',
+          } as ApiError
         })
       }
 

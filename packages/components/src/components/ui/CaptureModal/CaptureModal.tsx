@@ -70,11 +70,13 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
 
         const apiError = await onCapture(cardPaymentAttempt.attemptKey, parsedAmount)
         if (apiError) {
-          setCardCaptureError({ title: 'Card capture payment has failed', message: apiError.detail })
+          setCardCaptureError({
+            title: 'Card capture payment has failed',
+            message: apiError.detail,
+          })
           setShowCaptureError(true)
           setIsCaptureButtonDisabled(false)
-        }
-        else {
+        } else {
           onDismiss()
         }
       }
@@ -131,7 +133,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                     <div className="md:w-40">
                       <InputAmountField
                         currency={cardPaymentAttempt.currency}
-                        onCurrencyChange={() => { }}
+                        onCurrencyChange={() => {}}
                         allowCurrencyChange={false}
                         value={amountToCapture}
                         onChange={(value) => setAmountToCapture(value)}

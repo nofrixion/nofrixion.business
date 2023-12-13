@@ -62,7 +62,10 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
       const apiError = await onInvite(merchantID, emailAddress!)
 
       if (apiError) {
-        setInviteUserError({ title: 'Invite user to MoneyMoov has failed', message: apiError.detail })
+        setInviteUserError({
+          title: 'Invite user to MoneyMoov has failed',
+          message: apiError.detail,
+        })
         setShowInviteUserError(true)
       }
 
