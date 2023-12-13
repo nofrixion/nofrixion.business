@@ -125,7 +125,7 @@ const CurrentAccountsMain = ({
   }, [])
 
   useEffect(() => {
-    if (isWebComponent && bankId) {
+    if (!isWebComponent && bankId) {
       const bank = banks?.find((bank) => bank.bankID === bankId)
 
       if (bank) {
