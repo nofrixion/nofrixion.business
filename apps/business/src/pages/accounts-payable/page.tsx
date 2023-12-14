@@ -3,8 +3,6 @@ import { makeToast } from '@nofrixion/components/src/components/ui/Toast/Toast'
 import { Navigate, useLocation, useParams } from 'react-router-dom'
 import { useStore } from 'zustand'
 
-import { AuthContextType } from '../../lib/auth/AuthProvider'
-import { useAuth } from '../../lib/auth/useAuth'
 import { NOFRIXION_API_URL } from '../../lib/constants'
 import { ErrorType, useErrorsStore } from '../../lib/stores/useErrorsStore'
 import useMerchantStore from '../../lib/stores/useMerchantStore'
@@ -14,11 +12,6 @@ const AccountPayablePage = () => {
   const merchant = useStore(useMerchantStore, (state) => state.merchant)
   const { errors, removeError } = useErrorsStore()
   const location = useLocation()
-  const { authState } = useAuth() as AuthContextType
-
-  const onUnauthorized = () => {
-    authState?.logOut && authState.logOut()
-  }
 
   if (result) {
     if (result === 'success') {
@@ -43,13 +36,7 @@ const AccountPayablePage = () => {
     // Div is needed to prevent the dashboard from being
     // rendered as two separate components
     <div>
-      {merchant && (
-        <AccountsPayableDashboard
-          merchantId={merchant.id}
-          apiUrl={NOFRIXION_API_URL}
-          onUnauthorized={onUnauthorized}
-        />
-      )}
+      {merchant && <AccountsPayableDashboard merchantId={merchant.id} apiUrl={NOFRIXION_API_URL} />}
     </div>
   )
 }
