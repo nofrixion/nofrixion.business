@@ -1,13 +1,14 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { parse, ParseResult } from 'papaparse'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { LocalInvoice, ValidationResult } from '../../../../types/LocalTypes'
 import { validateInvoices } from '../../../../utils/validation'
 import { Button, Icon } from '../../atoms'
 import FileInput from '../../atoms/FileInput/FileInput'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../atoms/Tabs/Tabs'
+import CustomModal from '../../CustomModal/CustomModal'
 import ImportInvoiceTable from '../../organisms/ImportInvoiceTable/ImportInvoiceTable'
 import BackArrow from '../../utils/BackArrow'
 
@@ -18,33 +19,14 @@ export interface ImportInvoiceModalProps {
 
 const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
   const [validationResults, setValidationResults] = useState<ValidationResult[] | null>(null)
-  const [json, setJson] = useState<any>(null)
   const [invoices, setInvoices] = useState<LocalInvoice[] | undefined>()
   const [isError, setIsError] = useState(false)
   const [selectedTab, setSelectedTab] = useState<'upload' | 'review'>('upload')
   const [isLoading, setIsLoading] = useState(false)
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([])
+  const [showErrorModal, setShowErrorModal] = useState(false)
 
-  useEffect(() => {
-    if (!validationResults) {
-      return
-    }
-
-    // Temporary for displaying validation results
-    setJson(JSON.stringify(validationResults, null, 2))
-    console.log('-------------------------------')
-    console.log('Valid results')
-    console.log('-------------------------------')
-    console.log(JSON.stringify(validationResults?.filter((result) => result.valid)))
-
-    console.log('-------------------------------')
-    console.log('Invalid results')
-    console.log('-------------------------------')
-    console.error(validationResults?.filter((result) => !result.valid))
-
-    setIsLoading(false)
-    setSelectedTab('review')
-  }, [validationResults])
+  const linesWithErrors = validationResults?.filter((result) => !result.valid)
 
   const handleFileAdded = (file: File) => {
     if (file && file.type != 'text/csv') {
@@ -64,18 +46,25 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
         parse(reader.result as string, {
           header: true,
           skipEmptyLines: true,
+          transform: (value: string) => (value == '' ? undefined : value),
           complete: (results: ParseResult<LocalInvoice>) => {
             const validationResults = validateInvoices(results.data as LocalInvoice[])
             setValidationResults(validationResults)
 
-            // If no errors in validation, then we can set the invoices
-            if (validationResults.every((result) => result.valid)) {
-              setSelectedInvoices(results.data.map((invoice) => invoice.InvoiceNumber))
-              setInvoices(results.data as LocalInvoice[])
-            }
+            // If there's at least one valid invoice, set the valid invoice(s)
+            const validResults = validationResults
+              .filter((result) => result.valid)
+              .map((result) => result.result)
+
+            const validInvoices = validResults as LocalInvoice[]
+            setInvoices(validInvoices)
+            setSelectedInvoices(validInvoices.map((invoice) => invoice.InvoiceNumber))
+
+            setIsLoading(false)
+            setSelectedTab('review')
           },
-          error: (err: any) => {
-            console.error('PARSE ERROR', err)
+          error: () => {
+            setIsLoading(false)
             setIsError(true)
           },
         })
@@ -141,10 +130,10 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                   </Dialog.Title>
 
                   <Tabs value={selectedTab} defaultValue="upload" className="w-full mt-14">
-                    <TabsList>
+                    <TabsList className="h-10 flex justify-normal">
                       <TabsTrigger
                         value="upload"
-                        className="first:rounded-l-md last:rounded-r-md text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg  data-[state=active]:text-default-text"
+                        className="first:rounded-l-md last:rounded-r-md text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg  data-[state=active]:text-default-text h-full"
                         onClick={() => setSelectedTab('upload')}
                       >
                         <div className="pr-4">1</div>
@@ -152,13 +141,33 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="review"
-                        className="first:rounded-l-md last:rounded-r-md text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg  data-[state=active]:text-default-text"
+                        className="first:rounded-l-md last:rounded-r-md text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg  data-[state=active]:text-default-text h-full"
                         onClick={() => setSelectedTab('review')}
                         disabled={true}
                       >
                         <div className="pr-4">2</div>
                         <div>Review and import</div>
                       </TabsTrigger>
+                      <AnimatePresence>
+                        {linesWithErrors && linesWithErrors.length > 0 && (
+                          <motion.div
+                            className="bg-error-bg p-3 flex rounded ml-auto h-11"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <span className="text-sm">
+                              <span className="font-bold">{linesWithErrors.length}</span>{' '}
+                              {linesWithErrors.length == 1 ? 'entry' : 'entries'} not included
+                              because {linesWithErrors.length == 1 ? 'it has' : 'they have'} errors.{' '}
+                              <button onClick={() => setShowErrorModal(true)} className="underline">
+                                Show details
+                              </button>
+                            </span>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </TabsList>
                     <TabsContent value="upload" className="w-full">
                       <div className="pt-12 pr-10">
@@ -180,13 +189,64 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                           setSelectedInvoices={setSelectedInvoices}
                         />
                       )}
-                      <div className="text-xs bg-black text-blue-300 max-h-screen overflow-y-auto">
-                        {!invoices && json && <pre>{json}</pre>}
-                      </div>
                     </TabsContent>
                   </Tabs>
                 </div>
               </div>
+
+              <CustomModal
+                title={`${linesWithErrors?.length} ${
+                  linesWithErrors?.length === 1 ? 'entry' : 'entries'
+                } with errors`}
+                showFooter={false}
+                open={showErrorModal}
+                onDismiss={() => {
+                  setShowErrorModal(false)
+                }}
+                contentClassName={'max-w-[50rem]'}
+              >
+                {/* Show error per line */}
+                {validationResults
+                  ?.filter((result) => !result.valid)
+                  .map((result, i) => {
+                    return (
+                      <div
+                        key={`import-error-${i}`}
+                        className="py-3 border-b border-border-grey text-sm flex "
+                      >
+                        <span className="font-semibold w-20">Line {result.lineNumber}</span>
+                        <div className="flex gap-x-4 gap-y-2 flex-wrap">
+                          {result.errors?.map((err, i) => {
+                            return (
+                              <div
+                                key={`import-error-detail-${i}`}
+                                className="flex items-center gap-x-2"
+                              >
+                                <Icon
+                                  name={
+                                    err.code == 'invalid_type'
+                                      ? err.received === 'undefined'
+                                        ? 'missing/16'
+                                        : 'error/16'
+                                      : 'error/16'
+                                  }
+                                  className={
+                                    err.code == 'invalid_type'
+                                      ? err.received === 'undefined'
+                                        ? 'text-control-grey-hover'
+                                        : 'text-negative-red'
+                                      : 'text-negative-red'
+                                  }
+                                />
+                                <span>{err.message}</span>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })}
+              </CustomModal>
             </Dialog.Panel>
           </Transition.Child>
         </Dialog>

@@ -1,4 +1,5 @@
 import { Currency, PaymentResult, PayoutEventTypesEnum, PayoutStatus } from '@nofrixion/moneymoov'
+import { ZodIssue } from 'zod'
 
 import {
   FieldID,
@@ -412,6 +413,6 @@ export type LocalInvoice = BaseInvoice & (IbanDetails | AccountDetails)
 export interface ValidationResult {
   lineNumber: number
   valid: boolean
-  errors?: string[]
+  errors?: ZodIssue[]
   result: LocalInvoice
 }

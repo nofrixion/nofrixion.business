@@ -23,6 +23,7 @@ export interface BaseModalProps {
   onApply?: (data: any) => void
   onDismiss: () => void
   showDefault?: boolean
+  showFooter?: boolean
 }
 
 interface CustomModalState {
@@ -43,6 +44,7 @@ const CustomModal = ({
   showSupport = false,
   contentClassName = 'max-w-md',
   onUseAsDefaultChanged,
+  showFooter = true,
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -111,45 +113,53 @@ const CustomModal = ({
                       </h3>
                     </Dialog.Title>
                   )}
-                  <div className="px-6 md:px-12">{children}</div>
                   <div
-                    className={cn(
-                      buttonRowClassName,
-                      'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-10',
-                    )}
+                    className={cn('px-6 md:px-12', {
+                      'mb-12': !showFooter,
+                    })}
                   >
-                    {showDefault && (
-                      <div>
-                        <Checkbox
-                          label="Use as my default"
-                          value={isDefaultChecked}
-                          onChange={setIsDefaultChecked}
-                        />
-                      </div>
-                    )}
-
-                    {showSupport && (
-                      <div className="flex mr-4 items-center">
-                        <Icon name="support/16" className="text-control-grey-hover" />
-                        <a
-                          className="ml-2 font-normal text-xs leading-4 text-default-text py-1 underline"
-                          href="https://tally.so#tally-open=3NX0Ap"
-                        >
-                          Contact support
-                        </a>
-                      </div>
-                    )}
-
-                    <Button
-                      variant="primaryDark"
-                      size="large"
-                      onClick={onApplyClicked}
-                      disabled={!onApplyEnabled}
-                      className={buttonClaseName}
-                    >
-                      {buttonText}
-                    </Button>
+                    {children}
                   </div>
+                  {showFooter && (
+                    <div
+                      className={cn(
+                        buttonRowClassName,
+                        'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-10',
+                      )}
+                    >
+                      {showDefault && (
+                        <div>
+                          <Checkbox
+                            label="Use as my default"
+                            value={isDefaultChecked}
+                            onChange={setIsDefaultChecked}
+                          />
+                        </div>
+                      )}
+
+                      {showSupport && (
+                        <div className="flex mr-4 items-center">
+                          <Icon name="support/16" className="text-control-grey-hover" />
+                          <a
+                            className="ml-2 font-normal text-xs leading-4 text-default-text py-1 underline"
+                            href="https://tally.so#tally-open=3NX0Ap"
+                          >
+                            Contact support
+                          </a>
+                        </div>
+                      )}
+
+                      <Button
+                        variant="primaryDark"
+                        size="large"
+                        onClick={onApplyClicked}
+                        disabled={!onApplyEnabled}
+                        className={buttonClaseName}
+                      >
+                        {buttonText}
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <Dialog.Close asChild>
                   <button className="absolute top-0 right-0 mt-6 mr-6" onClick={handleOnDismiss}>
