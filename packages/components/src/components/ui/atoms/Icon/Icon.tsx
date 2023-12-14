@@ -1041,6 +1041,23 @@ export const Icons = {
       <path d="M13 3L3.00001 13" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </SVG>
   ),
+  'delete/16': (className: string) => (
+    <SVG className={cn(className)} size="16" viewBox="0 0">
+      <path
+        d="M12.5384 14.9232H4.46146C4.15544 14.9232 3.86196 14.8017 3.64557 14.5853C3.42918 14.3689 3.30762 14.0754 3.30762 13.7694V3.38477H13.6922V13.7694C13.6922 14.0754 13.5707 14.3689 13.3543 14.5853C13.1379 14.8017 12.8444 14.9232 12.5384 14.9232Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6.76929 11.4611V6.8457" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.2307 11.4611V6.8457" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M1 3.38477H16" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M10.2309 1.07617H6.76932C6.46331 1.07617 6.16982 1.19774 5.95343 1.41413C5.73704 1.63051 5.61548 1.924 5.61548 2.23002V3.38387H11.3847V2.23002C11.3847 1.924 11.2631 1.63051 11.0467 1.41413C10.8303 1.19774 10.5369 1.07617 10.2309 1.07617Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SVG>
+  ),
   'success-tick/12': (className: string) => (
     <SVG className={cn(className)} size="12">
       <path

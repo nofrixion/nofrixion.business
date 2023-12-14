@@ -25,6 +25,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([])
   const [showErrorModal, setShowErrorModal] = useState(false)
+  const [fileName, setFilename] = useState<string>()
 
   const linesWithErrors = validationResults?.filter((result) => !result.valid)
 
@@ -62,6 +63,8 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
 
             setIsLoading(false)
             setSelectedTab('review')
+
+            setFilename(file.name)
           },
           error: () => {
             setIsLoading(false)
@@ -74,6 +77,13 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
 
   const onImportInvoices = () => {
     console.log('Invoices to import', selectedInvoices)
+  }
+
+  const onRemoveFile = () => {
+    setFilename(undefined)
+    setValidationResults([])
+    setInvoices(undefined)
+    setSelectedInvoices([])
   }
 
   return (
@@ -133,7 +143,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                     <TabsList className="h-10 flex justify-normal">
                       <TabsTrigger
                         value="upload"
-                        className="first:rounded-l-md last:rounded-r-md text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg  data-[state=active]:text-default-text h-full"
+                        className="first:rounded-l-md last:rounded-r-md text-default-text disabled:text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg h-full"
                         onClick={() => setSelectedTab('upload')}
                       >
                         <div className="pr-4">1</div>
@@ -141,9 +151,9 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                       </TabsTrigger>
                       <TabsTrigger
                         value="review"
-                        className="first:rounded-l-md last:rounded-r-md text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg  data-[state=active]:text-default-text h-full"
+                        className="first:rounded-l-md last:rounded-r-md text-default-text disabled:text-grey-text font-medium bg-main-grey transition-all focus-visible:outline-none disabled:pointer-events-none data-[state=active]:bg-information-bg h-full"
                         onClick={() => setSelectedTab('review')}
-                        disabled={true}
+                        disabled={fileName == undefined}
                       >
                         <div className="pr-4">2</div>
                         <div>Review and import</div>
@@ -170,14 +180,30 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                       </AnimatePresence>
                     </TabsList>
                     <TabsContent value="upload" className="w-full">
-                      <div className="pt-12 pr-10">
+                      <div className="pt-12">
                         <FileInput
                           onFileAdded={handleFileAdded}
                           isError={isError}
                           setIsError={setIsError}
                           isLoading={isLoading}
                           setIsLoading={setIsLoading}
-                        />
+                        >
+                          {fileName && (
+                            <div className="flex flex-col justify-center items-center">
+                              <div className="flex gap-x-4 items-center">
+                                <span className="text-base/5 font-semibold">{fileName}</span>
+                                <button onClick={onRemoveFile}>
+                                  <Icon name="delete/16" className="text-control-grey-hover" />
+                                </button>
+                              </div>
+                              <span className="font-normal text-base/8 text-control-grey">
+                                <span className="font-semibold">{invoices?.length}</span> invoice
+                                {invoices?.length == 1 ? ' ' : 's '}
+                                loaded
+                              </span>
+                            </div>
+                          )}
+                        </FileInput>
                       </div>
                     </TabsContent>
                     <TabsContent value="review" className="mt-14">
