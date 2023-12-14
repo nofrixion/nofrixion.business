@@ -11,6 +11,8 @@ import {
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
+import { SystemError } from '../../../types/LocalTypes'
+import { DoubleSortByUsersAndInvites } from '../../../types/Sort'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
 import InviteUserModal from '../InviteUserModal/InviteUserModal'
@@ -55,32 +57,31 @@ const UserDashboardMain = ({
   merchantName,
   onUnauthorized,
 }: UserDashboardProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState<UserStatus>(UserStatus.All)
   const [users, setUsers] = useState<UserRoleAndUserInvite[] | undefined>(undefined)
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
-  const [statusSortDirection, setStatusSortDirection] = useState<SortDirection>(SortDirection.NONE)
-  const [lastmodifiedSortDirection, setLastmodifiedSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
-  const [roleSortDirection, setRoleSortDirection] = useState<SortDirection>(SortDirection.NONE)
-  const [nameSortDirection, setNameSortDirection] = useState<SortDirection>(SortDirection.NONE)
+  const [sortBy, setSortBy] = useState<DoubleSortByUsersAndInvites>({
+    primary: {
+      direction: SortDirection.NONE,
+      name: 'lastModified',
+    },
+  })
 
   const [selectedUser, setSelectedUser] = useState<UserRoleAndUserInvite | undefined>(undefined)
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
   const [inviteUserClicked, setInviteUserClicked] = useState(false)
 
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
+
   const { data: usersResponse, isLoading: isLoadingUsers } = useUsersAndInvites(
     {
       merchantId: merchantId,
       pageNumber: page,
       pageSize: pageSize,
-      roleSortDirection: roleSortDirection,
-      nameSortDirection: nameSortDirection,
-      statusSortDirection: statusSortDirection,
-      lastModifiedSortDirection: lastmodifiedSortDirection,
+      sortBy: sortBy,
       status: status,
     },
     { apiUrl: apiUrl, authToken: token },
@@ -131,26 +132,6 @@ const UserDashboardMain = ({
     setPage(page)
   }
 
-  const onSort = (
-    column: 'lastmodified' | 'name' | 'status' | 'role',
-    direction: SortDirection,
-  ) => {
-    switch (column) {
-      case 'status':
-        setStatusSortDirection(direction)
-        break
-      case 'lastmodified':
-        setLastmodifiedSortDirection(direction)
-        break
-      case 'name':
-        setNameSortDirection(direction)
-        break
-      case 'role':
-        setRoleSortDirection(direction)
-        break
-    }
-  }
-
   const onUserRowClicked = (user: UserRoleAndUserInvite) => {
     setSelectedUser(user)
     setSelectedUserId(user.userID)
@@ -170,7 +151,10 @@ const UserDashboardMain = ({
     if (response.status === 'success') {
       makeToast('success', 'Invitation resent successfully.')
     } else if (response.status === 'error') {
-      makeToast('error', 'Error resending invitation. ' + response.error.detail)
+      handleSystemErrorMessage({
+        title: 'Resending user invitation has failed ',
+        message: response.error.detail,
+      })
       console.error(response.error)
     }
   }
@@ -178,6 +162,15 @@ const UserDashboardMain = ({
   const onDismissUserDetailsModal = () => {
     setSelectedUser(undefined)
     setSelectedUserId(undefined)
+  }
+
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
   }
 
   return (
@@ -189,7 +182,8 @@ const UserDashboardMain = ({
           totalSize: totalRecords,
         }}
         onPageChange={onPageChange}
-        onSort={onSort}
+        sortBy={sortBy}
+        onSort={setSortBy}
         isLoading={isLoadingUsers}
         onUserClicked={onUserRowClicked}
         selectedUserId={selectedUserId}
@@ -199,6 +193,9 @@ const UserDashboardMain = ({
         isLoadingMetrics={isLoadingMetrics}
         status={status}
         setStatus={setStatus}
+        systemError={systemError}
+        isSystemErrorOpen={isSystemErrorOpen}
+        onCloseSystemError={onCloseSystemErrorModal}
       />
 
       {merchantId && (
@@ -222,6 +219,7 @@ const UserDashboardMain = ({
           user={selectedUser}
           open={!!selectedUser}
           onDismiss={onDismissUserDetailsModal}
+          onSystemError={handleSystemErrorMessage}
         />
       )}
     </div>

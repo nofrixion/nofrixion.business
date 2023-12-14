@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import {
+  Account,
   ApiError,
   BankSettings,
   Currency,
@@ -14,7 +15,6 @@ import { Fragment, useEffect, useState } from 'react'
 
 import AlertIcon from '../../../assets/icons/alert-icon.svg'
 import NextIcon from '../../../assets/icons/next-icon.svg'
-import RedAlertIcon from '../../../assets/icons/red-alert-icon.svg'
 import { FieldID } from '../../../types/LocalEnums'
 import {
   AutoSuggestions,
@@ -30,6 +30,7 @@ import { validateEmail } from '../../../utils/validation'
 import { Button } from '../../ui/atoms/Button/Button'
 import InputTextField from '../atoms/InputTextField/InputTextField'
 import EditOptionCard from '../EditOptionCard/EditOptionCard'
+import InlineError from '../InlineError/InlineError'
 import InputAmountField from '../InputAmountField/InputAmountField'
 import InputTextAreaField from '../InputTextAreaField/InputTextAreaField'
 import { Loader } from '../Loader/Loader'
@@ -43,6 +44,7 @@ import PaymentMethodIcon from '../utils/PaymentMethodIcon'
 
 export interface CreatePaymentRequestPageProps {
   banks: BankSettings[]
+  accounts: Account[]
   userPaymentDefaults?: UserPaymentDefaults
   onConfirm: (data: LocalPaymentRequestCreate) => Promise<ApiError | undefined>
   isOpen: boolean
@@ -57,6 +59,7 @@ const durationAnimationWidth = 0.3
 
 const CreatePaymentRequestPage = ({
   banks,
+  accounts,
   userPaymentDefaults,
   onConfirm,
   isOpen,
@@ -67,9 +70,7 @@ const CreatePaymentRequestPage = ({
   autoSuggestions,
 }: CreatePaymentRequestPageProps) => {
   const [amount, setAmount] = useState(prefilledData?.amount.toString() ?? '')
-  const [currency, setCurrency] = useState<'EUR' | 'GBP'>(
-    (prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP',
-  )
+  const [currency, setCurrency] = useState<Currency>(prefilledData?.currency ?? Currency.EUR)
   const [productOrService, setProductOrService] = useState(prefilledData?.productOrService ?? '')
   const [description, setDescription] = useState(prefilledData?.description ?? '')
   const [firstName, setFirstName] = useState(prefilledData?.firstName ?? '')
@@ -98,6 +99,7 @@ const CreatePaymentRequestPage = ({
       isWalletEnabled: true,
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
+      isDestinationAccountEnabled: false,
       isDefault: false,
     })
 
@@ -152,6 +154,7 @@ const CreatePaymentRequestPage = ({
       isCaptureFundsEnabled:
         !userPaymentDefaults?.paymentMethodsDefaults?.cardAuthorizeOnly ?? true,
       priorityBank: findBank(userPaymentDefaults?.paymentMethodsDefaults?.pispPriorityBankID),
+      isDestinationAccountEnabled: false,
       isDefault: !!userPaymentDefaults?.paymentMethodsDefaults,
     })
   }
@@ -185,7 +188,7 @@ const CreatePaymentRequestPage = ({
 
   useEffect(() => {
     setAmount(prefilledData?.amount.toString() ?? '')
-    setCurrency((prefilledData?.currency ?? 'EUR') as 'EUR' | 'GBP')
+    setCurrency(prefilledData?.currency ?? Currency.EUR)
     setProductOrService(prefilledData?.productOrService ?? '')
     setDescription(prefilledData?.description ?? '')
     setFirstName(prefilledData?.firstName ?? '')
@@ -203,6 +206,7 @@ const CreatePaymentRequestPage = ({
           ? findBank(prefilledData?.paymentMethods?.bank?.priority?.id)
           : undefined,
         isDefault: false,
+        isDestinationAccountEnabled: false,
       })
     } else {
       fillDefaultPaymentMethods()
@@ -228,7 +232,7 @@ const CreatePaymentRequestPage = ({
   }, [prefilledData])
 
   const onCurrencyChange = (currency: string) => {
-    setCurrency(currency as 'EUR' | 'GBP')
+    setCurrency(currency as Currency)
   }
 
   const onMethodsReceived = (data: LocalPaymentMethodsFormValue) => {
@@ -296,7 +300,7 @@ const CreatePaymentRequestPage = ({
         card: {
           active: paymentMethodsFormValue.isCardEnabled,
           // Capture funds should always be true when card is disabled
-          // as it's not possible to only authorize on cards if card are disabled
+          // as it's not possible to only authorise on cards if card are disabled
           captureFunds: paymentMethodsFormValue.isCardEnabled
             ? paymentMethodsFormValue.isCaptureFundsEnabled
             : true,
@@ -305,6 +309,7 @@ const CreatePaymentRequestPage = ({
         lightning: paymentMethodsFormValue.isLightningEnabled,
       },
       notificationEmailAddresses: paymentNotificationsFormValue.emailAddresses,
+      destinationAccountID: paymentMethodsFormValue.destinationAccount?.id,
     }
 
     const apiError = await onConfirm(paymentRequestToCreate)
@@ -316,6 +321,10 @@ const CreatePaymentRequestPage = ({
           const error = apiError.errors![key]
           errorMessages = errorMessages.concat(error)
         })
+      }
+
+      if (apiError.detail) {
+        errorMessages.push(apiError.detail)
       }
 
       setSubmitErrorMessages(errorMessages)
@@ -377,7 +386,7 @@ const CreatePaymentRequestPage = ({
 
   const resetStates = () => {
     setAmount('')
-    setCurrency('EUR')
+    setCurrency(Currency.EUR)
     setProductOrService('')
     setDescription('')
     setFirstName('')
@@ -390,6 +399,7 @@ const CreatePaymentRequestPage = ({
       isLightningEnabled: false,
       isCaptureFundsEnabled: true,
       isDefault: false,
+      isDestinationAccountEnabled: false,
     })
     setPaymentConditionsFormValue({
       allowPartialPayments: false,
@@ -403,6 +413,9 @@ const CreatePaymentRequestPage = ({
   }
 
   const availableMethodsDetails = [
+    ...(paymentMethodsFormValue.destinationAccount != undefined
+      ? [`*${paymentMethodsFormValue.destinationAccount.name}* set up as destination account.`]
+      : []),
     ...(paymentMethodsFormValue.isBankEnabled && paymentMethodsFormValue.priorityBank
       ? [`*${paymentMethodsFormValue.priorityBank.name}* set up as priority bank.`]
       : []),
@@ -647,44 +660,10 @@ const CreatePaymentRequestPage = ({
                         duration={0.6}
                       >
                         {showSubmitError && (
-                          <AnimateHeightWrapper layoutId="submit-error">
-                            <motion.div
-                              className="border-2 border-solid border-negativeRed rounded px-4 py-6 flex flex-row space-x-4"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                            >
-                              <img
-                                src={RedAlertIcon}
-                                alt="Warning"
-                                title="Warning"
-                                className="w-4 h-4"
-                              />
-                              <div className="[&>p]:text-default-text [&>p]:text-13px [&>p]:leading-5 [&>p]:font-normal [&>p]:py-1">
-                                <span className="text-base leading-4 font-semibold text-default-text block mb-2">
-                                  The payment request couldn&apos;t be created
-                                </span>
-                                {submitErrorMessages && submitErrorMessages.length > 0 ? (
-                                  submitErrorMessages.map((message, index) => (
-                                    <p key={'submit-error-' + index.toString()}>{message}</p>
-                                  ))
-                                ) : (
-                                  <p>
-                                    Please try again. If the problem persists, you can contact us at{' '}
-                                    <a
-                                      className="underline"
-                                      href="mailto:support@nofrixion.com"
-                                      target="_blank"
-                                      rel="noreferrer"
-                                    >
-                                      support@nofrixion.com
-                                    </a>
-                                    .
-                                  </p>
-                                )}
-                              </div>
-                            </motion.div>
-                          </AnimateHeightWrapper>
+                          <InlineError
+                            title="The payment request couldn't be created"
+                            messages={submitErrorMessages}
+                          />
                         )}
                         <Button
                           variant={isSubmitting ? 'text' : 'primaryDark'}
@@ -991,7 +970,7 @@ const CreatePaymentRequestPage = ({
 
           {!isUserPaymentDefaultsLoading && (
             <PaymentMethodsModal
-              currencySymbol={currency == 'GBP' ? '£' : '€'}
+              currency={currency}
               amount={amount}
               minimumCurrencyAmount={getMinimumAmountPerCurrency(currency)}
               open={isPaymentMethodsModalOpen}
@@ -1004,6 +983,7 @@ const CreatePaymentRequestPage = ({
               onApply={onMethodsReceived}
               onDismiss={() => setIsPaymentMethodsModalOpen(false)}
               banks={banks}
+              destinationAccounts={accounts}
             />
           )}
 

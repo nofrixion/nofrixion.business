@@ -1,17 +1,19 @@
-﻿import { Currency } from '@nofrixion/moneymoov'
+﻿import { ApiError, Currency } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
+import { LocalPaymentAttempt, LocalPaymentRequest, SystemError } from '../../../types/LocalTypes'
 import { cn } from '../../../utils'
 import { localCurrency } from '../../../utils/constants'
 import { getMaxCapturableAmount } from '../../../utils/paymentAttemptsHelper'
 import { Button, Icon, Sheet, SheetContent } from '../atoms'
+import InlineError from '../InlineError/InlineError'
 import InputAmountField from '../InputAmountField/InputAmountField'
 import { Loader } from '../Loader/Loader'
+
 export interface CaptureModalProps {
-  onCapture: (authorizationID: string, amount: number) => Promise<void>
+  onCapture: (authorizationID: string, amount: number) => Promise<ApiError | undefined>
   onDismiss: () => void
   paymentRequest: LocalPaymentRequest
   cardPaymentAttempt: LocalPaymentAttempt
@@ -41,7 +43,12 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
       : localCurrency.gbp.symbol
   }
 
+  const [showCaptureError, setShowCaptureError] = useState(false)
+  const [cardCaptureError, setCardCaptureError] = useState<SystemError | undefined>(undefined)
+
   const onCaptureClick = async () => {
+    setCardCaptureError(undefined)
+    setShowCaptureError(false)
     setIsCaptureButtonDisabled(true)
 
     setValidationErrorMessage('')
@@ -60,8 +67,18 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
         let parsedAmount = Number(amountToCapture)
         parsedAmount =
           (parsedAmount ?? 0) > maxCapturableAmount ? maxCapturableAmount : parsedAmount!
-        await onCapture(cardPaymentAttempt.attemptKey, parsedAmount)
-        onDismiss()
+
+        const apiError = await onCapture(cardPaymentAttempt.attemptKey, parsedAmount)
+        if (apiError) {
+          setCardCaptureError({
+            title: 'Card capture payment has failed',
+            message: apiError.detail,
+          })
+          setShowCaptureError(true)
+          setIsCaptureButtonDisabled(false)
+        } else {
+          onDismiss()
+        }
       }
     }
   }
@@ -118,7 +135,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                         currency={cardPaymentAttempt.currency}
                         onCurrencyChange={() => {}}
                         allowCurrencyChange={false}
-                        value={formatter.format(Number(amountToCapture))}
+                        value={amountToCapture}
                         onChange={(value) => setAmountToCapture(value)}
                       />
                     </div>
@@ -129,7 +146,7 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                     <AnimatePresence>
                       {validationErrorMessage && (
                         <motion.div
-                          className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
+                          className="mt-6 bg-warning-yellow text-sm p-3 rounded"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
@@ -141,6 +158,14 @@ const CaptureModal: React.FC<CaptureModalProps> = ({
                   </div>
                 </div>
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
+                  {showCaptureError && cardCaptureError && (
+                    <div className="lg:mb-14">
+                      <InlineError
+                        title={cardCaptureError.title}
+                        messages={[cardCaptureError.message]}
+                      />
+                    </div>
+                  )}
                   <Button
                     variant="primaryDark"
                     size="large"

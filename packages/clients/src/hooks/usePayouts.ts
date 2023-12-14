@@ -1,17 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { PayoutClient } from '../clients'
-import { formatSortExpression, PayoutStatus, SortDirection } from '../types'
+import { formatSortExpression, PayoutStatus } from '../types'
 import { ApiResponse, PayoutPageResponse } from '../types/ApiResponses'
-import { ApiProps, usePayoutsProps } from '../types/props'
+import { ApiProps, SortByPayouts, usePayoutsProps } from '../types/props'
 
 const fetchPayouts = async (
   apiUrl: string,
-  statusSortDirection: SortDirection,
-  createdSortDirection: SortDirection,
-  amountSortDirection: SortDirection,
-  counterPartyNameSortDirection: SortDirection,
-  scheduleDateSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
   pageNumber?: number,
@@ -24,14 +19,9 @@ const fetchPayouts = async (
   minAmount?: number,
   maxAmount?: number,
   tags?: string[],
+  sortBy?: SortByPayouts,
 ): Promise<ApiResponse<PayoutPageResponse>> => {
-  const sortExpression = formatSortExpression({
-    statusSortDirection: statusSortDirection,
-    createdSortDirection: createdSortDirection,
-    amountSortDirection: amountSortDirection,
-    counterPartyNameSortDirection: counterPartyNameSortDirection,
-    scheduleDateSortDirection: scheduleDateSortDirection,
-  })
+  const sortExpression = sortBy ? formatSortExpression(sortBy) : ''
 
   const client = new PayoutClient({ apiUrl, authToken })
 
@@ -56,11 +46,7 @@ const fetchPayouts = async (
 export const usePayouts = (
   {
     merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    amountSortDirection,
-    counterPartyNameSortDirection,
-    scheduleDateSortDirection,
+    sortBy,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -79,11 +65,7 @@ export const usePayouts = (
     apiUrl,
     authToken,
     merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    amountSortDirection,
-    counterPartyNameSortDirection,
-    scheduleDateSortDirection,
+    sortBy,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -101,11 +83,6 @@ export const usePayouts = (
     () =>
       fetchPayouts(
         apiUrl,
-        statusSortDirection,
-        createdSortDirection,
-        amountSortDirection,
-        counterPartyNameSortDirection,
-        scheduleDateSortDirection,
         authToken,
         merchantId,
         pageNumber,
@@ -118,6 +95,7 @@ export const usePayouts = (
         minAmount,
         maxAmount,
         tags,
+        sortBy,
       ),
     {
       enabled: !!merchantId,

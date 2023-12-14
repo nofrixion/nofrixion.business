@@ -1,17 +1,22 @@
-﻿import { Currency } from '@nofrixion/moneymoov'
+﻿import { ApiError, Currency } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-import { LocalPaymentAttempt, LocalPaymentRequest } from '../../../types/LocalTypes'
+import { LocalPaymentAttempt, LocalPaymentRequest, SystemError } from '../../../types/LocalTypes'
 import { localCurrency } from '../../../utils/constants'
 import { getMaxRefundableAmount, isVoid } from '../../../utils/paymentAttemptsHelper'
 import { Button, Icon, Sheet, SheetContent } from '../atoms'
+import InlineError from '../InlineError/InlineError'
 import InputAmountField from '../InputAmountField/InputAmountField'
 import { Loader } from '../Loader/Loader'
 
 export interface CardRefundModalProps {
-  onRefund: (authorizationID: string, amount: number, isCardVoid: boolean) => Promise<void>
+  onRefund: (
+    authorizationID: string,
+    amount: number,
+    isCardVoid: boolean,
+  ) => Promise<ApiError | undefined>
   onDismiss: () => void
   paymentRequest: LocalPaymentRequest
   cardPaymentAttempt: LocalPaymentAttempt
@@ -34,10 +39,13 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
   const [amountToRefund, setAmountToRefund] = useState(
     cardPaymentAttempt
       ? isVoid(cardPaymentAttempt)
-        ? cardPaymentAttempt.amount
+        ? cardPaymentAttempt.amount.toString()
         : maxRefundableAmount.toString()
       : '',
   )
+
+  const [showRefundError, setShowRefundError] = useState(false)
+  const [cardRefundError, setCardRefundError] = useState<SystemError | undefined>(undefined)
 
   const isCardVoid = isVoid(cardPaymentAttempt)
 
@@ -55,6 +63,8 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
 
   // This method is called when the user confirms the refund
   const onCardRefundConfirm = async () => {
+    setShowRefundError(false)
+    setCardRefundError(undefined)
     setIsRefundButtonDisabled(true)
 
     setValidationErrorMessage('')
@@ -71,8 +81,16 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
         parsedAmount =
           (parsedAmount ?? 0) > maxRefundableAmount ? maxRefundableAmount : parsedAmount!
       }
-      await onRefund(cardPaymentAttempt.attemptKey, parsedAmount, isCardVoid)
-      onDismiss()
+      const apiError = await onRefund(cardPaymentAttempt.attemptKey, parsedAmount, isCardVoid)
+      if (apiError) {
+        setCardRefundError({
+          title: isCardVoid ? 'Void card payment has failed' : 'Card capture payment has failed',
+          message: apiError.detail,
+        })
+        setShowRefundError(true)
+      } else {
+        onDismiss()
+      }
     }
 
     setIsRefundButtonDisabled(false)
@@ -141,7 +159,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                           currency={cardPaymentAttempt.currency}
                           onCurrencyChange={() => {}}
                           allowCurrencyChange={false}
-                          value={formatter.format(Number(amountToRefund))}
+                          value={amountToRefund}
                           onChange={(value) => {
                             setAmountToRefund(value)
                           }}
@@ -154,7 +172,7 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                       <AnimatePresence>
                         {validationErrorMessage && (
                           <motion.div
-                            className="mt-6 bg-[#ffe6eb] text-sm p-3 rounded"
+                            className="mt-6 bg-warning-yellow text-sm p-3 rounded"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -172,6 +190,14 @@ const CardRefundModal: React.FC<CardRefundModalProps> = ({
                   </p>
                 )}
                 <div className="lg:mt-14 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
+                  {cardRefundError && showRefundError && (
+                    <div className="lg:mb-14">
+                      <InlineError
+                        title={cardRefundError.title}
+                        messages={[cardRefundError.message]}
+                      />
+                    </div>
+                  )}
                   <Button
                     variant="primaryDark"
                     size="large"

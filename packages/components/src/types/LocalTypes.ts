@@ -1,10 +1,12 @@
-import { Currency, PaymentResult, PayoutStatus } from '@nofrixion/moneymoov'
+import { Currency, PaymentResult, PayoutEventTypesEnum, PayoutStatus } from '@nofrixion/moneymoov'
 
 import {
   FieldID,
   LocalAccountIdentifierType,
   LocalAddressType,
   LocalPartialPaymentMethods,
+  LocalPaymentAttemptEventType,
+  LocalPaymentAttemptStatus,
   LocalPaymentMethodTypes,
   LocalTimeFrequencyEnum,
   LocalWallets,
@@ -16,7 +18,7 @@ export interface LocalContact {
   email?: string
 }
 
-export type LocalPaymentStatus = 'paid' | 'partial' | 'unpaid' | 'overpaid' | 'authorized'
+export type LocalPaymentStatus = 'paid' | 'partial' | 'unpaid' | 'overpaid' | 'authorised'
 
 export interface LocalPaymentRequest {
   id: string
@@ -75,9 +77,15 @@ export interface LocalPaymentAttempt {
   currency: Currency.EUR | Currency.GBP
   processor?: string
   last4DigitsOfCardNumber?: string
+  settledAt?: Date
   settledAmount: number
+  settleFailedAt?: Date
   authorisedAmount: number
+  cardPayerAuthenticationSetupFailedAt?: Date
+  cardAuthorisedAt?: Date
+  cardAuthoriseFailedAt?: Date
   cardAuthorisedAmount?: number
+  authorisedAt?: Date
   captureAttempts: LocalPaymentRequestCaptureAttempt[]
   refundAttempts: LocalPaymentRequestRefundAttempt[]
   wallet?: LocalWallets | undefined
@@ -85,6 +93,18 @@ export interface LocalPaymentAttempt {
   reconciledTransactionID?: string
   paymentStatus: 'received' | 'pending' | 'failed' | 'unknown'
   paymentProcessor?: LocalPaymentProcessor
+  events?: LocalPaymentAttemptEvent[]
+  displayStatus: LocalPaymentAttemptStatus
+  latestEventOccurredAt: Date
+}
+
+export interface LocalPaymentAttemptEvent {
+  eventType: LocalPaymentAttemptEventType
+  occurredAt: Date
+  currency: Currency.EUR | Currency.GBP
+  refundedAmount?: number
+  capturedAmount?: number
+  isCardVoid?: boolean
 }
 
 export interface SubTransaction {
@@ -152,6 +172,7 @@ export interface LocalPaymentRequestCreate {
   }
   tagIds?: string[]
   notificationEmailAddresses?: string
+  destinationAccountID?: string
 }
 
 export interface LocalPaymentConditionsFormValue {
@@ -166,6 +187,11 @@ export interface LocalPaymentMethodsFormValue {
   isLightningEnabled: boolean
   isCaptureFundsEnabled: boolean
   priorityBank?: {
+    id: string
+    name: string
+  }
+  isDestinationAccountEnabled: boolean
+  destinationAccount?: {
     id: string
     name: string
   }
@@ -220,6 +246,7 @@ export interface LocalPayout {
   scheduled?: boolean
   scheduleDate?: Date
   beneficiaryID?: string
+  activities: PayoutActivity[]
 }
 
 export interface LocalAccount {
@@ -337,4 +364,43 @@ export enum LocalUserRoles {
   User = 3,
   Approver = 4,
   AdminApprover = 5,
+}
+
+export interface PayoutActivity {
+  text: string
+  timestamp: Date
+  status: string
+  eventType: PayoutEventTypesEnum
+}
+
+export interface SystemError {
+  title: string
+  message: string
+}
+
+export interface LocalInvoice {
+  InvoiceNumber: string
+  PaymentTerms: string
+  InvoiceDate: string
+  DueDate: string
+  Contact: string
+  DestinationIban: string
+  DestinationAccountNumber: string
+  DestinationSortCode: string
+  Currency: string
+  Subtotal: string
+  Discounts: string
+  Taxes: string
+  TotalAmount: string
+  OutstandingAmount: string
+  InvoiceStatus: string
+  Reference: string
+  RemittanceEmail: string
+}
+
+export interface ValidationResult {
+  lineNumber: number
+  valid: boolean
+  errors?: string[]
+  result: LocalInvoice
 }

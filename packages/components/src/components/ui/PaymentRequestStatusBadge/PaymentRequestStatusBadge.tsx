@@ -12,7 +12,7 @@ const badge = cva('rounded-full  space-x-2 inline-flex items-center', {
       partial: ['bg-[#FCF5CF]', 'text-[#663300]'],
       unpaid: ['bg-[#F1F3F4]', 'text-default-text'],
       overpaid: ['bg-[#D8F2EA]', 'text-[#004D33]'],
-      authorized: ['bg-[#F1F3F4]', 'text-default-text'],
+      authorised: ['bg-[#F1F3F4]', 'text-default-text'],
     },
     size: {
       small: ['text-xs', 'font-normal', 'py-1', 'px-2'],
@@ -49,7 +49,7 @@ const getIconForStatus = (status: LocalPaymentStatus) => {
     case 'paid':
     case 'overpaid':
       return paidIcon
-    case 'authorized':
+    case 'authorised':
     case 'unpaid':
     default:
       return unpaidIcon

@@ -1,17 +1,19 @@
-import { Pagination, PayoutMetrics, PayoutStatus, SortDirection } from '@nofrixion/moneymoov'
+import { Pagination, PayoutMetrics, PayoutStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 import { set } from 'date-fns'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-import { LocalPayout } from '../../../../types/LocalTypes'
+import { LocalPayout, SystemError } from '../../../../types/LocalTypes'
+import { DoubleSortByPayouts } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
+import DashboardTab from '../../DashboardTab/DashboardTab'
 import { DateRange } from '../../DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../FilterControlsRow/FilterControlsRow'
 import { Loader } from '../../Loader/Loader'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import { PayoutsTable } from '../../organisms/PayoutsTable/PayoutsTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
-import Tab from '../../Tab/Tab'
 import { FilterableTag } from '../../TagFilter/TagFilter'
 import { Toaster } from '../../Toast/Toast'
 import LayoutWrapper from '../../utils/LayoutWrapper'
@@ -28,10 +30,8 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   isLoading: boolean
   selectedPayoutId: string | undefined
   onPageChange: (page: number) => void
-  onSort: (
-    name: 'date' | 'amount' | 'status' | 'counterParty.name' | 'scheduleDate',
-    direction: SortDirection,
-  ) => void
+  onSort: (sortInfo: DoubleSortByPayouts) => void
+  sortBy: DoubleSortByPayouts
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onCreatePayout: () => void
@@ -44,10 +44,6 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onPayoutClicked?: (paymentRequest: LocalPayout) => void
   tags: FilterableTag[]
   setTags: (tags: FilterableTag[]) => void
-  createdSortDirection: SortDirection
-  setCreatedSortDirection?: (direction: SortDirection) => void
-  amountSortDirection: SortDirection
-  setAmountSortDirection?: (direction: SortDirection) => void
   status: PayoutStatus
   onAddPayoutForAuthorise: (payoutId: string) => void
   onRemovePayoutForAuthorise: (payoutId: string) => void
@@ -55,6 +51,9 @@ export interface PayoutDashboardProps extends React.HTMLAttributes<HTMLDivElemen
   onApproveBatchPayouts: () => void
   payoutsExist: boolean
   isUserAuthoriser: boolean
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
@@ -81,10 +80,7 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   selectedPayoutId,
   tags,
   setTags,
-  createdSortDirection,
-  setCreatedSortDirection,
-  amountSortDirection,
-  setAmountSortDirection,
+  sortBy,
   status,
   onAddPayoutForAuthorise,
   onRemovePayoutForAuthorise,
@@ -92,6 +88,9 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   onApproveBatchPayouts,
   payoutsExist,
   isUserAuthoriser,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }) => {
   const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
 
@@ -116,6 +115,12 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
   const handleApproveBatchPayouts = async () => {
     setIsApproveButtonDisabled(true)
     onApproveBatchPayouts()
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
   }
 
   return (
@@ -172,10 +177,8 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             setMaxAmount={setMaxAmount}
             tags={tags}
             setTags={setTags}
-            createdSortDirection={createdSortDirection}
-            setCreatedSortDirection={setCreatedSortDirection}
-            amountSortDirection={amountSortDirection}
-            setAmountSortDirection={setAmountSortDirection}
+            sortBy={sortBy}
+            onSort={(sortInfo) => onSort(sortInfo as DoubleSortByPayouts)}
             firstDate={
               merchantCreatedAt ? set(merchantCreatedAt, { month: 0, date: 1 }) : undefined
             }
@@ -190,42 +193,42 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
           >
             {/* Keep the Tab to still get accessibility functions through the keyboard */}
             <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.All}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.all ?? 0}
                 totalAmountInEuros={payoutMetrics?.totalAmountsByCurrency?.all?.eur}
                 totalAmountInPounds={payoutMetrics?.totalAmountsByCurrency?.all?.gbp}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.PENDING_APPROVAL}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.pendingApproval ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'pendingApproval')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'pendingApproval')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.SCHEDULED}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.scheduled ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'scheduled')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'scheduled')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.PENDING}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.inProgress ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'inProgress')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'inProgress')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.FAILED}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.failed ?? 0}
                 totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'failed')}
                 totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'failed')}
               />
-              <Tab
+              <DashboardTab
                 status={PayoutStatus.PROCESSED}
                 isLoading={isLoadingMetrics}
                 totalRecords={payoutMetrics?.paid ?? 0}
@@ -258,6 +261,14 @@ const PayoutDashboard: React.FC<PayoutDashboardProps> = ({
             isUserAuthoriser={isUserAuthoriser}
           />
         </div>
+
+        {/* System error modal */}
+        <SystemErrorModal
+          open={isSystemErrorOpen}
+          title={systemError?.title}
+          message={systemError?.message}
+          onDismiss={handlOnCloseSystemErrorModal}
+        />
 
         <Toaster positionY="top" positionX="right" duration={3000} />
       </div>

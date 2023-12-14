@@ -25,7 +25,7 @@ export class PayoutClient extends BaseApiClient {
    * @param authToken The OAUTH token used to authenticate with the api.
    */
   constructor({ ...props }: ApiProps) {
-    super(props.authToken)
+    super(props.authToken, true)
     this.apiUrl = `${props.apiUrl}/payouts`
   }
 

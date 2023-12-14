@@ -1,9 +1,11 @@
 import { PaymentResult } from '@nofrixion/moneymoov'
 import classNames from 'classnames'
 
-import { LocalPaymentRequest } from '../../../types/LocalTypes'
-import ColumnHeader, { SortDirection } from '../ColumnHeader/ColumnHeader'
+import { LocalPaymentRequest, SystemError } from '../../../types/LocalTypes'
+import { DoubleSortByPaymentRequests, SortByPaymentRequests } from '../../../types/Sort'
+import ColumnHeader from '../ColumnHeader/ColumnHeader'
 import { Loader } from '../Loader/Loader'
+import SystemErrorModal from '../Modals/SystemErrorModal/SystemErrorModal'
 import Pager from '../Pager/Pager'
 import PaymentRequestMobileCard from '../PaymentRequestMobileCard/PaymentRequestMobileCard'
 import PaymentRequestRow from '../PaymentRequestRow/PaymentRequestRow'
@@ -19,9 +21,8 @@ export interface PaymentRequestTableProps {
   onPaymentRequestDeleteClicked: (paymentRequest: LocalPaymentRequest) => void
   onPaymentRequestCopyLinkClicked: (paymentRequest: LocalPaymentRequest) => void
   onPageChanged?: (newPage: number) => void
-  setCreatedSortDirection?: (sortDirection: SortDirection) => void
-  setAmountSortDirection?: (sortDirection: SortDirection) => void
-  setTitleSortDirection?: (sortDirection: SortDirection) => void
+  sortBy?: DoubleSortByPaymentRequests
+  onSort?: (sortInfo: DoubleSortByPaymentRequests) => void
   onCreatePaymentRequest?: () => void
   onOpenPaymentPage: (paymentRequest: LocalPaymentRequest) => void
   isLoading?: boolean
@@ -29,6 +30,9 @@ export interface PaymentRequestTableProps {
   selectedPaymentRequestID?: string
   paymentRequestsExist?: boolean
   isLoadingMetrics?: boolean
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const commonThClasses = 'px-4 pb-4 font-normal'
@@ -37,14 +41,13 @@ const PaymentRequestTable = ({
   paymentRequests,
   pageSize,
   totalRecords,
+  sortBy,
   onPaymentRequestClicked,
   onPaymentRequestDuplicateClicked,
   onPaymentRequestDeleteClicked,
   onPaymentRequestCopyLinkClicked,
   onPageChanged,
-  setCreatedSortDirection,
-  setAmountSortDirection,
-  setTitleSortDirection,
+  onSort,
   isLoading = false,
   isEmpty = false,
   onCreatePaymentRequest,
@@ -52,6 +55,9 @@ const PaymentRequestTable = ({
   selectedPaymentRequestID,
   paymentRequestsExist,
   isLoadingMetrics,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }: PaymentRequestTableProps) => {
   const onPaymentRequestClickedHandler = (
     event: React.MouseEvent<HTMLTableRowElement | HTMLButtonElement | HTMLDivElement, MouseEvent>,
@@ -61,6 +67,30 @@ const PaymentRequestTable = ({
       onOpenPaymentPage && onOpenPaymentPage(paymentRequest)
     } else {
       onPaymentRequestClicked && onPaymentRequestClicked(paymentRequest)
+    }
+  }
+
+  const handleOnSort = (sortInfo: SortByPaymentRequests) => {
+    // If primary sort is the same as the new sort, then we need to toggle the direction
+    // If primary sort is different, then we need to set the new sort as primary and the old primary as secondary
+    if (sortBy?.primary.name === sortInfo.name) {
+      const newSort = {
+        primary: sortInfo,
+        secondary: sortBy?.secondary,
+      }
+      onSort && onSort(newSort)
+    } else {
+      const newSort = {
+        primary: sortInfo,
+        secondary: sortBy?.primary,
+      }
+      onSort && onSort(newSort)
+    }
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
     }
   }
 
@@ -86,17 +116,19 @@ const PaymentRequestTable = ({
               <th className={classNames(commonThClasses, '2xl:w-36 xl:w-28 lg:w-24 text-left')}>
                 <ColumnHeader
                   label="Created"
-                  onSort={(sortDirection) =>
-                    setCreatedSortDirection && setCreatedSortDirection(sortDirection)
+                  sortDirection={
+                    sortBy?.primary.name === 'created' ? sortBy.primary.direction : undefined
                   }
+                  onSort={(direction) => handleOnSort({ name: 'created', direction })}
                 />
               </th>
               <th className={classNames(commonThClasses, '2xl:w-44 xl:w-32 lg:w-28 text-left')}>
                 <ColumnHeader
                   label="For"
-                  onSort={(sortDirection) =>
-                    setTitleSortDirection && setTitleSortDirection(sortDirection)
+                  sortDirection={
+                    sortBy?.primary.name === 'title' ? sortBy.primary.direction : undefined
                   }
+                  onSort={(direction) => handleOnSort({ name: 'title', direction })}
                 />
               </th>
               <th
@@ -104,9 +136,10 @@ const PaymentRequestTable = ({
               >
                 <ColumnHeader
                   label="Requested"
-                  onSort={(sortDirection) =>
-                    setAmountSortDirection && setAmountSortDirection(sortDirection)
+                  sortDirection={
+                    sortBy?.primary.name === 'amount' ? sortBy.primary.direction : undefined
                   }
+                  onSort={(direction) => handleOnSort({ name: 'amount', direction })}
                 />
               </th>
               <th className={classNames(commonThClasses, '2xl:w-44 xl:w-40 lg:w-36 text-right')}>
@@ -120,10 +153,10 @@ const PaymentRequestTable = ({
               </th>
 
               {/* 
-              Tags column 
-              However, it's used to display the
-              pagination component in the table header
-            */}
+                Tags column 
+                However, it's used to display the
+                pagination component in the table header
+              */}
               <th colSpan={2} className={classNames(commonThClasses, 'w-68')}>
                 <Pager
                   pageSize={pageSize}
@@ -254,6 +287,15 @@ const PaymentRequestTable = ({
           // Else,  there are no payment requests matching the filters
           <EmptyState state="nothingFound" onCreatePaymentRequest={onCreatePaymentRequest} />
         )}
+
+      {/* System error modal */}
+      <SystemErrorModal
+        open={isSystemErrorOpen}
+        title={systemError?.title}
+        message={systemError?.message}
+        onDismiss={handlOnCloseSystemErrorModal}
+      />
+
       <Toaster positionY="top" positionX="right" duration={5000} />
     </div>
   )

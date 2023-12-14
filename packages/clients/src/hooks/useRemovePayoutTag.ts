@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { PayoutClient } from '../clients'
 import { ApiError, PayoutUpdate } from '../types'
-import { ApiProps, DeleteTagProps, MerchantProps } from '../types/props'
+import { ApiProps, DeleteTagProps } from '../types/props'
 
 const removeTagAsync = async (
   apiUrl: string,
@@ -28,17 +28,17 @@ const removeTagAsync = async (
   return { success: true }
 }
 
-export const useRemovePayoutTag = (
-  { merchantId }: MerchantProps,
-  { apiUrl, authToken }: ApiProps,
-): {
+export const useRemovePayoutTag = ({
+  apiUrl,
+  authToken,
+}: ApiProps): {
   removeTag: (deleteTagProps: DeleteTagProps) => Promise<{ error: ApiError | undefined }>
 } => {
   const queryClient = useQueryClient()
 
   const [payoutId, setPayoutId] = useState<string>()
 
-  const SINGLE_REQUEST_QUERY_KEY = ['Payout', merchantId, payoutId, apiUrl, authToken]
+  const SINGLE_PAYOUT_QUERY_KEY = ['Payout', payoutId, apiUrl, authToken]
 
   const REQUESTS_QUERY_KEY = ['Payouts']
 
@@ -52,7 +52,7 @@ export const useRemovePayoutTag = (
       removeTagAsync(apiUrl, variables.tagId, variables.id, variables.existingTagsIds, authToken),
     onSuccess: (data: { success?: boolean | undefined; error?: ApiError | undefined }) => {
       if (data.success) {
-        queryClient.invalidateQueries({ queryKey: SINGLE_REQUEST_QUERY_KEY })
+        queryClient.invalidateQueries({ queryKey: SINGLE_PAYOUT_QUERY_KEY })
         queryClient.invalidateQueries({ queryKey: REQUESTS_QUERY_KEY })
       }
     },

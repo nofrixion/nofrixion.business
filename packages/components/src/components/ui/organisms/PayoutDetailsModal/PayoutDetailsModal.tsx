@@ -10,6 +10,7 @@ import AccountDetails from '../../molecules/Account/AccountDetails'
 import ConfrimButton from '../../molecules/ConfirmButton/ConfirmButton'
 import TagManager from '../../Tags/TagManager/TagManager'
 import { PayoutAuthoriseForm } from '../../utils/PayoutAuthoriseForm'
+import PayoutActivityPanel from '../PayoutActivityPanel/PayoutActivityPanel'
 
 export interface PayoutDetailsModalProps {
   payout?: LocalPayout
@@ -52,7 +53,7 @@ const PayoutDetailsModal = ({
         }}
         className="w-full lg:w-[37.5rem] outline-none"
       >
-        <div className="bg-white max-h-full h-full">
+        <div className="bg-white max-h-full h-full overflow-auto">
           {payout && (
             <>
               {payout && payout.status === PayoutStatus.PENDING_APPROVAL && (
@@ -123,25 +124,25 @@ const PayoutDetailsModal = ({
                 {payout.scheduleDate && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Payment date</div>
-                    <div>{formatDateWithYear(new Date(payout.scheduleDate))}</div>
+                    <div className="w-2/3">{formatDateWithYear(new Date(payout.scheduleDate))}</div>
                   </div>
                 )}
                 {payout.theirReference && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Their reference</div>
-                    <div>{payout.theirReference}</div>
+                    <div className="w-2/3 break-all">{payout.theirReference}</div>
                   </div>
                 )}
                 {payout.yourReference && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Your reference</div>
-                    <div>{payout.yourReference}</div>
+                    <div className="w-2/3 break-all">{payout.yourReference}</div>
                   </div>
                 )}
                 {payout.description && (
                   <div className="flex text-sm mt-8">
                     <div className="text-grey-text w-1/3">Description</div>
-                    <div className="w-2/3">{payout.description}</div>
+                    <div className="w-2/3 break-all">{payout.description}</div>
                   </div>
                 )}
                 <div className="flex text-sm mt-8">
@@ -158,6 +159,10 @@ const PayoutDetailsModal = ({
                 </div>
               </div>
             </>
+          )}
+
+          {payout && payout?.activities && payout.activities.length > 0 && (
+            <PayoutActivityPanel activities={payout.activities} />
           )}
         </div>
       </SheetContent>

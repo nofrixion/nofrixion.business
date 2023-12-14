@@ -1,8 +1,9 @@
 import { Pagination } from '@nofrixion/moneymoov'
 import { format } from 'date-fns'
-import * as React from 'react'
+import { useState } from 'react'
 
 import { LocalTransaction } from '../../../../types/LocalTypes'
+import { DoubleSortByTransactions, SortByTransactions } from '../../../../types/Sort'
 import { cn } from '../../../../utils'
 import { formatAmount } from '../../../../utils/formatters'
 import { Icon } from '../../atoms'
@@ -22,7 +23,7 @@ export interface TransactionsTableProps extends React.HTMLAttributes<HTMLDivElem
   transactions: LocalTransaction[]
   pagination: Pick<Pagination, 'pageSize' | 'totalSize'>
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  onSort: (sortInfo: DoubleSortByTransactions) => void
   isShowingConnectedAccount?: boolean
   isLoading?: boolean
 }
@@ -36,6 +37,13 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   isShowingConnectedAccount = false,
   ...props
 }) => {
+  const [sortBy, setSortBy] = useState<DoubleSortByTransactions>({
+    primary: {
+      name: 'created',
+      direction: SortDirection.NONE,
+    },
+  })
+
   const renderBasicInfoLayout = (
     upperText: string,
     lowerText: string | undefined,
@@ -48,6 +56,29 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
       </div>
     )
   }
+  const handleOnSort = (sortInfo: SortByTransactions) => {
+    // If primary sort is the same as the new sort, then we need to toggle the direction
+    // If primary sort is different, then we need to set the new sort as primary and the old primary as secondary
+    if (sortBy.primary.name === sortInfo.name) {
+      setSortBy((sortBy) => {
+        const newSort = {
+          primary: sortInfo,
+          secondary: sortBy.secondary,
+        }
+        onSort(newSort)
+        return newSort
+      })
+    } else {
+      setSortBy((sortBy) => {
+        const newSort = {
+          primary: sortInfo,
+          secondary: sortBy.primary,
+        }
+        onSort(newSort)
+        return newSort
+      })
+    }
+  }
 
   return (
     <div {...props}>
@@ -57,15 +88,24 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             <TableHeader>
               <TableRow className="hover:bg-transparent cursor-auto">
                 <TableHead className="w-[150px]">
-                  <ColumnHeader label={'Date'} onSort={(direction) => onSort('date', direction)} />
+                  <ColumnHeader
+                    label="Date"
+                    sortDirection={
+                      sortBy.primary.name === 'created' ? sortBy.primary.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'created', direction })}
+                  />
                 </TableHead>
                 <TableHead>
                   <ColumnHeader label={'To/ From'} />
                 </TableHead>
                 <TableHead className="text-right">
                   <ColumnHeader
-                    label={'Amount'}
-                    onSort={(direction) => onSort('amount', direction)}
+                    label="Amount"
+                    sortDirection={
+                      sortBy.primary.name === 'amount' ? sortBy.primary.direction : undefined
+                    }
+                    onSort={(direction) => handleOnSort({ name: 'amount', direction })}
                   />
                 </TableHead>
                 <TableHead>

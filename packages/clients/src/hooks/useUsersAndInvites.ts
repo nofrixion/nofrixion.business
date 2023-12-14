@@ -1,28 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { UsersClient } from '../clients'
-import { formatSortExpression, SortDirection } from '../types'
+import { formatSortExpression } from '../types'
 import { ApiResponse, UserRoleAndUserInvitePageResponse } from '../types/ApiResponses'
-import { ApiProps, useUsersAndInvitesProps } from '../types/props'
+import { ApiProps, SortByUsersAndInvites, useUsersAndInvitesProps } from '../types/props'
 
 const fetchUsers = async (
   apiUrl: string,
-  statusSortDirection: SortDirection,
-  lastModifiedSortDirection: SortDirection,
-  nameSortDirection: SortDirection,
-  roleSortDirection: SortDirection,
   authToken?: string,
   merchantId?: string,
   pageNumber?: number,
   pageSize?: number,
   status?: string,
+  sortBy?: SortByUsersAndInvites,
 ): Promise<ApiResponse<UserRoleAndUserInvitePageResponse>> => {
-  const sortExpression = formatSortExpression({
-    statusSortDirection: statusSortDirection,
-    lastModifiedSortDirection: lastModifiedSortDirection,
-    nameSortDirection: nameSortDirection,
-    roleSortDirection: roleSortDirection,
-  })
+  const sortExpression = sortBy ? formatSortExpression(sortBy) : ''
 
   const client = new UsersClient({ apiUrl, authToken })
 
@@ -38,16 +30,7 @@ const fetchUsers = async (
 }
 
 export const useUsersAndInvites = (
-  {
-    merchantId,
-    statusSortDirection,
-    lastModifiedSortDirection,
-    nameSortDirection,
-    roleSortDirection,
-    pageNumber,
-    pageSize,
-    status,
-  }: useUsersAndInvitesProps,
+  { merchantId, pageNumber, pageSize, status, sortBy }: useUsersAndInvitesProps,
   { apiUrl, authToken }: ApiProps,
 ) => {
   const QUERY_KEY = [
@@ -55,30 +38,15 @@ export const useUsersAndInvites = (
     apiUrl,
     authToken,
     merchantId,
-    statusSortDirection,
-    lastModifiedSortDirection,
-    nameSortDirection,
-    roleSortDirection,
     pageNumber,
     pageSize,
     status,
+    sortBy,
   ]
 
   return useQuery<ApiResponse<UserRoleAndUserInvitePageResponse>, Error>(
     QUERY_KEY,
-    () =>
-      fetchUsers(
-        apiUrl,
-        statusSortDirection,
-        lastModifiedSortDirection,
-        nameSortDirection,
-        roleSortDirection,
-        authToken,
-        merchantId,
-        pageNumber,
-        pageSize,
-        status,
-      ),
+    () => fetchUsers(apiUrl, authToken, merchantId, pageNumber, pageSize, status, sortBy),
     {
       enabled: !!merchantId,
     },

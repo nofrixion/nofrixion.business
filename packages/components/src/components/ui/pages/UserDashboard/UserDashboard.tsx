@@ -1,16 +1,13 @@
-import {
-  Pagination,
-  SortDirection,
-  UserMetrics,
-  UserRoleAndUserInvite,
-  UserStatus,
-} from '@nofrixion/moneymoov'
+import { Pagination, UserMetrics, UserRoleAndUserInvite, UserStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 
+import { SystemError } from '../../../../types/LocalTypes'
+import { DoubleSortByUsersAndInvites } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
+import DashboardTab from '../../DashboardTab/DashboardTab'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import UserTable from '../../organisms/UsersTable/UserTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
-import Tab from '../../Tab/Tab'
 import { Toaster } from '../../Toast/Toast'
 
 export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -22,11 +19,15 @@ export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement>
   isLoadingMetrics: boolean
   status: UserStatus
   onPageChange: (page: number) => void
-  onSort: (name: 'lastmodified' | 'name' | 'status' | 'role', direction: SortDirection) => void
+  sortBy: DoubleSortByUsersAndInvites
+  onSort: (sortInfo: DoubleSortByUsersAndInvites) => void
   onUserClicked?: (user: UserRoleAndUserInvite) => void
   onInviteUser: () => void
   onResendInvitation?: (inviteID?: string) => void
   setStatus?: (status: UserStatus) => void
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const UserDashboard: React.FC<UserDashboardProps> = ({
@@ -38,12 +39,22 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
   isLoadingMetrics,
   status,
   onPageChange,
+  sortBy,
   onSort,
   onInviteUser,
   onUserClicked,
   onResendInvitation,
   setStatus,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }) => {
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
+  }
+
   return (
     <>
       <div className="font-inter bg-main-grey text-default-text h-full">
@@ -65,22 +76,22 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
           >
             {/* Keep the Tab to still get accessibility functions through the keyboard */}
             <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-              <Tab
+              <DashboardTab
                 status={UserStatus.All}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.all ?? 0}
               />
-              <Tab
+              <DashboardTab
                 status={UserStatus.Invited}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.invited ?? 0}
               />
-              <Tab
+              <DashboardTab
                 status={UserStatus.RolePending}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.rolePending ?? 0}
               />
-              <Tab
+              <DashboardTab
                 status={UserStatus.Active}
                 isLoading={isLoadingMetrics}
                 totalRecords={metrics?.active ?? 0}
@@ -98,6 +109,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
               totalSize: pagination.totalSize,
             }}
             onPageChange={onPageChange}
+            sortBy={sortBy}
             onSort={onSort}
             isLoading={isLoading}
             onUserClicked={onUserClicked}
@@ -105,6 +117,14 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
             onResendInvitation={onResendInvitation}
           />
         </div>
+
+        {/* System error modal */}
+        <SystemErrorModal
+          open={isSystemErrorOpen}
+          title={systemError?.title}
+          message={systemError?.message}
+          onDismiss={handlOnCloseSystemErrorModal}
+        />
 
         <Toaster positionY="top" positionX="right" duration={3000} />
       </div>

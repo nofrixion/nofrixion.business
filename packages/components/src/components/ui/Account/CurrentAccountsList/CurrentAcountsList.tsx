@@ -2,10 +2,12 @@ import { Account, BankSettings } from '@nofrixion/moneymoov'
 import { useEffect, useState } from 'react'
 
 import { useUserSettings } from '../../../../lib/stores/useUserSettingsStore'
+import { SystemError } from '../../../../types/LocalTypes'
 import { Button, Icon } from '../../atoms'
 import ConnectBankModal from '../../Modals/ConnectBankModal/ConnectBankModal'
 import RenewConnectionModal from '../../Modals/RenewConnectionModal/RenewConnectionModal'
 import RevokeConnectionModal from '../../Modals/RevokeConnectionModal/RevokeConnectionModal'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import { Toaster } from '../../Toast/Toast'
 import AccountCard from '../AccountCard'
 import CurrentAccountsHeader from '../CurrentAccountsHeader/CurrentAccountsHeader'
@@ -22,6 +24,9 @@ export interface CurrentAccountsListProps {
   banks?: BankSettings[]
   isConnectingToBank: boolean
   areConnectedAccountsEnabled?: boolean
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const CurrentAcountsList = ({
@@ -35,6 +40,9 @@ const CurrentAcountsList = ({
   banks,
   isConnectingToBank,
   areConnectedAccountsEnabled = true,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }: CurrentAccountsListProps) => {
   const { userSettings } = useUserSettings()
   const [isConnectBankModalOpen, setIsConnectBankModalOpen] = useState(false)
@@ -54,6 +62,12 @@ const CurrentAcountsList = ({
     setIsRenewConnectionModalOpen(false)
     setExternalAccountConnectDisabled(false)
     setIsRevokeConnectionModalOpen(false)
+  }
+
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
   }
 
   const handleOnApply = (bank: BankSettings) => {
@@ -91,35 +105,38 @@ const CurrentAcountsList = ({
 
   return (
     <div className="font-inter bg-main-grey text-default-text h-full">
-      <div className="flex">
-        <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
-        {areConnectedAccountsEnabled &&
-          userSettings?.connectMaybeLater &&
-          externalAccounts?.length === 0 && (
-            <Button
-              variant={'secondary'}
-              className="h-fit w-fit ml-auto"
-              onClick={handleOnConnectClicked}
-            >
-              <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
-              Connect external account
-            </Button>
-          )}
-      </div>
-      {internalAccounts && (
-        <div className="flex-row mb-8 md:mb-[68px]">
-          {internalAccounts
-            .sort((a, b) => a.accountName?.localeCompare(b.accountName))
-            .map((account, index) => (
-              <AccountCard
-                key={index}
-                account={account}
-                onClick={() => {
-                  onAccountClick && onAccountClick(account)
-                }}
-              />
-            ))}
-        </div>
+      {internalAccounts && internalAccounts.length > 0 && (
+        <>
+          <div className="flex">
+            <CurrentAccountsHeader onCreatePaymentAccount={onCreatePaymentAccount} />
+            {areConnectedAccountsEnabled &&
+              userSettings?.connectMaybeLater &&
+              externalAccounts?.length === 0 && (
+                <Button
+                  variant={'secondary'}
+                  className="h-fit w-fit ml-auto"
+                  onClick={handleOnConnectClicked}
+                >
+                  <Icon name="bank/16" className="mr-1 stroke-[#454D54]" />
+                  Connect external account
+                </Button>
+              )}
+          </div>
+
+          <div className="flex-row mb-8 md:mb-[68px]">
+            {internalAccounts
+              .sort((a, b) => a.accountName?.localeCompare(b.accountName))
+              .map((account, index) => (
+                <AccountCard
+                  key={index}
+                  account={account}
+                  onClick={() => {
+                    onAccountClick && onAccountClick(account)
+                  }}
+                />
+              ))}
+          </div>
+        </>
       )}
 
       {/* External accounts list */}
@@ -164,7 +181,9 @@ const CurrentAcountsList = ({
         externalAccounts?.length === 0 && (
           <ExternalAccountConnectCard
             onConnectClicked={handleOnConnectClicked}
-            onMaybeLater={onMaybeLater}
+            onMaybeLater={
+              internalAccounts && internalAccounts.length > 0 ? onMaybeLater : undefined
+            }
             disabled={externalAccountConnectDisabled}
           />
         )}
@@ -194,6 +213,14 @@ const CurrentAcountsList = ({
           />
         </>
       )}
+
+      {/* System error modal */}
+      <SystemErrorModal
+        open={isSystemErrorOpen}
+        title={systemError?.title}
+        message={systemError?.message}
+        onDismiss={handlOnCloseSystemErrorModal}
+      />
 
       <Toaster positionY="top" positionX="right" duration={3000} />
     </div>

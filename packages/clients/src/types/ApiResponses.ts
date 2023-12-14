@@ -13,6 +13,7 @@ import {
   PaymentProcessor,
   PaymentProcessorsEnum,
   PaymentResult,
+  PayoutEventTypesEnum,
   PayoutStatus,
   TimeFrequencyEnum,
   UserInviteStatusEnum,
@@ -147,6 +148,7 @@ export type PaymentRequestRefundAttempt = {
 export type PaymentRequestCaptureAttempt = {
   capturedAt?: Date
   capturedAmount: number
+  captureFailedAt?: Date
 }
 
 export interface Pagination {
@@ -369,6 +371,16 @@ export interface Payout {
   scheduled?: boolean
   scheduleDate?: Date
   beneficiaryID?: string
+  events: PayoutEvent[]
+}
+
+export interface PayoutEvent {
+  userID: string
+  userName?: string
+  timestamp: Date
+  status: PayoutStatus
+  eventType: PayoutEventTypesEnum
+  ruleName?: string
 }
 
 export interface PayoutUpdate {

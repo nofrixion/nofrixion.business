@@ -4,13 +4,12 @@ import {
   BankSettings,
   Currency,
   Pagination,
-  SortDirection,
 } from '@nofrixion/moneymoov'
 import { set } from 'date-fns'
-import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LocalPayout, LocalTransaction } from '../../../../types/LocalTypes'
+import { DoubleSortByTransactions } from '../../../../types/Sort'
 import AccountBalance from '../../Account/AccountBalance/AccountBalance'
 import { DisplayAndCopy, Icon } from '../../atoms'
 import AccountConnection from '../../atoms/AccountConnection/AccountConnection'
@@ -30,7 +29,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   searchFilter: string
   merchantCreatedAt?: Date
   onPageChange: (page: number) => void
-  onSort: (name: 'date' | 'amount', direction: SortDirection) => void
+  onSort: (sortInfo: DoubleSortByTransactions) => void
   onDateChange: (dateRange: DateRange) => void
   onSearch: (searchFilter: string) => void
   onAllCurrentAccountsClick?: () => void
@@ -39,6 +38,7 @@ export interface AccountDashboardProps extends React.HTMLAttributes<HTMLDivEleme
   banks?: BankSettings[]
   isConnectingToBank: boolean
   isLoadingTransactions?: boolean
+  isLoadingAccount?: boolean
 }
 
 const AccountDashboard: React.FC<AccountDashboardProps> = ({
@@ -58,6 +58,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
   banks,
   isConnectingToBank,
   isLoadingTransactions,
+  isLoadingAccount,
 }) => {
   const [localAccountName, setLocalAccountName] = useState(account?.accountName ?? '')
 
@@ -81,7 +82,7 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
     setIsRenewConnectionModalOpen(false)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalAccountName(account?.accountName ?? '')
   }, [account?.accountName])
 
@@ -127,7 +128,10 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           )}
           <div className="text-[28px]/8 font-semibold">
             <div className="flex group items-center space-x-2">
-              {localAccountName && (
+              {isLoadingAccount && (
+                <div className="animate-pulse w-48 h-4 my-2 bg-[#E0E9EB] rounded-full" />
+              )}
+              {!isLoadingAccount && localAccountName && (
                 <EditableContent
                   initialValue={localAccountName}
                   onChange={handleOnAccountNameChange}
@@ -135,10 +139,17 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
               )}
             </div>
             <div className="flex gap-6 mt-2">
-              {account?.identifier.type === AccountIdentifierType.IBAN &&
+              {isLoadingAccount && (
+                <div className="h-8 py-3">
+                  <div className="animate-pulse w-56 h-2 bg-[#E0E9EB] rounded-full" />
+                </div>
+              )}
+
+              {!isLoadingAccount &&
+              account?.identifier.type === AccountIdentifierType.IBAN &&
               account.identifier.iban ? (
                 <DisplayAndCopy name="IBAN" value={account.identifier.iban} className="mt-0" />
-              ) : account?.identifier.type === AccountIdentifierType.SCAN ? (
+              ) : !isLoadingAccount && account?.identifier.type === AccountIdentifierType.SCAN ? (
                 <>
                   {account?.identifier.sortCode && (
                     <DisplayAndCopy name="SC" value={account?.identifier.sortCode} />
@@ -161,14 +172,25 @@ const AccountDashboard: React.FC<AccountDashboardProps> = ({
           </div>
 
           <div className="flex flex-col items-end ml-auto">
-            <AccountBalance
-              availableBalance={account?.availableBalance ?? 0}
-              balance={account?.balance ?? 0}
-              currency={account?.currency ?? Currency.None}
-            />
+            {isLoadingAccount && (
+              <>
+                <div className="animate-pulse w-48 h-[18px] my-2 bg-[#E0E9EB] rounded-full" />
+                <div className="animate-pulse w-24 h-2 mt-3.5 bg-[#E0E9EB] rounded-full" />
+              </>
+            )}
 
-            {pendingPayments && pendingPayments.length > 0 && (
-              <PendingPayments pendingPayments={pendingPayments} className="w-[400px]" />
+            {!isLoadingAccount && account && (
+              <>
+                <AccountBalance
+                  availableBalance={account?.availableBalance ?? 0}
+                  balance={account?.balance ?? 0}
+                  currency={account?.currency ?? Currency.None}
+                />
+
+                {pendingPayments && pendingPayments.length > 0 && (
+                  <PendingPayments pendingPayments={pendingPayments} className="w-[400px]" />
+                )}
+              </>
             )}
           </div>
         </div>

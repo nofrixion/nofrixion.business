@@ -88,13 +88,11 @@ export interface useTransactionsProps extends AccountProps {
   fromDateMS?: number
   toDateMS?: number
   search?: string
-  dateSortDirection?: SortDirection
-  toSortDirection?: SortDirection
-  referenceSortDirection?: SortDirection
-  amountSortDirection?: SortDirection
-  descriptionSortDirection?: SortDirection
-  typeSortDirection?: SortDirection
+  sortBy?: SortByTransactions
 }
+
+type SortByTransactionsOptions = 'created' | 'to' | 'reference' | 'amount' | 'description' | 'type'
+export type SortByTransactions = SortBy<SortByTransactionsOptions>
 
 export interface usePaymentRequestProps extends MerchantProps, PaymentRequestProps {
   merchantId: string
@@ -105,33 +103,33 @@ export interface usePaymentRequestsProps
     PaymentRequestProps,
     PaymentRequestPageProps {
   merchantId: string
-  createdSortDirection: SortDirection
-  amountSortDirection: SortDirection
-  titleSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   preservePreviousPageData?: boolean
+  sortBy?: SortByPaymentRequests
 }
+
+type SortByPaymentRequestsOptions = 'created' | 'amount' | 'title'
+export type SortByPaymentRequests = SortBy<SortByPaymentRequestsOptions>
 
 export interface usePayoutsProps extends MerchantProps, PayoutPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
-  createdSortDirection: SortDirection
-  amountSortDirection: SortDirection
-  counterPartyNameSortDirection: SortDirection
-  scheduleDateSortDirection: SortDirection
   fromDateMS?: number
   toDateMS?: number
   statuses: PayoutStatus[]
+  sortBy?: SortByPayouts
 }
+
+type SortByPayoutsOptions = 'created' | 'status' | 'amount' | 'counterPartyName' | 'scheduleDate'
+export type SortByPayouts = SortBy<SortByPayoutsOptions>
 
 export interface useUsersAndInvitesProps extends MerchantProps, PayoutPageProps {
   merchantId: string
-  statusSortDirection: SortDirection
-  lastModifiedSortDirection: SortDirection
-  nameSortDirection: SortDirection
-  roleSortDirection: SortDirection
+  sortBy?: SortByUsersAndInvites
 }
+
+type SortByUsersAndInvitesOptions = 'status' | 'lastModified' | 'name' | 'role'
+export type SortByUsersAndInvites = SortBy<SortByUsersAndInvitesOptions>
 
 export interface useUsersAndInvitesMetricsProps extends MerchantProps, PayoutPageProps {
   merchantId: string
@@ -245,7 +243,12 @@ export interface useAccountsWithTransactionMetricsProps
     AccountsWithTransactionsMetricsProps {
   fromDateMS?: number
   toDateMS?: number
-  numberOfTransactionsSortDirection: SortDirection
+  sortBy?: SortByAccountsWithTransactionMetrics
+}
+
+export interface SortByAccountsWithTransactionMetrics {
+  name: 'numberOfTransactions'
+  direction: SortDirection
 }
 
 export interface AccountsMetricsProps extends MerchantProps {
@@ -267,4 +270,14 @@ export interface UpdatePayoutProps {
   scheduled?: boolean
   scheduleDate?: Date
   beneficiaryID?: string
+}
+
+interface IndividualSortBy<T> {
+  name: T
+  direction: SortDirection
+}
+
+interface SortBy<T> {
+  primary: IndividualSortBy<T>
+  secondary?: IndividualSortBy<T>
 }

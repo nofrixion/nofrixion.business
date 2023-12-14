@@ -46,7 +46,7 @@ const getDisplayTextForStatus = (status: string) => {
     case PaymentRequestStatus.None:
       return 'Unpaid'
     case PaymentRequestStatus.Authorized:
-      return 'Authorized'
+      return 'Authorised'
     /* Payouts */
     case PayoutStatus.FAILED:
       return 'Failed'
@@ -89,7 +89,7 @@ const showIndicator = (status: string) => {
   }
 }
 
-const Tab = ({
+const DashboardTab = ({
   status,
   totalRecords,
   isLoading = false,
@@ -175,4 +175,4 @@ const Tab = ({
   )
 }
 
-export default Tab
+export default DashboardTab

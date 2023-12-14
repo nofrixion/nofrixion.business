@@ -27,7 +27,9 @@ import {
   LocalPaymentRequest,
   LocalPaymentRequestCreate,
   LocalTag,
+  SystemError,
 } from '../../../types/LocalTypes'
+import { DoubleSortByPaymentRequests } from '../../../types/Sort'
 import {
   localAccountIdentifierTypeToRemoteAccountIdentifierType,
   localCounterPartyToRemoteCounterParty,
@@ -37,11 +39,11 @@ import {
 } from '../../../utils/parsers'
 import CreatePaymentRequestPage from '../../functional/CreatePaymentRequestPage/CreatePaymentRequestPage'
 import { SortDirection } from '../../ui/ColumnHeader/ColumnHeader'
+import DashboardTab from '../../ui/DashboardTab/DashboardTab'
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import FilterControlsRow from '../../ui/FilterControlsRow/FilterControlsRow'
 import PaymentRequestTable from '../../ui/PaymentRequestTable/PaymentRequestTable'
 import ScrollArea from '../../ui/ScrollArea/ScrollArea'
-import Tab from '../../ui/Tab/Tab'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
 import { makeToast } from '../../ui/Toast/Toast'
 import PaymentRequestDetailsModal from '../PaymentRequestDetailsModal/PaymentRequestDetailsModal'
@@ -83,13 +85,14 @@ const PaymentRequestDashboardMain = ({
   onUnauthorized,
 }: PaymentRequestDashboardProps) => {
   const [page, setPage] = useState(1)
-  const [createdSortDirection, setCreatedSortDirection] = useState<SortDirection>(
-    SortDirection.NONE,
-  )
+  const [sortBy, setSortBy] = useState<DoubleSortByPaymentRequests>({
+    primary: {
+      direction: SortDirection.NONE,
+      name: 'created',
+    },
+  })
 
   const [firstMetrics, setFirstMetrics] = useState<PaymentRequestMetrics | undefined>(undefined)
-  const [amountSortDirection, setAmountSortDirection] = useState<SortDirection>(SortDirection.NONE)
-  const [titleSortDirection, setTitleSortDirection] = useState<SortDirection>(SortDirection.NONE)
 
   const [status, setStatus] = useState<PaymentRequestStatus>(PaymentRequestStatus.All)
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -116,6 +119,9 @@ const PaymentRequestDashboardMain = ({
     LocalPaymentRequestCreate | undefined
   >(undefined)
   const [showMoreClicked, setShowMoreClicked] = useState(false)
+
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
 
   const pageSize = 20
 
@@ -145,9 +151,6 @@ const PaymentRequestDashboardMain = ({
 
   const { data: paymentRequestsResponse, isLoading: isLoadingPaymentRequests } = usePaymentRequests(
     {
-      amountSortDirection: amountSortDirection,
-      createdSortDirection: createdSortDirection,
-      titleSortDirection: titleSortDirection,
       merchantId: merchantId,
       pageNumber: page,
       pageSize: pageSize,
@@ -160,6 +163,7 @@ const PaymentRequestDashboardMain = ({
       maxAmount: maxAmountFilter,
       tags: tagsFilter,
       preservePreviousPageData: showMoreClicked,
+      sortBy: sortBy,
     },
     { apiUrl: apiUrl, authToken: token },
   )
@@ -290,7 +294,10 @@ const PaymentRequestDashboardMain = ({
     const response = await deletePaymentRequest(paymentRequest.id)
 
     if (response.error) {
-      makeToast('error', response.error.title)
+      handleSystemErrorMessage({
+        title: 'Delete payment request has failed',
+        message: response.error.detail,
+      })
 
       handleApiError(response.error)
 
@@ -377,8 +384,8 @@ const PaymentRequestDashboardMain = ({
         })
 
         if (voidResult.error) {
-          makeToast('error', 'Error processing void.')
           handleApiError(voidResult.error)
+          return voidResult.error
         } else {
           makeToast('success', 'Payment successfully voided.')
         }
@@ -390,8 +397,8 @@ const PaymentRequestDashboardMain = ({
         })
 
         if (refundResult.error) {
-          makeToast('error', 'Error processing refund.')
           handleApiError(refundResult.error)
+          return refundResult.error
         } else {
           makeToast('success', 'Payment successfully refunded.')
         }
@@ -423,8 +430,8 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error creating refund.')
         handleApiError(result.error)
+        return result.error
       } else {
         makeToast('success', 'Refund successfully submitted for approval.')
       }
@@ -440,8 +447,8 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error capturing Payment.')
         handleApiError(result.error)
+        return result.error
       } else {
         makeToast('success', 'Payment successfully captured.')
       }
@@ -485,6 +492,10 @@ const PaymentRequestDashboardMain = ({
     }
   }, [metrics])
 
+  const onSort = (sortInfo: DoubleSortByPaymentRequests) => {
+    setSortBy(sortInfo)
+  }
+
   const paymentRequestStatusToMetricsStatus = (
     status: PaymentRequestStatus,
   ): 'paid' | 'partiallyPaid' | 'unpaid' | 'authorized' | 'all' => {
@@ -502,6 +513,15 @@ const PaymentRequestDashboardMain = ({
       default:
         return 'all'
     }
+  }
+
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
   }
 
   const paymentRequestsExists =
@@ -543,10 +563,8 @@ const PaymentRequestDashboardMain = ({
           setMaxAmount={setMaxAmountFilter}
           tags={tags}
           setTags={setTags}
-          createdSortDirection={createdSortDirection}
-          setCreatedSortDirection={setCreatedSortDirection}
-          amountSortDirection={amountSortDirection}
-          setAmountSortDirection={setAmountSortDirection}
+          sortBy={sortBy}
+          onSort={(sortInfo) => onSort(sortInfo as DoubleSortByPaymentRequests)}
           firstDate={
             // Set first date to the first day of the year the merchant was created
             merchant?.status == 'success'
@@ -563,35 +581,35 @@ const PaymentRequestDashboardMain = ({
         >
           {/* Keep the Tab to still get accessibility functions through the keyboard */}
           <Tabs.List className="flex shrink-0 gap-x-4 mb-4">
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.All}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.all ?? 0}
               totalAmountInEuros={metrics?.totalAmountsByCurrency?.all?.eur}
               totalAmountInPounds={metrics?.totalAmountsByCurrency?.all?.gbp}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.None}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.unpaid ?? 0}
               totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'unpaid')}
               totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'unpaid')}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.Authorized}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.authorized ?? 0}
               totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'authorized')}
               totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'authorized')}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.PartiallyPaid}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.partiallyPaid ?? 0}
               totalAmountInEuros={getTotalAmountPerCurrencyAndStatus('eur', 'partiallyPaid')}
               totalAmountInPounds={getTotalAmountPerCurrencyAndStatus('gbp', 'partiallyPaid')}
             />
-            <Tab
+            <DashboardTab
               status={PaymentRequestStatus.FullyPaid}
               isLoading={isLoadingMetrics}
               totalRecords={metrics?.paid ?? 0}
@@ -611,9 +629,8 @@ const PaymentRequestDashboardMain = ({
           pageSize={pageSize}
           totalRecords={totalRecords}
           onPageChanged={setPage}
-          setCreatedSortDirection={setCreatedSortDirection}
-          setAmountSortDirection={setAmountSortDirection}
-          setTitleSortDirection={setTitleSortDirection}
+          sortBy={sortBy}
+          onSort={onSort}
           onPaymentRequestDuplicateClicked={onDuplicatePaymentRequest}
           onPaymentRequestDeleteClicked={onDeletePaymentRequest}
           onPaymentRequestCopyLinkClicked={onCopyPaymentRequestLink}
@@ -625,6 +642,9 @@ const PaymentRequestDashboardMain = ({
           selectedPaymentRequestID={selectedPaymentRequestID}
           paymentRequestsExist={paymentRequestsExists}
           isLoadingMetrics={isLoadingMetrics}
+          systemError={systemError}
+          isSystemErrorOpen={isSystemErrorOpen}
+          onCloseSystemError={onCloseSystemErrorModal}
         />
       </div>
 
@@ -666,9 +686,7 @@ const PaymentRequestDashboardMain = ({
         onCardRefund={onCardRefundClick}
         onBankRefund={onBankRefundClick}
         onCapture={onCaptureClick}
-        createdSortDirection={createdSortDirection}
-        amountSortDirection={amountSortDirection}
-        titleSortDirection={titleSortDirection}
+        sortBy={sortBy}
         pageNumber={page}
         pageSize={pageSize}
         fromDateMS={dateRange.fromDate && dateRange.fromDate.getTime()}

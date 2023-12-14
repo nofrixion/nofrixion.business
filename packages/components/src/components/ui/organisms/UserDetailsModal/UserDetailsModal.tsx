@@ -1,9 +1,11 @@
-import { User, UserRoleAndUserInvite, UserRoles } from '@nofrixion/moneymoov'
+import { ApiError, User, UserRoleAndUserInvite, UserRoles } from '@nofrixion/moneymoov'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
+import { SystemError } from '../../../../types/LocalTypes'
 import { userStatusToStatus } from '../../../../utils/parsers'
 import { Button, Sheet, SheetContent } from '../../../ui/atoms'
+import InlineError from '../../InlineError/InlineError'
 import { Status } from '../../molecules'
 import Select from '../../Select/Select'
 
@@ -13,7 +15,11 @@ export interface UserDetailsModalProps {
   open: boolean
   merchantId: string
   onDismiss: () => void
-  onUpdateUserRole: (merchantId: string, emailAddress: string, userRole: UserRoles) => void
+  onUpdateUserRole: (
+    merchantId: string,
+    emailAddress: string,
+    userRole: UserRoles,
+  ) => Promise<ApiError | undefined>
   onDeleteUserRole: (userRoleId: string) => void
 }
 
@@ -29,6 +35,9 @@ const UserDetailsModal = ({
   const [roleChanged, setRoleChanged] = useState(false)
   const [selectedRole, setSelectedRole] = useState<UserRoles | undefined>(user?.roleType)
   const [disabled, setDisabled] = useState(false)
+
+  const [showUserRoleError, setShowUserRoleError] = useState(false)
+  const [userRoleError, setUserRoleError] = useState<SystemError | undefined>(undefined)
 
   useEffect(() => {
     if (user) {
@@ -54,6 +63,8 @@ const UserDetailsModal = ({
     if (!open) {
       onDismiss()
       setDisabled(false)
+      setShowUserRoleError(false)
+      setUserRoleError(undefined)
     }
   }
 
@@ -67,9 +78,20 @@ const UserDetailsModal = ({
     }
   }
 
-  const handleUpdateUserRole = () => {
+  const handleUpdateUserRole = async () => {
+    setShowUserRoleError(false)
+    setUserRoleError(undefined)
     setDisabled(true)
-    onUpdateUserRole(merchantId, user?.emailAddress ?? '', selectedRole ?? UserRoles.User)
+
+    const apiError = await onUpdateUserRole(
+      merchantId,
+      user?.emailAddress ?? '',
+      selectedRole ?? UserRoles.User,
+    )
+    if (apiError) {
+      setUserRoleError({ title: 'Update user role has failed', message: apiError.detail })
+      setShowUserRoleError(true)
+    }
   }
 
   const onRevokeAccessClickedHandler = (
@@ -170,6 +192,11 @@ const UserDetailsModal = ({
                     )}
                 </div>
               </div>
+              {showUserRoleError && userRoleError && (
+                <div className="lg:mt-14">
+                  <InlineError title={userRoleError.title} messages={[userRoleError.message]} />
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -1,4 +1,5 @@
 import {
+  ApiError,
   Tag,
   useAddPaymentRequestTag,
   useCreateTag,
@@ -32,14 +33,18 @@ interface PaymentRequestDetailsModalProps extends usePaymentRequestsProps {
   accounts: LocalAccount[]
   onDismiss: () => void
   setMerchantTags: (merchantTags: LocalTag[]) => void
-  onCardRefund: (authorizationID: string, amount: number, isVoid: boolean) => Promise<void>
+  onCardRefund: (
+    authorizationID: string,
+    amount: number,
+    isVoid: boolean,
+  ) => Promise<ApiError | undefined>
   onBankRefund: (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
     amount: number,
     paymentInitiationID: string,
-  ) => Promise<void>
-  onCapture: (authorizationID: string, amount: number) => Promise<void>
+  ) => Promise<ApiError | undefined>
+  onCapture: (authorizationID: string, amount: number) => Promise<ApiError | undefined>
 }
 const PaymentRequestDetailsModal = ({
   token,
@@ -52,9 +57,6 @@ const PaymentRequestDetailsModal = ({
   onCardRefund,
   onBankRefund,
   onCapture,
-  createdSortDirection,
-  amountSortDirection,
-  titleSortDirection,
   pageNumber,
   pageSize,
   fromDateMS,
@@ -66,6 +68,7 @@ const PaymentRequestDetailsModal = ({
   maxAmount,
   tags,
   accounts,
+  sortBy,
 }: PaymentRequestDetailsModalProps) => {
   const [paymentRequest, setPaymentRequest] = useState<LocalPaymentRequest | undefined>(undefined)
 
@@ -93,9 +96,6 @@ const PaymentRequestDetailsModal = ({
   const { data: paymentRequestResponse } = usePaymentRequest(
     {
       merchantId: merchantId,
-      createdSortDirection: createdSortDirection,
-      amountSortDirection: amountSortDirection,
-      titleSortDirection: titleSortDirection,
       pageNumber: pageNumber,
       pageSize: pageSize,
       fromDateMS: fromDateMS,
@@ -106,6 +106,7 @@ const PaymentRequestDetailsModal = ({
       minAmount: minAmount,
       maxAmount: maxAmount,
       tags: tags,
+      sortBy: sortBy,
     },
     {
       paymentRequestId: selectedPaymentRequestID,

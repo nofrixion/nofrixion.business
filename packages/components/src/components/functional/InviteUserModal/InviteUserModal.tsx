@@ -31,7 +31,7 @@ const InviteUserModal = ({
     const response = await sendUserInvite(userInviteCreate)
 
     if (response.status === 'error') {
-      makeToast('error', 'Could not send invite. ' + response.error.detail)
+      return response.error
     } else {
       makeToast('success', 'Invite sent.')
 

@@ -19,10 +19,6 @@ const fetchPayout = async (
 export const usePayout = (
   {
     merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    amountSortDirection,
-    counterPartyNameSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -33,6 +29,7 @@ export const usePayout = (
     minAmount,
     maxAmount,
     tags,
+    sortBy,
   }: usePayoutsProps,
   { payoutId }: PayoutProps,
   { apiUrl, authToken }: ApiProps,
@@ -44,10 +41,6 @@ export const usePayout = (
     apiUrl,
     authToken,
     merchantId,
-    statusSortDirection,
-    createdSortDirection,
-    amountSortDirection,
-    counterPartyNameSortDirection,
     pageNumber,
     pageSize,
     fromDateMS,
@@ -58,6 +51,7 @@ export const usePayout = (
     minAmount,
     maxAmount,
     tags,
+    sortBy,
   ]
 
   const SINGLE_PAYOUT_QUERY_KEY = ['Payout', payoutId, apiUrl, authToken]

@@ -6,6 +6,7 @@ import { useAuth } from '../../lib/auth/useAuth'
 import { useErrorsStore } from '../stores/useErrorsStore'
 import { tryParseApiError, tryParseConnectedAccountError } from '../utils/errorUtils'
 import { getRoute } from '../utils/utils'
+import AppLogout from './AppLogout'
 import { AuthContextType } from './AuthProvider'
 
 export const ProtectedRoutes = () => {
@@ -39,6 +40,10 @@ export const ProtectedRoutes = () => {
     // user is not authenticated, redirect to login page with the return url
     return <Navigate to={getRoute('/')} replace state={{ from: location }} />
   } else {
-    return <Outlet />
+    return (
+      <AppLogout>
+        <Outlet />
+      </AppLogout>
+    )
   }
 }

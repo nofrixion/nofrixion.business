@@ -1,4 +1,4 @@
-import { BankSettings, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
+import { Account, BankSettings, Currency, PaymentMethodsDefaults } from '@nofrixion/moneymoov'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -7,6 +7,8 @@ import BitcoinIcon from '../../../../assets/icons/bitcoin-icon-unavailable.svg'
 import CardIcon from '../../../../assets/icons/card-icon.svg'
 import ApplePayIcon from '../../../../assets/icons/wallet-icon.svg'
 import { LocalPaymentMethodsFormValue } from '../../../../types/LocalTypes'
+import { cn } from '../../../../utils'
+import { formatCurrency } from '../../../../utils/uiFormaters'
 import Checkbox from '../../Checkbox/Checkbox'
 import CustomModal, { BaseModalProps } from '../../CustomModal/CustomModal'
 import Select from '../../Select/Select'
@@ -15,9 +17,10 @@ import AnimateHeightWrapper from '../../utils/AnimateHeight'
 
 export interface PaymentMethodsModalProps extends BaseModalProps {
   amount: string
-  currencySymbol: '€' | '£'
+  currency: Currency
   minimumCurrencyAmount: number
   banks: BankSettings[]
+  destinationAccounts: Account[]
   userDefaults?: PaymentMethodsDefaults
   onApply: (data: LocalPaymentMethodsFormValue) => void
   isPrefilledData: boolean
@@ -25,10 +28,11 @@ export interface PaymentMethodsModalProps extends BaseModalProps {
 
 const PaymentMethodsModal = ({
   amount,
-  currencySymbol,
+  currency,
   minimumCurrencyAmount,
   open,
   banks,
+  destinationAccounts,
   userDefaults,
   onDismiss,
   onApply,
@@ -40,6 +44,9 @@ const PaymentMethodsModal = ({
   const [isLightningEnabled, setIsLightningEnabled] = useState<boolean>(
     userDefaults?.lightning ?? false,
   )
+  const [isDestinationAccountEnabled, setIsDestinationAccountEnabled] = useState<boolean>(
+    userDefaults?.pispPriorityBank ?? false,
+  )
   const [isPriorityBankEnabled, setIsPriorityBankEnabled] = useState<boolean>(
     userDefaults?.pispPriorityBank ?? false,
   )
@@ -47,9 +54,11 @@ const PaymentMethodsModal = ({
     !userDefaults?.cardAuthorizeOnly ?? true,
   )
   const [isDefault, setIsDefault] = useState<boolean>(!isPrefilledData && !!userDefaults)
+  const [destinationAccount, setDestinationAccount] = useState<Account | undefined>()
   const [priorityBank, setPriorityBank] = useState<BankSettings | undefined>()
   const [currentState, setCurrentState] = useState<LocalPaymentMethodsFormValue>()
   const [applyEnabled, setApplyEnabled] = useState<boolean>(true)
+  const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
 
   /* Error alert states */
   const [showWalletOnlyAlert, setShowWalletOnlyAlert] = useState<boolean>(false)
@@ -100,14 +109,61 @@ const PaymentMethodsModal = ({
     }
   }, [])
 
-  // When the user clicks on the Apply button, we need to send the data to the parent component
-  const onApplyClicked = (data: any) => {
-    const formData: LocalPaymentMethodsFormValue = {
+  useEffect(() => {
+    setIsDestinationAccountEnabled(false)
+
+    const newDestinationAccount = getDefaultDestinationAccount(destinationAccounts)
+    setDestinationAccount(newDestinationAccount)
+
+    // Send destination account new values to override the previous ones
+    // as the state is not updated yet
+    sendDataToParent({
+      destinationAccount: undefined,
+    })
+  }, [currency])
+
+  useEffect(() => {
+    if (!isDestinationAccountEnabled) {
+      setDefaultDestinationAccount(destinationAccounts)
+    }
+  }, [isDestinationAccountEnabled])
+
+  useEffect(() => {
+    if (isPriorityBankEnabled && !priorityBank) {
+      setPriorityBank(banks[0])
+    }
+  }, [isPriorityBankEnabled])
+
+  const getDefaultDestinationAccount = (destinationAccounts: Account[]): Account => {
+    // Get accounts for the selected currency
+    const filteredByCurrencyAccounts = destinationAccounts.filter(
+      (acc) => acc.currency === currency,
+    )
+
+    // Check if there're default accounts for the selected currency
+    const defaultAccounts = filteredByCurrencyAccounts.filter((acc) => acc.isDefault)
+
+    return defaultAccounts.length > 0 ? defaultAccounts[0] : filteredByCurrencyAccounts[0]
+  }
+
+  const setDefaultDestinationAccount = (destinationAccounts: Account[]) => {
+    // Get accounts for the selected currency
+    const defaultAccount = getDefaultDestinationAccount(destinationAccounts)
+    setDestinationAccount(defaultAccount)
+  }
+
+  const sendDataToParent = (data?: Partial<LocalPaymentMethodsFormValue>) => {
+    const localData: LocalPaymentMethodsFormValue = {
       isBankEnabled,
       isCardEnabled,
       isWalletEnabled,
       isLightningEnabled,
       isCaptureFundsEnabled,
+      isDestinationAccountEnabled,
+      destinationAccount:
+        isDestinationAccountEnabled && destinationAccount
+          ? { id: destinationAccount.id, name: destinationAccount?.accountName }
+          : undefined,
       priorityBank:
         isPriorityBankEnabled && priorityBank
           ? {
@@ -115,20 +171,14 @@ const PaymentMethodsModal = ({
               name: priorityBank.bankName,
             }
           : undefined,
-      isDefault: data.isDefaultChecked,
+      isDefault: isDefaultChecked,
     }
 
-    if (isPriorityBankEnabled && !priorityBank) {
-      formData.priorityBank = {
-        id: banks[0].bankID,
-        name: banks[0].bankName,
-      }
-    }
+    // Merge the data from the parent with the data from the child
+    const mergedData = { ...localData, ...data }
 
-    setCurrentState(formData)
-    onApply(formData)
-
-    return formData
+    setCurrentState(mergedData)
+    onApply(mergedData)
   }
 
   const handleOnDismiss = () => {
@@ -143,6 +193,11 @@ const PaymentMethodsModal = ({
       setIsLightningEnabled(currentState.isLightningEnabled)
       setIsCaptureFundsEnabled(currentState.isCaptureFundsEnabled)
       setIsPriorityBankEnabled(currentState.isBankEnabled)
+      setIsDestinationAccountEnabled(currentState.isDestinationAccountEnabled)
+      setDestinationAccount(
+        destinationAccounts.find((acc) => acc.id === currentState.destinationAccount?.id) ??
+          destinationAccount,
+      )
 
       if (currentState.isBankEnabled && currentState.priorityBank) {
         const bank = banks.find((bank) => bank.bankID === currentState.priorityBank?.id)
@@ -160,6 +215,8 @@ const PaymentMethodsModal = ({
       setIsLightningEnabled(userDefaults?.lightning ?? false)
       setIsCaptureFundsEnabled(!userDefaults?.cardAuthorizeOnly ?? true)
       setIsPriorityBankEnabled(userDefaults?.pispPriorityBank ?? false)
+      setIsDestinationAccountEnabled(false)
+      setDestinationAccount(undefined)
 
       if (userDefaults?.pispPriorityBank && userDefaults?.pispPriorityBankID) {
         const bank = banks.find((bank) => bank.bankID === userDefaults.pispPriorityBankID)
@@ -170,6 +227,10 @@ const PaymentMethodsModal = ({
         setIsPriorityBankEnabled(false)
       }
     }
+  }
+
+  const handleOnUseAsDefaultChanged = (isDefaultChecked: boolean) => {
+    setIsDefaultChecked(isDefaultChecked)
   }
 
   const ValidationAlert: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
@@ -185,8 +246,9 @@ const PaymentMethodsModal = ({
       title="Payment methods"
       open={open}
       onDismiss={handleOnDismiss}
-      onApply={onApplyClicked}
+      onApply={() => sendDataToParent()}
       onApplyEnabled={applyEnabled}
+      onUseAsDefaultChanged={handleOnUseAsDefaultChanged}
       buttonRowClassName={
         isWalletEnabled && !isCardEnabled && !isBankEnabled && !isLightningEnabled ? 'md:mt-6' : ''
       }
@@ -208,9 +270,65 @@ const PaymentMethodsModal = ({
           />
 
           <AnimatePresence initial={false}>
+            {isBankEnabled && destinationAccounts.length > 0 && (
+              <AnimateHeightWrapper layoutId="checkbox-destination-account">
+                <div className="pl-6 md:pl-10 pt-7">
+                  <Checkbox
+                    label="Change destination account"
+                    infoText="This is the account where funds will be transferred for bank payments."
+                    value={isDestinationAccountEnabled}
+                    onChange={setIsDestinationAccountEnabled}
+                  />
+                </div>
+              </AnimateHeightWrapper>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isBankEnabled && (
+              <AnimateHeightWrapper layoutId="select-destination-account">
+                <div className="pl-6 md:pl-[3.25rem] pt-4">
+                  <Select
+                    disabled={!isDestinationAccountEnabled}
+                    options={destinationAccounts
+                      .filter((acc) => acc.currency === currency)
+                      .map((acc) => {
+                        return {
+                          value: acc.id,
+                          label: acc.accountName,
+                        }
+                      })}
+                    selected={
+                      !destinationAccount
+                        ? {
+                            value: destinationAccounts[0].id,
+                            label: destinationAccounts[0].accountName,
+                          }
+                        : {
+                            value: destinationAccount.id,
+                            label: destinationAccount.accountName,
+                          }
+                    }
+                    onChange={(selectedOption) => {
+                      setDestinationAccount(
+                        destinationAccounts.find((acc) => acc.id === selectedOption.value) ??
+                          getDefaultDestinationAccount(destinationAccounts),
+                      )
+                    }}
+                  />
+                </div>
+              </AnimateHeightWrapper>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence initial={false}>
             {isBankEnabled && banks.length > 0 && (
               <AnimateHeightWrapper layoutId="checkbox-priority-bank">
-                <div className="pl-6 md:pl-10 pt-7 md:pb-4">
+                <div
+                  className={cn('pl-6 md:pl-10 md:pb-4', {
+                    'pt-7': !destinationAccounts || destinationAccounts?.length === 0,
+                    'pt-6': !destinationAccounts || destinationAccounts?.length > 0,
+                  })}
+                >
                   <Checkbox
                     label="Define a priority bank"
                     infoText="Select a priority bank to set it as the default payment option for users. This streamlines the payment process by displaying the preferred bank first."
@@ -268,7 +386,7 @@ const PaymentMethodsModal = ({
                 <div className="ml-10 pt-7 md:pb-4">
                   <Checkbox
                     label="Don't capture funds on card payments"
-                    infoText="Enable this option to authorize card payments without immediately capturing the funds. This allows for manual capture or cancellation before completing the transaction."
+                    infoText="Enable this option to authorise card payments without immediately capturing the funds. This allows for manual capture or cancellation before completing the transaction."
                     value={!isCaptureFundsEnabled}
                     onChange={(value) => setIsCaptureFundsEnabled(!value)}
                   />
@@ -290,7 +408,7 @@ const PaymentMethodsModal = ({
           {showPispAmountAlert && (
             <AnimateHeightWrapper layout="position" layoutId="amount-pisp-alert">
               <ValidationAlert>
-                The minimum amount for bank payments is {currencySymbol}
+                The minimum amount for bank payments is {formatCurrency(currency)}
                 {formatter.format(minimumCurrencyAmount)}. You must use another payment method for
                 lower amounts.
               </ValidationAlert>
