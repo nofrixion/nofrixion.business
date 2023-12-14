@@ -111,7 +111,7 @@ const remotePaymentRequestToLocalPaymentRequest = (
       case PaymentResult.OverPaid:
         return 'overpaid'
       case PaymentResult.Authorized:
-        return 'authorized'
+        return 'authorised'
       default:
         return 'unpaid'
     }
@@ -503,7 +503,10 @@ const remotePaymentRequestToLocalPaymentRequest = (
 
           const events = extractEventsFromPaymentAttempt(remotePaymentRequest, remotePaymentAttempt)
 
-          const latestEventOccurredAt = new Date(events[0].occurredAt)
+          const latestEventOccurredAt =
+            events && events.length > 0 && events[0].occurredAt
+              ? new Date(events[0].occurredAt)
+              : undefined
 
           localPaymentAttempts.push({
             attemptKey: attemptKey,

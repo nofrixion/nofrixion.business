@@ -1,9 +1,11 @@
 import { Pagination, UserMetrics, UserRoleAndUserInvite, UserStatus } from '@nofrixion/moneymoov'
 import * as Tabs from '@radix-ui/react-tabs'
 
+import { SystemError } from '../../../../types/LocalTypes'
 import { DoubleSortByUsersAndInvites } from '../../../../types/Sort'
 import { Button, Icon } from '../../atoms'
 import DashboardTab from '../../DashboardTab/DashboardTab'
+import SystemErrorModal from '../../Modals/SystemErrorModal/SystemErrorModal'
 import UserTable from '../../organisms/UsersTable/UserTable'
 import ScrollArea from '../../ScrollArea/ScrollArea'
 import { Toaster } from '../../Toast/Toast'
@@ -23,6 +25,9 @@ export interface UserDashboardProps extends React.HTMLAttributes<HTMLDivElement>
   onInviteUser: () => void
   onResendInvitation?: (inviteID?: string) => void
   setStatus?: (status: UserStatus) => void
+  systemError?: SystemError
+  isSystemErrorOpen?: boolean
+  onCloseSystemError?: () => void
 }
 
 const UserDashboard: React.FC<UserDashboardProps> = ({
@@ -40,7 +45,16 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
   onUserClicked,
   onResendInvitation,
   setStatus,
+  systemError,
+  isSystemErrorOpen = false,
+  onCloseSystemError,
 }) => {
+  const handlOnCloseSystemErrorModal = () => {
+    if (onCloseSystemError) {
+      onCloseSystemError()
+    }
+  }
+
   return (
     <>
       <div className="font-inter bg-main-grey text-default-text h-full">
@@ -103,6 +117,14 @@ const UserDashboard: React.FC<UserDashboardProps> = ({
             onResendInvitation={onResendInvitation}
           />
         </div>
+
+        {/* System error modal */}
+        <SystemErrorModal
+          open={isSystemErrorOpen}
+          title={systemError?.title}
+          message={systemError?.message}
+          onDismiss={handlOnCloseSystemErrorModal}
+        />
 
         <Toaster positionY="top" positionX="right" duration={3000} />
       </div>

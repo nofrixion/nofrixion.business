@@ -1,14 +1,17 @@
-﻿import { useEffect, useState } from 'react'
+﻿import { ApiError } from '@nofrixion/moneymoov'
+import { useEffect, useState } from 'react'
 
+import { SystemError } from '../../../types/LocalTypes'
 import { validateEmail } from '../../../utils/validation'
 import { Button, Sheet, SheetContent } from '../atoms'
 import InputTextField from '../atoms/InputTextField/InputTextField'
 import { ValidationMessage } from '../atoms/ValidationMessage/ValidationMessage'
+import InlineError from '../InlineError/InlineError'
 import { Loader } from '../Loader/Loader'
 
 export interface InviteUserModalProps {
   merchantID: string
-  onInvite: (merchantID: string, emailAddress: string) => Promise<void>
+  onInvite: (merchantID: string, emailAddress: string) => Promise<ApiError | undefined>
   onDismiss: () => void
   isOpen: boolean
 }
@@ -25,6 +28,9 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
   const [emailAddress, setEmailAddress] = useState<string | undefined>(undefined)
 
   const [sendInviteClicked, setSendInviteClicked] = useState(false)
+
+  const [showInviteUserError, setShowInviteUserError] = useState(false)
+  const [inviteUserError, setInviteUserError] = useState<SystemError | undefined>(undefined)
 
   useEffect(() => {
     if (!isOpen) {
@@ -44,6 +50,8 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
   }
 
   const onInviteClick = async () => {
+    setInviteUserError(undefined)
+    setShowInviteUserError(false)
     setIsInviteButtonDisabled(true)
     setSendInviteClicked(true)
 
@@ -51,7 +59,15 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
       setIsInviteButtonDisabled(false)
       return
     } else {
-      await onInvite(merchantID, emailAddress!)
+      const apiError = await onInvite(merchantID, emailAddress!)
+
+      if (apiError) {
+        setInviteUserError({
+          title: 'Invite user to MoneyMoov has failed',
+          message: apiError.detail,
+        })
+        setShowInviteUserError(true)
+      }
 
       setIsInviteButtonDisabled(false)
     }
@@ -62,6 +78,8 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     setFormError(undefined)
     setSendInviteClicked(false)
     setIsInviteButtonDisabled(false)
+    setInviteUserError(undefined)
+    setShowInviteUserError(false)
   }
 
   const handleOnOpenChange = (open: boolean) => {
@@ -104,6 +122,14 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
                 </div>
 
                 <div className="lg:mt-16 lg:static lg:p-0 fixed bottom-16 left-0 w-full px-6 mx-auto pb-4 z-20">
+                  {showInviteUserError && inviteUserError && (
+                    <div className="lg:mb-14">
+                      <InlineError
+                        title={inviteUserError.title}
+                        messages={[inviteUserError.message]}
+                      />
+                    </div>
+                  )}
                   <div>
                     <ValidationMessage label="form" variant="error" message={formError} />
                   </div>

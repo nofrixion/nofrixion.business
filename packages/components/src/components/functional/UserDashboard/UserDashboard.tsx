@@ -1,5 +1,4 @@
 import {
-  ApiError,
   SortDirection,
   useResendUserInvitation,
   UserMetrics,
@@ -11,6 +10,7 @@ import {
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
+import { SystemError } from '../../../types/LocalTypes'
 import { DoubleSortByUsersAndInvites } from '../../../types/Sort'
 import { UserDashboard as UIUserDashboard } from '../../ui/pages/UserDashboard/UserDashboard'
 import { makeToast } from '../../ui/Toast/Toast'
@@ -22,7 +22,6 @@ export interface UserDashboardProps {
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
   merchantName: string
-  onUnauthorized: () => void
 }
 
 const UserDashboard = ({
@@ -30,7 +29,6 @@ const UserDashboard = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   merchantName,
-  onUnauthorized,
 }: UserDashboardProps) => {
   const queryClient = useQueryClient()
 
@@ -41,7 +39,6 @@ const UserDashboard = ({
         merchantId={merchantId}
         merchantName={merchantName}
         apiUrl={apiUrl}
-        onUnauthorized={onUnauthorized}
       />
     </QueryClientProvider>
   )
@@ -54,7 +51,6 @@ const UserDashboardMain = ({
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
   merchantName,
-  onUnauthorized,
 }: UserDashboardProps) => {
   const [status, setStatus] = useState<UserStatus>(UserStatus.All)
   const [users, setUsers] = useState<UserRoleAndUserInvite[] | undefined>(undefined)
@@ -71,6 +67,9 @@ const UserDashboardMain = ({
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
   const [metrics, setMetrics] = useState<UserMetrics | undefined>(undefined)
   const [inviteUserClicked, setInviteUserClicked] = useState(false)
+
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
 
   const { data: usersResponse, isLoading: isLoadingUsers } = useUsersAndInvites(
     {
@@ -102,9 +101,8 @@ const UserDashboardMain = ({
       setUsers(usersResponse.data.content)
       setTotalRecords(usersResponse.data.totalSize)
     } else if (usersResponse?.status === 'error') {
-      makeToast('error', 'Error fetching users.')
       console.error(usersResponse.error)
-      handleApiError(usersResponse.error)
+      handleApiError()
     }
   }, [usersResponse])
 
@@ -112,16 +110,17 @@ const UserDashboardMain = ({
     if (metricsResponse?.status === 'success') {
       setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching user metrics.')
       console.error(metricsResponse.error)
-      handleApiError(metricsResponse.error)
+      handleApiError()
     }
   }, [metricsResponse])
 
-  const handleApiError = (error: ApiError) => {
-    if (error && error.status === 401) {
-      onUnauthorized()
-    }
+  const handleApiError = () => {
+    handleSystemErrorMessage({
+      title: "This page's data cannot be loaded at the moment",
+      message:
+        'An error occurred while trying to retrieve the data. Please try again later, or contact support if the error persists.',
+    })
   }
 
   const onPageChange = (page: number) => {
@@ -147,7 +146,10 @@ const UserDashboardMain = ({
     if (response.status === 'success') {
       makeToast('success', 'Invitation resent successfully.')
     } else if (response.status === 'error') {
-      makeToast('error', 'Error resending invitation. ' + response.error.detail)
+      handleSystemErrorMessage({
+        title: 'Resending user invitation has failed ',
+        message: response.error.detail,
+      })
       console.error(response.error)
     }
   }
@@ -155,6 +157,15 @@ const UserDashboardMain = ({
   const onDismissUserDetailsModal = () => {
     setSelectedUser(undefined)
     setSelectedUserId(undefined)
+  }
+
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
   }
 
   return (
@@ -177,6 +188,9 @@ const UserDashboardMain = ({
         isLoadingMetrics={isLoadingMetrics}
         status={status}
         setStatus={setStatus}
+        systemError={systemError}
+        isSystemErrorOpen={isSystemErrorOpen}
+        onCloseSystemError={onCloseSystemErrorModal}
       />
 
       {merchantId && (
@@ -200,6 +214,7 @@ const UserDashboardMain = ({
           user={selectedUser}
           open={!!selectedUser}
           onDismiss={onDismissUserDetailsModal}
+          onSystemError={handleSystemErrorMessage}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-﻿import { Currency } from '@nofrixion/moneymoov'
+﻿import { ApiError, Currency } from '@nofrixion/moneymoov'
 import { addDays, format, isEqual, parseISO, startOfDay } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -9,6 +9,7 @@ import {
   LocalBeneficiary,
   LocalCounterparty,
   LocalPayout,
+  SystemError,
 } from '../../../../types/LocalTypes'
 import { cn } from '../../../../utils'
 import { validateIBAN } from '../../../../utils/validation'
@@ -16,6 +17,7 @@ import { Button, Icon, Sheet, SheetContent } from '../../atoms'
 import InputTextField from '../../atoms/InputTextField/InputTextField'
 import { RadioGroup, RadioGroupItem } from '../../atoms/RadioGroup/RadioGroup'
 import { ValidationMessage } from '../../atoms/ValidationMessage/ValidationMessage'
+import InlineError from '../../InlineError/InlineError'
 import InputAmountField from '../../InputAmountField/InputAmountField'
 import InputTextAreaField from '../../InputTextAreaField/InputTextAreaField'
 import { Loader } from '../../Loader/Loader'
@@ -36,7 +38,7 @@ export interface SavePayoutModalProps {
     scheduled?: boolean,
     scheduleDate?: Date,
     beneficiaryID?: string,
-  ) => Promise<void>
+  ) => Promise<ApiError | undefined>
   onUpdatePayout?: (
     sourceAccount: LocalAccount,
     counterParty: LocalCounterparty,
@@ -48,7 +50,7 @@ export interface SavePayoutModalProps {
     scheduled?: boolean,
     scheduleDate?: Date,
     beneficiaryID?: string,
-  ) => Promise<void>
+  ) => Promise<ApiError | undefined>
   onDismiss: () => void
   accounts: LocalAccount[]
   isOpen: boolean
@@ -106,6 +108,9 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   const [selectedScheduleOption, setSelectedScheduleOption] = useState('immediately')
   const [scheduleDate, setScheduleDate] = useState<Date | undefined>(addDays(new Date(), 1))
   const [changesMade, setChangesMade] = useState<boolean>(false)
+
+  const [showPayoutError, setShowPayoutError] = useState(false)
+  const [payoutError, setPayoutError] = useState<SystemError | undefined>(undefined)
 
   useEffect(() => {
     if (!isOpen) {
@@ -335,6 +340,9 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
   }
 
   const savePayout = async (saveAndApprove?: boolean) => {
+    setShowPayoutError(false)
+    setPayoutError(undefined)
+
     setCreatePayoutClicked(true)
     if (handleValidation()) {
       return
@@ -350,7 +358,7 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
       const counterParty: LocalCounterparty = buildCounterPartyForSaving()
 
       if (!selectedPayout && onCreatePayout) {
-        await onCreatePayout(
+        const apiError = await onCreatePayout(
           fromAccount!,
           counterParty,
           parsedAmount,
@@ -362,8 +370,16 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
           scheduleDate,
           selectedBeneficiary?.id,
         )
+
+        if (apiError) {
+          setPayoutError({
+            title: saveAndApprove ? 'Payout authorisation error' : 'Create payout has failed',
+            message: apiError.detail,
+          })
+          setShowPayoutError(true)
+        }
       } else if (selectedPayout && onUpdatePayout) {
-        await onUpdatePayout(
+        const apiError = await onUpdatePayout(
           fromAccount!,
           counterParty,
           parsedAmount,
@@ -375,6 +391,16 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
           scheduleDate,
           selectedBeneficiary?.id,
         )
+
+        if (apiError) {
+          setPayoutError({
+            title: saveAndApprove
+              ? 'Payout authorisation error'
+              : 'Update payout details has failed',
+            message: apiError.detail,
+          })
+          setShowPayoutError(true)
+        }
       }
 
       setIsCreatePayoutButtonDisabled(false)
@@ -438,6 +464,8 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
     setScheduleDate(addDays(new Date(), 1))
     setDateValidationErrorMessage(undefined)
     setFromAccount(getAccountFromCurrencyOrExistingPayout())
+    setShowPayoutError(false)
+    setPayoutError(undefined)
 
     if (selectedPayout) {
       fillSelectedPayoutFields()
@@ -893,6 +921,13 @@ const SavePayoutModal: React.FC<SavePayoutModalProps> = ({
                   <div className="mb-4">
                     <ValidationMessage label="form" variant="error" message={formError} />
                   </div>
+
+                  {showPayoutError && payoutError && (
+                    <div className="lg:mb-14">
+                      <InlineError title={payoutError.title} messages={[payoutError.message]} />
+                    </div>
+                  )}
+
                   {changesMade && isUserAuthoriser && (
                     <Button
                       variant="primaryDark"

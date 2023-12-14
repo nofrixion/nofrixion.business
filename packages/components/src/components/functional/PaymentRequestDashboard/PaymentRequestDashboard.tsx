@@ -1,5 +1,4 @@
 import {
-  ApiError,
   PaymentRequest,
   PaymentRequestMetrics,
   PaymentRequestStatus,
@@ -27,6 +26,7 @@ import {
   LocalPaymentRequest,
   LocalPaymentRequestCreate,
   LocalTag,
+  SystemError,
 } from '../../../types/LocalTypes'
 import { DoubleSortByPaymentRequests } from '../../../types/Sort'
 import {
@@ -53,7 +53,6 @@ export interface PaymentRequestDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
-  onUnauthorized: () => void
   isWebComponent?: boolean
 }
 
@@ -61,18 +60,12 @@ const PaymentRequestDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
-  onUnauthorized,
   isWebComponent,
 }: PaymentRequestDashboardProps) => {
   const queryClientToUse = isWebComponent ? queryClient : useQueryClient()
   return (
     <QueryClientProvider client={queryClientToUse}>
-      <PaymentRequestDashboardMain
-        token={token}
-        merchantId={merchantId}
-        apiUrl={apiUrl}
-        onUnauthorized={onUnauthorized}
-      />
+      <PaymentRequestDashboardMain token={token} merchantId={merchantId} apiUrl={apiUrl} />
     </QueryClientProvider>
   )
 }
@@ -81,7 +74,6 @@ const PaymentRequestDashboardMain = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
-  onUnauthorized,
 }: PaymentRequestDashboardProps) => {
   const [page, setPage] = useState(1)
   const [sortBy, setSortBy] = useState<DoubleSortByPaymentRequests>({
@@ -119,6 +111,9 @@ const PaymentRequestDashboardMain = ({
   >(undefined)
   const [showMoreClicked, setShowMoreClicked] = useState(false)
 
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
+
   const pageSize = 20
 
   const onPaymentRequestRowClicked = (paymentRequest: LocalPaymentRequest) => {
@@ -137,10 +132,12 @@ const PaymentRequestDashboardMain = ({
     return tags.filter((tag) => tag.isSelected).map((tag) => tag.id)
   }
 
-  const handleApiError = (error: ApiError) => {
-    if (error && error.status === 401) {
-      onUnauthorized()
-    }
+  const handleApiError = () => {
+    handleSystemErrorMessage({
+      title: "This page's data cannot be loaded at the moment",
+      message:
+        'An error occurred while trying to retrieve the data. Please try again later, or contact support if the error persists.',
+    })
   }
 
   const { data: merchant } = useMerchant({ apiUrl, authToken: token }, { merchantId })
@@ -238,10 +235,8 @@ const PaymentRequestDashboardMain = ({
       setPaymentRequests(paymentRequestsResponse.data.content)
       setTotalRecords(paymentRequestsResponse.data.totalSize)
     } else if (paymentRequestsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching payment requests.')
       console.error(paymentRequestsResponse.error)
-
-      handleApiError(paymentRequestsResponse.error)
+      handleApiError()
     }
   }, [paymentRequestsResponse])
 
@@ -272,7 +267,7 @@ const PaymentRequestDashboardMain = ({
       )
     } else if (merchantTagsResponse?.status === 'error') {
       console.warn(merchantTagsResponse.error)
-      handleApiError(merchantTagsResponse.error)
+      handleApiError()
     }
   }, [merchantTagsResponse])
 
@@ -280,9 +275,8 @@ const PaymentRequestDashboardMain = ({
     if (metricsResponse?.status === 'success') {
       setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching metrics.')
       console.error(metricsResponse.error)
-      handleApiError(metricsResponse.error)
+      handleApiError()
     }
   }, [metricsResponse])
 
@@ -290,9 +284,10 @@ const PaymentRequestDashboardMain = ({
     const response = await deletePaymentRequest(paymentRequest.id)
 
     if (response.error) {
-      makeToast('error', response.error.title)
-
-      handleApiError(response.error)
+      handleSystemErrorMessage({
+        title: 'Delete payment request has failed',
+        message: response.error.detail,
+      })
 
       return
     }
@@ -377,8 +372,7 @@ const PaymentRequestDashboardMain = ({
         })
 
         if (voidResult.error) {
-          makeToast('error', 'Error processing void.')
-          handleApiError(voidResult.error)
+          return voidResult.error
         } else {
           makeToast('success', 'Payment successfully voided.')
         }
@@ -390,8 +384,7 @@ const PaymentRequestDashboardMain = ({
         })
 
         if (refundResult.error) {
-          makeToast('error', 'Error processing refund.')
-          handleApiError(refundResult.error)
+          return refundResult.error
         } else {
           makeToast('success', 'Payment successfully refunded.')
         }
@@ -423,8 +416,7 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error creating refund.')
-        handleApiError(result.error)
+        return result.error
       } else {
         makeToast('success', 'Refund successfully submitted for approval.')
       }
@@ -440,8 +432,7 @@ const PaymentRequestDashboardMain = ({
       })
 
       if (result.error) {
-        makeToast('error', 'Error capturing Payment.')
-        handleApiError(result.error)
+        return result.error
       } else {
         makeToast('success', 'Payment successfully captured.')
       }
@@ -506,6 +497,15 @@ const PaymentRequestDashboardMain = ({
       default:
         return 'all'
     }
+  }
+
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
   }
 
   const paymentRequestsExists =
@@ -626,6 +626,9 @@ const PaymentRequestDashboardMain = ({
           selectedPaymentRequestID={selectedPaymentRequestID}
           paymentRequestsExist={paymentRequestsExists}
           isLoadingMetrics={isLoadingMetrics}
+          systemError={systemError}
+          isSystemErrorOpen={isSystemErrorOpen}
+          onCloseSystemError={onCloseSystemErrorModal}
         />
       </div>
 

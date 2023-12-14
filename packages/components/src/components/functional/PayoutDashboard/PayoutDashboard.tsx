@@ -1,6 +1,5 @@
 import {
   Account,
-  ApiError,
   Beneficiary,
   Payout,
   PayoutClient,
@@ -19,7 +18,7 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { ApproveType, LocalPayout, LocalTag } from '../../../types/LocalTypes'
+import { ApproveType, LocalPayout, LocalTag, SystemError } from '../../../types/LocalTypes'
 import { DoubleSortByPayouts } from '../../../types/Sort'
 import {
   parseApiTagToLocalTag,
@@ -40,25 +39,18 @@ export interface PayoutDashboardProps {
   token?: string // Example: "eyJhbGciOiJIUz..."
   apiUrl?: string // Example: "https://api.nofrixion.com/api/v1"
   merchantId: string
-  onUnauthorized: () => void
 }
 
 const PayoutDashboard = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
-  onUnauthorized,
 }: PayoutDashboardProps) => {
   const queryClient = useQueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PayoutDashboardMain
-        token={token}
-        merchantId={merchantId}
-        apiUrl={apiUrl}
-        onUnauthorized={onUnauthorized}
-      />
+      <PayoutDashboardMain token={token} merchantId={merchantId} apiUrl={apiUrl} />
     </QueryClientProvider>
   )
 }
@@ -69,7 +61,6 @@ const PayoutDashboardMain = ({
   token,
   apiUrl = 'https://api.nofrixion.com/api/v1',
   merchantId,
-  onUnauthorized,
 }: PayoutDashboardProps) => {
   const [page, setPage] = useState(1)
   const [totalRecords, setTotalRecords] = useState<number>(0)
@@ -104,6 +95,9 @@ const PayoutDashboardMain = ({
   const [batchId, setBatchId] = useState<string | undefined>(undefined)
   const authoriseFormRef = useRef<HTMLFormElement>(null)
   const [isUserAuthoriser, setIsUserAuthoriser] = useState<boolean>(false)
+
+  const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
+  const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -212,8 +206,8 @@ const PayoutDashboardMain = ({
       setPayouts(payoutsResponse.data.content)
       setTotalRecords(payoutsResponse.data.totalSize)
     } else if (payoutsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching payment requests.')
       console.error(payoutsResponse.error)
+      handleApiError()
     }
   }, [payoutsResponse])
 
@@ -221,9 +215,8 @@ const PayoutDashboardMain = ({
     if (metricsResponse?.status === 'success') {
       setMetrics(metricsResponse.data)
     } else if (metricsResponse?.status === 'error') {
-      makeToast('error', 'Error fetching metrics.')
       console.error(metricsResponse.error)
-      handleApiError(metricsResponse.error)
+      handleApiError()
     }
   }, [metricsResponse])
 
@@ -249,7 +242,7 @@ const PayoutDashboardMain = ({
       )
     } else if (merchantTagsResponse?.status === 'error') {
       console.warn(merchantTagsResponse.error)
-      handleApiError(merchantTagsResponse.error)
+      handleApiError()
     }
   }, [merchantTagsResponse])
 
@@ -297,10 +290,12 @@ const PayoutDashboardMain = ({
     }
   }, [userResponse])
 
-  const handleApiError = (error: ApiError) => {
-    if (error && error.status === 401) {
-      onUnauthorized()
-    }
+  const handleApiError = () => {
+    handleSystemErrorMessage({
+      title: "This page's data cannot be loaded at the moment",
+      message:
+        'An error occurred while trying to retrieve the data. Please try again later, or contact support if the error persists.',
+    })
   }
 
   const onPageChange = (page: number) => {
@@ -385,13 +380,25 @@ const PayoutDashboardMain = ({
         const batchId = response.data.id
         setBatchId(batchId)
       } else {
-        makeToast('error', 'Error creating payout batch.')
+        handleSystemErrorMessage({
+          title: 'Create batch payout has failed',
+          message: response.error.detail,
+        })
       }
     }
   }
 
   const onPayoutEditClicked = () => {
     setCreatePayoutClicked(true)
+  }
+
+  const onCloseSystemErrorModal = () => {
+    setIsSystemErrorOpen(false)
+  }
+
+  const handleSystemErrorMessage = (systemError: SystemError) => {
+    setSystemError(systemError)
+    setIsSystemErrorOpen(true)
   }
 
   return (
@@ -434,6 +441,9 @@ const PayoutDashboardMain = ({
         onApproveBatchPayouts={onApproveBatchPayouts}
         payoutsExist={payoutsExists}
         isUserAuthoriser={isUserAuthoriser}
+        systemError={systemError}
+        isSystemErrorOpen={isSystemErrorOpen}
+        onCloseSystemError={onCloseSystemErrorModal}
       />
 
       <PayoutDetailsModal
@@ -455,6 +465,7 @@ const PayoutDashboardMain = ({
         merchantTags={localMerchantTags}
         isUserAuthoriser={isUserAuthoriser}
         onEdit={onPayoutEditClicked}
+        onSystemError={handleSystemErrorMessage}
       />
 
       {merchantId && accounts && accounts.find((x) => x.merchantID === merchantId) && (
