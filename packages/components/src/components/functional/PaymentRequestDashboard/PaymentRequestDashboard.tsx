@@ -536,6 +536,7 @@ const PaymentRequestDashboardMain = ({
 
       <div className="mb-4">
         <FilterControlsRow
+          dateRange={dateRange}
           setDateRange={setDateRange}
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
