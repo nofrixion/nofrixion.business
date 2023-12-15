@@ -174,7 +174,7 @@ const validateInvoices = (invoicePayments: LocalInvoice[]): ValidationResult[] =
       results.push({
         lineNumber: index + 1,
         valid: true,
-        result: invoicePayment,
+        result: result.data as LocalInvoice,
       })
     } else {
       results.push({

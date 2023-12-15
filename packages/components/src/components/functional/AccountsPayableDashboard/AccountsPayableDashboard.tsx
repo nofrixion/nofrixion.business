@@ -8,6 +8,7 @@ import {
   SortDirection,
   useAccounts,
   useBeneficiaries,
+  useCreatePayrun,
   useMerchant,
   useMerchantTags,
   usePayoutMetrics,
@@ -18,9 +19,17 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { add, endOfDay, startOfDay } from 'date-fns'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { ApproveType, LocalPayout, LocalTag, SystemError } from '../../../types/LocalTypes'
-import { DoubleSortByPayouts } from '../../../types/Sort'
 import {
+  ApproveType,
+  LocalInvoice,
+  LocalPayout,
+  LocalTag,
+  SystemError,
+} from '../../../types/LocalTypes'
+import { DoubleSortByPayouts } from '../../../types/Sort'
+import { formatDateWithYear } from '../../../utils/formatters'
+import {
+  localInvoicesToRemoteInvoices,
   parseApiTagToLocalTag,
   parseApiUserToLocalUser,
   remoteAccountsToLocalAccounts,
@@ -30,6 +39,7 @@ import {
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { AccountsPayableDashboard as UIAccountsPayableDashboard } from '../../ui/pages/AccountsPayableDashboard/AccountsPayableDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
+import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 import SavePayoutModal from '../SavePayoutModal/SavePayoutModal'
@@ -97,6 +107,9 @@ const AccountsPayableDashboardMain = ({
 
   const [systemError, setSystemError] = useState<SystemError | undefined>(undefined)
   const [isSystemErrorOpen, setIsSystemErrorOpen] = useState<boolean>(false)
+
+  const [isImportInvoiceModalOpen, setIsImportInvoiceModalOpen] = useState(false)
+  const { createPayrun } = useCreatePayrun({ apiUrl: apiUrl, authToken: token })
 
   const { data: metricsResponse, isLoading: isLoadingMetrics } = usePayoutMetrics(
     {
@@ -387,6 +400,28 @@ const AccountsPayableDashboardMain = ({
     }
   }
 
+  const onImportInvoices = async (invoices: LocalInvoice[]) => {
+    const response = await createPayrun({
+      merchantID: merchantId,
+      name: `${formatDateWithYear(new Date())} payments`,
+      invoices: localInvoicesToRemoteInvoices(invoices),
+      totalAmount: 0,
+    })
+
+    if (response.status === 'error') {
+      handleSystemErrorMessage({
+        title: "We couldn't create the payrun",
+        message: response.error?.detail ?? 'Something went wrong, please try again later',
+      })
+      return
+    }
+
+    if (response.data) {
+      setIsImportInvoiceModalOpen(false)
+      makeToast('success', 'Payrun created successfully.')
+    }
+  }
+
   const onPayoutEditClicked = () => {
     setCreatePayoutClicked(true)
   }
@@ -445,6 +480,12 @@ const AccountsPayableDashboardMain = ({
         }}
         onCreatePayout={onCreatePayout}
         onApproveBatchPayouts={onApproveBatchPayouts}
+        onImportInvoices={onImportInvoices}
+        systemError={systemError}
+        isSystemErrorOpen={isSystemErrorOpen}
+        onCloseSystemError={onCloseSystemErrorModal}
+        isImportInvoiceModalOpen={isImportInvoiceModalOpen}
+        setIsImportInvoiceModalOpen={setIsImportInvoiceModalOpen}
       />
       <PayoutDetailsModal
         open={!!selectedPayoutId}

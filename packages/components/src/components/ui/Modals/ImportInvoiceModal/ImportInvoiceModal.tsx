@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { parse, ParseResult } from 'papaparse'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { LocalInvoice, ValidationResult } from '../../../../types/LocalTypes'
 import { validateInvoices } from '../../../../utils/validation'
@@ -15,9 +15,10 @@ import BackArrow from '../../utils/BackArrow'
 export interface ImportInvoiceModalProps {
   isOpen: boolean
   onClose: () => void
+  onImport: (invoices: LocalInvoice[]) => void
 }
 
-const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
+const ImportInvoiceModal = ({ isOpen, onClose, onImport }: ImportInvoiceModalProps) => {
   const [validationResults, setValidationResults] = useState<ValidationResult[] | null>(null)
   const [invoices, setInvoices] = useState<LocalInvoice[] | undefined>()
   const [isError, setIsError] = useState(false)
@@ -26,6 +27,16 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([])
   const [showErrorModal, setShowErrorModal] = useState(false)
   const [fileName, setFilename] = useState<string>()
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedTab('upload')
+      setFilename(undefined)
+      setValidationResults([])
+      setInvoices(undefined)
+      setSelectedInvoices([])
+    }
+  }, [isOpen])
 
   const linesWithErrors = validationResults?.filter((result) => !result.valid)
 
@@ -49,7 +60,7 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
           skipEmptyLines: true,
           transform: (value: string) => (value == '' ? undefined : value),
           complete: (results: ParseResult<LocalInvoice>) => {
-            const validationResults = validateInvoices(results.data as LocalInvoice[])
+            const validationResults = validateInvoices(results.data)
             setValidationResults(validationResults)
 
             // If there's at least one valid invoice, set the valid invoice(s)
@@ -57,9 +68,10 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
               .filter((result) => result.valid)
               .map((result) => result.result)
 
-            const validInvoices = validResults as LocalInvoice[]
-            setInvoices(validInvoices)
-            setSelectedInvoices(validInvoices.map((invoice) => invoice.InvoiceNumber))
+            setInvoices(validResults)
+
+            // Select all valid invoices
+            setSelectedInvoices(validResults.map((invoice) => invoice.InvoiceNumber))
 
             setIsLoading(false)
             setSelectedTab('review')
@@ -75,15 +87,19 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
     }
   }
 
-  const onImportInvoices = () => {
-    console.log('Invoices to import', selectedInvoices)
-  }
-
   const onRemoveFile = () => {
     setFilename(undefined)
     setValidationResults([])
     setInvoices(undefined)
     setSelectedInvoices([])
+  }
+
+  const onImportInvoices = () => {
+    const invoicesToImport = invoices?.filter((invoice) =>
+      selectedInvoices?.includes(invoice.InvoiceNumber),
+    )
+
+    onImport(invoicesToImport ?? [])
   }
 
   return (
@@ -229,7 +245,8 @@ const ImportInvoiceModal = ({ isOpen, onClose }: ImportInvoiceModalProps) => {
                 onDismiss={() => {
                   setShowErrorModal(false)
                 }}
-                contentClassName={'max-w-[50rem]'}
+                contentClassName={'max-w-[50rem] h-[25rem]'}
+                scrollableContent
               >
                 {/* Show error per line */}
                 {validationResults

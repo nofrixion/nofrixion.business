@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-import { SystemError } from '../../../../types/LocalTypes'
+import { LocalInvoice, SystemError } from '../../../../types/LocalTypes'
 import { Button } from '../../atoms'
 import { Icon } from '../../atoms/Icon/Icon'
 import { Loader } from '../../Loader/Loader'
@@ -20,6 +20,9 @@ export interface AccountsPayableDashboardProps {
   onCreatePayout: () => void
   onApproveBatchPayouts: () => void
   payoutProps: PayoutDashboardProps
+  onImportInvoices: (invoices: LocalInvoice[]) => void
+  isImportInvoiceModalOpen: boolean
+  setIsImportInvoiceModalOpen: (isOpen: boolean) => void
 }
 
 interface PayrunsEmptyStateProps {
@@ -68,8 +71,10 @@ const AccountsPayableDashboard: React.FC<AccountsPayableDashboardProps> = ({
   onCreatePayout,
   onApproveBatchPayouts,
   payoutProps,
+  onImportInvoices,
+  isImportInvoiceModalOpen,
+  setIsImportInvoiceModalOpen,
 }) => {
-  const [isImportInvoiceModalOpen, setIsImportInvoiceModalOpen] = useState(false)
   const [isApproveButtonDisabled, setIsApproveButtonDisabled] = useState(false)
   const [currentTab, setCurrentTab] = useState<TabValues>(TabValues.PAYOUTS)
 
@@ -175,6 +180,7 @@ const AccountsPayableDashboard: React.FC<AccountsPayableDashboardProps> = ({
       <ImportInvoiceModal
         isOpen={isImportInvoiceModalOpen}
         onClose={() => setIsImportInvoiceModalOpen(false)}
+        onImport={onImportInvoices}
       />
     </div>
   )

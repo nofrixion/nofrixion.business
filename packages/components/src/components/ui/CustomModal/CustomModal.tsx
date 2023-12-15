@@ -16,6 +16,7 @@ export interface CustomModalProps extends BaseModalProps {
   showSupport?: boolean
   contentClassName?: string
   onUseAsDefaultChanged?: (isDefaultChecked: boolean) => void
+  scrollableContent?: boolean
 }
 
 export interface BaseModalProps {
@@ -45,6 +46,7 @@ const CustomModal = ({
   contentClassName = 'max-w-md',
   onUseAsDefaultChanged,
   showFooter = true,
+  scrollableContent = false,
 }: CustomModalProps) => {
   const [isDefaultChecked, setIsDefaultChecked] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<CustomModalState>()
@@ -104,72 +106,72 @@ const CustomModal = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
+                className="flex flex-col h-full overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all"
               >
-                <div className="flex flex-col min-h-full justify-center overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
-                  {title && (
-                    <Dialog.Title asChild>
-                      <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-0 mt-12">
-                        {title}
-                      </h3>
-                    </Dialog.Title>
-                  )}
-                  <div
-                    className={cn('px-6 md:px-12', {
-                      'mb-12': !showFooter,
-                    })}
-                  >
-                    {children}
-                  </div>
-                  {showFooter && (
-                    <div
-                      className={cn(
-                        buttonRowClassName,
-                        'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-10',
-                      )}
-                    >
-                      {showDefault && (
-                        <div>
-                          <Checkbox
-                            label="Use as my default"
-                            value={isDefaultChecked}
-                            onChange={setIsDefaultChecked}
-                          />
-                        </div>
-                      )}
-
-                      {showSupport && (
-                        <div className="flex mr-4 items-center">
-                          <Icon name="support/16" className="text-control-grey-hover" />
-                          <a
-                            className="ml-2 font-normal text-xs leading-4 text-default-text py-1 underline"
-                            href="https://tally.so#tally-open=3NX0Ap"
-                          >
-                            Contact support
-                          </a>
-                        </div>
-                      )}
-
-                      <Button
-                        variant="primaryDark"
-                        size="large"
-                        onClick={onApplyClicked}
-                        disabled={!onApplyEnabled}
-                        className={buttonClaseName}
-                      >
-                        {buttonText}
-                      </Button>
-                    </div>
-                  )}
+                {title && (
+                  <Dialog.Title asChild>
+                    <h3 className="text-2xl font-semibold leading-8 md:leading-6 p-6 md:p-12 md:pb-8 md:pt-0 mt-12">
+                      {title}
+                    </h3>
+                  </Dialog.Title>
+                )}
+                <div
+                  className={cn('px-6 md:px-12', {
+                    'pb-12': !showFooter,
+                    'max-h-full overflow-y-auto': scrollableContent,
+                  })}
+                >
+                  {children}
                 </div>
-                <Dialog.Close asChild>
-                  <button className="absolute top-0 right-0 mt-6 mr-6" onClick={handleOnDismiss}>
-                    <Icon
-                      name="close/16"
-                      className="w-4 h-4 transition stroke-control-grey hover:stroke-control-grey-hover"
-                    />
-                  </button>
-                </Dialog.Close>
+                {showFooter && (
+                  <div
+                    className={cn(
+                      buttonRowClassName,
+                      'bg-main-grey flex flex-col-reverse items-center gap-4 md:gap-0 md:flex-row md:justify-between px-6 md:pl-8 md:pr-6 py-4 mt-4 md:mt-10',
+                    )}
+                  >
+                    {showDefault && (
+                      <div>
+                        <Checkbox
+                          label="Use as my default"
+                          value={isDefaultChecked}
+                          onChange={setIsDefaultChecked}
+                        />
+                      </div>
+                    )}
+
+                    {showSupport && (
+                      <div className="flex mr-4 items-center">
+                        <Icon name="support/16" className="text-control-grey-hover" />
+                        <a
+                          className="ml-2 font-normal text-xs leading-4 text-default-text py-1 underline"
+                          href="https://tally.so#tally-open=3NX0Ap"
+                        >
+                          Contact support
+                        </a>
+                      </div>
+                    )}
+
+                    <Button
+                      variant="primaryDark"
+                      size="large"
+                      onClick={onApplyClicked}
+                      disabled={!onApplyEnabled}
+                      className={buttonClaseName}
+                    >
+                      {buttonText}
+                    </Button>
+                  </div>
+                )}
               </motion.div>
+              <Dialog.Close asChild>
+                <button className="absolute top-0 right-0 mt-6 mr-6" onClick={handleOnDismiss}>
+                  <Icon
+                    name="close/16"
+                    className="w-4 h-4 transition stroke-control-grey hover:stroke-control-grey-hover"
+                  />
+                </button>
+              </Dialog.Close>
             </Dialog.Content>
           </Dialog.Portal>
         )}
