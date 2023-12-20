@@ -224,23 +224,22 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     </div>
                   )}
 
-                  {import.meta.env.VITE_PUBLIC_APP_ENVIRONMENT != 'PROD' &&
-                    counterParty &&
-                    counterParty.accountInfo && (
-                      <Button
-                        variant="primaryDark"
-                        size="large"
-                        className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
-                        onClick={onRefundClick}
-                        disabled={isRefundButtonDisabled}
-                      >
-                        {isRefundButtonDisabled ? (
-                          <Loader className="h-6 w-6 mx-auto" />
-                        ) : (
-                          <span>Submit for approval</span>
-                        )}
-                      </Button>
-                    )}
+                  {(import.meta.env.VITE_PUBLIC_APP_ENVIRONMENT === 'PROD' ||
+                    (counterParty && counterParty.accountInfo)) && (
+                    <Button
+                      variant="primaryDark"
+                      size="large"
+                      className="disabled:!bg-grey-text disabled:!opacity-100 disabled:cursor-not-allowed"
+                      onClick={onRefundClick}
+                      disabled={isRefundButtonDisabled}
+                    >
+                      {isRefundButtonDisabled ? (
+                        <Loader className="h-6 w-6 mx-auto" />
+                      ) : (
+                        <span>Submit for approval</span>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
