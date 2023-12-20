@@ -30,7 +30,6 @@ import {
 import { DateRange } from '../../ui/DateRangePicker/DateRangePicker'
 import { PayoutDashboard as UIPayoutDashboard } from '../../ui/pages/PayoutDashboard/PayoutDashboard'
 import { FilterableTag } from '../../ui/TagFilter/TagFilter'
-import { makeToast } from '../../ui/Toast/Toast'
 import { PayoutAuthoriseForm } from '../../ui/utils/PayoutAuthoriseForm'
 import PayoutDetailsModal from '../PayoutDetailsModal/PayoutDetailsModal'
 import SavePayoutModal from '../SavePayoutModal/SavePayoutModal'
