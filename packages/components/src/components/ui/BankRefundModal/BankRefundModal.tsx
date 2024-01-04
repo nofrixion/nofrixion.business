@@ -224,8 +224,8 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                     </div>
                   )}
 
-                  {(import.meta.env.VITE_PUBLIC_APP_ENVIRONMENT === 'PROD' ||
-                    (counterParty && counterParty.accountInfo)) && (
+                  {import.meta.env.VITE_PUBLIC_APP_ENVIRONMENT === 'PROD' ||
+                  (counterParty && counterParty.accountInfo) ? (
                     <Button
                       variant="primaryDark"
                       size="large"
@@ -238,6 +238,15 @@ const BankRefundModal: React.FC<BankRefundModalProps> = ({
                       ) : (
                         <span>Submit for approval</span>
                       )}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="primaryDark"
+                      size="large"
+                      className="disabled:!opacity-100 disabled:cursor-not-allowed disabled:bg-[#E3E5E8] disabled:text-[#73808C]"
+                      disabled={true}
+                    >
+                      <span>Refund not available in sandbox</span>
                     </Button>
                   )}
                 </div>
