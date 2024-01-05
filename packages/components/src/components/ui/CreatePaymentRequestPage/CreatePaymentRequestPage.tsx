@@ -717,7 +717,7 @@ const CreatePaymentRequestPage = ({
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative font-inter text-default-text z-50" onClose={() => {}}>
+        <Dialog as="div" className="relative font-inter text-default-text z-50" onClose={() => { }}>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center text-center">
               <Transition.Child
@@ -821,6 +821,7 @@ const CreatePaymentRequestPage = ({
                                   <InputTextField
                                     label="First name"
                                     autoComplete="given-name"
+                                    maxLength={50}
                                     value={firstName}
                                     onChange={(value) => setFirstName(value)}
                                     autoSuggestions={autoSuggestions
@@ -834,6 +835,7 @@ const CreatePaymentRequestPage = ({
                                     label="Last name"
                                     autoComplete="family-name"
                                     value={lastName}
+                                    maxLength={50}
                                     onChange={(value) => setLastName(value)}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestLastName)
@@ -907,8 +909,8 @@ const CreatePaymentRequestPage = ({
                                     values={
                                       paymentNotificationsFormValue
                                         ? paymentNotificationsFormValue.emailAddresses
-                                            .split(',')
-                                            .map((email) => email.trim())
+                                          .split(',')
+                                          .map((email) => email.trim())
                                         : []
                                     }
                                     onClick={() => {
