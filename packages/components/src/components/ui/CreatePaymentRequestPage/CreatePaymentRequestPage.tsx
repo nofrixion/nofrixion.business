@@ -821,6 +821,7 @@ const CreatePaymentRequestPage = ({
                                   <InputTextField
                                     label="First name"
                                     autoComplete="given-name"
+                                    maxLength={50}
                                     value={firstName}
                                     onChange={(value) => setFirstName(value)}
                                     autoSuggestions={autoSuggestions
@@ -834,6 +835,7 @@ const CreatePaymentRequestPage = ({
                                     label="Last name"
                                     autoComplete="family-name"
                                     value={lastName}
+                                    maxLength={50}
                                     onChange={(value) => setLastName(value)}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestLastName)
