@@ -864,6 +864,7 @@ const CreatePaymentRequestPage = ({
                                     type="email"
                                     onChange={(value) => setEmail(value)}
                                     warningValidation={onValidateEmail}
+                                    maxLength={254}
                                     autoSuggestions={autoSuggestions
                                       ?.find((x) => x.fieldId === FieldID.PaymentRequestEmail)
                                       ?.values?.map((value) => value.value)}
