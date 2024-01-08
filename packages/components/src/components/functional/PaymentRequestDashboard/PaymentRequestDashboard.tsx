@@ -209,7 +209,6 @@ const PaymentRequestDashboardMain = ({
       setAccounts(remoteAccountsToLocalAccounts(accountsResponse.data))
     } else if (accountsResponse?.status === 'error') {
       console.warn(accountsResponse.error)
-      handleApiError()
     }
   }, [accountsResponse])
 
