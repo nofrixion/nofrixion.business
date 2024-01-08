@@ -70,6 +70,14 @@ const CreatePaymentRequestPage = ({
   autoSuggestions,
 }: CreatePaymentRequestPageProps) => {
   const [amount, setAmount] = useState(prefilledData?.amount.toString() ?? '')
+  const singleCurrency =
+    accounts
+      .map((item) => item.currency)
+      .filter((value, index, self) => self.indexOf(value) === index).length === 1
+      ? accounts
+          .map((item) => item.currency)
+          .filter((value, index, self) => self.indexOf(value) === index)[0]
+      : undefined
   const [currency, setCurrency] = useState<Currency>(prefilledData?.currency ?? Currency.EUR)
   const [productOrService, setProductOrService] = useState(prefilledData?.productOrService ?? '')
   const [description, setDescription] = useState(prefilledData?.description ?? '')
@@ -762,13 +770,18 @@ const CreatePaymentRequestPage = ({
                             <div className="lg:w-[27rem] lg:ml-[7.625rem] lg:mr-12 xl:mr-0">
                               <div className="mb-11">
                                 <div className="md:w-72 lg:w-[13.938rem]">
-                                  <InputAmountField
-                                    value={amount}
-                                    onChange={(value) => setAmount(value)}
-                                    onCurrencyChange={onCurrencyChange}
-                                    currency={currency}
-                                    max={9999999}
-                                  />
+                                  {accounts.length > 0 && (
+                                    <InputAmountField
+                                      value={amount}
+                                      onChange={(value) => setAmount(value)}
+                                      onCurrencyChange={onCurrencyChange}
+                                      allowCurrencyChange={singleCurrency === undefined}
+                                      currency={
+                                        singleCurrency === undefined ? currency : singleCurrency
+                                      }
+                                      max={9999999}
+                                    />
+                                  )}
                                 </div>
                                 <AnimatePresence initial={false}>
                                   {currency &&
